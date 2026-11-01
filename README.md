@@ -19,17 +19,17 @@ annotated verification of new code (see `docs/prior-art.md`).
 
 | | |
 |---|---|
-| Go version modelled | go1.25.5: all of `math/bits`; `slices.Compact/Index/Contains/Insert/Delete/Replace/Concat/Repeat`, `sort.Search`, `strings`/`bytes` `Repeat`/`Join` guards; 12 families of `generic.rules` + 74 generated constant folds; all 96 instances of the ARM64 and of the AMD64 shift-lowering rules; 64-bit targets |
+| Go version modelled | go1.25.5: all of `math/bits`; `slices.Compact/Index/Contains/Insert/Delete/Replace/Concat/Repeat`, `sort.Search`, `strings`/`bytes` `Repeat`/`Join` guards; 12 families of `generic.rules` + 74 generated constant folds; all 96 instances of the ARM64 and of the AMD64 shift-lowering rules, the rotate lowering rules of both; 64-bit targets |
 | Lean | 4.35.0, no Mathlib, zero Lake dependencies |
-| Properties registered | 52 (`targets/properties.yaml`) |
-| Proved in model | 44 entries, 392 audited theorems (133 kernel-only, 259 `bv_decide`), incl. `Mul64` at 64 bits (kernel only, algebraic) |
+| Properties registered | 55 (`targets/properties.yaml`) |
+| Proved in model | 47 entries, 411 audited theorems (139 kernel-only, 272 `bv_decide`), incl. `Mul64` at 64 bits (kernel only, algebraic), `Rem64`/`Rem32`/`Div32` |
 | Checked exhaustively, not proved | `slices.Insert/Delete/Replace` with aliasing: 531,531 configurations vs spec, 16,128 replayed through real Go, 0 mismatches |
 | Inconclusive | `Div64` at 64 bits (SAT budget; proved at width 8) |
 | Go discrepancies reproduced | `strings.Join`/`bytes.Join` report "output length overflow" for an exact length `MaxInt-1` (conservative guard; reachable only with `unsafe`; negligible; `findings/JOIN-GUARD-CONSERVATIVE`, human review pending) |
 | Known issues reproduced | `Add64` with carry = 2 (golang/go#54255); Go 1.6 `Rsh8Ux64` folding rule (golang/go#15175) |
 | New Go bugs | none |
 | Model/spec errors caught by proofs | 4 model mismatches (Go vs Lean precedence), 2 specification errors |
-| Mutation test | 7 mutants (5 `math/bits`, 2 shift-lowering rules of the golang/go#79886 class, ARM64 and AMD64) refuted in Lean and reproduced in Go |
+| Mutation test | 8 mutants (5 `math/bits`, 3 lowering rules: ARM64/AMD64 shifts of the golang/go#79886 class, ARM64 rotate) refuted in Lean and reproduced in Go |
 
 ## Quick start
 

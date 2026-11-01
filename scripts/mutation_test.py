@@ -40,6 +40,26 @@ def lean_counterexample(path):
     return assign, out
 
 GO_TEMPLATES = {
+    "arm64_rotl8": '''
+//go:noinline
+func rotl8Real(x uint64, s uint64) uint8 {{ return bits.RotateLeft8(uint8(x), int(s)) }}
+
+func Test{Name}(t *testing.T) {{
+	var rx, ry uint64 = {rx}, {ry}
+	k := uint(ry & 7)
+	want := uint8(rx)<<k | uint8(rx)>>((8-k)&7) // oracle: rotation by the low 3 bits
+	if k == 0 {{
+		want = uint8(rx)
+	}}
+	mutant := uint8(rx<<(ry&7) | rx>>((-ry)&7)) // SRL on the raw register
+	if mutant == want {{
+		t.Fatalf("counterexample does not distinguish the mutant: rx=%#x ry=%#x", rx, ry)
+	}}
+	if got := rotl8Real(rx, ry); got != want {{
+		t.Fatalf("REAL compiled RotateLeft8 differs from Go semantics: rx=%#x ry=%#x got %#x want %#x -- investigate!", rx, ry, got, want)
+	}}
+}}
+''',
     "amd64_rsh8x8": '''
 //go:noinline
 func rsh8x8Real(x uint64, s uint64) int8 {{ return int8(x) >> uint8(s) }}

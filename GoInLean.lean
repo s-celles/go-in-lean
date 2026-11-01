@@ -17,3 +17,5 @@ import GoInLean.Compiler.ARM64Shifts
 import GoInLean.Stdlib.Overflow
 import GoInLean.Compiler.AMD64
 import GoInLean.Compiler.AMD64Shifts
+import GoInLean.Properties.DivRem
+import GoInLean.Compiler.Rotates

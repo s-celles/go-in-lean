@@ -166,6 +166,12 @@ library when the session's budget ran out.
   an 8-bit amount is refuted (`ry = 2^63`). The generated execution tests pass
   as amd64 binaries (run under Rosetta 2), whose assembly matches the
   modelled sequence.
+* **Rotate lowering** (ARM64 and AMD64, incl. `ROL x (NEG y) => ROR x y`
+  and constant-count folding) proved with the same register model; a mutant
+  omitting `ZeroExt8to64` before `SRL` is refuted.
+* **Reviewer gaps closed**: `Rem64` never panics on quotient overflow (every
+  half-width), `Rem` exact at width 8 even when `hi ≥ y`, `Rem32` exact,
+  `Div32` returns the exact quotient/remainder (Nat-level proofs).
 * **Length-overflow guards**: `Repeat` (strings, bytes, slices) and
   `slices.Concat` guards are proved *exact*; `Join`'s separator guard is
   proved *sound* but shown *not exact*, and the inexactness is reproduced in

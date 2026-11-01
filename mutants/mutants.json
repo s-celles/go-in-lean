@@ -12,5 +12,7 @@
   {"lean": "ARM64Lsh64x32NoZeroExt.lean", "go_mutant": "ARM64Lsh64x32NoZeroExt", "go_real": "lsh64x32Real",
    "signature": "arm64_lsh64x32", "theorem": "Lsh64x32_noZeroExt"},
   {"lean": "AMD64Rsh8x8WideCompare.lean", "go_mutant": "AMD64Rsh8x8WideCompare", "go_real": "rsh8x8Real",
-   "signature": "amd64_rsh8x8", "theorem": "Rsh8x8_wideCompare"}
+   "signature": "amd64_rsh8x8", "theorem": "Rsh8x8_wideCompare"},
+  {"lean": "ARM64RotateLeft8NoZeroExt.lean", "go_mutant": "ARM64RotateLeft8NoZeroExt", "go_real": "rotl8Real",
+   "signature": "arm64_rotl8", "theorem": "RotateLeft8_noZeroExt"}
 ]

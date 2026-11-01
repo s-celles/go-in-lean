@@ -922,3 +922,54 @@ properties:
     go_tests: [TestShiftLoweringGarbageHighBits]
     history:
       - {date: 2026-11-01, status: proved_in_model, note: "mutant with a 64-bit compare on an 8-bit amount is refuted (ry = 2^63)"}
+  - id: BITS-REM
+    package: math/bits
+    function: Rem64, Rem32
+    go_source: "src/math/bits/bits.go:573-599"
+    doc: "Rem64 returns the remainder of (hi, lo) divided by y. Rem64 panics for y == 0 (division by zero) but, unlike Div64, it doesn't panic on a quotient overflow."
+    preconditions: none
+    postcondition: "y = 0 → divideError; y ≠ 0 → no panic (every half-width); width 8: result = (hi·2^8+lo) % y even when hi ≥ y; Rem32 = 64-bit remainder"
+    lean_statement: "see theorems"
+    lean_theorem: [Go.Bits.Properties.DivRem.remGeneric_divide, Go.Bits.Properties.DivRem.remGeneric_no_panic, Go.Bits.Properties.DivRem.remGeneric_4_spec, Go.Bits.Properties.DivRem.Rem32_spec]
+    oracle: "Nat modular arithmetic; Go math/big (TestAddSubMulDivBoundary checks Rem64)"
+    ambiguity_risk: low
+    complexity: medium
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestAddSubMulDivBoundary]
+    history:
+      - {date: 2026-11-01, status: proved_in_model, note: "gap reported by the independent reviewer (review/bits-model-review.md)"}
+  - id: BITS-DIV32
+    package: math/bits
+    function: Div32
+    go_source: "src/math/bits/bits.go:505-511"
+    doc: "Div32 returns the quotient and remainder of (hi, lo) divided by y: quo = (hi, lo)/y, rem = (hi, lo)%y … Div32 panics for y == 0 (division by zero) or y <= hi (quotient overflow)."
+    preconditions: "y ≠ 0, hi < y"
+    postcondition: "q = (hi·2^32+lo)/y and r = (hi·2^32+lo)%y exactly (the uint32 truncations lose nothing)"
+    lean_statement: "∃ q r, Div32 hi lo y = .ok (q, r) ∧ q.toNat = z / y ∧ r.toNat = z % y"
+    lean_theorem: [Go.Bits.Properties.DivRem.Div32_spec]
+    oracle: "Nat division"
+    ambiguity_risk: low
+    complexity: medium
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestAddSubMulDivBoundary]
+    history:
+      - {date: 2026-11-01, status: proved_in_model, note: "gap reported by the independent reviewer"}
+  - id: RULE-ROTATE-LOWERING
+    package: cmd/compile/internal/ssa (ARM64.rules, AMD64.rules)
+    function: "RotateLeft8/16/32/64 lowering on ARM64 and AMD64; ROL/ROR ↔ NEG rewrites; constant-count folding"
+    go_source: "ARM64.rules:69-74,1025-1026; AMD64.rules:566-569,824-844"
+    doc: "RotateLeftX instructions rotate the X bits of arg[0] to the left by the low lg_2(X) bits of arg[1], interpreted as an unsigned value."
+    preconditions: none
+    postcondition: "for every 64-bit content of the registers, the low X bits of the lowered computation equal the rotation"
+    lean_statement: "see GoInLean/Compiler/Rotates.lean"
+    lean_theorem: [Go.Compiler.Rotates.rotl_eq_rotateLeft_8, Go.Compiler.Rotates.arm64_rotl8, Go.Compiler.Rotates.arm64_rotl16, Go.Compiler.Rotates.arm64_rotl32, Go.Compiler.Rotates.arm64_rotl64, Go.Compiler.Rotates.arm64_rotl8_const, Go.Compiler.Rotates.arm64_rotl16_const, Go.Compiler.Rotates.arm64_ror_const, Go.Compiler.Rotates.amd64_rotl, Go.Compiler.Rotates.amd64_rol_neg, Go.Compiler.Rotates.amd64_ror_neg, Go.Compiler.Rotates.amd64_rot_const]
+    oracle: "shift-based rotation, tied to BitVec.rotateLeft at 8 bits by kernel decide; Go TestRotateLeft (math/bits, compiled intrinsics)"
+    ambiguity_risk: "medium: hand-translated (not generated) rules; x86 rotate count = (c & 31) mod size for 8/16-bit operands"
+    complexity: medium
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestRotateLeft]
+    history:
+      - {date: 2026-11-01, status: proved_in_model, note: "mutant without ZeroExt8to64 before SRL refuted"}
