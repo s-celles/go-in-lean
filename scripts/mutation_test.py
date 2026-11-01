@@ -40,6 +40,29 @@ def lean_counterexample(path):
     return assign, out
 
 GO_TEMPLATES = {
+    "amd64_rsh8x8": '''
+//go:noinline
+func rsh8x8Real(x uint64, s uint64) int8 {{ return int8(x) >> uint8(s) }}
+
+func Test{Name}(t *testing.T) {{
+	var rx, ry uint64 = {rx}, {ry}
+	want := int8(rx)
+	for i := 0; i < int(uint8(ry)) && i < 8; i++ {{ // oracle: shift by the constant 1
+		want >>= 1
+	}}
+	cnt := uint32(ry) // mutant: 64-bit compare of the raw register
+	if !(ry < 8) {{
+		cnt |= 0xffffffff
+	}}
+	mutant := int8(rx) >> (cnt & 31)
+	if mutant == want {{
+		t.Fatalf("counterexample does not distinguish the mutant: rx=%#x ry=%#x", rx, ry)
+	}}
+	if got := rsh8x8Real(rx, ry); got != want {{
+		t.Fatalf("REAL compiled Rsh8x8 differs from Go semantics: rx=%#x ry=%#x got %d want %d -- investigate!", rx, ry, got, want)
+	}}
+}}
+''',
     # Compiler-rule mutant: we cannot run a mutated compiler, so the reproducer runs the REAL
     # compiled shift on the counterexample's inputs and requires Go semantics (the real lowering
     # must not exhibit the mutant's defect), and checks that the mutant's formula, evaluated in Go,

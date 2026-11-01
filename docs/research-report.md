@@ -159,6 +159,13 @@ library when the session's budget ran out.
   `go/tests/shifts_gen_test.go` runs all 48 shift kinds with dirty high
   register bits on darwin/arm64 (assembly inspected: `LSL` uses the raw
   register, `MOVWU` precedes `CMP $64`): no discrepancy.
+* **AMD64 shift lowering** (`AMD64.rules:194-224`): the same 96 rule
+  instances, with an x86 model where 8/16/32-bit shifts mask the count to
+  5 bits, 32-bit operations zero the upper half, and saturation uses
+  `SBB…carrymask`/`NOT`/`OR`. All proved; a mutant using a 64-bit compare on
+  an 8-bit amount is refuted (`ry = 2^63`). The generated execution tests pass
+  as amd64 binaries (run under Rosetta 2), whose assembly matches the
+  modelled sequence.
 * **Length-overflow guards**: `Repeat` (strings, bytes, slices) and
   `slices.Concat` guards are proved *exact*; `Join`'s separator guard is
   proved *sound* but shown *not exact*, and the inexactness is reproduced in

@@ -10,5 +10,7 @@
   {"lean": "TrailingZeros64WrongShift.lean", "go_mutant": "TrailingZeros64WrongShift", "go_real": "bits.TrailingZeros64",
    "signature": "u64_to_int", "theorem": "TrailingZeros64WrongShift_spec"},
   {"lean": "ARM64Lsh64x32NoZeroExt.lean", "go_mutant": "ARM64Lsh64x32NoZeroExt", "go_real": "lsh64x32Real",
-   "signature": "arm64_lsh64x32", "theorem": "Lsh64x32_noZeroExt"}
+   "signature": "arm64_lsh64x32", "theorem": "Lsh64x32_noZeroExt"},
+  {"lean": "AMD64Rsh8x8WideCompare.lean", "go_mutant": "AMD64Rsh8x8WideCompare", "go_real": "rsh8x8Real",
+   "signature": "amd64_rsh8x8", "theorem": "Rsh8x8_wideCompare"}
 ]

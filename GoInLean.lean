@@ -15,3 +15,5 @@ import GoInLean.Properties.Mul64
 import GoInLean.Compiler.ARM64
 import GoInLean.Compiler.ARM64Shifts
 import GoInLean.Stdlib.Overflow
+import GoInLean.Compiler.AMD64
+import GoInLean.Compiler.AMD64Shifts
