@@ -97,7 +97,7 @@ go-in-lean/
 |---|---|---|
 | Research agents (×2) | prior-art, Go testing infrastructure, known issues | fresh context; reports treated as data |
 | Modelling / proof agent | this session: models, specs, proofs | its first models were wrong (precedence); the proofs rejected them |
-| Adversarial reviewer | a fresh agent (no access to this session's reasoning) was told to *falsify* the `math/bits` model: it re-parsed every function, built a pure-Go copy of `bits.go` (no intrinsics), ran 9,051,590 differential vectors against the Lean model and probed the four deliberate deviations; report in `review/bits-model-review.md` (no mismatch; specification gaps found and since addressed: `Rem64` no-overflow, `Div32` quotient fit) | independent context; mechanical evidence |
+| Adversarial reviewer | a fresh agent (no access to this session's reasoning) was told to *falsify* the `math/bits` model: it re-parsed every function, built a pure-Go copy of `bits.go` (no intrinsics), ran 9,051,590 differential vectors against the Lean model and probed the four deliberate deviations; report in `review/bits-model-review.md` (no mismatch; specification gaps found: `Rem64` no-overflow and `Div32` quotient fit, recorded as next steps) | independent context; mechanical evidence |
 | Go validation | `go/tests`, vectors, `mutation_test.py`; executed with the pinned toolchain | mechanical |
 | Integration | `scripts/check.sh`, CI, manifest validator, audit | mechanical |
 

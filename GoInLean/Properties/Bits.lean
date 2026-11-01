@@ -307,88 +307,14 @@ def mulhiSpec (h : Nat) (x y : BitVec (2*h)) : BitVec (2*h) :=
 theorem mulhiGeneric_4 (x y : BitVec 8) : mulhiGeneric 4 x y = mulhiSpec 4 x y := by
   dsimp only [mulhiGeneric, mulhiSpec]; bv_decide
 -- The SAT encoding of general multiplication beyond 8×8 bits exceeds the
--- solver budget (h = 8 fails at 400 s), so the 64-bit statement is proved
--- algebraically over `Nat` instead (kernel only, no `bv_decide`).
+-- solver budget (h = 8 fails at 400 s); see targets/properties.yaml (BITS-MUL-64,
+-- status `inconclusive`). `Mul64` is definitionally `mulhiGeneric 32`.
 theorem Mul64_lo (x y : uint64) : (Mul64 x y).2 = x * y := rfl
 theorem Mul64_hi_def (x y : uint64) : (Mul64 x y).1 = mulhiGeneric 32 x y := rfl
 
-/-- The schoolbook identity over `Nat` with base 2^32: `x = x1·2^32 + x0`, `y = y1·2^32 + y0`. -/
-theorem schoolbook_hi32 (x0 x1 y0 y1 : Nat) (hx0 : x0 < 2^32) (hy0 : y0 < 2^32) :
-    x1 * y1 + (x1 * y0 + (x0 * y0) / 2^32) / 2^32 + (((x1 * y0 + (x0 * y0) / 2^32) % 2^32) + x0 * y1) / 2^32
-      = ((x1 * 2^32 + x0) * (y1 * 2^32 + y0)) / 2^64 := by
-  have key : (x1 * 2^32 + x0) * (y1 * 2^32 + y0) = (x1 * y1) * 2^64 + (x1 * y0 + x0 * y1) * 2^32 + x0 * y0 := by
-    grind
-  rw [key]
-  have hd' : x0 * y0 < 2^64 := by
-    calc x0 * y0 < 2^32 * 2^32 := Nat.mul_lt_mul'' hx0 hy0
-      _ = 2^64 := by decide
-  generalize x1 * y1 = a at *
-  generalize x1 * y0 = b at *
-  generalize x0 * y1 = c at *
-  generalize x0 * y0 = d at *
-  omega
-
-theorem lo32_toNat (x : BitVec 64) : (x &&& 0xFFFFFFFF).toNat = x.toNat % 2^32 := by
-  have h : x &&& 0xFFFFFFFF = x % (0x100000000 : BitVec 64) := by bv_decide
-  rw [h, BitVec.toNat_umod]; rfl
-theorem hi32_toNat (x : BitVec 64) : (x >>> 32).toNat = x.toNat / 2^32 := by
-  rw [BitVec.toNat_ushiftRight]; rfl
-
-/-- BITS-MUL-64 (high half): the 64-bit schoolbook algorithm computes `⌊x·y / 2^64⌋`.
-All intermediate 64-bit operations are shown not to overflow via explicit product bounds. -/
-theorem mulhiGeneric_32_toNat (x y : BitVec 64) :
-    (mulhiGeneric 32 x y).toNat = (x.toNat * y.toNat) / 2^64 := by
-  dsimp only [mulhiGeneric]
-  have hmask : ((1 : BitVec (2*32)) <<< 32) - 1 = (0xFFFFFFFF : BitVec 64) := by decide
-  rw [hmask]
-  have hx0 := lo32_toNat x; have hy0 := lo32_toNat y
-  have hx1 := hi32_toNat x; have hy1 := hi32_toNat y
-  have bx0 : x.toNat % 2^32 < 2^32 := Nat.mod_lt _ (by decide)
-  have by0 : y.toNat % 2^32 < 2^32 := Nat.mod_lt _ (by decide)
-  have bx1 : x.toNat / 2^32 < 2^32 := by have := x.isLt; omega
-  have by1 : y.toNat / 2^32 < 2^32 := by have := y.isLt; omega
-  simp only [BitVec.toNat_add, BitVec.toNat_mul, BitVec.toNat_ushiftRight, hx0, hy0, hx1, hy1, lo32_toNat]
-  have p00 : (x.toNat % 2^32) * (y.toNat % 2^32) < 2^64 := by
-    calc _ < 2^32 * 2^32 := Nat.mul_lt_mul'' bx0 by0
-      _ = 2^64 := by decide
-  have p10 : (x.toNat / 2^32) * (y.toNat % 2^32) < 2^64 := by
-    calc _ < 2^32 * 2^32 := Nat.mul_lt_mul'' bx1 by0
-      _ = 2^64 := by decide
-  have p01 : (x.toNat % 2^32) * (y.toNat / 2^32) < 2^64 := by
-    calc _ < 2^32 * 2^32 := Nat.mul_lt_mul'' bx0 by1
-      _ = 2^64 := by decide
-  have p11 : (x.toNat / 2^32) * (y.toNat / 2^32) < 2^64 := by
-    calc _ < 2^32 * 2^32 := Nat.mul_lt_mul'' bx1 by1
-      _ = 2^64 := by decide
-  have hsb := schoolbook_hi32 (x.toNat % 2^32) (x.toNat / 2^32) (y.toNat % 2^32) (y.toNat / 2^32) bx0 by0
-  have hx : x.toNat / 2^32 * 2^32 + x.toNat % 2^32 = x.toNat := Nat.div_add_mod' _ _
-  have hy : y.toNat / 2^32 * 2^32 + y.toNat % 2^32 = y.toNat := Nat.div_add_mod' _ _
-  rw [hx, hy] at hsb
-  have hxy : x.toNat * y.toNat < 2^128 := by
-    calc _ < 2^64 * 2^64 := Nat.mul_lt_mul'' x.isLt y.isLt
-      _ = 2^128 := by decide
-  generalize (x.toNat % 2^32) * (y.toNat % 2^32) = d at *
-  generalize (x.toNat / 2^32) * (y.toNat % 2^32) = b at *
-  generalize (x.toNat % 2^32) * (y.toNat / 2^32) = c at *
-  generalize (x.toNat / 2^32) * (y.toNat / 2^32) = a at *
-  generalize x.toNat * y.toNat = P at *
-  omega
-
-/-- BITS-MUL-64: `(hi, lo) = x * y` as a 128-bit product (doc of `Mul64`). Kernel-only. -/
-theorem Mul64_spec (x y : uint64) :
-    (Mul64 x y).1 ++ (Mul64 x y).2 = x.zeroExtend 128 * y.zeroExtend 128 := by
-  apply BitVec.eq_of_toNat_eq
-  rw [BitVec.toNat_append, Mul64_hi_def, Mul64_lo, mulhiGeneric_32_toNat, BitVec.toNat_mul,
-      BitVec.toNat_mul, BitVec.toNat_zeroExtend, BitVec.toNat_zeroExtend]
-  have hx := x.isLt; have hy := y.isLt
-  have hxy : x.toNat * y.toNat < 2^128 := by
-    calc _ < 2^64 * 2^64 := Nat.mul_lt_mul'' hx hy
-      _ = 2^128 := by decide
-  rw [Nat.mod_eq_of_lt (by omega : x.toNat < 2^128), Nat.mod_eq_of_lt (by omega : y.toNat < 2^128),
-      Nat.mod_eq_of_lt hxy]
-  generalize x.toNat * y.toNat = P at *
-  omega
-
+-- A Nat-level algebraic proof of the 64-bit high half (schoolbook identity by `grind`,
+-- then `omega` over product atoms) type-checks in isolation but not yet inside this file
+-- (heartbeat budget / lemma names); it is kept out until it builds in CI. See the report.
 
 -- ---------------------------------------------------------------- Div / Rem
 
@@ -455,66 +381,6 @@ theorem divGeneric_4_spec (hi lo y : BitVec 8) (hy : y ≠ 0) (hhi : hi < y) :
     constructor
     · bv_decide (config := {timeout := 900})
     · bv_decide (config := {timeout := 900})
-
-/-- BITS-REM-NOOVERFLOW: doc of `Rem64`: "Rem64 panics for y == 0 (division by zero) but,
-unlike Div64, it doesn't panic on a quotient overflow." For every half-width, `remGeneric`
-with `y ≠ 0` never yields `overflowError` (it pre-reduces `hi % y < y`). -/
-theorem remGeneric_no_overflow (h : Nat) (hi lo y : BitVec (2*h)) (hy : y ≠ 0) :
-    remGeneric h hi lo y ≠ .error .overflowError := by
-  unfold remGeneric
-  have hy' : ¬ (y = 0#(2*h)) := hy
-  simp only [hy', ↓reduceIte]
-  have hlt : hi % y < y := by
-    rw [BitVec.lt_def, BitVec.toNat_umod]
-    apply Nat.mod_lt
-    have : y.toNat ≠ 0 := fun h0 => hy (BitVec.eq_of_toNat_eq (by simpa using h0))
-    omega
-  obtain ⟨r, hr⟩ := divGeneric_ok h (hi % y) lo y hy hlt
-  rw [hr]; simp
-/-- BITS-REM-ZERO: `Rem64` panics with `divideError` for `y == 0`, for every half-width. -/
-theorem remGeneric_divide (h : Nat) (hi lo y : BitVec (2*h)) (hy : y = 0) :
-    remGeneric h hi lo y = .error .divideError := by
-  simp [remGeneric, hy]
-/-- BITS-REM-8: at width 8, `Rem` is the remainder of the 16-bit dividend. -/
-theorem remGeneric_4_spec (hi lo y : BitVec 8) (hy : y ≠ 0) :
-    remGeneric 4 hi lo y = .ok (divSpec 4 hi lo y).2 := by
-  unfold remGeneric
-  have hy' : ¬ (y = 0#8) := hy
-  simp only [hy', ↓reduceIte]
-  have hlt : hi % y < y := by
-    rw [BitVec.lt_def, BitVec.toNat_umod]
-    apply Nat.mod_lt
-    have : y.toNat ≠ 0 := fun h0 => hy (BitVec.eq_of_toNat_eq (by simpa using h0))
-    omega
-  rw [divGeneric_4_spec (hi % y) lo y hy hlt]
-  simp only [Except.map, Except.ok.injEq]
-  dsimp only [divSpec]
-  bv_decide
-
-/-- BITS-DIV32-FITS: in `Div32`, when `hi < y` the 64-bit quotient fits in 32 bits, so the
-`uint32(...)` truncation is lossless (the content of the doc promise "quo = (hi, lo)/y"). -/
-theorem Div32_quotient_fits (hi lo y : uint32) (hhi : hi < y) :
-    ((Go.convU 64 hi <<< 32 ||| Go.convU 64 lo) / Go.convU 64 y).toNat < 2^32 := by
-  rw [BitVec.toNat_udiv]
-  have h1 : (Go.convU 64 hi <<< 32 ||| Go.convU 64 lo).toNat < (hi.toNat + 1) * 2^32 := by
-    have : (Go.convU 64 hi <<< 32 ||| Go.convU 64 lo) < (hi.zeroExtend 64 + 1) <<< 32 := by
-      unfold Go.convU; bv_decide
-    have := BitVec.lt_def.mp this
-    rw [BitVec.toNat_shiftLeft, BitVec.toNat_add, BitVec.toNat_zeroExtend] at this
-    have hhi' := hi.isLt
-    rw [Nat.mod_eq_of_lt (by omega : hi.toNat % 2^64 + (1#64).toNat < 2^64)] at this
-    simp only [BitVec.toNat_ofNat, Nat.reducePow] at this
-    have : (hi.toNat % 18446744073709551616 + 1) <<< 32 % 18446744073709551616 = (hi.toNat + 1) * 2^32 := by
-      rw [Nat.shiftLeft_eq, Nat.mod_eq_of_lt (by omega)]; omega
-    omega
-  have hy' : (Go.convU 64 y).toNat = y.toNat := by unfold Go.convU; simp
-  rw [hy']
-  have hlt := BitVec.lt_def.mp hhi
-  have hypos : 0 < y.toNat := by omega
-  rw [Nat.div_lt_iff_lt_mul hypos]
-  calc _ < (hi.toNat + 1) * 2^32 := h1
-    _ ≤ y.toNat * 2^32 := Nat.mul_le_mul_right _ (by omega)
-    _ = 2^32 * y.toNat := Nat.mul_comm _ _
 
 -- ---------------------------------------------------------------- Negative control
 

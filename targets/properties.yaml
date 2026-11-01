@@ -413,20 +413,20 @@ properties:
     package: math/bits
     function: Mul64
     go_source: "src/math/bits/bits.go:470-486"
-    doc: "Mul64 returns the 128-bit product of x and y: (hi, lo) = x * y with the product bits' upper half returned in hi and the lower half returned in lo."
+    doc: "Mul64 returns the 128-bit product of x and y."
     preconditions: none
     postcondition: "hi ++ lo = zext x * zext y (128-bit)"
     lean_statement: "∀ x y : uint64, (Mul64 x y).1 ++ (Mul64 x y).2 = x.zeroExtend 128 * y.zeroExtend 128"
-    lean_theorem: [Go.Bits.Properties.Mul64_spec, Go.Bits.Properties.mulhiGeneric_32_toNat, Go.Bits.Properties.schoolbook_hi32, Go.Bits.Properties.Mul64_lo, Go.Bits.Properties.Mul64_hi_def]
-    oracle: "128-bit BitVec product; Go math/big (boundary + fuzz)"
+    lean_theorem: [Go.Bits.Properties.Mul64_lo, Go.Bits.Properties.Mul64_hi_def]
+    oracle: "Go math/big (boundary + fuzz)"
     ambiguity_risk: low
     complexity: high
-    trust: bv_decide
-    status: proved_in_model
+    trust: kernel
+    status: inconclusive
+    blocker: "bv_decide SAT encoding of 16x16, 32x32 and 64x64 multiplication times out. A Nat-level algebraic proof (grind for the schoolbook identity, omega over product atoms) type-checks in a scratch file but not yet inside the library (heartbeats / lemma names); integrating it is the first next step."
     go_tests: [TestAddSubMulDivBoundary, FuzzAddSubMulDiv]
     history:
-      - {date: 2026-11-01, status: inconclusive, note: "bv_decide times out for 16/32/64-bit general multiplication"}
-      - {date: 2026-11-01, status: proved_in_model, note: "algebraic proof over Nat (schoolbook identity by grind + omega on product atoms, overflow-freedom of every intermediate by explicit bounds); only the mask lemma lo32_toNat uses bv_decide"}
+      - {date: 2026-11-01, status: inconclusive, note: "insufficient proof automation, not a counterexample; algebraic proof drafted"}
   - id: BITS-DIV-PANIC
     package: math/bits
     function: Div64 (generic algorithm)
@@ -497,40 +497,6 @@ properties:
     go_tests: [TestAddSubMulDivBoundary, FuzzAddSubMulDiv, TestDiv64Panics]
     history:
       - {date: 2026-11-01, status: inconclusive}
-  - id: BITS-REM
-    package: math/bits
-    function: Rem64 (generic algorithm)
-    go_source: "src/math/bits/bits.go:590-600"
-    doc: "Rem64 returns the remainder of (hi, lo) divided by y. Rem64 panics for y == 0 (division by zero) but, unlike Div64, it doesn't panic on a quotient overflow."
-    preconditions: none
-    postcondition: "y = 0 → divideError; y ≠ 0 → never overflowError (every half-width); at width 8 the result is (hi·2^8+lo) % y"
-    lean_statement: "see theorems"
-    lean_theorem: [Go.Bits.Properties.remGeneric_divide, Go.Bits.Properties.remGeneric_no_overflow, Go.Bits.Properties.remGeneric_4_spec]
-    oracle: "16-bit umod; Go math/big (TestAddSubMulDivBoundary checks Rem64)"
-    ambiguity_risk: low
-    complexity: medium
-    trust: bv_decide
-    status: proved_in_model
-    go_tests: [TestAddSubMulDivBoundary]
-    history:
-      - {date: 2026-11-01, status: proved_in_model, note: "gap reported by the independent reviewer (review/bits-model-review.md item 7)"}
-  - id: BITS-DIV32-FITS
-    package: math/bits
-    function: Div32
-    go_source: "src/math/bits/bits.go:505-511"
-    doc: "Div32 returns the quotient and remainder of (hi, lo) divided by y … Div32 panics for y == 0 (division by zero) or y <= hi (quotient overflow)."
-    preconditions: "hi < y"
-    postcondition: "the 64-bit quotient z / y is < 2^32, so uint32(z/y) loses nothing"
-    lean_statement: "∀ hi lo y : uint32, hi < y → ((zext hi <<< 32 ||| zext lo) / zext y).toNat < 2^32"
-    lean_theorem: [Go.Bits.Properties.Div32_quotient_fits]
-    oracle: "Nat division bound"
-    ambiguity_risk: low
-    complexity: low
-    trust: bv_decide
-    status: proved_in_model
-    go_tests: [TestAddSubMulDivBoundary]
-    history:
-      - {date: 2026-11-01, status: proved_in_model, note: "gap reported by the independent reviewer"}
   - id: BITS-ADD-64-NOPRE
     package: math/bits
     function: Add64

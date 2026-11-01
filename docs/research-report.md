@@ -136,13 +136,12 @@ measured unobservable (instrumented Go copy: the correction loop never runs
 more than twice over 40M triples), and 9,051,590 differential vectors
 between a pure-Go copy of `bits.go` (compiled without intrinsics) and the
 Lean model agreed, as did panic kinds and order. The reviewer's
-specification findings were acted on in this iteration: `Rem64` never
-panics on quotient overflow (`remGeneric_no_overflow`, every half-width),
-`Rem` equals the remainder at width 8 (`remGeneric_4_spec`), and the
-`uint32` truncation in `Div32` is lossless when `hi < y`
-(`Div32_quotient_fits`). Remaining gaps it listed: no `_neg` rotate theorem
-at widths 8/16/32; the "execution time does not depend on the inputs" doc
-clauses are outside the model.
+specification findings (no theorems for `Rem64`'s "never panics on
+quotient overflow", for `Div32`/`Rem32`, no `_neg` rotate theorem at widths
+8/16/32; the "execution time does not depend on the inputs" clauses are
+outside the model) are recorded as the first items of future work; drafts
+of the `Rem`/`Div32` theorems exist but did not yet build inside the
+library when the session's budget ran out.
 
 ## 4. Success criteria check
 
