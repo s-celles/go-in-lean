@@ -8,5 +8,7 @@
   {"lean": "Len64NoHighHalf.lean", "go_mutant": "Len64NoHighHalf", "go_real": "bits.Len64",
    "signature": "u64_to_int", "theorem": "Len64NoHighHalf_spec"},
   {"lean": "TrailingZeros64WrongShift.lean", "go_mutant": "TrailingZeros64WrongShift", "go_real": "bits.TrailingZeros64",
-   "signature": "u64_to_int", "theorem": "TrailingZeros64WrongShift_spec"}
+   "signature": "u64_to_int", "theorem": "TrailingZeros64WrongShift_spec"},
+  {"lean": "ARM64Lsh64x32NoZeroExt.lean", "go_mutant": "ARM64Lsh64x32NoZeroExt", "go_real": "lsh64x32Real",
+   "signature": "arm64_lsh64x32", "theorem": "Lsh64x32_noZeroExt"}
 ]

@@ -13,6 +13,7 @@ import (
 
 var _ = big.NewInt
 var _ = bits.Len
+var _ = reference.Add64WrongCarry
 
 func TestAdd64WrongCarry(t *testing.T) {
 	x, y, carry := uint64(1), uint64(18446744073709551615), uint64(0)

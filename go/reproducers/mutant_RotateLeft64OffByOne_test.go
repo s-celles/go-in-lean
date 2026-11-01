@@ -13,6 +13,7 @@ import (
 
 var _ = big.NewInt
 var _ = bits.Len
+var _ = reference.Add64WrongCarry
 
 func TestRotateLeft64OffByOne(t *testing.T) {
 	var ku uint64 = 18446744073709551615

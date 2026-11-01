@@ -26,6 +26,7 @@ echo "ok"
 step "2. generated files are up to date with the pinned Go sources"
 python3 -I scripts/gen_bits_tables.py --check
 python3 -I scripts/rules_to_lean.py --check
+python3 -I scripts/arm64_shift_rules.py --check
 
 step "3. lake build (all models, specs and proofs)"
 lake build

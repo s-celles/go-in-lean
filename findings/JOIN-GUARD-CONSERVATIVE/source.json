@@ -1,0 +1,9 @@
+{
+  "go_version": "go1.25.5",
+  "files": {"src/strings/strings.go": "ac1d74f15027b6c703ee13fd08f10b3ad337e61a79b874d403a10f3bee5bb4fb",
+            "src/bytes/bytes.go": "3bbe3599dfc7b4f4d090cf2644f34eaaac91e9f4da8fea4b4f2b46531c0478d5"},
+  "functions": ["strings.Join", "bytes.Join"],
+  "guard": "if len(sep) >= maxInt/(len(elems)-1) { panic(\"...: Join output length overflow\") }",
+  "lean_theorems": ["Go.Overflow.joinSep_not_exact", "Go.Overflow.joinSep_sound"],
+  "lean_toolchain": "leanprover/lean4:v4.35.0"
+}

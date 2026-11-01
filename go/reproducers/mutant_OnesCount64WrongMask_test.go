@@ -13,6 +13,7 @@ import (
 
 var _ = big.NewInt
 var _ = bits.Len
+var _ = reference.Add64WrongCarry
 
 func TestOnesCount64WrongMask(t *testing.T) {
 	x := uint64(1)

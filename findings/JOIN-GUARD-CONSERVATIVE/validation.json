@@ -1,0 +1,12 @@
+{
+  "counterexample": {"len_elems": 4, "len_sep": 3074457345618258602, "exact_output_length": 9223372036854775806, "max_int": 9223372036854775807},
+  "lean": {"refutation_of_exactness": "kernel decide, axioms [propext]", "soundness": "kernel, axioms [propext, Classical.choice, Quot.sound]"},
+  "go_runs": [
+    {"toolchain": "go1.25.5", "goos": "darwin", "goarch": "arm64", "function": "strings.Join", "observed": "panic: strings: Join output length overflow"},
+    {"toolchain": "go1.25.5", "goos": "darwin", "goarch": "arm64", "function": "bytes.Join", "observed": "panic: bytes: Join output length overflow"}
+  ],
+  "reachability": "requires unsafe.String/unsafe.Slice; alternative behaviour would be a fatal out-of-memory",
+  "known_issue_search": {"date": "2026-11-01", "result": "none found", "related": ["golang/go#25709", "golang/go#16237"]},
+  "classification_history": [{"date": "2026-11-01", "status": "counterexample_in_model"}, {"date": "2026-11-01", "status": "go_discrepancy_reproduced"}],
+  "human_review": "pending; recommendation: do not report"
+}

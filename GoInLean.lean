@@ -11,3 +11,7 @@ import GoInLean.Semantics.Slice
 import GoInLean.Stdlib.SlicesArr
 import GoInLean.Compiler.OpSem
 import GoInLean.Compiler.GeneratedFolds
+import GoInLean.Properties.Mul64
+import GoInLean.Compiler.ARM64
+import GoInLean.Compiler.ARM64Shifts
+import GoInLean.Stdlib.Overflow

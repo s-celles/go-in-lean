@@ -19,16 +19,17 @@ annotated verification of new code (see `docs/prior-art.md`).
 
 | | |
 |---|---|
-| Go version modelled | go1.25.5: all of `src/math/bits/bits.go`; `slices.Compact/Index/Contains`, `sort.Search` (list model); 12 families of `generic.rules`; 64-bit targets |
+| Go version modelled | go1.25.5: all of `math/bits`; `slices.Compact/Index/Contains/Insert/Delete/Replace/Concat/Repeat`, `sort.Search`, `strings`/`bytes` `Repeat`/`Join` guards; 12 families of `generic.rules` + 74 generated constant folds; all 96 instances of the ARM64 shift-lowering rules; 64-bit targets |
 | Lean | 4.35.0, no Mathlib, zero Lake dependencies |
-| Properties registered | 46 (`targets/properties.yaml`) |
-| Proved in model | 38 entries, 187 audited theorems (67 `bv_decide`, 120 kernel-only): every `math/bits` function at every width (incl. de Bruijn `TrailingZeros64`, SWAR `OnesCount64`, carry/borrow formulas, the Knuth `Div64` algorithm at width 8), `sort.Search`, `slices.Compact/Index/Contains`, strength-reduction / shift / bounds-check compiler rules, 74 generated constant-folding rules |
-| Checked exhaustively, not proved | `slices.Insert/Delete/Replace` with aliasing on the backing-array model: 531,531 configurations vs spec, 16,128 replayed through real Go, 0 mismatches |
-| Inconclusive | `Mul64` and `Div64` at 64 bits (SAT budget; proof automation, not counterexamples) |
-| Known issues reproduced | Add64 with carry = 2 (golang/go#54255, documented precondition); the Go 1.6 `Rsh8Ux64` constant-folding rule (golang/go#15175) refuted in the model |
-| New Go bugs | none found; `math/bits` behaved as documented on everything proved and tested |
-| Model/spec errors caught by proofs | 4 model mismatches (Go vs Lean operator precedence) and 2 specification errors (power-of-two side condition), all before any claim about Go |
-| Mutation test | 5 deliberately faulty models refuted in Lean and reproduced against Go mutants |
+| Properties registered | 51 (`targets/properties.yaml`) |
+| Proved in model | 43 entries, 296 audited theorems (133 kernel-only, 163 `bv_decide`), incl. `Mul64` at 64 bits (kernel only, algebraic) |
+| Checked exhaustively, not proved | `slices.Insert/Delete/Replace` with aliasing: 531,531 configurations vs spec, 16,128 replayed through real Go, 0 mismatches |
+| Inconclusive | `Div64` at 64 bits (SAT budget; proved at width 8) |
+| Go discrepancies reproduced | `strings.Join`/`bytes.Join` report "output length overflow" for an exact length `MaxInt-1` (conservative guard; reachable only with `unsafe`; negligible; `findings/JOIN-GUARD-CONSERVATIVE`, human review pending) |
+| Known issues reproduced | `Add64` with carry = 2 (golang/go#54255); Go 1.6 `Rsh8Ux64` folding rule (golang/go#15175) |
+| New Go bugs | none |
+| Model/spec errors caught by proofs | 4 model mismatches (Go vs Lean precedence), 2 specification errors |
+| Mutation test | 6 mutants (5 `math/bits`, 1 ARM64 lowering rule of the golang/go#79886 class) refuted in Lean and reproduced in Go |
 
 ## Quick start
 

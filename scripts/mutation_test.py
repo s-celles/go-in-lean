@@ -40,6 +40,32 @@ def lean_counterexample(path):
     return assign, out
 
 GO_TEMPLATES = {
+    # Compiler-rule mutant: we cannot run a mutated compiler, so the reproducer runs the REAL
+    # compiled shift on the counterexample's inputs and requires Go semantics (the real lowering
+    # must not exhibit the mutant's defect), and checks that the mutant's formula, evaluated in Go,
+    # does exhibit it.
+    "arm64_lsh64x32": '''
+//go:noinline
+func lsh64x32Real(x uint64, s uint64) uint64 {{ return x << uint32(s) }}
+
+func Test{Name}(t *testing.T) {{
+	var rx, ry uint64 = {rx}, {ry}
+	want := uint64(0)
+	if uint32(ry) < 64 {{
+		want = rx << (uint32(ry) & 63)
+	}}
+	mutant := uint64(0)
+	if ry < 64 {{ // the mutant compares the raw register
+		mutant = rx << (ry & 63)
+	}}
+	if mutant == want {{
+		t.Fatalf("counterexample does not distinguish the mutant: rx=%#x ry=%#x", rx, ry)
+	}}
+	if got := lsh64x32Real(rx, ry); got != want {{
+		t.Fatalf("REAL compiled Lsh64x32 differs from Go semantics: rx=%#x ry=%#x got %#x want %#x -- investigate!", rx, ry, got, want)
+	}}
+}}
+''',
     # Go mutant and real function share the signature; `oracle` is computed with math/big.
     "add64": '''
 func Test{Name}(t *testing.T) {{
@@ -103,6 +129,7 @@ import (
 
 var _ = big.NewInt
 var _ = bits.Len
+var _ = reference.Add64WrongCarry
 '''
 
 def main():
