@@ -1,0 +1,852 @@
+# Verification-target manifest (Phase 3 deliverable). Validated by
+# scripts/validate_manifest.py against `lake exe audit --json` and the Go tests.
+#
+# Field notes
+#   go_source      file:line range in go1.25.5 (commit c6069d2a943b71b0a90d91fc1ac93cb9c1634dcc)
+#   preconditions  from the Go doc comment; `none` means total
+#   lean_statement theorem statement in prose; lean_theorem = fully qualified Lean names
+#   oracle         independent reference used both in Lean (BitSpec) and in Go tests
+#   trust          audit tier: kernel | bv_decide (adds a per-theorem native-evaluation axiom)
+#   status         proved_in_model | counterexample_in_model | model_mismatch |
+#                  specification_ambiguity | go_discrepancy_reproduced | known_issue | inconclusive
+#   NOTE: proved_in_model is a statement about the Lean model. The model is
+#   validated against Go only by scripts/check.sh step 6 (differential vectors)
+#   and the go_tests listed; it is not a proof about the Go binary.
+properties:
+  - id: BITS-LEN-8
+    package: math/bits
+    function: Len8
+    go_source: "src/math/bits/bits.go:310-312"
+    doc: "Len8 returns the minimum number of bits required to represent x; the result is 0 for x == 0."
+    preconditions: none
+    postcondition: "Len8 x = 1 + index of highest set bit (0 if x = 0)"
+    lean_statement: "∀ x : uint8, Len8 x = BitSpec.len x"
+    lean_theorem: [Go.Bits.Properties.Len8_spec]
+    oracle: "BitSpec.len (bit fold); Go tests lenSpec"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestExhaustive8and16]
+    history:
+      - {date: 2026-11-01, status: proved_in_model, note: "table rewritten via len8tab_eq_fn (kernel decide), then bv_decide"}
+  - id: BITS-LEN-16
+    package: math/bits
+    function: Len16
+    go_source: "src/math/bits/bits.go:315-321"
+    doc: "Len16 returns the minimum number of bits required to represent x; the result is 0 for x == 0."
+    preconditions: none
+    postcondition: "Len16 x = BitSpec.len x"
+    lean_statement: "∀ x : uint16, Len16 x = BitSpec.len x"
+    lean_theorem: [Go.Bits.Properties.Len16_spec]
+    oracle: "BitSpec.len; Go lenSpec (exhaustive 16-bit)"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestExhaustive8and16]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-LEN-32
+    package: math/bits
+    function: Len32
+    go_source: "src/math/bits/bits.go:324-334"
+    doc: "Len32 returns the minimum number of bits required to represent x; the result is 0 for x == 0."
+    preconditions: none
+    postcondition: "Len32 x = BitSpec.len x"
+    lean_statement: "∀ x : uint32, Len32 x = BitSpec.len x"
+    lean_theorem: [Go.Bits.Properties.Len32_spec]
+    oracle: "BitSpec.len; Go lenSpec (boundary values)"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestBoundary64]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-LEN-64
+    package: math/bits
+    function: Len64
+    go_source: "src/math/bits/bits.go:337-351"
+    doc: "Len64 returns the minimum number of bits required to represent x; the result is 0 for x == 0."
+    preconditions: none
+    postcondition: "Len64 x = BitSpec.len x"
+    lean_statement: "∀ x : uint64, Len64 x = BitSpec.len x"
+    lean_theorem: [Go.Bits.Properties.Len64_spec]
+    oracle: "BitSpec.len; Go lenSpec (boundary values)"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestBoundary64]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-LZ-64
+    package: math/bits
+    function: LeadingZeros64
+    go_source: "src/math/bits/bits.go:37"
+    doc: "LeadingZeros64 returns the number of leading zero bits in x; the result is 64 for x == 0."
+    preconditions: none
+    postcondition: "LeadingZeros64 x = 64 - BitSpec.len x"
+    lean_statement: "∀ x : uint64, LeadingZeros64 x = BitSpec.clz x (and the 8/16/32 variants)"
+    lean_theorem: [Go.Bits.Properties.LeadingZeros64_spec, Go.Bits.Properties.LeadingZeros32_spec, Go.Bits.Properties.LeadingZeros16_spec, Go.Bits.Properties.LeadingZeros8_spec]
+    oracle: "BitSpec.clz"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestBoundary64]
+    history:
+      - {date: 2026-11-01, status: proved_in_model, note: "follows from BITS-LEN-*"}
+  - id: BITS-TZ-8
+    package: math/bits
+    function: TrailingZeros8
+    go_source: "src/math/bits/bits.go:67-69"
+    doc: "TrailingZeros8 returns the number of trailing zero bits in x; the result is 8 for x == 0."
+    preconditions: none
+    postcondition: "TrailingZeros8 x = index of lowest set bit (8 if x = 0)"
+    lean_statement: "∀ x : uint8, TrailingZeros8 x = BitSpec.ctz x"
+    lean_theorem: [Go.Bits.Properties.TrailingZeros8_spec]
+    oracle: "BitSpec.ctz; Go ctzSpec (exhaustive)"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestExhaustive8and16]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-TZ-16
+    package: math/bits
+    function: TrailingZeros16
+    go_source: "src/math/bits/bits.go:72-78"
+    doc: "TrailingZeros16 returns the number of trailing zero bits in x; the result is 16 for x == 0."
+    preconditions: none
+    postcondition: "de Bruijn multiplication index selects the right table entry"
+    lean_statement: "∀ x : uint16, TrailingZeros16 x = BitSpec.ctz x"
+    lean_theorem: [Go.Bits.Properties.TrailingZeros16_spec]
+    oracle: "BitSpec.ctz; Go ctzSpec (exhaustive 16-bit)"
+    ambiguity_risk: low
+    complexity: medium
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestExhaustive8and16]
+    history:
+      - {date: 2026-11-01, status: model_mismatch, note: "first model parsed (x&-x)*c>>27 with Lean precedence (c>>27 first); proof refuted the model, not Go"}
+      - {date: 2026-11-01, status: proved_in_model, note: "model fully parenthesised to Go's parse tree"}
+  - id: BITS-TZ-32
+    package: math/bits
+    function: TrailingZeros32
+    go_source: "src/math/bits/bits.go:81-87"
+    doc: "TrailingZeros32 returns the number of trailing zero bits in x; the result is 32 for x == 0."
+    preconditions: none
+    postcondition: "TrailingZeros32 x = BitSpec.ctz x"
+    lean_statement: "∀ x : uint32, TrailingZeros32 x = BitSpec.ctz x"
+    lean_theorem: [Go.Bits.Properties.TrailingZeros32_spec]
+    oracle: "BitSpec.ctz; Go ctzSpec"
+    ambiguity_risk: low
+    complexity: medium
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestBoundary64]
+    history:
+      - {date: 2026-11-01, status: model_mismatch, note: "operator precedence, see BITS-TZ-16"}
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-TZ-64
+    package: math/bits
+    function: TrailingZeros64
+    go_source: "src/math/bits/bits.go:90-108"
+    doc: "TrailingZeros64 returns the number of trailing zero bits in x; the result is 64 for x == 0."
+    preconditions: none
+    postcondition: "64-bit de Bruijn constant 0x03f79d71b4ca8b09 with its 64-entry table is correct"
+    lean_statement: "∀ x : uint64, TrailingZeros64 x = BitSpec.ctz x"
+    lean_theorem: [Go.Bits.Properties.TrailingZeros64_spec]
+    oracle: "BitSpec.ctz; Go ctzSpec (boundary values)"
+    ambiguity_risk: low
+    complexity: medium
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestBoundary64]
+    history:
+      - {date: 2026-11-01, status: model_mismatch, note: "operator precedence, see BITS-TZ-16"}
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-POP-8
+    package: math/bits
+    function: OnesCount8
+    go_source: "src/math/bits/bits.go:125-127"
+    doc: "OnesCount8 returns the number of one bits (population count) in x."
+    preconditions: none
+    postcondition: "OnesCount8 x = number of set bits"
+    lean_statement: "∀ x : uint8, OnesCount8 x = BitSpec.popcount x"
+    lean_theorem: [Go.Bits.Properties.OnesCount8_spec]
+    oracle: "BitSpec.popcount; Go popSpec (exhaustive)"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestExhaustive8and16]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-POP-16
+    package: math/bits
+    function: OnesCount16
+    go_source: "src/math/bits/bits.go:130-132"
+    doc: "OnesCount16 returns the number of one bits (population count) in x."
+    preconditions: none
+    postcondition: "OnesCount16 x = BitSpec.popcount x"
+    lean_statement: "∀ x : uint16, OnesCount16 x = BitSpec.popcount x"
+    lean_theorem: [Go.Bits.Properties.OnesCount16_spec]
+    oracle: "BitSpec.popcount; Go popSpec (exhaustive 16-bit)"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestExhaustive8and16]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-POP-32
+    package: math/bits
+    function: OnesCount32
+    go_source: "src/math/bits/bits.go:135-137"
+    doc: "OnesCount32 returns the number of one bits (population count) in x."
+    preconditions: none
+    postcondition: "OnesCount32 x = BitSpec.popcount x"
+    lean_statement: "∀ x : uint32, OnesCount32 x = BitSpec.popcount x"
+    lean_theorem: [Go.Bits.Properties.OnesCount32_spec]
+    oracle: "BitSpec.popcount; Go popSpec"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestBoundary64]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-POP-64
+    package: math/bits
+    function: OnesCount64
+    go_source: "src/math/bits/bits.go:140-166"
+    doc: "OnesCount64 returns the number of one bits (population count) in x. Implementation: parallel summing of adjacent bits (Hacker's Delight ch. 5), with masks elided where no carry can occur."
+    preconditions: none
+    postcondition: "the SWAR algorithm with elided masks equals the bit count for all 2^64 inputs"
+    lean_statement: "∀ x : uint64, OnesCount64 x = BitSpec.popcount x"
+    lean_theorem: [Go.Bits.Properties.OnesCount64_spec]
+    oracle: "BitSpec.popcount (64-term unrolled sum); Go popSpec"
+    ambiguity_risk: low
+    complexity: medium
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestBoundary64]
+    history:
+      - {date: 2026-11-01, status: model_mismatch, note: "operator precedence (x>>1&m + x&m) mis-parsed; refuted model at x = 2^64-1"}
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-ROTL-8-16-32
+    package: math/bits
+    function: RotateLeft8/16/32
+    go_source: "src/math/bits/bits.go:187-211"
+    doc: "RotateLeftN returns the value of x rotated left by (k mod N) bits. To rotate x right by k bits, call RotateLeftN(x, -k)."
+    preconditions: none
+    postcondition: "RotateLeftN x k = BitVec.rotateLeft x (k mod N)"
+    lean_statement: "∀ x k, RotateLeftN x k = x.rotateLeft (k.toNat % N) for N ∈ {8,16,32}"
+    lean_theorem: [Go.Bits.Properties.RotateLeft8_spec, Go.Bits.Properties.RotateLeft16_spec, Go.Bits.Properties.RotateLeft32_spec]
+    oracle: "core BitVec.rotateLeft; Go rotlSpec"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestRotateLeft]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-ROTL-64
+    package: math/bits
+    function: RotateLeft64
+    go_source: "src/math/bits/bits.go:217-221"
+    doc: "RotateLeft64 returns the value of x rotated left by (k mod 64) bits. To rotate x right by k bits, call RotateLeft64(x, -k)."
+    preconditions: none
+    postcondition: "RotateLeft64 x k = BitVec.rotateLeft x (k mod 64); RotateLeft64 x (-k) = rotateRight x (k mod 64)"
+    lean_statement: "∀ x k, RotateLeft64 x k = x.rotateLeft (k.toNat % 64) ∧ RotateLeft64 x (-k) = x.rotateRight (k.toNat % 64)"
+    lean_theorem: [Go.Bits.Properties.RotateLeft64_spec, Go.Bits.Properties.RotateLeft64_neg]
+    oracle: "core BitVec.rotateLeft/rotateRight; Go rotlSpec incl. negative k"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestRotateLeft]
+    history:
+      - {date: 2026-11-01, status: proved_in_model, note: "uint(k)&63 for negative k relies on two's-complement conversion (spec: conversions)"}
+  - id: BITS-REVB-16-32-64
+    package: math/bits
+    function: ReverseBytes16/32/64
+    go_source: "src/math/bits/bits.go:276-298"
+    doc: "ReverseBytesN returns the value of x with its bytes in reversed order."
+    preconditions: none
+    postcondition: "byte i of result = byte (N/8-1-i) of x"
+    lean_statement: "∀ x, ReverseBytesN x = concatenation of the bytes of x in reverse order"
+    lean_theorem: [Go.Bits.Properties.ReverseBytes16_spec, Go.Bits.Properties.ReverseBytes32_spec, Go.Bits.Properties.ReverseBytes64_spec]
+    oracle: "BitSpec.reverseBytesN (extractLsb' ++)"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestExhaustive8and16]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-REV-8-16-32-64
+    package: math/bits
+    function: Reverse8/16/32/64
+    go_source: "src/math/bits/bits.go:234-262"
+    doc: "ReverseN returns the value of x with its bits in reversed order."
+    preconditions: none
+    postcondition: "bit i of result = bit (N-1-i) of x"
+    lean_statement: "∀ x, ReverseN x = BitSpec.reverse x"
+    lean_theorem: [Go.Bits.Properties.Reverse8_spec, Go.Bits.Properties.Reverse16_spec, Go.Bits.Properties.Reverse32_spec, Go.Bits.Properties.Reverse64_spec]
+    oracle: "BitSpec.reverse; Go revSpec"
+    ambiguity_risk: low
+    complexity: medium
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestExhaustive8and16, TestBoundary64]
+    history:
+      - {date: 2026-11-01, status: model_mismatch, note: "operator precedence: x&(m0&m)<<1 is (x&m)<<1 in Go, x&(m<<1) in Lean"}
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-ADD-64
+    package: math/bits
+    function: Add64
+    go_source: "src/math/bits/bits.go:386-394"
+    doc: "Add64 returns the sum with carry of x, y and carry: sum = x + y + carry. The carry input must be 0 or 1; otherwise the behavior is undefined. The carryOut output is guaranteed to be 0 or 1."
+    preconditions: "carry ∈ {0,1}"
+    postcondition: "carryOut·2^64 + sum = x + y + carry (as a 128-bit integer); carryOut ≤ 1 unconditionally"
+    lean_statement: "∀ x y c, c = 0 ∨ c = 1 → (carryOut <<< 64 ||| sum : BitVec 128) = zext x + zext y + zext c"
+    lean_theorem: [Go.Bits.Properties.Add64_spec, Go.Bits.Properties.Add64_carryOut_le_one]
+    oracle: "128-bit BitVec arithmetic; Go math/big"
+    ambiguity_risk: "medium: without the precondition the formula is wrong for carry ≥ 2 (golang/go#54255, closed not-a-bug)"
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestAddSubMulDivBoundary, FuzzAddSubMulDiv]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-ADD-32
+    package: math/bits
+    function: Add32
+    go_source: "src/math/bits/bits.go:374-379"
+    doc: "Add32 returns the sum with carry of x, y and carry: sum = x + y + carry. The carry input must be 0 or 1."
+    preconditions: "carry ∈ {0,1}"
+    postcondition: "carryOut·2^32 + sum = x + y + carry"
+    lean_statement: "∀ x y c : uint32, c = 0 ∨ c = 1 → (carryOut <<< 32 ||| sum : BitVec 64) = zext x + zext y + zext c"
+    lean_theorem: [Go.Bits.Properties.Add32_spec]
+    oracle: "64-bit BitVec arithmetic"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestAddSubMulDivBoundary]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-SUB-64
+    package: math/bits
+    function: Sub64
+    go_source: "src/math/bits/bits.go:431-436"
+    doc: "Sub64 returns the difference of x, y and borrow: diff = x - y - borrow. The borrow input must be 0 or 1; otherwise the behavior is undefined. The borrowOut output is guaranteed to be 0 or 1."
+    preconditions: "borrow ∈ {0,1}"
+    postcondition: "x = y + borrow + diff - borrowOut·2^64 (128-bit); borrowOut ≤ 1"
+    lean_statement: "∀ x y b, b = 0 ∨ b = 1 → zext x = zext y + zext b + zext diff - (zext borrowOut <<< 64)"
+    lean_theorem: [Go.Bits.Properties.Sub64_spec, Go.Bits.Properties.Sub64_borrowOut_le_one]
+    oracle: "128-bit BitVec arithmetic; Go math/big"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestAddSubMulDivBoundary, FuzzAddSubMulDiv]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-SUB-32
+    package: math/bits
+    function: Sub32
+    go_source: "src/math/bits/bits.go:416-424"
+    doc: "Sub32 returns the difference of x, y and borrow, diff = x - y - borrow. The borrow input must be 0 or 1."
+    preconditions: "borrow ∈ {0,1}"
+    postcondition: "x = y + borrow + diff - borrowOut·2^32"
+    lean_statement: "∀ x y b : uint32, b = 0 ∨ b = 1 → zext x = zext y + zext b + zext diff - (zext borrowOut <<< 32)"
+    lean_theorem: [Go.Bits.Properties.Sub32_spec]
+    oracle: "64-bit BitVec arithmetic"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestAddSubMulDivBoundary]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-MUL-32
+    package: math/bits
+    function: Mul32
+    go_source: "src/math/bits/bits.go:459-463"
+    doc: "Mul32 returns the 64-bit product of x and y: (hi, lo) = x * y with the product bits' upper half returned in hi and the lower half returned in lo."
+    preconditions: none
+    postcondition: "hi ++ lo = zext x * zext y"
+    lean_statement: "∀ x y : uint32, (Mul32 x y).1 ++ (Mul32 x y).2 = x.zeroExtend 64 * y.zeroExtend 64"
+    lean_theorem: [Go.Bits.Properties.Mul32_spec]
+    oracle: "64-bit BitVec multiplication (generalised away: proof is about splitting, not multiplying)"
+    ambiguity_risk: low
+    complexity: low
+    trust: kernel
+    status: proved_in_model
+    go_tests: [TestAddSubMulDivBoundary]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-MULHI-8
+    package: math/bits
+    function: Mul64 (high half algorithm, width-8 instance)
+    go_source: "src/math/bits/bits.go:470-486"
+    doc: "Mul64 returns the 128-bit product of x and y: (hi, lo) = x * y. (Schoolbook on 32-bit halves.)"
+    preconditions: none
+    postcondition: "mulhiGeneric h x y = high half of the 4h-bit product, for h = 4"
+    lean_statement: "∀ x y : BitVec 8, mulhiGeneric 4 x y = mulhiSpec 4 x y"
+    lean_theorem: [Go.Bits.Properties.mulhiGeneric_4]
+    oracle: "16-bit product shifted; Go math/big (64-bit)"
+    ambiguity_risk: low
+    complexity: medium
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestAddSubMulDivBoundary, FuzzAddSubMulDiv]
+    history:
+      - {date: 2026-11-01, status: proved_in_model, note: "same Lean term as Mul64 (= mulhiGeneric 32) at half-width 4"}
+  - id: BITS-MUL-64
+    package: math/bits
+    function: Mul64
+    go_source: "src/math/bits/bits.go:470-486"
+    doc: "Mul64 returns the 128-bit product of x and y: (hi, lo) = x * y with the product bits' upper half returned in hi and the lower half returned in lo."
+    preconditions: none
+    postcondition: "hi ++ lo = zext x * zext y (128-bit)"
+    lean_statement: "∀ x y : uint64, (Mul64 x y).1 ++ (Mul64 x y).2 = x.zeroExtend 128 * y.zeroExtend 128"
+    lean_theorem: [Go.Bits.Properties.Mul64_spec, Go.Bits.Properties.mulhiGeneric_32_toNat, Go.Bits.Properties.schoolbook_hi32, Go.Bits.Properties.Mul64_lo, Go.Bits.Properties.Mul64_hi_def]
+    oracle: "128-bit BitVec product; Go math/big (boundary + fuzz)"
+    ambiguity_risk: low
+    complexity: high
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestAddSubMulDivBoundary, FuzzAddSubMulDiv]
+    history:
+      - {date: 2026-11-01, status: inconclusive, note: "bv_decide times out for 16/32/64-bit general multiplication"}
+      - {date: 2026-11-01, status: proved_in_model, note: "algebraic proof over Nat (schoolbook identity by grind + omega on product atoms, overflow-freedom of every intermediate by explicit bounds); only the mask lemma lo32_toNat uses bv_decide"}
+  - id: BITS-DIV-PANIC
+    package: math/bits
+    function: Div64 (generic algorithm)
+    go_source: "src/math/bits/bits.go:518-570"
+    doc: "Div64 panics for y == 0 (division by zero) or y <= hi (quotient overflow)."
+    preconditions: none
+    postcondition: "divideError iff y = 0; overflowError iff y ≠ 0 ∧ y ≤ hi; otherwise returns ok"
+    lean_statement: "∀ h hi lo y, (y = 0 → divGeneric = error divideError) ∧ (y ≠ 0 → y ≤ hi → error overflowError) ∧ (y ≠ 0 → hi < y → ∃ r, ok r)"
+    lean_theorem: [Go.Bits.Properties.divGeneric_divide, Go.Bits.Properties.divGeneric_overflow, Go.Bits.Properties.divGeneric_ok]
+    oracle: "Go doc comment; TestDiv64Panics checks the runtime error values"
+    ambiguity_risk: low
+    complexity: low
+    trust: kernel
+    status: proved_in_model
+    go_tests: [TestDiv64Panics]
+    history:
+      - {date: 2026-11-01, status: proved_in_model, note: "proved for every half-width h (kernel only)"}
+  - id: BITS-DIV-8-FASTPATH
+    package: math/bits
+    function: Div64 (hi == 0 fast path, width-8 instance)
+    go_source: "src/math/bits/bits.go:527-529"
+    doc: "If high part is zero, we can directly return the results: return lo / y, lo % y"
+    preconditions: "y ≠ 0, hi = 0"
+    postcondition: "divGeneric 4 0 lo y = ok (q, r) with q = lo/y, r = lo%y as 16-bit division"
+    lean_statement: "∀ lo y : BitVec 8, y ≠ 0 → divGeneric 4 0 lo y = .ok (divSpec 4 0 lo y)"
+    lean_theorem: [Go.Bits.Properties.divGeneric_4_hi0]
+    oracle: "16-bit BitVec udiv/umod"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestAddSubMulDivBoundary]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: BITS-DIV-8
+    package: math/bits
+    function: Div64 (Knuth algorithm, width-8 instance, hi != 0)
+    go_source: "src/math/bits/bits.go:531-570"
+    doc: "Div64 returns the quotient and remainder of (hi, lo) divided by y: quo = (hi, lo)/y, rem = (hi, lo)%y."
+    preconditions: "y ≠ 0, 0 < hi < y"
+    postcondition: "divGeneric 4 hi lo y = ok (q, r) with q = (hi·2^8+lo)/y, r = (hi·2^8+lo)%y"
+    lean_statement: "∀ hi lo y : BitVec 8, y ≠ 0 → hi < y → divGeneric 4 hi lo y = .ok (divSpec 4 hi lo y)"
+    lean_theorem: [Go.Bits.Properties.divGeneric_4_spec]
+    oracle: "16-bit BitVec udiv/umod; Go math/big (64-bit)"
+    ambiguity_risk: low
+    complexity: high
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestAddSubMulDivBoundary, FuzzAddSubMulDiv]
+    history:
+      - {date: 2026-11-01, status: inconclusive, note: "first attempts failed: bv_decide preprocessing exceeded 200k heartbeats; earlier model shapes (Nat shift amounts, 64-bit clz oracle) were abstracted as opaque by bv_decide"}
+      - {date: 2026-11-01, status: proved_in_model, note: "same-width shift amounts + clzW oracle + maxHeartbeats 20M: proved in ~80 s with fuel 8 (fuel 2 also proves it, so the loops run at most twice at this width)"}
+  - id: BITS-DIV-64
+    package: math/bits
+    function: Div64
+    go_source: "src/math/bits/bits.go:518-570"
+    doc: "Div64 returns the quotient and remainder of (hi, lo) divided by y."
+    preconditions: "y ≠ 0, hi < y"
+    postcondition: "q·y + r = hi·2^64 + lo, r < y"
+    lean_statement: "∀ hi lo y : uint64, y ≠ 0 → hi < y → Div64 hi lo y = .ok (divSpec 32 hi lo y)"
+    lean_theorem: [Go.Bits.Properties.LeadingZeros64_eq_clzW]
+    oracle: "Go math/big (boundary + fuzz)"
+    ambiguity_risk: low
+    complexity: high
+    trust: bv_decide
+    status: inconclusive
+    blocker: "128-bit division/multiplication in SAT is out of reach; the identical algorithm is proved at width 8 (BITS-DIV-8, BITS-DIV-8-FASTPATH), the panic conditions for every width (BITS-DIV-PANIC) and the LeadingZeros64 = clzW link are proved. A Nat-level algebraic proof of Knuth's algorithm is future work."
+    go_tests: [TestAddSubMulDivBoundary, FuzzAddSubMulDiv, TestDiv64Panics]
+    history:
+      - {date: 2026-11-01, status: inconclusive}
+  - id: BITS-REM
+    package: math/bits
+    function: Rem64 (generic algorithm)
+    go_source: "src/math/bits/bits.go:590-600"
+    doc: "Rem64 returns the remainder of (hi, lo) divided by y. Rem64 panics for y == 0 (division by zero) but, unlike Div64, it doesn't panic on a quotient overflow."
+    preconditions: none
+    postcondition: "y = 0 → divideError; y ≠ 0 → never overflowError (every half-width); at width 8 the result is (hi·2^8+lo) % y"
+    lean_statement: "see theorems"
+    lean_theorem: [Go.Bits.Properties.remGeneric_divide, Go.Bits.Properties.remGeneric_no_overflow, Go.Bits.Properties.remGeneric_4_spec]
+    oracle: "16-bit umod; Go math/big (TestAddSubMulDivBoundary checks Rem64)"
+    ambiguity_risk: low
+    complexity: medium
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestAddSubMulDivBoundary]
+    history:
+      - {date: 2026-11-01, status: proved_in_model, note: "gap reported by the independent reviewer (review/bits-model-review.md item 7)"}
+  - id: BITS-DIV32-FITS
+    package: math/bits
+    function: Div32
+    go_source: "src/math/bits/bits.go:505-511"
+    doc: "Div32 returns the quotient and remainder of (hi, lo) divided by y … Div32 panics for y == 0 (division by zero) or y <= hi (quotient overflow)."
+    preconditions: "hi < y"
+    postcondition: "the 64-bit quotient z / y is < 2^32, so uint32(z/y) loses nothing"
+    lean_statement: "∀ hi lo y : uint32, hi < y → ((zext hi <<< 32 ||| zext lo) / zext y).toNat < 2^32"
+    lean_theorem: [Go.Bits.Properties.Div32_quotient_fits]
+    oracle: "Nat division bound"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestAddSubMulDivBoundary]
+    history:
+      - {date: 2026-11-01, status: proved_in_model, note: "gap reported by the independent reviewer"}
+  - id: BITS-ADD-64-NOPRE
+    package: math/bits
+    function: Add64
+    go_source: "src/math/bits/bits.go:386-394"
+    doc: "(negative control) Add64 without the documented precondition carry ∈ {0,1}"
+    preconditions: none
+    postcondition: "carryOut·2^64 + sum = x + y + carry for ALL carry"
+    lean_statement: "∀ x y c, (carryOut <<< 64 ||| sum) = zext x + zext y + zext c   -- FALSE"
+    lean_theorem: [Go.Bits.Properties.Add64_nopre_refuted]
+    oracle: "bv_decide counterexample x = y = 2^64-1, c = 2 (sum 2^65 ≡ 0, true carry 2, formula gives 1), checked by decide"
+    ambiguity_risk: "high: the doc says behaviour is undefined for carry ∉ {0,1}"
+    complexity: low
+    trust: kernel
+    status: known_issue
+    evidence: "golang/go#54255 (closed, working as intended: carry must be 0 or 1). Classified specification_ambiguity → known_issue; not a Go defect."
+    go_tests: [TestAdd64CarryTwoIsOutOfContract]
+    history:
+      - {date: 2026-11-01, status: counterexample_in_model, note: "refuted by bv_decide; negation proved by decide"}
+      - {date: 2026-11-01, status: known_issue, note: "matches #54255; documented precondition"}
+  # ---------------------------------------------------------------- slices / sort (list model)
+  - id: SORT-SEARCH-MID
+    package: sort
+    function: Search (midpoint computation)
+    go_source: "src/sort/search.go:63 (also slices/sort.go:133,159)"
+    doc: "h := int(uint(i+j) >> 1) // avoid overflow when computing h"
+    preconditions: "0 ≤ i ≤ j (signed int)"
+    postcondition: "h = ⌊(i+j)/2⌋ exactly (65-bit sum) and i ≤ h < j when i < j"
+    lean_statement: "∀ i j : int, 0 ≤ₛ i → i ≤ₛ j → midpoint i j = ((zext65 i + zext65 j) >>> 1).setWidth 64 ∧ i ≤ₛ midpoint ∧ (i <ₛ j → midpoint <ₛ j)"
+    lean_theorem: [Go.Slices.Properties.midpoint_spec]
+    oracle: "65-bit arithmetic; Go TestSearchMidpoint"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestSearchMidpoint]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: SORT-SEARCH-MID-NAIVE
+    package: sort
+    function: Search (negative control)
+    go_source: "src/sort/search.go:63"
+    doc: "(negative control) the naive (i+j)/2 would overflow"
+    preconditions: "0 ≤ i ≤ j"
+    postcondition: "(i+j)/2 (signed) = int(uint(i+j)>>1)  -- FALSE"
+    lean_statement: "¬ ∀ i j, 0 ≤ₛ i → i ≤ₛ j → (i + j).sdiv 2 = midpoint i j"
+    lean_theorem: [Go.Slices.Properties.midpoint_naive_refuted]
+    oracle: "witness i = 1, j = MaxInt (kernel decide)"
+    ambiguity_risk: low
+    complexity: low
+    trust: kernel
+    status: counterexample_in_model
+    evidence: "Model-level refutation of a hypothetical naive implementation; Go's code deliberately avoids it (comment at search.go:63). Not a Go defect."
+    go_tests: [TestSearchMidpoint]
+    history:
+      - {date: 2026-11-01, status: counterexample_in_model, note: "negative control, demonstrates the overflow the Go comment refers to"}
+  - id: SORT-SEARCH-SPEC
+    package: sort
+    function: Search
+    go_source: "src/sort/search.go:58-74"
+    doc: "Search uses binary search to find and return the smallest index i in [0, n) at which f(i) is true, assuming that on the range [0, n), f(i) == true implies f(i+1) == true. If there is no such index, Search returns n."
+    preconditions: "f monotone on Nat"
+    postcondition: "Search n f ≤ n ∧ (∀ k < result, f k = false) ∧ (result < n → f result = true)"
+    lean_statement: "∀ f n, monotone f → Search n f ≤ n ∧ (∀ k < Search n f, f k = false) ∧ (Search n f < n → f (Search n f) = true)"
+    lean_theorem: [Go.Slices.Properties.Search_spec, Go.Slices.Properties.searchLoop_spec]
+    oracle: "linear scan in Go (TestSearchSpec)"
+    ambiguity_risk: "low; the model uses Nat indices (no overflow, covered separately by SORT-SEARCH-MID)"
+    complexity: medium
+    trust: kernel
+    status: proved_in_model
+    go_tests: [TestSearchSpec]
+    history:
+      - {date: 2026-11-01, status: proved_in_model, note: "functional induction on the loop"}
+  - id: SLICES-COMPACT-NOADJ
+    package: slices
+    function: Compact
+    go_source: "src/slices/slices.go:369-388"
+    doc: "Compact replaces consecutive runs of equal elements with a single copy. This is like the uniq command found on Unix. Compact modifies the contents of the slice s and returns the modified slice, which may have a smaller length."
+    preconditions: none
+    postcondition: "no two adjacent elements of the result are equal; result is a sublist of the input; first element preserved; length ≤ input"
+    lean_statement: "NoAdjDup (Compact s) ∧ (Compact s).Sublist s ∧ (Compact (a::s)).head? = some a ∧ (Compact s).length ≤ s.length"
+    lean_theorem: [Go.Slices.Properties.Compact_noAdjDup, Go.Slices.Properties.Compact_sublist, Go.Slices.Properties.Compact_head, Go.Slices.Properties.Compact_length_le]
+    oracle: "list predicates; Go TestCompactSpec"
+    ambiguity_risk: "medium: the list model ignores in-place mutation, aliasing and the clear() of the tail (Go 1.22 change, golang/go#63393)"
+    complexity: medium
+    trust: kernel
+    status: proved_in_model
+    go_tests: [TestCompactSpec]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: SLICES-INDEX-CONTAINS
+    package: slices
+    function: Index, Contains
+    go_source: "src/slices/slices.go:96-119"
+    doc: "Index returns the index of the first occurrence of v in s, or -1 if not present. Contains reports whether v is present in s."
+    preconditions: none
+    postcondition: "Index = -1 ↔ v ∉ s; Index = r ≥ 0 → s[r] = v ∧ ∀ k < r, s[k] ≠ v; Contains ↔ v ∈ s"
+    lean_statement: "see Index_spec, Contains_spec"
+    lean_theorem: [Go.Slices.Properties.Index_spec, Go.Slices.Properties.Contains_spec]
+    oracle: "list membership; Go TestIndexContainsSpec"
+    ambiguity_risk: low
+    complexity: low
+    trust: kernel
+    status: proved_in_model
+    go_tests: [TestIndexContainsSpec]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  # ---------------------------------------------------------------- compiler: generic.rules
+  - id: RULE-POW2-STRENGTH-8
+    package: cmd/compile/internal/ssa (generic.rules)
+    function: "Mul8/Div8u/Mod8u by power of two; Div8/Mod8 non-negative by power of two"
+    go_source: "src/cmd/compile/internal/ssa/_gen/generic.rules:203,1013,1020,1293,1300"
+    doc: "(Mul8 n (Const8 [c])) && isPowerOfTwo(c) => (Lsh8x64 n log8(c)); (Div8u …) => Rsh8Ux64; (Mod8u …) => And8 n (c-1); signed variants under isNonNegative(n)"
+    preconditions: "c = 1<<k, k < 7 (isPowerOfTwo on a signed AuxInt); isNonNegative(n) read as msb n = false"
+    postcondition: "lhs and rhs denote the same 8-bit value for all n"
+    lean_statement: "∀ n k, k < 7 → n * (1<<<k) = n <<< k ∧ n / (1<<<k) = n >>> k ∧ n % (1<<<k) = n &&& (1<<<k - 1) ∧ (msb n = false → n.srem (1<<<k) = n &&& … ∧ n.sdiv (1<<<k) = n >>> k); isPowerOfTwo c ↔ ∃ k < 7, c = 1 <<< k"
+    lean_theorem: [Go.Compiler.Generic.isPowerOfTwo_8_iff, Go.Compiler.Generic.mul_pow2_8, Go.Compiler.Generic.divu_pow2_8, Go.Compiler.Generic.modu_pow2_8, Go.Compiler.Generic.mod_nonneg_pow2_8, Go.Compiler.Generic.div_nonneg_pow2_8]
+    oracle: "BitVec arithmetic; Go TestCompilerPow2Rules (compiled code vs reference)"
+    ambiguity_risk: "medium: isNonNegative is a static approximation; the theorem assumes its semantic content"
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestCompilerPow2Rules]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: RULE-POW2-STRENGTH-32-64
+    package: cmd/compile/internal/ssa (generic.rules)
+    function: "Mul64/Div32u/Mod32u/Div64u/Mod64u by power of two"
+    go_source: "src/cmd/compile/internal/ssa/_gen/generic.rules:206,1015-1017,1295-1297"
+    doc: "same rules at 32 and 64 bits"
+    preconditions: "k < width (unsigned) / k < width-1 (signed)"
+    postcondition: "equal values"
+    lean_statement: "Mul64: ∀ n k, n * (1<<<k) = n <<< k (algebraic, all k); Div32u/Mod32u: ∀ n k < 32 (bv_decide); Div64u/Mod64u: k ∈ {1,5,63} spot checks"
+    lean_theorem: [Go.Compiler.Generic.mul_pow2_64, Go.Compiler.Generic.divu_pow2_32, Go.Compiler.Generic.modu_pow2_32, Go.Compiler.Generic.divu_pow2_64_k1, Go.Compiler.Generic.divu_pow2_64_k5, Go.Compiler.Generic.divu_pow2_64_k63, Go.Compiler.Generic.modu_pow2_64_k5, Go.Compiler.Generic.modu_pow2_64_k63]
+    oracle: "BitVec arithmetic; Go TestCompilerPow2Rules"
+    ambiguity_risk: low
+    complexity: medium
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestCompilerPow2Rules]
+    history:
+      - {date: 2026-11-01, status: proved_in_model, note: "64-bit symbolic divisor exceeds SAT budget; constant-divisor instances proved"}
+  - id: RULE-SDIV-POW2
+    package: cmd/compile/internal/ssa (generic.rules)
+    function: "signed Div by power of two (4-op sequence)"
+    go_source: "src/cmd/compile/internal/ssa/_gen/generic.rules:1195-1214"
+    doc: "n / c = (n + ((n >> (w-1)) >>u (w - log c))) >> log c, for isPowerOfTwo(c)"
+    preconditions: "c = 1<<k with 0 < k < w-1 (k = w-1 is the most negative value, excluded by isPowerOfTwo)"
+    postcondition: "equal values"
+    lean_statement: "∀ n k, k < 7 → … (8-bit); ∀ n k, k < 31 → … (32-bit); k ∈ {1,5,32,62} at 64 bits; k = 63 refuted (negative control)"
+    lean_theorem: [Go.Compiler.Generic.div_pow2_8, Go.Compiler.Generic.div_pow2_32, Go.Compiler.Generic.div_pow2_64_k1, Go.Compiler.Generic.div_pow2_64_k5, Go.Compiler.Generic.div_pow2_64_k32, Go.Compiler.Generic.div_pow2_64_k62, Go.Compiler.Generic.div_pow2_64_k63_refuted]
+    oracle: "BitVec sdiv; Go TestCompilerSignedDivPow2"
+    ambiguity_risk: "low; first draft wrongly admitted k = w-1 and was refuted by decide (specification error, see history)"
+    complexity: medium
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestCompilerSignedDivPow2]
+    history:
+      - {date: 2026-11-01, status: counterexample_in_model, note: "spec admitted c = -128 / MinInt64; decide and bv_decide refuted it (n = MinInt). Specification error: isPowerOfTwo requires c > 0 signed."}
+      - {date: 2026-11-01, status: proved_in_model, note: "restated with k < w-1"}
+  - id: RULE-DIV-SPECIAL
+    package: cmd/compile/internal/ssa (generic.rules)
+    function: "Div by most-negative constant; Div by negative constant"
+    go_source: "src/cmd/compile/internal/ssa/_gen/generic.rules:1182-1193"
+    doc: "(Div8 x (Const8 [-1<<7])) => (Rsh8Ux64 (And8 x (Neg8 x)) 7); (Div8 n (Const8 [c])) && c < 0 && c != -1<<7 => (Neg8 (Div8 n (Const8 [-c])))"
+    preconditions: "as stated"
+    postcondition: "equal values"
+    lean_statement: "∀ x, x.sdiv MinInt = (x &&& -x) >>> (w-1) (8, 64); ∀ n c, msb c → c ≠ MinInt → n.sdiv c = -(n.sdiv (-c)) (8)"
+    lean_theorem: [Go.Compiler.Generic.div_minneg_8, Go.Compiler.Generic.div_minneg_64, Go.Compiler.Generic.div_negconst_8]
+    oracle: "BitVec sdiv"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestCompilerSignedDivPow2]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: RULE-SHIFT-ALGEBRA
+    package: cmd/compile/internal/ssa (generic.rules)
+    function: "shift composition and masking rules"
+    go_source: "src/cmd/compile/internal/ssa/_gen/generic.rules:455-482 and the `uint64(c) >= 64 => 0` rules"
+    doc: "(Lsh (Lsh x c) d) && !uaddOvf(c,d) => Lsh x (c+d); (Rsh8Ux64 (Rsh8x64 x _) 7) => (Rsh8Ux64 x 7); (Lsh (RshU x c) c) => And x (-1<<c); (RshU (Lsh x c) c) => And x (^0>>c); shifts by ≥ width => 0"
+    preconditions: "as stated (no unsigned-add overflow; c < 8)"
+    postcondition: "equal values"
+    lean_statement: "see theorems"
+    lean_theorem: [Go.Compiler.Generic.lsh_lsh_8, Go.Compiler.Generic.rshu_rshu_64, Go.Compiler.Generic.rshu_rsh_7, Go.Compiler.Generic.lsh_rshu_and_8, Go.Compiler.Generic.rshu_lsh_and_8, Go.Compiler.Generic.shift_ge_width_64]
+    oracle: "BitVec shifts; Go TestCompilerShiftRules"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: [TestCompilerShiftRules]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: RULE-BCE
+    package: cmd/compile/internal/ssa (generic.rules)
+    function: "bounds-check elimination facts"
+    go_source: "src/cmd/compile/internal/ssa/_gen/generic.rules:254-266"
+    doc: "(IsInBounds (Rsh8Ux64 _ (Const64 [c])) (Const64 [d])) && 0 < c && c < 8 && 1<<uint(8-c)-1 < d => true; (IsInBounds (Mod64u _ y) y) => true"
+    preconditions: "as stated; for Mod64u additionally y ≠ 0 (Go has already trapped division by zero)"
+    postcondition: "index < bound"
+    lean_statement: "∀ x c d, 0 < c → c < 8 → (1<<<(8-c))-1 < d → zext (x >>> c) < d; ∀ x y, y ≠ 0 → x % y < y"
+    lean_theorem: [Go.Compiler.Generic.bce_rshu_8, Go.Compiler.Generic.bce_modu_64]
+    oracle: "BitVec order"
+    ambiguity_risk: "medium: the Mod64u rule is only sound because of control-flow context (prior panic), which the equation model cannot express; encoded as a hypothesis"
+    complexity: low
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: []
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: RULE-FOLD-RSHU-AUXINT
+    package: cmd/compile/internal/ssa (generic.rules)
+    function: "constant folding of unsigned right shift; AuxInt canonical form"
+    go_source: "src/cmd/compile/internal/ssa/_gen/generic.rules:233; value.go AuxInt invariant"
+    doc: "(Rsh8Ux64 (Const8 [c]) (Const64 [d])) => (Const8 [int8(uint8(c) >> uint64(d))])"
+    preconditions: "c is a canonical (sign-extended) AuxInt"
+    postcondition: "the folded AuxInt is canonical and denotes uint8(c) >> d"
+    lean_statement: "∀ c d, canonical c → canonical (sext (trunc8 c >>> d)) ∧ value correct"
+    lean_theorem: [Go.Compiler.Generic.fold_rshu_8_sound]
+    oracle: "BitVec; Go TestIssue15175Regression"
+    ambiguity_risk: low
+    complexity: low
+    trust: kernel
+    status: proved_in_model
+    go_tests: [TestIssue15175Regression]
+    history:
+      - {date: 2026-11-01, status: proved_in_model}
+  - id: RULE-FOLD-RSHU-GO16
+    package: cmd/compile/internal/ssa (generic.rules, historical)
+    function: "constant folding of unsigned right shift as in Go ≤ 1.6"
+    go_source: "golang/go#15175; fix commit 68ac1f774624faf99e7f6ec6592acb50f23b7874"
+    doc: "(Rsh8Ux64 (Const8 [c]) (Const64 [d])) => (Const8 [uint8(c) >> uint64(d)]) without re-sign-extension"
+    preconditions: "c canonical"
+    postcondition: "folded AuxInt canonical  -- FALSE"
+    lean_statement: "¬ ∀ c d, canonical c → canonical (zext (trunc8 c >>> d))"
+    lean_theorem: [Go.Compiler.Generic.fold_rshu_8_go16_refuted]
+    oracle: "witness c = -3 (uint8 253), d = 0, the issue's reproducer; kernel decide"
+    ambiguity_risk: low
+    complexity: low
+    trust: kernel
+    status: known_issue
+    evidence: "golang/go#15175 'cmd/compile: wrong code generation' (Go 1.7, fixed by 68ac1f77 'Fix constant-folding of unsigned shifts'); reproduced as a model refutation of the historical rule. TestIssue15175Regression checks the current toolchain."
+    go_tests: [TestIssue15175Regression]
+    history:
+      - {date: 2026-11-01, status: counterexample_in_model}
+      - {date: 2026-11-01, status: known_issue}
+  # ---------------------------------------------------------------- slices: backing-array model (bounded search, no general proof)
+  - id: SLICES-INSERT-ALIAS
+    package: slices
+    function: Insert
+    go_source: "src/slices/slices.go:135-220"
+    doc: "Insert inserts the values v... into s at index i, returning the modified slice. In the returned slice r, r[i] == v[0], and, if i < len(s), r[i+len(v)] == value originally at r[i]. Insert panics if i > len(s)."
+    preconditions: "0 ≤ i ≤ len(s); v may alias s (any offset/length within the same backing array)"
+    postcondition: "contents of result = s[:i] ++ v ++ s[i:] (values as before the call); panic iff i > len(s)"
+    lean_statement: "∀ heap s i v, toList (Insert s i v) = take i s0 ++ v0 ++ drop i s0  (bounded domain, see status)"
+    lean_theorem: []
+    oracle: "list specification in GoInLean/SliceSearch.lean; real slices.Insert via go/tests/vectors_slices"
+    ambiguity_risk: "low (doc + golang/go#60138 fix define the aliasing contract)"
+    complexity: high
+    trust: kernel
+    status: inconclusive
+    blocker: "No general proof (induction over the heap model is future work). Evidence: lake exe slicesearch 10 checks 531,531 configurations of Insert/Delete/Replace against the spec with 0 mismatches; lake exe checkslices replays 5,292 Insert configurations (every offset/len/cap of s in a 5-element array, every aliasing or separate v, every i) through real Go with 0 differences in returned contents and backing array."
+    go_tests: []
+    history:
+      - {date: 2026-11-01, status: inconclusive, note: "bounded exhaustive search N≤10 and Go replay N=5 both clean; configurations with offset(s) > 0 and cap(s) < N are not covered by Go's own TestInsertOverlap"}
+  - id: SLICES-DELETE-CLEAR
+    package: slices
+    function: Delete
+    go_source: "src/slices/slices.go:222-233"
+    doc: "Delete removes the elements s[i:j] from s, returning the modified slice. Delete panics if j > len(s) or s[i:j] is not a valid slice of s. Delete is O(len(s)-i). Delete zeroes the elements s[len(s)-(j-i):len(s)]."
+    preconditions: "0 ≤ i ≤ j ≤ len(s)"
+    postcondition: "contents = s[:i] ++ s[j:]; the j-i elements after the new length are zeroed in the backing array"
+    lean_statement: "bounded domain (see status)"
+    lean_theorem: []
+    oracle: "list spec + cleared-tail check in GoInLean/SliceSearch.lean; real slices.Delete"
+    ambiguity_risk: low
+    complexity: medium
+    trust: kernel
+    status: inconclusive
+    blocker: "No general proof. Evidence: slicesearch N≤10 (0 mismatches incl. the zeroed tail), checkslices 252 configurations vs Go (0 differences)."
+    go_tests: []
+    history:
+      - {date: 2026-11-01, status: inconclusive}
+  - id: SLICES-REPLACE-ALIAS
+    package: slices
+    function: Replace
+    go_source: "src/slices/slices.go:260-351"
+    doc: "Replace replaces the elements s[i:j] by the given v, and returns the modified slice. Replace panics if j > len(s) or s[i:j] is not a valid slice of s. When len(v) < (j-i), Replace zeroes the elements between the new length and the original length."
+    preconditions: "0 ≤ i ≤ j ≤ len(s); v may alias s"
+    postcondition: "contents = s[:i] ++ v ++ s[j:] (values as before the call)"
+    lean_statement: "bounded domain (see status)"
+    lean_theorem: []
+    oracle: "list spec; real slices.Replace"
+    ambiguity_risk: "low; the four aliasing cases incl. startIdx are all exercised by the enumeration"
+    complexity: high
+    trust: kernel
+    status: inconclusive
+    blocker: "No general proof. Evidence: slicesearch N≤10 (0 mismatches), checkslices 10,584 Replace configurations vs Go (0 differences)."
+    go_tests: []
+    history:
+      - {date: 2026-11-01, status: inconclusive}
+  # ---------------------------------------------------------------- compiler: generated constant-folding rules
+  - id: RULE-CONST-FOLDS
+    package: cmd/compile/internal/ssa (generic.rules)
+    function: "74 constant-folding rules (Add/Sub/Mul/And/Or/Xor/Div/Mod/Divu/Modu/Neg/Com/Lsh/Rsh/RshU/Trunc/ZeroExt/SignExt on Const operands)"
+    go_source: "src/cmd/compile/internal/ssa/_gen/generic.rules (lines in each generated docstring)"
+    doc: "e.g. (Add8 (Const8 [c]) (Const8 [d])) => (Const8 [c+d]); (Rsh8Ux64 (Const8 [c]) (Const64 [d])) => (Const8 [int8(uint8(c) >> uint64(d))])"
+    preconditions: "d != 0 for Div/Mod rules (as in the rule)"
+    postcondition: "the rule's right-hand side, evaluated with Go's typed intN semantics (auxIntToIntN / intNToAuxInt), equals the generic op's semantics (OpSem) on the operands"
+    lean_statement: "one theorem per rule, generated by scripts/rules_to_lean.py into GoInLean/Compiler/GeneratedFolds.lean"
+    lean_theorem: [Go.Compiler.GeneratedFolds.Trunc16to8_fold, Go.Compiler.GeneratedFolds.Trunc32to8_fold, Go.Compiler.GeneratedFolds.Trunc32to16_fold, Go.Compiler.GeneratedFolds.Trunc64to8_fold, Go.Compiler.GeneratedFolds.Trunc64to16_fold, Go.Compiler.GeneratedFolds.Trunc64to32_fold, Go.Compiler.GeneratedFolds.ZeroExt8to16_fold, Go.Compiler.GeneratedFolds.ZeroExt8to32_fold, Go.Compiler.GeneratedFolds.ZeroExt8to64_fold, Go.Compiler.GeneratedFolds.ZeroExt16to32_fold, Go.Compiler.GeneratedFolds.ZeroExt16to64_fold, Go.Compiler.GeneratedFolds.ZeroExt32to64_fold, Go.Compiler.GeneratedFolds.SignExt8to16_fold, Go.Compiler.GeneratedFolds.SignExt8to32_fold, Go.Compiler.GeneratedFolds.SignExt8to64_fold, Go.Compiler.GeneratedFolds.SignExt16to32_fold, Go.Compiler.GeneratedFolds.SignExt16to64_fold, Go.Compiler.GeneratedFolds.SignExt32to64_fold, Go.Compiler.GeneratedFolds.Neg8_fold, Go.Compiler.GeneratedFolds.Neg16_fold, Go.Compiler.GeneratedFolds.Neg32_fold, Go.Compiler.GeneratedFolds.Neg64_fold, Go.Compiler.GeneratedFolds.Add8_fold, Go.Compiler.GeneratedFolds.Add16_fold, Go.Compiler.GeneratedFolds.Add32_fold, Go.Compiler.GeneratedFolds.Add64_fold, Go.Compiler.GeneratedFolds.Sub8_fold, Go.Compiler.GeneratedFolds.Sub16_fold, Go.Compiler.GeneratedFolds.Sub32_fold, Go.Compiler.GeneratedFolds.Sub64_fold, Go.Compiler.GeneratedFolds.Mul8_fold, Go.Compiler.GeneratedFolds.Mul16_fold, Go.Compiler.GeneratedFolds.Mul32_fold, Go.Compiler.GeneratedFolds.Mul64_fold, Go.Compiler.GeneratedFolds.And8_fold, Go.Compiler.GeneratedFolds.And16_fold, Go.Compiler.GeneratedFolds.And32_fold, Go.Compiler.GeneratedFolds.And64_fold, Go.Compiler.GeneratedFolds.Or8_fold, Go.Compiler.GeneratedFolds.Or16_fold, Go.Compiler.GeneratedFolds.Or32_fold, Go.Compiler.GeneratedFolds.Or64_fold, Go.Compiler.GeneratedFolds.Xor8_fold, Go.Compiler.GeneratedFolds.Xor16_fold, Go.Compiler.GeneratedFolds.Xor32_fold, Go.Compiler.GeneratedFolds.Xor64_fold, Go.Compiler.GeneratedFolds.Div8_fold, Go.Compiler.GeneratedFolds.Div16_fold, Go.Compiler.GeneratedFolds.Div32_fold, Go.Compiler.GeneratedFolds.Div64_fold, Go.Compiler.GeneratedFolds.Div8u_fold, Go.Compiler.GeneratedFolds.Div16u_fold, Go.Compiler.GeneratedFolds.Div32u_fold, Go.Compiler.GeneratedFolds.Div64u_fold, Go.Compiler.GeneratedFolds.Mod8_fold, Go.Compiler.GeneratedFolds.Mod16_fold, Go.Compiler.GeneratedFolds.Mod32_fold, Go.Compiler.GeneratedFolds.Mod64_fold, Go.Compiler.GeneratedFolds.Mod8u_fold, Go.Compiler.GeneratedFolds.Mod16u_fold, Go.Compiler.GeneratedFolds.Mod32u_fold, Go.Compiler.GeneratedFolds.Mod64u_fold, Go.Compiler.GeneratedFolds.Lsh64x64_fold, Go.Compiler.GeneratedFolds.Rsh64x64_fold, Go.Compiler.GeneratedFolds.Rsh64Ux64_fold, Go.Compiler.GeneratedFolds.Lsh32x64_fold, Go.Compiler.GeneratedFolds.Rsh32x64_fold, Go.Compiler.GeneratedFolds.Rsh32Ux64_fold, Go.Compiler.GeneratedFolds.Lsh16x64_fold, Go.Compiler.GeneratedFolds.Rsh16x64_fold, Go.Compiler.GeneratedFolds.Rsh16Ux64_fold, Go.Compiler.GeneratedFolds.Lsh8x64_fold, Go.Compiler.GeneratedFolds.Rsh8x64_fold, Go.Compiler.GeneratedFolds.Rsh8Ux64_fold]
+    oracle: "OpSem (hand-written from genericOps.go); Go TestCompilerPow2Rules/TestIssue15175Regression for the execution side"
+    ambiguity_risk: "medium: the translation table Go-expr → BitVec and the OpSem table are both hand-written and are the actual object under review; 60 constant rules (floats, 128-bit multiply tuples, reassociation with a variable, mask-elimination with ntz/nlz) are listed as not translated"
+    complexity: low
+    trust: kernel
+    status: proved_in_model
+    go_tests: [TestIssue15175Regression]
+    history:
+      - {date: 2026-11-01, status: proved_in_model, note: "most theorems close by unfolding; shift and division folds are the ones with content"}

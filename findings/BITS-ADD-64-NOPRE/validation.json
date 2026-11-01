@@ -1,0 +1,15 @@
+{
+  "counterexample": {"x": "0xFFFFFFFFFFFFFFFF", "y": "0xFFFFFFFFFFFFFFFF", "carry": 2},
+  "lean": {"method": "bv_decide counterexample, negation proved by kernel decide", "axioms": ["propext", "Quot.sound"]},
+  "go_runs": [
+    {"toolchain": "go1.25.5", "goos": "darwin", "goarch": "arm64", "target": "pure-Go formula", "sum": "0x0", "carryOut": "0x1", "matches_lean_model": true},
+    {"toolchain": "go1.25.5", "goos": "darwin", "goarch": "arm64", "target": "bits.Add64 (compiled, intrinsic)", "sum": "0xffffffffffffffff", "carryOut": "0x1", "matches_lean_model": false}
+  ],
+  "contract_check": {"precondition_in_doc": "carry must be 0 or 1", "precondition_satisfied": false},
+  "known_issue": {"id": "golang/go#54255", "url": "https://github.com/golang/go/issues/54255", "resolution": "working as intended"},
+  "classification_history": [
+    {"date": "2026-11-01", "status": "counterexample_in_model"},
+    {"date": "2026-11-01", "status": "known_issue"}
+  ],
+  "human_review": "pending (negative control; no upstream action proposed)"
+}

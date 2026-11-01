@@ -1,0 +1,12 @@
+[
+  {"lean": "Add64WrongCarry.lean", "go_mutant": "Add64WrongCarry", "go_real": "bits.Add64",
+   "signature": "add64", "theorem": "Add64WrongCarry_spec"},
+  {"lean": "OnesCount64WrongMask.lean", "go_mutant": "OnesCount64WrongMask", "go_real": "bits.OnesCount64",
+   "signature": "u64_to_int", "theorem": "OnesCount64WrongMask_spec"},
+  {"lean": "RotateLeft64OffByOne.lean", "go_mutant": "RotateLeft64OffByOne", "go_real": "bits.RotateLeft64",
+   "signature": "u64_int_to_u64", "theorem": "RotateLeft64OffByOne_spec"},
+  {"lean": "Len64NoHighHalf.lean", "go_mutant": "Len64NoHighHalf", "go_real": "bits.Len64",
+   "signature": "u64_to_int", "theorem": "Len64NoHighHalf_spec"},
+  {"lean": "TrailingZeros64WrongShift.lean", "go_mutant": "TrailingZeros64WrongShift", "go_real": "bits.TrailingZeros64",
+   "signature": "u64_to_int", "theorem": "TrailingZeros64WrongShift_spec"}
+]

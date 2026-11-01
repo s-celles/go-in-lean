@@ -1,0 +1,4 @@
+.lake/
+build/
+go/testdata/fuzz/
+*.olean

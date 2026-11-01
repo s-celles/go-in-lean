@@ -1,0 +1,11 @@
+{
+  "go_version": "go1.25.5",
+  "goroot_version_file": "go1.25.5\ntime 2025-11-26T02:01:51Z",
+  "file": "src/math/bits/bits.go",
+  "lines": "386-394",
+  "sha256": "0956e3586b4cf3f4605382523e55c018d58924bc688982431d6b7cda99d10ecd",
+  "doc_comment": "Add64 returns the sum with carry of x, y and carry: sum = x + y + carry. The carry input must be 0 or 1; otherwise the behavior is undefined. The carryOut output is guaranteed to be 0 or 1.",
+  "lean_model": "GoInLean/Stdlib/Bits.lean: Go.Bits.Add64",
+  "lean_theorem": "GoInLean/Properties/Bits.lean: Go.Bits.Properties.Add64_nopre_refuted",
+  "lean_toolchain": "leanprover/lean4:v4.35.0"
+}

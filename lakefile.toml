@@ -1,0 +1,22 @@
+name = "GoInLean"
+version = "0.1.0"
+defaultTargets = ["GoInLean"]
+
+[[lean_lib]]
+name = "GoInLean"
+
+[[lean_exe]]
+name = "checkvectors"
+root = "GoInLean.CheckVectors"
+
+[[lean_exe]]
+name = "audit"
+root = "GoInLean.Audit"
+
+[[lean_exe]]
+name = "slicesearch"
+root = "GoInLean.SliceSearch"
+
+[[lean_exe]]
+name = "checkslices"
+root = "GoInLean.CheckSlices"

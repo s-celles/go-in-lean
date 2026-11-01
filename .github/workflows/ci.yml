@@ -1,0 +1,35 @@
+name: ci
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go/go.mod
+          cache: false   # the module has no dependencies (no go.sum)
+      - name: Install Lean toolchain (pinned by lean-toolchain)
+        uses: leanprover/lean-action@v1
+        with:
+          auto-config: false
+          use-github-cache: true
+          build: false
+          test: false
+          lint: false
+      - name: Full check (build, audit, Go tests, differential vectors, manifest, mutation test)
+        run: scripts/check.sh
+      - name: Fuzz smoke (30s, deterministic seeds + coverage-guided)
+        run: cd go && go test ./tests -run=NONE -fuzz=FuzzAddSubMulDiv -fuzztime=30s
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: audit-and-vectors
+          path: |
+            build/audit.json
+            go/reproducers/*_test.go
