@@ -11,3864 +11,3864 @@ open Go.Compiler Go
 theorem m1028_n127 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-127)) != 0) = true) :
     ((((BitVec.ofInt 32 (509)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-127))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-126)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+249)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n126 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-126)) != 0) = true) :
     ((((BitVec.ofInt 32 (505)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-126))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-125)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+245)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n125 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-125)) != 0) = true) :
     ((((BitVec.ofInt 32 (501)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-125))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-124)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+241)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n124 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-124)) != 0) = true) :
     ((((BitVec.ofInt 32 (497)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-124))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-123)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+237)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n123 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-123)) != 0) = true) :
     ((((BitVec.ofInt 32 (493)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-123))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-122)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+234)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n122 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-122)) != 0) = true) :
     ((((BitVec.ofInt 32 (490)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-122))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-121)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+230)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n121 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-121)) != 0) = true) :
     ((((BitVec.ofInt 32 (486)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-121))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-120)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+226)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n120 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-120)) != 0) = true) :
     ((((BitVec.ofInt 32 (482)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-120))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-119)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+223)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n119 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-119)) != 0) = true) :
     ((((BitVec.ofInt 32 (479)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-119))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-118)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+219)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n118 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-118)) != 0) = true) :
     ((((BitVec.ofInt 32 (475)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-118))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-117)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+216)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n117 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-117)) != 0) = true) :
     ((((BitVec.ofInt 32 (472)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-117))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-116)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+213)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n116 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-116)) != 0) = true) :
     ((((BitVec.ofInt 32 (469)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-116))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-115)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+209)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n115 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-115)) != 0) = true) :
     ((((BitVec.ofInt 32 (465)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-115))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-114)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+206)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n114 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-114)) != 0) = true) :
     ((((BitVec.ofInt 32 (462)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-114))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-113)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+203)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n113 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-113)) != 0) = true) :
     ((((BitVec.ofInt 32 (459)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-113))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-112)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+200)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n112 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-112)) != 0) = true) :
     ((((BitVec.ofInt 32 (456)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-112))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-111)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+196)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n111 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-111)) != 0) = true) :
     ((((BitVec.ofInt 32 (452)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-111))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-110)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+193)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n110 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-110)) != 0) = true) :
     ((((BitVec.ofInt 32 (449)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-110))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-109)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+190)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n109 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-109)) != 0) = true) :
     ((((BitVec.ofInt 32 (446)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-109))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-108)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+187)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n108 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-108)) != 0) = true) :
     ((((BitVec.ofInt 32 (443)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-108))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-107)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+184)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n107 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-107)) != 0) = true) :
     ((((BitVec.ofInt 32 (440)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-107))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-106)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+181)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n106 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-106)) != 0) = true) :
     ((((BitVec.ofInt 32 (437)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-106))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-105)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+179)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n105 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-105)) != 0) = true) :
     ((((BitVec.ofInt 32 (435)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-105))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-104)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+176)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n104 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-104)) != 0) = true) :
     ((((BitVec.ofInt 32 (432)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-104))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-103)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+173)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n103 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-103)) != 0) = true) :
     ((((BitVec.ofInt 32 (429)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-103))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-102)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+170)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n102 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-102)) != 0) = true) :
     ((((BitVec.ofInt 32 (426)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-102))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-101)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+167)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n101 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-101)) != 0) = true) :
     ((((BitVec.ofInt 32 (423)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-101))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-100)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+165)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n100 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-100)) != 0) = true) :
     ((((BitVec.ofInt 32 (421)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-100))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-99)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+162)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n99 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-99)) != 0) = true) :
     ((((BitVec.ofInt 32 (418)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-99))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-98)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+159)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n98 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-98)) != 0) = true) :
     ((((BitVec.ofInt 32 (415)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-98))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-97)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+157)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n97 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-97)) != 0) = true) :
     ((((BitVec.ofInt 32 (413)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-97))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-96)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+154)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n96 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-96)) != 0) = true) :
     ((((BitVec.ofInt 32 (410)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-96))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-95)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+152)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n95 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-95)) != 0) = true) :
     ((((BitVec.ofInt 32 (408)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-95))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-94)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+149)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n94 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-94)) != 0) = true) :
     ((((BitVec.ofInt 32 (405)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-94))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-93)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+147)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n93 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-93)) != 0) = true) :
     ((((BitVec.ofInt 32 (403)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-93))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-92)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+144)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n92 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-92)) != 0) = true) :
     ((((BitVec.ofInt 32 (400)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-92))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-91)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+142)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n91 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-91)) != 0) = true) :
     ((((BitVec.ofInt 32 (398)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-91))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-90)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+139)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n90 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-90)) != 0) = true) :
     ((((BitVec.ofInt 32 (395)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-90))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-89)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+137)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n89 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-89)) != 0) = true) :
     ((((BitVec.ofInt 32 (393)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-89))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-88)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+135)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n88 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-88)) != 0) = true) :
     ((((BitVec.ofInt 32 (391)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-88))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-87)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+132)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n87 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-87)) != 0) = true) :
     ((((BitVec.ofInt 32 (388)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-87))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-86)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+130)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n86 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-86)) != 0) = true) :
     ((((BitVec.ofInt 32 (386)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-86))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-85)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+128)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n85 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-85)) != 0) = true) :
     ((((BitVec.ofInt 32 (384)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-85))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-84)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+126)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n84 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-84)) != 0) = true) :
     ((((BitVec.ofInt 32 (382)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-84))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-83)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+123)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n83 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-83)) != 0) = true) :
     ((((BitVec.ofInt 32 (379)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-83))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-82)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+121)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n82 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-82)) != 0) = true) :
     ((((BitVec.ofInt 32 (377)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-82))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-81)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+119)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n81 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-81)) != 0) = true) :
     ((((BitVec.ofInt 32 (375)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-81))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-80)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+117)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n80 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-80)) != 0) = true) :
     ((((BitVec.ofInt 32 (373)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-80))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-79)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+115)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n79 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-79)) != 0) = true) :
     ((((BitVec.ofInt 32 (371)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-79))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-78)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+113)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n78 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-78)) != 0) = true) :
     ((((BitVec.ofInt 32 (369)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-78))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-77)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+111)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n77 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-77)) != 0) = true) :
     ((((BitVec.ofInt 32 (367)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-77))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-76)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+109)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n76 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-76)) != 0) = true) :
     ((((BitVec.ofInt 32 (365)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-76))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-75)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+107)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n75 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-75)) != 0) = true) :
     ((((BitVec.ofInt 32 (363)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-75))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-74)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+105)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n74 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-74)) != 0) = true) :
     ((((BitVec.ofInt 32 (361)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-74))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-73)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+103)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n73 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-73)) != 0) = true) :
     ((((BitVec.ofInt 32 (359)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-73))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-72)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+101)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n72 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-72)) != 0) = true) :
     ((((BitVec.ofInt 32 (357)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-72))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-71)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+99)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n71 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-71)) != 0) = true) :
     ((((BitVec.ofInt 32 (355)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-71))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-70)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+97)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n70 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-70)) != 0) = true) :
     ((((BitVec.ofInt 32 (353)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-70))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-69)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+95)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n69 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-69)) != 0) = true) :
     ((((BitVec.ofInt 32 (351)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-69))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-68)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+93)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n68 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-68)) != 0) = true) :
     ((((BitVec.ofInt 32 (349)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-68))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-67)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+91)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n67 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-67)) != 0) = true) :
     ((((BitVec.ofInt 32 (347)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-67))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-66)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+89)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n66 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-66)) != 0) = true) :
     ((((BitVec.ofInt 32 (345)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-66))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-65)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+88)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n65 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-65)) != 0) = true) :
     ((((BitVec.ofInt 32 (344)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-65))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-64)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+86)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n64 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-64)) != 0) = true) :
     ((((BitVec.ofInt 32 (342)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-64))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-63)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+84)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n63 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-63)) != 0) = true) :
     ((((BitVec.ofInt 32 (340)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-63))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-62)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+82)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n62 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-62)) != 0) = true) :
     ((((BitVec.ofInt 32 (338)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-62))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-61)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+81)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n61 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-61)) != 0) = true) :
     ((((BitVec.ofInt 32 (337)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-61))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-60)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+79)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n60 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-60)) != 0) = true) :
     ((((BitVec.ofInt 32 (335)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-60))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-59)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+77)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n59 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-59)) != 0) = true) :
     ((((BitVec.ofInt 32 (333)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-59))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-58)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+75)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n58 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-58)) != 0) = true) :
     ((((BitVec.ofInt 32 (331)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-58))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-57)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+74)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n57 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-57)) != 0) = true) :
     ((((BitVec.ofInt 32 (330)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-57))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-56)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+72)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n56 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-56)) != 0) = true) :
     ((((BitVec.ofInt 32 (328)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-56))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-55)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+71)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n55 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-55)) != 0) = true) :
     ((((BitVec.ofInt 32 (327)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-55))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-54)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+69)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n54 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-54)) != 0) = true) :
     ((((BitVec.ofInt 32 (325)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-54))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-53)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+67)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n53 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-53)) != 0) = true) :
     ((((BitVec.ofInt 32 (323)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-53))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-52)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+66)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n52 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-52)) != 0) = true) :
     ((((BitVec.ofInt 32 (322)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-52))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-51)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+64)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n51 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-51)) != 0) = true) :
     ((((BitVec.ofInt 32 (320)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-51))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-50)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+63)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n50 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-50)) != 0) = true) :
     ((((BitVec.ofInt 32 (319)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-50))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-49)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+61)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n49 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-49)) != 0) = true) :
     ((((BitVec.ofInt 32 (317)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-49))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-48)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+60)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n48 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-48)) != 0) = true) :
     ((((BitVec.ofInt 32 (316)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-48))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-47)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+58)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n47 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-47)) != 0) = true) :
     ((((BitVec.ofInt 32 (314)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-47))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-46)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+57)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n46 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-46)) != 0) = true) :
     ((((BitVec.ofInt 32 (313)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-46))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-45)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+55)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n45 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-45)) != 0) = true) :
     ((((BitVec.ofInt 32 (311)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-45))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-44)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+54)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n44 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-44)) != 0) = true) :
     ((((BitVec.ofInt 32 (310)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-44))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-43)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+52)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n43 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-43)) != 0) = true) :
     ((((BitVec.ofInt 32 (308)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-43))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-42)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+51)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n42 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-42)) != 0) = true) :
     ((((BitVec.ofInt 32 (307)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-42))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-41)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+49)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n41 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-41)) != 0) = true) :
     ((((BitVec.ofInt 32 (305)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-41))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-40)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+48)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n40 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-40)) != 0) = true) :
     ((((BitVec.ofInt 32 (304)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-40))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-39)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+47)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n39 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-39)) != 0) = true) :
     ((((BitVec.ofInt 32 (303)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-39))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-38)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+45)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n38 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-38)) != 0) = true) :
     ((((BitVec.ofInt 32 (301)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-38))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-37)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+44)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n37 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-37)) != 0) = true) :
     ((((BitVec.ofInt 32 (300)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-37))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-36)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+42)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n36 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-36)) != 0) = true) :
     ((((BitVec.ofInt 32 (298)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-36))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-35)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+41)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n35 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-35)) != 0) = true) :
     ((((BitVec.ofInt 32 (297)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-35))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-34)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+40)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n34 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-34)) != 0) = true) :
     ((((BitVec.ofInt 32 (296)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-34))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-33)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+38)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n33 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-33)) != 0) = true) :
     ((((BitVec.ofInt 32 (294)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-33))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-32)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+37)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n32 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-32)) != 0) = true) :
     ((((BitVec.ofInt 32 (293)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-32))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-31)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+36)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n31 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-31)) != 0) = true) :
     ((((BitVec.ofInt 32 (292)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-31))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-30)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+34)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n30 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-30)) != 0) = true) :
     ((((BitVec.ofInt 32 (290)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-30))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-29)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+33)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n29 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-29)) != 0) = true) :
     ((((BitVec.ofInt 32 (289)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-29))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-28)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+32)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n28 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-28)) != 0) = true) :
     ((((BitVec.ofInt 32 (288)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-28))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-27)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+31)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n27 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-27)) != 0) = true) :
     ((((BitVec.ofInt 32 (287)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-27))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-26)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+29)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n26 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-26)) != 0) = true) :
     ((((BitVec.ofInt 32 (285)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-26))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-25)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+28)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n25 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-25)) != 0) = true) :
     ((((BitVec.ofInt 32 (284)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-25))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-24)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+27)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n24 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-24)) != 0) = true) :
     ((((BitVec.ofInt 32 (283)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-24))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-23)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+26)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n23 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-23)) != 0) = true) :
     ((((BitVec.ofInt 32 (282)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-23))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-22)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+25)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n22 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-22)) != 0) = true) :
     ((((BitVec.ofInt 32 (281)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-22))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-21)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+23)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n21 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-21)) != 0) = true) :
     ((((BitVec.ofInt 32 (279)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-21))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-20)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+22)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n20 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-20)) != 0) = true) :
     ((((BitVec.ofInt 32 (278)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-20))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-19)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+21)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n19 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-19)) != 0) = true) :
     ((((BitVec.ofInt 32 (277)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-19))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-18)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+20)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n18 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-18)) != 0) = true) :
     ((((BitVec.ofInt 32 (276)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-18))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-17)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+19)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n17 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-17)) != 0) = true) :
     ((((BitVec.ofInt 32 (275)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-17))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-16)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+18)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n16 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-16)) != 0) = true) :
     ((((BitVec.ofInt 32 (274)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-16))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-15)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+16)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n15 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-15)) != 0) = true) :
     ((((BitVec.ofInt 32 (272)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-15))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-14)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+15)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n14 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-14)) != 0) = true) :
     ((((BitVec.ofInt 32 (271)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-14))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-13)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+14)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n13 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-13)) != 0) = true) :
     ((((BitVec.ofInt 32 (270)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-13))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-12)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+13)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n12 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-12)) != 0) = true) :
     ((((BitVec.ofInt 32 (269)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-12))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-11)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+12)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n11 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-11)) != 0) = true) :
     ((((BitVec.ofInt 32 (268)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-11))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-10)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+11)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n10 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-10)) != 0) = true) :
     ((((BitVec.ofInt 32 (267)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-10))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-9)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+10)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n9 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-9)) != 0) = true) :
     ((((BitVec.ofInt 32 (266)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-9))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-8)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+9)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n8 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-8)) != 0) = true) :
     ((((BitVec.ofInt 32 (265)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-8))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-7)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+8)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n7 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-7)) != 0) = true) :
     ((((BitVec.ofInt 32 (264)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-7))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-6)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+7)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n6 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-6)) != 0) = true) :
     ((((BitVec.ofInt 32 (263)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-6))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-5)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+6)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n5 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-5)) != 0) = true) :
     ((((BitVec.ofInt 32 (262)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-5))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-4)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+5)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n4 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-4)) != 0) = true) :
     ((((BitVec.ofInt 32 (261)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-4))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-3)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+4)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n3 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-3)) != 0) = true) :
     ((((BitVec.ofInt 32 (260)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-3))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-2)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+3)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n2 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-2)) != 0) = true) :
     ((((BitVec.ofInt 32 (259)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-2))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [(-1)])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+2)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+8])))` -/
 theorem m1028_n1 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (-1)) != 0) = true) :
     ((((BitVec.ofInt 32 (258)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (16))).setWidth 8) = (x / (BitVec.ofInt 8 (-1))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [3])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+86)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+2])))` -/
 theorem m1028_3 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (3)) != 0) = true) :
     ((((BitVec.ofInt 32 (342)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (10))).setWidth 8) = (x / (BitVec.ofInt 8 (3))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [5])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+154)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+3])))` -/
 theorem m1028_5 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (5)) != 0) = true) :
     ((((BitVec.ofInt 32 (410)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (11))).setWidth 8) = (x / (BitVec.ofInt 8 (5))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [6])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+86)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+3])))` -/
 theorem m1028_6 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (6)) != 0) = true) :
     ((((BitVec.ofInt 32 (342)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (11))).setWidth 8) = (x / (BitVec.ofInt 8 (6))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [7])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+37)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+3])))` -/
 theorem m1028_7 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (7)) != 0) = true) :
     ((((BitVec.ofInt 32 (293)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (11))).setWidth 8) = (x / (BitVec.ofInt 8 (7))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [9])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+200)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+4])))` -/
 theorem m1028_9 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (9)) != 0) = true) :
     ((((BitVec.ofInt 32 (456)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (12))).setWidth 8) = (x / (BitVec.ofInt 8 (9))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [10])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+154)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+4])))` -/
 theorem m1028_10 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (10)) != 0) = true) :
     ((((BitVec.ofInt 32 (410)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (12))).setWidth 8) = (x / (BitVec.ofInt 8 (10))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [11])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+117)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+4])))` -/
 theorem m1028_11 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (11)) != 0) = true) :
     ((((BitVec.ofInt 32 (373)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (12))).setWidth 8) = (x / (BitVec.ofInt 8 (11))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [12])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+86)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+4])))` -/
 theorem m1028_12 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (12)) != 0) = true) :
     ((((BitVec.ofInt 32 (342)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (12))).setWidth 8) = (x / (BitVec.ofInt 8 (12))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [13])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+60)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+4])))` -/
 theorem m1028_13 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (13)) != 0) = true) :
     ((((BitVec.ofInt 32 (316)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (12))).setWidth 8) = (x / (BitVec.ofInt 8 (13))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [14])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+37)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+4])))` -/
 theorem m1028_14 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (14)) != 0) = true) :
     ((((BitVec.ofInt 32 (293)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (12))).setWidth 8) = (x / (BitVec.ofInt 8 (14))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [15])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+18)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+4])))` -/
 theorem m1028_15 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (15)) != 0) = true) :
     ((((BitVec.ofInt 32 (274)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (12))).setWidth 8) = (x / (BitVec.ofInt 8 (15))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [17])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+226)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+5])))` -/
 theorem m1028_17 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (17)) != 0) = true) :
     ((((BitVec.ofInt 32 (482)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (13))).setWidth 8) = (x / (BitVec.ofInt 8 (17))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [18])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+200)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+5])))` -/
 theorem m1028_18 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (18)) != 0) = true) :
     ((((BitVec.ofInt 32 (456)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (13))).setWidth 8) = (x / (BitVec.ofInt 8 (18))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [19])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+176)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+5])))` -/
 theorem m1028_19 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (19)) != 0) = true) :
     ((((BitVec.ofInt 32 (432)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (13))).setWidth 8) = (x / (BitVec.ofInt 8 (19))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [20])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+154)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+5])))` -/
 theorem m1028_20 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (20)) != 0) = true) :
     ((((BitVec.ofInt 32 (410)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (13))).setWidth 8) = (x / (BitVec.ofInt 8 (20))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [21])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+135)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+5])))` -/
 theorem m1028_21 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (21)) != 0) = true) :
     ((((BitVec.ofInt 32 (391)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (13))).setWidth 8) = (x / (BitVec.ofInt 8 (21))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [22])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+117)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+5])))` -/
 theorem m1028_22 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (22)) != 0) = true) :
     ((((BitVec.ofInt 32 (373)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (13))).setWidth 8) = (x / (BitVec.ofInt 8 (22))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [23])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+101)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+5])))` -/
 theorem m1028_23 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (23)) != 0) = true) :
     ((((BitVec.ofInt 32 (357)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (13))).setWidth 8) = (x / (BitVec.ofInt 8 (23))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [24])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+86)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+5])))` -/
 theorem m1028_24 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (24)) != 0) = true) :
     ((((BitVec.ofInt 32 (342)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (13))).setWidth 8) = (x / (BitVec.ofInt 8 (24))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [25])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+72)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+5])))` -/
 theorem m1028_25 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (25)) != 0) = true) :
     ((((BitVec.ofInt 32 (328)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (13))).setWidth 8) = (x / (BitVec.ofInt 8 (25))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [26])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+60)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+5])))` -/
 theorem m1028_26 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (26)) != 0) = true) :
     ((((BitVec.ofInt 32 (316)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (13))).setWidth 8) = (x / (BitVec.ofInt 8 (26))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [27])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+48)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+5])))` -/
 theorem m1028_27 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (27)) != 0) = true) :
     ((((BitVec.ofInt 32 (304)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (13))).setWidth 8) = (x / (BitVec.ofInt 8 (27))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [28])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+37)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+5])))` -/
 theorem m1028_28 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (28)) != 0) = true) :
     ((((BitVec.ofInt 32 (293)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (13))).setWidth 8) = (x / (BitVec.ofInt 8 (28))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [29])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+27)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+5])))` -/
 theorem m1028_29 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (29)) != 0) = true) :
     ((((BitVec.ofInt 32 (283)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (13))).setWidth 8) = (x / (BitVec.ofInt 8 (29))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [30])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+18)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+5])))` -/
 theorem m1028_30 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (30)) != 0) = true) :
     ((((BitVec.ofInt 32 (274)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (13))).setWidth 8) = (x / (BitVec.ofInt 8 (30))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [31])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+9)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+5])))` -/
 theorem m1028_31 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (31)) != 0) = true) :
     ((((BitVec.ofInt 32 (265)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (13))).setWidth 8) = (x / (BitVec.ofInt 8 (31))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [33])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+241)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_33 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (33)) != 0) = true) :
     ((((BitVec.ofInt 32 (497)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (33))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [34])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+226)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_34 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (34)) != 0) = true) :
     ((((BitVec.ofInt 32 (482)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (34))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [35])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+213)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_35 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (35)) != 0) = true) :
     ((((BitVec.ofInt 32 (469)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (35))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [36])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+200)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_36 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (36)) != 0) = true) :
     ((((BitVec.ofInt 32 (456)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (36))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [37])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+187)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_37 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (37)) != 0) = true) :
     ((((BitVec.ofInt 32 (443)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (37))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [38])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+176)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_38 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (38)) != 0) = true) :
     ((((BitVec.ofInt 32 (432)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (38))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [39])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+165)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_39 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (39)) != 0) = true) :
     ((((BitVec.ofInt 32 (421)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (39))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [40])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+154)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_40 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (40)) != 0) = true) :
     ((((BitVec.ofInt 32 (410)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (40))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [41])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+144)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_41 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (41)) != 0) = true) :
     ((((BitVec.ofInt 32 (400)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (41))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [42])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+135)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_42 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (42)) != 0) = true) :
     ((((BitVec.ofInt 32 (391)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (42))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [43])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+126)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_43 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (43)) != 0) = true) :
     ((((BitVec.ofInt 32 (382)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (43))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [44])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+117)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_44 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (44)) != 0) = true) :
     ((((BitVec.ofInt 32 (373)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (44))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [45])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+109)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_45 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (45)) != 0) = true) :
     ((((BitVec.ofInt 32 (365)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (45))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [46])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+101)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_46 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (46)) != 0) = true) :
     ((((BitVec.ofInt 32 (357)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (46))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [47])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+93)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_47 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (47)) != 0) = true) :
     ((((BitVec.ofInt 32 (349)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (47))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [48])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+86)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_48 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (48)) != 0) = true) :
     ((((BitVec.ofInt 32 (342)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (48))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [49])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+79)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_49 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (49)) != 0) = true) :
     ((((BitVec.ofInt 32 (335)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (49))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [50])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+72)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_50 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (50)) != 0) = true) :
     ((((BitVec.ofInt 32 (328)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (50))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [51])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+66)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_51 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (51)) != 0) = true) :
     ((((BitVec.ofInt 32 (322)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (51))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [52])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+60)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_52 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (52)) != 0) = true) :
     ((((BitVec.ofInt 32 (316)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (52))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [53])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+54)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_53 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (53)) != 0) = true) :
     ((((BitVec.ofInt 32 (310)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (53))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [54])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+48)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_54 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (54)) != 0) = true) :
     ((((BitVec.ofInt 32 (304)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (54))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [55])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+42)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_55 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (55)) != 0) = true) :
     ((((BitVec.ofInt 32 (298)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (55))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [56])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+37)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_56 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (56)) != 0) = true) :
     ((((BitVec.ofInt 32 (293)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (56))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [57])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+32)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_57 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (57)) != 0) = true) :
     ((((BitVec.ofInt 32 (288)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (57))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [58])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+27)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_58 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (58)) != 0) = true) :
     ((((BitVec.ofInt 32 (283)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (58))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [59])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+22)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_59 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (59)) != 0) = true) :
     ((((BitVec.ofInt 32 (278)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (59))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [60])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+18)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_60 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (60)) != 0) = true) :
     ((((BitVec.ofInt 32 (274)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (60))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [61])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+13)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_61 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (61)) != 0) = true) :
     ((((BitVec.ofInt 32 (269)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (61))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [62])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+9)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_62 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (62)) != 0) = true) :
     ((((BitVec.ofInt 32 (265)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (62))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [63])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+5)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+6])))` -/
 theorem m1028_63 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (63)) != 0) = true) :
     ((((BitVec.ofInt 32 (261)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (14))).setWidth 8) = (x / (BitVec.ofInt 8 (63))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [65])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+249)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_65 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (65)) != 0) = true) :
     ((((BitVec.ofInt 32 (505)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (65))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [66])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+241)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_66 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (66)) != 0) = true) :
     ((((BitVec.ofInt 32 (497)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (66))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [67])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+234)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_67 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (67)) != 0) = true) :
     ((((BitVec.ofInt 32 (490)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (67))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [68])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+226)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_68 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (68)) != 0) = true) :
     ((((BitVec.ofInt 32 (482)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (68))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [69])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+219)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_69 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (69)) != 0) = true) :
     ((((BitVec.ofInt 32 (475)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (69))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [70])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+213)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_70 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (70)) != 0) = true) :
     ((((BitVec.ofInt 32 (469)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (70))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [71])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+206)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_71 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (71)) != 0) = true) :
     ((((BitVec.ofInt 32 (462)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (71))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [72])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+200)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_72 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (72)) != 0) = true) :
     ((((BitVec.ofInt 32 (456)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (72))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [73])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+193)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_73 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (73)) != 0) = true) :
     ((((BitVec.ofInt 32 (449)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (73))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [74])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+187)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_74 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (74)) != 0) = true) :
     ((((BitVec.ofInt 32 (443)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (74))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [75])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+181)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_75 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (75)) != 0) = true) :
     ((((BitVec.ofInt 32 (437)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (75))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [76])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+176)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_76 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (76)) != 0) = true) :
     ((((BitVec.ofInt 32 (432)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (76))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [77])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+170)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_77 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (77)) != 0) = true) :
     ((((BitVec.ofInt 32 (426)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (77))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [78])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+165)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_78 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (78)) != 0) = true) :
     ((((BitVec.ofInt 32 (421)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (78))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [79])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+159)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_79 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (79)) != 0) = true) :
     ((((BitVec.ofInt 32 (415)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (79))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [80])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+154)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_80 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (80)) != 0) = true) :
     ((((BitVec.ofInt 32 (410)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (80))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [81])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+149)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_81 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (81)) != 0) = true) :
     ((((BitVec.ofInt 32 (405)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (81))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [82])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+144)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_82 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (82)) != 0) = true) :
     ((((BitVec.ofInt 32 (400)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (82))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [83])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+139)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_83 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (83)) != 0) = true) :
     ((((BitVec.ofInt 32 (395)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (83))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [84])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+135)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_84 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (84)) != 0) = true) :
     ((((BitVec.ofInt 32 (391)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (84))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [85])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+130)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_85 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (85)) != 0) = true) :
     ((((BitVec.ofInt 32 (386)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (85))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [86])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+126)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_86 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (86)) != 0) = true) :
     ((((BitVec.ofInt 32 (382)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (86))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [87])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+121)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_87 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (87)) != 0) = true) :
     ((((BitVec.ofInt 32 (377)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (87))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [88])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+117)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_88 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (88)) != 0) = true) :
     ((((BitVec.ofInt 32 (373)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (88))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [89])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+113)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_89 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (89)) != 0) = true) :
     ((((BitVec.ofInt 32 (369)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (89))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [90])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+109)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_90 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (90)) != 0) = true) :
     ((((BitVec.ofInt 32 (365)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (90))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [91])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+105)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_91 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (91)) != 0) = true) :
     ((((BitVec.ofInt 32 (361)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (91))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [92])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+101)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_92 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (92)) != 0) = true) :
     ((((BitVec.ofInt 32 (357)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (92))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [93])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+97)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_93 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (93)) != 0) = true) :
     ((((BitVec.ofInt 32 (353)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (93))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [94])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+93)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_94 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (94)) != 0) = true) :
     ((((BitVec.ofInt 32 (349)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (94))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [95])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+89)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_95 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (95)) != 0) = true) :
     ((((BitVec.ofInt 32 (345)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (95))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [96])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+86)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_96 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (96)) != 0) = true) :
     ((((BitVec.ofInt 32 (342)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (96))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [97])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+82)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_97 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (97)) != 0) = true) :
     ((((BitVec.ofInt 32 (338)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (97))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [98])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+79)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_98 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (98)) != 0) = true) :
     ((((BitVec.ofInt 32 (335)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (98))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [99])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+75)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_99 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (99)) != 0) = true) :
     ((((BitVec.ofInt 32 (331)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (99))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [100])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+72)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_100 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (100)) != 0) = true) :
     ((((BitVec.ofInt 32 (328)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (100))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [101])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+69)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_101 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (101)) != 0) = true) :
     ((((BitVec.ofInt 32 (325)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (101))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [102])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+66)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_102 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (102)) != 0) = true) :
     ((((BitVec.ofInt 32 (322)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (102))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [103])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+63)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_103 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (103)) != 0) = true) :
     ((((BitVec.ofInt 32 (319)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (103))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [104])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+60)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_104 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (104)) != 0) = true) :
     ((((BitVec.ofInt 32 (316)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (104))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [105])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+57)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_105 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (105)) != 0) = true) :
     ((((BitVec.ofInt 32 (313)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (105))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [106])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+54)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_106 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (106)) != 0) = true) :
     ((((BitVec.ofInt 32 (310)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (106))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [107])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+51)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_107 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (107)) != 0) = true) :
     ((((BitVec.ofInt 32 (307)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (107))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [108])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+48)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_108 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (108)) != 0) = true) :
     ((((BitVec.ofInt 32 (304)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (108))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [109])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+45)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_109 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (109)) != 0) = true) :
     ((((BitVec.ofInt 32 (301)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (109))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [110])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+42)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_110 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (110)) != 0) = true) :
     ((((BitVec.ofInt 32 (298)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (110))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [111])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+40)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_111 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (111)) != 0) = true) :
     ((((BitVec.ofInt 32 (296)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (111))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [112])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+37)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_112 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (112)) != 0) = true) :
     ((((BitVec.ofInt 32 (293)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (112))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [113])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+34)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_113 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (113)) != 0) = true) :
     ((((BitVec.ofInt 32 (290)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (113))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [114])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+32)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_114 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (114)) != 0) = true) :
     ((((BitVec.ofInt 32 (288)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (114))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [115])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+29)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_115 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (115)) != 0) = true) :
     ((((BitVec.ofInt 32 (285)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (115))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [116])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+27)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_116 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (116)) != 0) = true) :
     ((((BitVec.ofInt 32 (283)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (116))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [117])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+25)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_117 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (117)) != 0) = true) :
     ((((BitVec.ofInt 32 (281)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (117))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [118])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+22)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_118 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (118)) != 0) = true) :
     ((((BitVec.ofInt 32 (278)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (118))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [119])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+20)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_119 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (119)) != 0) = true) :
     ((((BitVec.ofInt 32 (276)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (119))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [120])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+18)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_120 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (120)) != 0) = true) :
     ((((BitVec.ofInt 32 (274)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (120))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [121])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+15)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_121 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (121)) != 0) = true) :
     ((((BitVec.ofInt 32 (271)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (121))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [122])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+13)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_122 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (122)) != 0) = true) :
     ((((BitVec.ofInt 32 (269)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (122))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [123])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+11)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_123 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (123)) != 0) = true) :
     ((((BitVec.ofInt 32 (267)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (123))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [124])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+9)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_124 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (124)) != 0) = true) :
     ((((BitVec.ofInt 32 (265)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (124))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [125])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+7)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_125 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (125)) != 0) = true) :
     ((((BitVec.ofInt 32 (263)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (125))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [126])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+5)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_126 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (126)) != 0) = true) :
     ((((BitVec.ofInt 32 (261)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (126))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1028  `(Div8u x (Const8 [127])) =>  (Trunc32to8 (Rsh32Ux64 <typ.UInt32> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1<<8+3)]) (ZeroExt8to32 x)) (Const64 <typ.UInt64> [8+7])))` -/
 theorem m1028_127 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (127)) != 0) = true) :
     ((((BitVec.ofInt 32 (259)) * (x.setWidth 32)) >>> (BitVec.ofInt 64 (15))).setWidth 8) = (x / (BitVec.ofInt 8 (127))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [3])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+21846)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+2])))` -/
 theorem m1037_3 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (3)) != 0) = true) :
     ((((BitVec.ofInt 64 (87382)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (18))).setWidth 16) = (x / (BitVec.ofInt 16 (3))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [5])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+39322)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+3])))` -/
 theorem m1037_5 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (5)) != 0) = true) :
     ((((BitVec.ofInt 64 (104858)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (19))).setWidth 16) = (x / (BitVec.ofInt 16 (5))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [6])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+21846)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+3])))` -/
 theorem m1037_6 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (6)) != 0) = true) :
     ((((BitVec.ofInt 64 (87382)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (19))).setWidth 16) = (x / (BitVec.ofInt 16 (6))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [7])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+9363)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+3])))` -/
 theorem m1037_7 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (7)) != 0) = true) :
     ((((BitVec.ofInt 64 (74899)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (19))).setWidth 16) = (x / (BitVec.ofInt 16 (7))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [9])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+50973)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+4])))` -/
 theorem m1037_9 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (9)) != 0) = true) :
     ((((BitVec.ofInt 64 (116509)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (20))).setWidth 16) = (x / (BitVec.ofInt 16 (9))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [10])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+39322)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+4])))` -/
 theorem m1037_10 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (10)) != 0) = true) :
     ((((BitVec.ofInt 64 (104858)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (20))).setWidth 16) = (x / (BitVec.ofInt 16 (10))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [11])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+29790)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+4])))` -/
 theorem m1037_11 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (11)) != 0) = true) :
     ((((BitVec.ofInt 64 (95326)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (20))).setWidth 16) = (x / (BitVec.ofInt 16 (11))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [12])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+21846)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+4])))` -/
 theorem m1037_12 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (12)) != 0) = true) :
     ((((BitVec.ofInt 64 (87382)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (20))).setWidth 16) = (x / (BitVec.ofInt 16 (12))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [13])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+15124)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+4])))` -/
 theorem m1037_13 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (13)) != 0) = true) :
     ((((BitVec.ofInt 64 (80660)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (20))).setWidth 16) = (x / (BitVec.ofInt 16 (13))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [25])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+18351)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+5])))` -/
 theorem m1037_25 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (25)) != 0) = true) :
     ((((BitVec.ofInt 64 (83887)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (21))).setWidth 16) = (x / (BitVec.ofInt 16 (25))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [100])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+18351)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+7])))` -/
 theorem m1037_100 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (100)) != 0) = true) :
     ((((BitVec.ofInt 64 (83887)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (23))).setWidth 16) = (x / (BitVec.ofInt 16 (100))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [641])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+39159)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+10])))` -/
 theorem m1037_641 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (641)) != 0) = true) :
     ((((BitVec.ofInt 64 (104695)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (26))).setWidth 16) = (x / (BitVec.ofInt 16 (641))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [1000])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+1573)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+10])))` -/
 theorem m1037_1000 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (1000)) != 0) = true) :
     ((((BitVec.ofInt 64 (67109)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (26))).setWidth 16) = (x / (BitVec.ofInt 16 (1000))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [15745])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+2660)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+14])))` -/
 theorem m1037_15745 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (15745)) != 0) = true) :
     ((((BitVec.ofInt 64 (68196)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (30))).setWidth 16) = (x / (BitVec.ofInt 16 (15745))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [32767])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+3)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+15])))` -/
 theorem m1037_32767 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (32767)) != 0) = true) :
     ((((BitVec.ofInt 64 (65539)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (31))).setWidth 16) = (x / (BitVec.ofInt 16 (32767))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [16385])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+65529)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+15])))` -/
 theorem m1037_16385 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (16385)) != 0) = true) :
     ((((BitVec.ofInt 64 (131065)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (31))).setWidth 16) = (x / (BitVec.ofInt 16 (16385))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [16383])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+5)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+14])))` -/
 theorem m1037_16383 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (16383)) != 0) = true) :
     ((((BitVec.ofInt 64 (65541)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (30))).setWidth 16) = (x / (BitVec.ofInt 16 (16383))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [10922])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+32775)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+14])))` -/
 theorem m1037_10922 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (10922)) != 0) = true) :
     ((((BitVec.ofInt 64 (98311)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (30))).setWidth 16) = (x / (BitVec.ofInt 16 (10922))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [1792])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+9363)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+11])))` -/
 theorem m1037_1792 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (1792)) != 0) = true) :
     ((((BitVec.ofInt 64 (74899)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (27))).setWidth 16) = (x / (BitVec.ofInt 16 (1792))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [(-1)])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+2)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+16])))` -/
 theorem m1037_n1 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (-1)) != 0) = true) :
     ((((BitVec.ofInt 64 (65538)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (32))).setWidth 16) = (x / (BitVec.ofInt 16 (-1))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [(-3)])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+4)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+16])))` -/
 theorem m1037_n3 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (-3)) != 0) = true) :
     ((((BitVec.ofInt 64 (65540)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (32))).setWidth 16) = (x / (BitVec.ofInt 16 (-3))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [(-7)])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+8)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+16])))` -/
 theorem m1037_n7 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (-7)) != 0) = true) :
     ((((BitVec.ofInt 64 (65544)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (32))).setWidth 16) = (x / (BitVec.ofInt 16 (-7))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1037  `(Div16u x (Const16 [(-16385)])) =>  (Trunc64to16 (Rsh64Ux64 <typ.UInt64> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(1<<16+21848)]) (ZeroExt16to64 x)) (Const64 <typ.UInt64> [16+16])))` -/
 theorem m1037_n16385 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (-16385)) != 0) = true) :
     ((((BitVec.ofInt 64 (87384)) * (x.setWidth 64)) >>> (BitVec.ofInt 64 (32))).setWidth 16) = (x / (BitVec.ofInt 16 (-16385))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [3])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(21846)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+2-1])))` -/
 theorem m1060_3 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (3)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (21846)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (17))).setWidth 16) = (x / (BitVec.ofInt 16 (3))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [5])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(39322)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+3-1])))` -/
 theorem m1060_5 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (5)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (39322)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (18))).setWidth 16) = (x / (BitVec.ofInt 16 (5))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [6])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(21846)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+3-1])))` -/
 theorem m1060_6 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (6)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (21846)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (18))).setWidth 16) = (x / (BitVec.ofInt 16 (6))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [7])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(9363)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+3-1])))` -/
 theorem m1060_7 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (7)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (9363)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (18))).setWidth 16) = (x / (BitVec.ofInt 16 (7))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [9])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(50973)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+4-1])))` -/
 theorem m1060_9 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (9)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (50973)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (19))).setWidth 16) = (x / (BitVec.ofInt 16 (9))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [10])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(39322)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+4-1])))` -/
 theorem m1060_10 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (10)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (39322)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (19))).setWidth 16) = (x / (BitVec.ofInt 16 (10))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [11])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(29790)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+4-1])))` -/
 theorem m1060_11 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (11)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (29790)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (19))).setWidth 16) = (x / (BitVec.ofInt 16 (11))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [12])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(21846)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+4-1])))` -/
 theorem m1060_12 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (12)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (21846)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (19))).setWidth 16) = (x / (BitVec.ofInt 16 (12))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [13])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(15124)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+4-1])))` -/
 theorem m1060_13 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (13)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (15124)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (19))).setWidth 16) = (x / (BitVec.ofInt 16 (13))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [25])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(18351)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+5-1])))` -/
 theorem m1060_25 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (25)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (18351)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (20))).setWidth 16) = (x / (BitVec.ofInt 16 (25))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [100])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(18351)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+7-1])))` -/
 theorem m1060_100 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (100)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (18351)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (22))).setWidth 16) = (x / (BitVec.ofInt 16 (100))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [641])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(39159)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+10-1])))` -/
 theorem m1060_641 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (641)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (39159)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (25))).setWidth 16) = (x / (BitVec.ofInt 16 (641))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [1000])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(1573)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+10-1])))` -/
 theorem m1060_1000 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (1000)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (1573)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (25))).setWidth 16) = (x / (BitVec.ofInt 16 (1000))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [15745])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(2660)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+14-1])))` -/
 theorem m1060_15745 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (15745)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (2660)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (29))).setWidth 16) = (x / (BitVec.ofInt 16 (15745))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [32767])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(3)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+15-1])))` -/
 theorem m1060_32767 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (32767)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (3)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (30))).setWidth 16) = (x / (BitVec.ofInt 16 (32767))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [16385])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(65529)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+15-1])))` -/
 theorem m1060_16385 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (16385)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (65529)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (30))).setWidth 16) = (x / (BitVec.ofInt 16 (16385))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [16383])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(5)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+14-1])))` -/
 theorem m1060_16383 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (16383)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (5)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (29))).setWidth 16) = (x / (BitVec.ofInt 16 (16383))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [10922])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(32775)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+14-1])))` -/
 theorem m1060_10922 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (10922)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (32775)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (29))).setWidth 16) = (x / (BitVec.ofInt 16 (10922))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [1792])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(9363)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+11-1])))` -/
 theorem m1060_1792 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (1792)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (9363)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (26))).setWidth 16) = (x / (BitVec.ofInt 16 (1792))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [(-1)])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(2)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+16-1])))` -/
 theorem m1060_n1 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (-1)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (2)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (31))).setWidth 16) = (x / (BitVec.ofInt 16 (-1))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [(-3)])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(4)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+16-1])))` -/
 theorem m1060_n3 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (-3)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (4)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (31))).setWidth 16) = (x / (BitVec.ofInt 16 (-3))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [(-7)])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(8)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+16-1])))` -/
 theorem m1060_n7 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (-7)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (8)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (31))).setWidth 16) = (x / (BitVec.ofInt 16 (-7))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1060  `(Div16u x (Const16 [(-16385)])) =>  (Trunc32to16 (Rsh32Ux64 <typ.UInt32> (Avg32u (Lsh32x64 <typ.UInt32> (ZeroExt16to32 x) (Const64 <typ.UInt64> [16])) (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(21848)]) (ZeroExt16to32 x))) (Const64 <typ.UInt64> [16+16-1])))` -/
 theorem m1060_n16385 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (-16385)) != 0) = true) :
     (((((((x.setWidth 32) <<< (BitVec.ofInt 64 (16))).setWidth (32+1)) + (((BitVec.ofInt 32 (21848)) * (x.setWidth 32)).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (31))).setWidth 16) = (x / (BitVec.ofInt 16 (-16385))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1083  `(Div32u x (Const32 [6700417])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(1082130431)]) x)) (Const64 <typ.UInt64> [23-1]))` -/
 theorem m1083_6700417 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (6700417)) != 0) = true) :
     ((((x.setWidth (32+1)) + (((((BitVec.ofInt 32 (1082130431)).setWidth (2*32)) * (x.setWidth (2*32))).extractLsb' 32 32).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (22))) = (x / (BitVec.ofInt 32 (6700417))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1083  `(Div32u x (Const32 [2147483647])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(3)]) x)) (Const64 <typ.UInt64> [31-1]))` -/
 theorem m1083_2147483647 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (2147483647)) != 0) = true) :
     ((((x.setWidth (32+1)) + (((((BitVec.ofInt 32 (3)).setWidth (2*32)) * (x.setWidth (2*32))).extractLsb' 32 32).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (30))) = (x / (BitVec.ofInt 32 (2147483647))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1083  `(Div32u x (Const32 [1073741825])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(4294967289)]) x)) (Const64 <typ.UInt64> [31-1]))` -/
 theorem m1083_1073741825 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (1073741825)) != 0) = true) :
     ((((x.setWidth (32+1)) + (((((BitVec.ofInt 32 (4294967289)).setWidth (2*32)) * (x.setWidth (2*32))).extractLsb' 32 32).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (30))) = (x / (BitVec.ofInt 32 (1073741825))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1083  `(Div32u x (Const32 [1073741823])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(5)]) x)) (Const64 <typ.UInt64> [30-1]))` -/
 theorem m1083_1073741823 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (1073741823)) != 0) = true) :
     ((((x.setWidth (32+1)) + (((((BitVec.ofInt 32 (5)).setWidth (2*32)) * (x.setWidth (2*32))).extractLsb' 32 32).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (29))) = (x / (BitVec.ofInt 32 (1073741823))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1083  `(Div32u x (Const32 [715827882])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(2147483655)]) x)) (Const64 <typ.UInt64> [30-1]))` -/
 theorem m1083_715827882 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (715827882)) != 0) = true) :
     ((((x.setWidth (32+1)) + (((((BitVec.ofInt 32 (2147483655)).setWidth (2*32)) * (x.setWidth (2*32))).extractLsb' 32 32).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (29))) = (x / (BitVec.ofInt 32 (715827882))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1083  `(Div32u x (Const32 [117440512])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(613566757)]) x)) (Const64 <typ.UInt64> [27-1]))` -/
 theorem m1083_117440512 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (117440512)) != 0) = true) :
     ((((x.setWidth (32+1)) + (((((BitVec.ofInt 32 (613566757)).setWidth (2*32)) * (x.setWidth (2*32))).extractLsb' 32 32).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (26))) = (x / (BitVec.ofInt 32 (117440512))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1083  `(Div32u x (Const32 [(-1)])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(2)]) x)) (Const64 <typ.UInt64> [32-1]))` -/
 theorem m1083_n1 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (-1)) != 0) = true) :
     ((((x.setWidth (32+1)) + (((((BitVec.ofInt 32 (2)).setWidth (2*32)) * (x.setWidth (2*32))).extractLsb' 32 32).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (31))) = (x / (BitVec.ofInt 32 (-1))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1083  `(Div32u x (Const32 [(-3)])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(4)]) x)) (Const64 <typ.UInt64> [32-1]))` -/
 theorem m1083_n3 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (-3)) != 0) = true) :
     ((((x.setWidth (32+1)) + (((((BitVec.ofInt 32 (4)).setWidth (2*32)) * (x.setWidth (2*32))).extractLsb' 32 32).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (31))) = (x / (BitVec.ofInt 32 (-3))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1083  `(Div32u x (Const32 [(-7)])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(8)]) x)) (Const64 <typ.UInt64> [32-1]))` -/
 theorem m1083_n7 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (-7)) != 0) = true) :
     ((((x.setWidth (32+1)) + (((((BitVec.ofInt 32 (8)).setWidth (2*32)) * (x.setWidth (2*32))).extractLsb' 32 32).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (31))) = (x / (BitVec.ofInt 32 (-7))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1083  `(Div32u x (Const32 [(-1073741825)])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(1431655768)]) x)) (Const64 <typ.UInt64> [32-1]))` -/
 theorem m1083_n1073741825 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (-1073741825)) != 0) = true) :
     ((((x.setWidth (32+1)) + (((((BitVec.ofInt 32 (1431655768)).setWidth (2*32)) * (x.setWidth (2*32))).extractLsb' 32 32).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (31))) = (x / (BitVec.ofInt 32 (-1073741825))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1083  `(Div32u x (Const32 [2147483643])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(11)]) x)) (Const64 <typ.UInt64> [31-1]))` -/
 theorem m1083_2147483643 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (2147483643)) != 0) = true) :
     ((((x.setWidth (32+1)) + (((((BitVec.ofInt 32 (11)).setWidth (2*32)) * (x.setWidth (2*32))).extractLsb' 32 32).setWidth (32+1))) >>> 1).setWidth 32 >>> (BitVec.ofInt 64 (30))) = (x / (BitVec.ofInt 32 (2147483643))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1108  `(Div32u x (Const32 [6700417])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(1082130431)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+23-1])))` -/
 theorem m1108_6700417 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (6700417)) != 0) = true) :
     (((((((x.setWidth 64) <<< (BitVec.ofInt 64 (32))).setWidth (64+1)) + (((BitVec.ofInt 64 (1082130431)) * (x.setWidth 64)).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (54))).setWidth 32) = (x / (BitVec.ofInt 32 (6700417))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1108  `(Div32u x (Const32 [2147483647])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(3)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+31-1])))` -/
 theorem m1108_2147483647 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (2147483647)) != 0) = true) :
     (((((((x.setWidth 64) <<< (BitVec.ofInt 64 (32))).setWidth (64+1)) + (((BitVec.ofInt 64 (3)) * (x.setWidth 64)).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (62))).setWidth 32) = (x / (BitVec.ofInt 32 (2147483647))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1108  `(Div32u x (Const32 [1073741825])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(4294967289)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+31-1])))` -/
 theorem m1108_1073741825 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (1073741825)) != 0) = true) :
     (((((((x.setWidth 64) <<< (BitVec.ofInt 64 (32))).setWidth (64+1)) + (((BitVec.ofInt 64 (4294967289)) * (x.setWidth 64)).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (62))).setWidth 32) = (x / (BitVec.ofInt 32 (1073741825))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1108  `(Div32u x (Const32 [1073741823])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(5)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+30-1])))` -/
 theorem m1108_1073741823 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (1073741823)) != 0) = true) :
     (((((((x.setWidth 64) <<< (BitVec.ofInt 64 (32))).setWidth (64+1)) + (((BitVec.ofInt 64 (5)) * (x.setWidth 64)).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (61))).setWidth 32) = (x / (BitVec.ofInt 32 (1073741823))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1108  `(Div32u x (Const32 [715827882])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(2147483655)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+30-1])))` -/
 theorem m1108_715827882 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (715827882)) != 0) = true) :
     (((((((x.setWidth 64) <<< (BitVec.ofInt 64 (32))).setWidth (64+1)) + (((BitVec.ofInt 64 (2147483655)) * (x.setWidth 64)).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (61))).setWidth 32) = (x / (BitVec.ofInt 32 (715827882))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1108  `(Div32u x (Const32 [117440512])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(613566757)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+27-1])))` -/
 theorem m1108_117440512 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (117440512)) != 0) = true) :
     (((((((x.setWidth 64) <<< (BitVec.ofInt 64 (32))).setWidth (64+1)) + (((BitVec.ofInt 64 (613566757)) * (x.setWidth 64)).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (58))).setWidth 32) = (x / (BitVec.ofInt 32 (117440512))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1108  `(Div32u x (Const32 [(-1)])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(2)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+32-1])))` -/
 theorem m1108_n1 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (-1)) != 0) = true) :
     (((((((x.setWidth 64) <<< (BitVec.ofInt 64 (32))).setWidth (64+1)) + (((BitVec.ofInt 64 (2)) * (x.setWidth 64)).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (63))).setWidth 32) = (x / (BitVec.ofInt 32 (-1))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1108  `(Div32u x (Const32 [(-3)])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(4)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+32-1])))` -/
 theorem m1108_n3 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (-3)) != 0) = true) :
     (((((((x.setWidth 64) <<< (BitVec.ofInt 64 (32))).setWidth (64+1)) + (((BitVec.ofInt 64 (4)) * (x.setWidth 64)).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (63))).setWidth 32) = (x / (BitVec.ofInt 32 (-3))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1108  `(Div32u x (Const32 [(-7)])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(8)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+32-1])))` -/
 theorem m1108_n7 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (-7)) != 0) = true) :
     (((((((x.setWidth 64) <<< (BitVec.ofInt 64 (32))).setWidth (64+1)) + (((BitVec.ofInt 64 (8)) * (x.setWidth 64)).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (63))).setWidth 32) = (x / (BitVec.ofInt 32 (-7))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1108  `(Div32u x (Const32 [(-1073741825)])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(1431655768)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+32-1])))` -/
 theorem m1108_n1073741825 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (-1073741825)) != 0) = true) :
     (((((((x.setWidth 64) <<< (BitVec.ofInt 64 (32))).setWidth (64+1)) + (((BitVec.ofInt 64 (1431655768)) * (x.setWidth 64)).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (63))).setWidth 32) = (x / (BitVec.ofInt 32 (-1073741825))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1108  `(Div32u x (Const32 [2147483643])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(11)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+31-1])))` -/
 theorem m1108_2147483643 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (2147483643)) != 0) = true) :
     (((((((x.setWidth 64) <<< (BitVec.ofInt 64 (32))).setWidth (64+1)) + (((BitVec.ofInt 64 (11)) * (x.setWidth 64)).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (62))).setWidth 32) = (x / (BitVec.ofInt 32 (2147483643))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1172  `(Div64u x (Const64 [9223372036854775807])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(3)]) x)) (Const64 <typ.UInt64> [63-1]))` -/
 theorem m1172_9223372036854775807 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (9223372036854775807)) != 0) = true) :
     ((((x.setWidth (64+1)) + (((((BitVec.ofInt 64 (3)).setWidth (2*64)) * (x.setWidth (2*64))).extractLsb' 64 64).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (62))) = (x / (BitVec.ofInt 64 (9223372036854775807))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1172  `(Div64u x (Const64 [4611686018427387905])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(18446744073709551609)]) x)) (Const64 <typ.UInt64> [63-1]))` -/
 theorem m1172_4611686018427387905 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (4611686018427387905)) != 0) = true) :
     ((((x.setWidth (64+1)) + (((((BitVec.ofInt 64 (18446744073709551609)).setWidth (2*64)) * (x.setWidth (2*64))).extractLsb' 64 64).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (62))) = (x / (BitVec.ofInt 64 (4611686018427387905))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1172  `(Div64u x (Const64 [4611686018427387903])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(5)]) x)) (Const64 <typ.UInt64> [62-1]))` -/
 theorem m1172_4611686018427387903 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (4611686018427387903)) != 0) = true) :
     ((((x.setWidth (64+1)) + (((((BitVec.ofInt 64 (5)).setWidth (2*64)) * (x.setWidth (2*64))).extractLsb' 64 64).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (61))) = (x / (BitVec.ofInt 64 (4611686018427387903))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1172  `(Div64u x (Const64 [3074457345618258602])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(9223372036854775815)]) x)) (Const64 <typ.UInt64> [62-1]))` -/
 theorem m1172_3074457345618258602 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (3074457345618258602)) != 0) = true) :
     ((((x.setWidth (64+1)) + (((((BitVec.ofInt 64 (9223372036854775815)).setWidth (2*64)) * (x.setWidth (2*64))).extractLsb' 64 64).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (61))) = (x / (BitVec.ofInt 64 (3074457345618258602))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1172  `(Div64u x (Const64 [504403158265495552])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(2635249153387078803)]) x)) (Const64 <typ.UInt64> [59-1]))` -/
 theorem m1172_504403158265495552 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (504403158265495552)) != 0) = true) :
     ((((x.setWidth (64+1)) + (((((BitVec.ofInt 64 (2635249153387078803)).setWidth (2*64)) * (x.setWidth (2*64))).extractLsb' 64 64).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (58))) = (x / (BitVec.ofInt 64 (504403158265495552))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1172  `(Div64u x (Const64 [(-1)])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(2)]) x)) (Const64 <typ.UInt64> [64-1]))` -/
 theorem m1172_n1 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (-1)) != 0) = true) :
     ((((x.setWidth (64+1)) + (((((BitVec.ofInt 64 (2)).setWidth (2*64)) * (x.setWidth (2*64))).extractLsb' 64 64).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (63))) = (x / (BitVec.ofInt 64 (-1))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1172  `(Div64u x (Const64 [(-3)])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(4)]) x)) (Const64 <typ.UInt64> [64-1]))` -/
 theorem m1172_n3 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (-3)) != 0) = true) :
     ((((x.setWidth (64+1)) + (((((BitVec.ofInt 64 (4)).setWidth (2*64)) * (x.setWidth (2*64))).extractLsb' 64 64).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (63))) = (x / (BitVec.ofInt 64 (-3))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1172  `(Div64u x (Const64 [(-7)])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(8)]) x)) (Const64 <typ.UInt64> [64-1]))` -/
 theorem m1172_n7 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (-7)) != 0) = true) :
     ((((x.setWidth (64+1)) + (((((BitVec.ofInt 64 (8)).setWidth (2*64)) * (x.setWidth (2*64))).extractLsb' 64 64).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (63))) = (x / (BitVec.ofInt 64 (-7))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1172  `(Div64u x (Const64 [(-4611686018427387905)])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(6148914691236517208)]) x)) (Const64 <typ.UInt64> [64-1]))` -/
 theorem m1172_n4611686018427387905 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (-4611686018427387905)) != 0) = true) :
     ((((x.setWidth (64+1)) + (((((BitVec.ofInt 64 (6148914691236517208)).setWidth (2*64)) * (x.setWidth (2*64))).extractLsb' 64 64).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (63))) = (x / (BitVec.ofInt 64 (-4611686018427387905))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1172  `(Div64u x (Const64 [2147483647])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(8589934597)]) x)) (Const64 <typ.UInt64> [31-1]))` -/
 theorem m1172_2147483647 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (2147483647)) != 0) = true) :
     ((((x.setWidth (64+1)) + (((((BitVec.ofInt 64 (8589934597)).setWidth (2*64)) * (x.setWidth (2*64))).extractLsb' 64 64).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (30))) = (x / (BitVec.ofInt 64 (2147483647))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1172  `(Div64u x (Const64 [1000000000000000009])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(2820903858849102160)]) x)) (Const64 <typ.UInt64> [60-1]))` -/
 theorem m1172_1000000000000000009 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (1000000000000000009)) != 0) = true) :
     ((((x.setWidth (64+1)) + (((((BitVec.ofInt 64 (2820903858849102160)).setWidth (2*64)) * (x.setWidth (2*64))).extractLsb' 64 64).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (59))) = (x / (BitVec.ofInt 64 (1000000000000000009))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1172  `(Div64u x (Const64 [3458764513820540928])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(6148914691236517206)]) x)) (Const64 <typ.UInt64> [62-1]))` -/
 theorem m1172_3458764513820540928 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (3458764513820540928)) != 0) = true) :
     ((((x.setWidth (64+1)) + (((((BitVec.ofInt 64 (6148914691236517206)).setWidth (2*64)) * (x.setWidth (2*64))).extractLsb' 64 64).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (61))) = (x / (BitVec.ofInt 64 (3458764513820540928))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1172  `(Div64u x (Const64 [6148914691236517205])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(9223372036854775810)]) x)) (Const64 <typ.UInt64> [63-1]))` -/
 theorem m1172_6148914691236517205 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (6148914691236517205)) != 0) = true) :
     ((((x.setWidth (64+1)) + (((((BitVec.ofInt 64 (9223372036854775810)).setWidth (2*64)) * (x.setWidth (2*64))).extractLsb' 64 64).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (62))) = (x / (BitVec.ofInt 64 (6148914691236517205))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1172  `(Div64u x (Const64 [(-1000000000000000003)])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(1057317284862732479)]) x)) (Const64 <typ.UInt64> [64-1]))` -/
 theorem m1172_n1000000000000000003 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (-1000000000000000003)) != 0) = true) :
     ((((x.setWidth (64+1)) + (((((BitVec.ofInt 64 (1057317284862732479)).setWidth (2*64)) * (x.setWidth (2*64))).extractLsb' 64 64).setWidth (64+1))) >>> 1).setWidth 64 >>> (BitVec.ofInt 64 (63))) = (x / (BitVec.ofInt 64 (-1000000000000000003))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [3])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(171)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+1])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_3 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (3)) != 0) = true) :
     (((((BitVec.ofInt 32 (171)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (9))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (3))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [5])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(205)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+2])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_5 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (5)) != 0) = true) :
     (((((BitVec.ofInt 32 (205)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (10))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (5))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [6])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(171)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+2])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_6 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (6)) != 0) = true) :
     (((((BitVec.ofInt 32 (171)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (10))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (6))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [7])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(147)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+2])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_7 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (7)) != 0) = true) :
     (((((BitVec.ofInt 32 (147)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (10))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (7))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [9])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(228)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+3])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_9 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (9)) != 0) = true) :
     (((((BitVec.ofInt 32 (228)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (11))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (9))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [10])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(205)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+3])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_10 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (10)) != 0) = true) :
     (((((BitVec.ofInt 32 (205)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (11))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (10))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [11])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(187)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+3])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_11 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (11)) != 0) = true) :
     (((((BitVec.ofInt 32 (187)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (11))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (11))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [12])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(171)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+3])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_12 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (12)) != 0) = true) :
     (((((BitVec.ofInt 32 (171)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (11))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (12))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [13])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(158)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+3])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_13 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (13)) != 0) = true) :
     (((((BitVec.ofInt 32 (158)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (11))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (13))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [14])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(147)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+3])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_14 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (14)) != 0) = true) :
     (((((BitVec.ofInt 32 (147)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (11))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (14))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [15])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(137)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+3])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_15 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (15)) != 0) = true) :
     (((((BitVec.ofInt 32 (137)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (11))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (15))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [17])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(241)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+4])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_17 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (17)) != 0) = true) :
     (((((BitVec.ofInt 32 (241)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (12))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (17))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [18])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(228)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+4])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_18 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (18)) != 0) = true) :
     (((((BitVec.ofInt 32 (228)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (12))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (18))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [19])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(216)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+4])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_19 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (19)) != 0) = true) :
     (((((BitVec.ofInt 32 (216)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (12))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (19))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [20])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(205)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+4])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_20 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (20)) != 0) = true) :
     (((((BitVec.ofInt 32 (205)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (12))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (20))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [21])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(196)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+4])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_21 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (21)) != 0) = true) :
     (((((BitVec.ofInt 32 (196)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (12))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (21))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [22])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(187)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+4])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_22 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (22)) != 0) = true) :
     (((((BitVec.ofInt 32 (187)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (12))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (22))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [23])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(179)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+4])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_23 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (23)) != 0) = true) :
     (((((BitVec.ofInt 32 (179)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (12))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (23))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [24])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(171)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+4])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_24 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (24)) != 0) = true) :
     (((((BitVec.ofInt 32 (171)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (12))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (24))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [25])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(164)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+4])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_25 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (25)) != 0) = true) :
     (((((BitVec.ofInt 32 (164)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (12))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (25))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [26])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(158)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+4])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_26 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (26)) != 0) = true) :
     (((((BitVec.ofInt 32 (158)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (12))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (26))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [27])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(152)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+4])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_27 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (27)) != 0) = true) :
     (((((BitVec.ofInt 32 (152)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (12))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (27))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [28])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(147)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+4])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_28 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (28)) != 0) = true) :
     (((((BitVec.ofInt 32 (147)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (12))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (28))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [29])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(142)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+4])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_29 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (29)) != 0) = true) :
     (((((BitVec.ofInt 32 (142)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (12))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (29))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [30])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(137)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+4])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_30 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (30)) != 0) = true) :
     (((((BitVec.ofInt 32 (137)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (12))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (30))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [31])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(133)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+4])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_31 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (31)) != 0) = true) :
     (((((BitVec.ofInt 32 (133)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (12))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (31))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [33])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(249)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_33 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (33)) != 0) = true) :
     (((((BitVec.ofInt 32 (249)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (33))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [34])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(241)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_34 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (34)) != 0) = true) :
     (((((BitVec.ofInt 32 (241)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (34))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [35])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(235)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_35 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (35)) != 0) = true) :
     (((((BitVec.ofInt 32 (235)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (35))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [36])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(228)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_36 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (36)) != 0) = true) :
     (((((BitVec.ofInt 32 (228)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (36))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [37])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(222)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_37 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (37)) != 0) = true) :
     (((((BitVec.ofInt 32 (222)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (37))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [38])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(216)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_38 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (38)) != 0) = true) :
     (((((BitVec.ofInt 32 (216)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (38))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [39])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(211)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_39 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (39)) != 0) = true) :
     (((((BitVec.ofInt 32 (211)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (39))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [40])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(205)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_40 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (40)) != 0) = true) :
     (((((BitVec.ofInt 32 (205)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (40))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [41])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(200)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_41 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (41)) != 0) = true) :
     (((((BitVec.ofInt 32 (200)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (41))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [42])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(196)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_42 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (42)) != 0) = true) :
     (((((BitVec.ofInt 32 (196)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (42))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [43])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(191)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_43 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (43)) != 0) = true) :
     (((((BitVec.ofInt 32 (191)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (43))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [44])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(187)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_44 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (44)) != 0) = true) :
     (((((BitVec.ofInt 32 (187)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (44))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [45])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(183)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_45 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (45)) != 0) = true) :
     (((((BitVec.ofInt 32 (183)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (45))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [46])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(179)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_46 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (46)) != 0) = true) :
     (((((BitVec.ofInt 32 (179)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (46))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [47])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(175)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_47 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (47)) != 0) = true) :
     (((((BitVec.ofInt 32 (175)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (47))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [48])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(171)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_48 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (48)) != 0) = true) :
     (((((BitVec.ofInt 32 (171)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (48))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [49])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(168)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_49 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (49)) != 0) = true) :
     (((((BitVec.ofInt 32 (168)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (49))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [50])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(164)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_50 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (50)) != 0) = true) :
     (((((BitVec.ofInt 32 (164)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (50))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [51])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(161)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_51 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (51)) != 0) = true) :
     (((((BitVec.ofInt 32 (161)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (51))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [52])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(158)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_52 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (52)) != 0) = true) :
     (((((BitVec.ofInt 32 (158)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (52))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [53])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(155)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_53 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (53)) != 0) = true) :
     (((((BitVec.ofInt 32 (155)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (53))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [54])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(152)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_54 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (54)) != 0) = true) :
     (((((BitVec.ofInt 32 (152)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (54))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [55])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(149)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_55 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (55)) != 0) = true) :
     (((((BitVec.ofInt 32 (149)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (55))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [56])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(147)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_56 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (56)) != 0) = true) :
     (((((BitVec.ofInt 32 (147)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (56))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [57])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(144)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_57 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (57)) != 0) = true) :
     (((((BitVec.ofInt 32 (144)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (57))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [58])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(142)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_58 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (58)) != 0) = true) :
     (((((BitVec.ofInt 32 (142)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (58))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [59])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(139)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_59 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (59)) != 0) = true) :
     (((((BitVec.ofInt 32 (139)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (59))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [60])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(137)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_60 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (60)) != 0) = true) :
     (((((BitVec.ofInt 32 (137)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (60))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [61])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(135)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_61 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (61)) != 0) = true) :
     (((((BitVec.ofInt 32 (135)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (61))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [62])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(133)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_62 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (62)) != 0) = true) :
     (((((BitVec.ofInt 32 (133)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (62))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [63])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(131)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+5])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_63 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (63)) != 0) = true) :
     (((((BitVec.ofInt 32 (131)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (13))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (63))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [65])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(253)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_65 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (65)) != 0) = true) :
     (((((BitVec.ofInt 32 (253)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (65))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [66])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(249)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_66 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (66)) != 0) = true) :
     (((((BitVec.ofInt 32 (249)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (66))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [67])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(245)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_67 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (67)) != 0) = true) :
     (((((BitVec.ofInt 32 (245)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (67))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [68])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(241)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_68 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (68)) != 0) = true) :
     (((((BitVec.ofInt 32 (241)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (68))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [69])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(238)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_69 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (69)) != 0) = true) :
     (((((BitVec.ofInt 32 (238)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (69))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [70])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(235)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_70 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (70)) != 0) = true) :
     (((((BitVec.ofInt 32 (235)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (70))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [71])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(231)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_71 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (71)) != 0) = true) :
     (((((BitVec.ofInt 32 (231)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (71))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [72])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(228)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_72 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (72)) != 0) = true) :
     (((((BitVec.ofInt 32 (228)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (72))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [73])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(225)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_73 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (73)) != 0) = true) :
     (((((BitVec.ofInt 32 (225)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (73))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [74])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(222)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_74 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (74)) != 0) = true) :
     (((((BitVec.ofInt 32 (222)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (74))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [75])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(219)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_75 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (75)) != 0) = true) :
     (((((BitVec.ofInt 32 (219)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (75))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [76])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(216)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_76 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (76)) != 0) = true) :
     (((((BitVec.ofInt 32 (216)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (76))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [77])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(213)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_77 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (77)) != 0) = true) :
     (((((BitVec.ofInt 32 (213)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (77))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [78])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(211)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_78 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (78)) != 0) = true) :
     (((((BitVec.ofInt 32 (211)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (78))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [79])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(208)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_79 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (79)) != 0) = true) :
     (((((BitVec.ofInt 32 (208)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (79))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [80])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(205)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_80 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (80)) != 0) = true) :
     (((((BitVec.ofInt 32 (205)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (80))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [81])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(203)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_81 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (81)) != 0) = true) :
     (((((BitVec.ofInt 32 (203)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (81))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [82])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(200)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_82 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (82)) != 0) = true) :
     (((((BitVec.ofInt 32 (200)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (82))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [83])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(198)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_83 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (83)) != 0) = true) :
     (((((BitVec.ofInt 32 (198)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (83))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [84])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(196)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_84 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (84)) != 0) = true) :
     (((((BitVec.ofInt 32 (196)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (84))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [85])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(193)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_85 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (85)) != 0) = true) :
     (((((BitVec.ofInt 32 (193)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (85))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [86])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(191)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_86 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (86)) != 0) = true) :
     (((((BitVec.ofInt 32 (191)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (86))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [87])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(189)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_87 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (87)) != 0) = true) :
     (((((BitVec.ofInt 32 (189)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (87))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [88])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(187)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_88 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (88)) != 0) = true) :
     (((((BitVec.ofInt 32 (187)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (88))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [89])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(185)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_89 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (89)) != 0) = true) :
     (((((BitVec.ofInt 32 (185)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (89))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [90])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(183)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_90 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (90)) != 0) = true) :
     (((((BitVec.ofInt 32 (183)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (90))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [91])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(181)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_91 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (91)) != 0) = true) :
     (((((BitVec.ofInt 32 (181)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (91))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [92])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(179)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_92 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (92)) != 0) = true) :
     (((((BitVec.ofInt 32 (179)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (92))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [93])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(177)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_93 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (93)) != 0) = true) :
     (((((BitVec.ofInt 32 (177)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (93))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [94])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(175)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_94 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (94)) != 0) = true) :
     (((((BitVec.ofInt 32 (175)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (94))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [95])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(173)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_95 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (95)) != 0) = true) :
     (((((BitVec.ofInt 32 (173)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (95))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [96])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(171)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_96 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (96)) != 0) = true) :
     (((((BitVec.ofInt 32 (171)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (96))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [97])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(169)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_97 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (97)) != 0) = true) :
     (((((BitVec.ofInt 32 (169)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (97))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [98])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(168)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_98 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (98)) != 0) = true) :
     (((((BitVec.ofInt 32 (168)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (98))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [99])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(166)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_99 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (99)) != 0) = true) :
     (((((BitVec.ofInt 32 (166)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (99))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [100])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(164)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_100 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (100)) != 0) = true) :
     (((((BitVec.ofInt 32 (164)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (100))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [101])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(163)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_101 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (101)) != 0) = true) :
     (((((BitVec.ofInt 32 (163)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (101))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [102])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(161)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_102 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (102)) != 0) = true) :
     (((((BitVec.ofInt 32 (161)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (102))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [103])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(160)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_103 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (103)) != 0) = true) :
     (((((BitVec.ofInt 32 (160)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (103))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [104])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(158)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_104 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (104)) != 0) = true) :
     (((((BitVec.ofInt 32 (158)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (104))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [105])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(157)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_105 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (105)) != 0) = true) :
     (((((BitVec.ofInt 32 (157)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (105))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [106])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(155)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_106 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (106)) != 0) = true) :
     (((((BitVec.ofInt 32 (155)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (106))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [107])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(154)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_107 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (107)) != 0) = true) :
     (((((BitVec.ofInt 32 (154)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (107))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [108])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(152)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_108 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (108)) != 0) = true) :
     (((((BitVec.ofInt 32 (152)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (108))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [109])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(151)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_109 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (109)) != 0) = true) :
     (((((BitVec.ofInt 32 (151)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (109))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [110])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(149)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_110 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (110)) != 0) = true) :
     (((((BitVec.ofInt 32 (149)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (110))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [111])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(148)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_111 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (111)) != 0) = true) :
     (((((BitVec.ofInt 32 (148)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (111))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [112])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(147)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_112 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (112)) != 0) = true) :
     (((((BitVec.ofInt 32 (147)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (112))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [113])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(145)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_113 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (113)) != 0) = true) :
     (((((BitVec.ofInt 32 (145)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (113))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [114])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(144)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_114 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (114)) != 0) = true) :
     (((((BitVec.ofInt 32 (144)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (114))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [115])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(143)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_115 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (115)) != 0) = true) :
     (((((BitVec.ofInt 32 (143)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (115))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [116])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(142)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_116 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (116)) != 0) = true) :
     (((((BitVec.ofInt 32 (142)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (116))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [117])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(141)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_117 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (117)) != 0) = true) :
     (((((BitVec.ofInt 32 (141)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (117))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [118])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(139)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_118 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (118)) != 0) = true) :
     (((((BitVec.ofInt 32 (139)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (118))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [119])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(138)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_119 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (119)) != 0) = true) :
     (((((BitVec.ofInt 32 (138)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (119))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [120])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(137)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_120 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (120)) != 0) = true) :
     (((((BitVec.ofInt 32 (137)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (120))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [121])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(136)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_121 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (121)) != 0) = true) :
     (((((BitVec.ofInt 32 (136)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (121))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [122])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(135)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_122 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (122)) != 0) = true) :
     (((((BitVec.ofInt 32 (135)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (122))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [123])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(134)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_123 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (123)) != 0) = true) :
     (((((BitVec.ofInt 32 (134)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (123))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [124])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(133)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_124 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (124)) != 0) = true) :
     (((((BitVec.ofInt 32 (133)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (124))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [125])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(132)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_125 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (125)) != 0) = true) :
     (((((BitVec.ofInt 32 (132)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (125))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [126])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(131)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_126 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (126)) != 0) = true) :
     (((((BitVec.ofInt 32 (131)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (126))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1217  `(Div8 <t> x (Const8 [127])) =>  (Sub8 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(130)]) (SignExt8to32 x)) (Const64 <typ.UInt64> [8+6])) (Rsh32x64 <t> (SignExt8to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1217_127 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (127)) != 0) = true) :
     (((((BitVec.ofInt 32 (130)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (14))).setWidth 8) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 8)) = (x.sdiv (BitVec.ofInt 8 (127))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [3])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(43691)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+1])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_3 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (3)) != 0) = true) :
     (((((BitVec.ofInt 32 (43691)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (17))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (3))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [5])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(52429)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+2])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_5 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (5)) != 0) = true) :
     (((((BitVec.ofInt 32 (52429)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (18))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (5))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [6])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(43691)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+2])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_6 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (6)) != 0) = true) :
     (((((BitVec.ofInt 32 (43691)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (18))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (6))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [7])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(37450)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+2])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_7 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (7)) != 0) = true) :
     (((((BitVec.ofInt 32 (37450)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (18))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (7))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [9])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(58255)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+3])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_9 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (9)) != 0) = true) :
     (((((BitVec.ofInt 32 (58255)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (19))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (9))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [10])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(52429)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+3])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_10 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (10)) != 0) = true) :
     (((((BitVec.ofInt 32 (52429)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (19))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (10))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [11])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(47663)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+3])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_11 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (11)) != 0) = true) :
     (((((BitVec.ofInt 32 (47663)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (19))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (11))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [12])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(43691)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+3])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_12 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (12)) != 0) = true) :
     (((((BitVec.ofInt 32 (43691)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (19))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (12))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [13])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(40330)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+3])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_13 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (13)) != 0) = true) :
     (((((BitVec.ofInt 32 (40330)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (19))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (13))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [25])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(41944)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+4])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_25 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (25)) != 0) = true) :
     (((((BitVec.ofInt 32 (41944)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (20))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (25))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [100])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(41944)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+6])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_100 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (100)) != 0) = true) :
     (((((BitVec.ofInt 32 (41944)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (22))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (100))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [641])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(52348)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+9])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_641 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (641)) != 0) = true) :
     (((((BitVec.ofInt 32 (52348)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (25))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (641))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [1000])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(33555)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+9])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_1000 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (1000)) != 0) = true) :
     (((((BitVec.ofInt 32 (33555)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (25))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (1000))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [15745])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(34098)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+13])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_15745 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (15745)) != 0) = true) :
     (((((BitVec.ofInt 32 (34098)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (29))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (15745))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [32767])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(32770)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+14])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_32767 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (32767)) != 0) = true) :
     (((((BitVec.ofInt 32 (32770)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (30))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (32767))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [16385])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(65533)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+14])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_16385 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (16385)) != 0) = true) :
     (((((BitVec.ofInt 32 (65533)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (30))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (16385))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [16383])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(32771)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+13])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_16383 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (16383)) != 0) = true) :
     (((((BitVec.ofInt 32 (32771)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (29))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (16383))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [10922])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(49156)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+13])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_10922 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (10922)) != 0) = true) :
     (((((BitVec.ofInt 32 (49156)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (29))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (10922))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1227  `(Div16 <t> x (Const16 [1792])) =>  (Sub16 <t> (Rsh32x64 <t> (Mul32 <typ.UInt32> (Const32 <typ.UInt32> [int32(37450)]) (SignExt16to32 x)) (Const64 <typ.UInt64> [16+10])) (Rsh32x64 <t> (SignExt16to32 x) (Const64 <typ.UInt64> [31])))` -/
 theorem m1227_1792 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (1792)) != 0) = true) :
     (((((BitVec.ofInt 32 (37450)) * (x.signExtend 32)).sshiftRight' (BitVec.ofInt 64 (26))).setWidth 16) - (((x.signExtend 32).sshiftRight' (BitVec.ofInt 64 (31))).setWidth 16)) = (x.sdiv (BitVec.ofInt 16 (1792))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1237  `(Div32 <t> x (Const32 [2147483647])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(2147483650)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+30])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))` -/
 theorem m1237_2147483647 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (2147483647)) != 0) = true) :
     (((((BitVec.ofInt 64 (2147483650)) * (x.signExtend 64)).sshiftRight' (BitVec.ofInt 64 (62))).setWidth 32) - (((x.signExtend 64).sshiftRight' (BitVec.ofInt 64 (63))).setWidth 32)) = (x.sdiv (BitVec.ofInt 32 (2147483647))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1237  `(Div32 <t> x (Const32 [1073741825])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(4294967293)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+30])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))` -/
 theorem m1237_1073741825 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (1073741825)) != 0) = true) :
     (((((BitVec.ofInt 64 (4294967293)) * (x.signExtend 64)).sshiftRight' (BitVec.ofInt 64 (62))).setWidth 32) - (((x.signExtend 64).sshiftRight' (BitVec.ofInt 64 (63))).setWidth 32)) = (x.sdiv (BitVec.ofInt 32 (1073741825))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1237  `(Div32 <t> x (Const32 [1073741823])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(2147483651)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+29])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))` -/
 theorem m1237_1073741823 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (1073741823)) != 0) = true) :
     (((((BitVec.ofInt 64 (2147483651)) * (x.signExtend 64)).sshiftRight' (BitVec.ofInt 64 (61))).setWidth 32) - (((x.signExtend 64).sshiftRight' (BitVec.ofInt 64 (63))).setWidth 32)) = (x.sdiv (BitVec.ofInt 32 (1073741823))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1237  `(Div32 <t> x (Const32 [715827882])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(3221225476)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+29])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))` -/
 theorem m1237_715827882 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (715827882)) != 0) = true) :
     (((((BitVec.ofInt 64 (3221225476)) * (x.signExtend 64)).sshiftRight' (BitVec.ofInt 64 (61))).setWidth 32) - (((x.signExtend 64).sshiftRight' (BitVec.ofInt 64 (63))).setWidth 32)) = (x.sdiv (BitVec.ofInt 32 (715827882))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1237  `(Div32 <t> x (Const32 [117440512])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(2454267027)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+26])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))` -/
 theorem m1237_117440512 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (117440512)) != 0) = true) :
     (((((BitVec.ofInt 64 (2454267027)) * (x.signExtend 64)).sshiftRight' (BitVec.ofInt 64 (58))).setWidth 32) - (((x.signExtend 64).sshiftRight' (BitVec.ofInt 64 (63))).setWidth 32)) = (x.sdiv (BitVec.ofInt 32 (117440512))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1237  `(Div32 <t> x (Const32 [2147483643])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(2147483654)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+30])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))` -/
 theorem m1237_2147483643 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (2147483643)) != 0) = true) :
     (((((BitVec.ofInt 64 (2147483654)) * (x.signExtend 64)).sshiftRight' (BitVec.ofInt 64 (62))).setWidth 32) - (((x.signExtend 64).sshiftRight' (BitVec.ofInt 64 (63))).setWidth 32)) = (x.sdiv (BitVec.ofInt 32 (2147483643))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [3])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [3])) (Const8  <t> [3])))` -/
 theorem m1323_3 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (3)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (3))) * (BitVec.ofInt 8 (3)))) = (x % (BitVec.ofInt 8 (3))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [5])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [5])) (Const8  <t> [5])))` -/
 theorem m1323_5 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (5)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (5))) * (BitVec.ofInt 8 (5)))) = (x % (BitVec.ofInt 8 (5))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [6])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [6])) (Const8  <t> [6])))` -/
 theorem m1323_6 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (6)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (6))) * (BitVec.ofInt 8 (6)))) = (x % (BitVec.ofInt 8 (6))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [7])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [7])) (Const8  <t> [7])))` -/
 theorem m1323_7 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (7)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (7))) * (BitVec.ofInt 8 (7)))) = (x % (BitVec.ofInt 8 (7))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [9])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [9])) (Const8  <t> [9])))` -/
 theorem m1323_9 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (9)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (9))) * (BitVec.ofInt 8 (9)))) = (x % (BitVec.ofInt 8 (9))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [10])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [10])) (Const8  <t> [10])))` -/
 theorem m1323_10 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (10)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (10))) * (BitVec.ofInt 8 (10)))) = (x % (BitVec.ofInt 8 (10))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [11])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [11])) (Const8  <t> [11])))` -/
 theorem m1323_11 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (11)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (11))) * (BitVec.ofInt 8 (11)))) = (x % (BitVec.ofInt 8 (11))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [12])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [12])) (Const8  <t> [12])))` -/
 theorem m1323_12 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (12)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (12))) * (BitVec.ofInt 8 (12)))) = (x % (BitVec.ofInt 8 (12))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [13])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [13])) (Const8  <t> [13])))` -/
 theorem m1323_13 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (13)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (13))) * (BitVec.ofInt 8 (13)))) = (x % (BitVec.ofInt 8 (13))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [14])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [14])) (Const8  <t> [14])))` -/
 theorem m1323_14 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (14)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (14))) * (BitVec.ofInt 8 (14)))) = (x % (BitVec.ofInt 8 (14))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [15])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [15])) (Const8  <t> [15])))` -/
 theorem m1323_15 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (15)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (15))) * (BitVec.ofInt 8 (15)))) = (x % (BitVec.ofInt 8 (15))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [17])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [17])) (Const8  <t> [17])))` -/
 theorem m1323_17 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (17)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (17))) * (BitVec.ofInt 8 (17)))) = (x % (BitVec.ofInt 8 (17))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [18])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [18])) (Const8  <t> [18])))` -/
 theorem m1323_18 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (18)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (18))) * (BitVec.ofInt 8 (18)))) = (x % (BitVec.ofInt 8 (18))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [19])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [19])) (Const8  <t> [19])))` -/
 theorem m1323_19 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (19)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (19))) * (BitVec.ofInt 8 (19)))) = (x % (BitVec.ofInt 8 (19))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [20])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [20])) (Const8  <t> [20])))` -/
 theorem m1323_20 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (20)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (20))) * (BitVec.ofInt 8 (20)))) = (x % (BitVec.ofInt 8 (20))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [21])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [21])) (Const8  <t> [21])))` -/
 theorem m1323_21 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (21)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (21))) * (BitVec.ofInt 8 (21)))) = (x % (BitVec.ofInt 8 (21))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [22])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [22])) (Const8  <t> [22])))` -/
 theorem m1323_22 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (22)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (22))) * (BitVec.ofInt 8 (22)))) = (x % (BitVec.ofInt 8 (22))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [23])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [23])) (Const8  <t> [23])))` -/
 theorem m1323_23 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (23)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (23))) * (BitVec.ofInt 8 (23)))) = (x % (BitVec.ofInt 8 (23))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [24])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [24])) (Const8  <t> [24])))` -/
 theorem m1323_24 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (24)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (24))) * (BitVec.ofInt 8 (24)))) = (x % (BitVec.ofInt 8 (24))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [25])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [25])) (Const8  <t> [25])))` -/
 theorem m1323_25 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (25)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (25))) * (BitVec.ofInt 8 (25)))) = (x % (BitVec.ofInt 8 (25))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [26])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [26])) (Const8  <t> [26])))` -/
 theorem m1323_26 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (26)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (26))) * (BitVec.ofInt 8 (26)))) = (x % (BitVec.ofInt 8 (26))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [27])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [27])) (Const8  <t> [27])))` -/
 theorem m1323_27 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (27)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (27))) * (BitVec.ofInt 8 (27)))) = (x % (BitVec.ofInt 8 (27))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [28])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [28])) (Const8  <t> [28])))` -/
 theorem m1323_28 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (28)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (28))) * (BitVec.ofInt 8 (28)))) = (x % (BitVec.ofInt 8 (28))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [29])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [29])) (Const8  <t> [29])))` -/
 theorem m1323_29 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (29)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (29))) * (BitVec.ofInt 8 (29)))) = (x % (BitVec.ofInt 8 (29))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [30])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [30])) (Const8  <t> [30])))` -/
 theorem m1323_30 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (30)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (30))) * (BitVec.ofInt 8 (30)))) = (x % (BitVec.ofInt 8 (30))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [31])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [31])) (Const8  <t> [31])))` -/
 theorem m1323_31 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (31)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (31))) * (BitVec.ofInt 8 (31)))) = (x % (BitVec.ofInt 8 (31))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [33])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [33])) (Const8  <t> [33])))` -/
 theorem m1323_33 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (33)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (33))) * (BitVec.ofInt 8 (33)))) = (x % (BitVec.ofInt 8 (33))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [34])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [34])) (Const8  <t> [34])))` -/
 theorem m1323_34 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (34)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (34))) * (BitVec.ofInt 8 (34)))) = (x % (BitVec.ofInt 8 (34))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [35])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [35])) (Const8  <t> [35])))` -/
 theorem m1323_35 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (35)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (35))) * (BitVec.ofInt 8 (35)))) = (x % (BitVec.ofInt 8 (35))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [36])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [36])) (Const8  <t> [36])))` -/
 theorem m1323_36 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (36)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (36))) * (BitVec.ofInt 8 (36)))) = (x % (BitVec.ofInt 8 (36))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [37])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [37])) (Const8  <t> [37])))` -/
 theorem m1323_37 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (37)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (37))) * (BitVec.ofInt 8 (37)))) = (x % (BitVec.ofInt 8 (37))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [38])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [38])) (Const8  <t> [38])))` -/
 theorem m1323_38 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (38)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (38))) * (BitVec.ofInt 8 (38)))) = (x % (BitVec.ofInt 8 (38))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [39])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [39])) (Const8  <t> [39])))` -/
 theorem m1323_39 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (39)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (39))) * (BitVec.ofInt 8 (39)))) = (x % (BitVec.ofInt 8 (39))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [40])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [40])) (Const8  <t> [40])))` -/
 theorem m1323_40 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (40)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (40))) * (BitVec.ofInt 8 (40)))) = (x % (BitVec.ofInt 8 (40))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [41])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [41])) (Const8  <t> [41])))` -/
 theorem m1323_41 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (41)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (41))) * (BitVec.ofInt 8 (41)))) = (x % (BitVec.ofInt 8 (41))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [42])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [42])) (Const8  <t> [42])))` -/
 theorem m1323_42 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (42)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (42))) * (BitVec.ofInt 8 (42)))) = (x % (BitVec.ofInt 8 (42))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [43])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [43])) (Const8  <t> [43])))` -/
 theorem m1323_43 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (43)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (43))) * (BitVec.ofInt 8 (43)))) = (x % (BitVec.ofInt 8 (43))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [44])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [44])) (Const8  <t> [44])))` -/
 theorem m1323_44 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (44)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (44))) * (BitVec.ofInt 8 (44)))) = (x % (BitVec.ofInt 8 (44))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [45])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [45])) (Const8  <t> [45])))` -/
 theorem m1323_45 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (45)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (45))) * (BitVec.ofInt 8 (45)))) = (x % (BitVec.ofInt 8 (45))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [46])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [46])) (Const8  <t> [46])))` -/
 theorem m1323_46 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (46)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (46))) * (BitVec.ofInt 8 (46)))) = (x % (BitVec.ofInt 8 (46))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [47])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [47])) (Const8  <t> [47])))` -/
 theorem m1323_47 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (47)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (47))) * (BitVec.ofInt 8 (47)))) = (x % (BitVec.ofInt 8 (47))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [48])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [48])) (Const8  <t> [48])))` -/
 theorem m1323_48 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (48)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (48))) * (BitVec.ofInt 8 (48)))) = (x % (BitVec.ofInt 8 (48))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [49])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [49])) (Const8  <t> [49])))` -/
 theorem m1323_49 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (49)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (49))) * (BitVec.ofInt 8 (49)))) = (x % (BitVec.ofInt 8 (49))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [50])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [50])) (Const8  <t> [50])))` -/
 theorem m1323_50 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (50)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (50))) * (BitVec.ofInt 8 (50)))) = (x % (BitVec.ofInt 8 (50))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [51])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [51])) (Const8  <t> [51])))` -/
 theorem m1323_51 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (51)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (51))) * (BitVec.ofInt 8 (51)))) = (x % (BitVec.ofInt 8 (51))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [52])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [52])) (Const8  <t> [52])))` -/
 theorem m1323_52 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (52)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (52))) * (BitVec.ofInt 8 (52)))) = (x % (BitVec.ofInt 8 (52))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [53])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [53])) (Const8  <t> [53])))` -/
 theorem m1323_53 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (53)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (53))) * (BitVec.ofInt 8 (53)))) = (x % (BitVec.ofInt 8 (53))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [54])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [54])) (Const8  <t> [54])))` -/
 theorem m1323_54 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (54)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (54))) * (BitVec.ofInt 8 (54)))) = (x % (BitVec.ofInt 8 (54))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [55])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [55])) (Const8  <t> [55])))` -/
 theorem m1323_55 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (55)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (55))) * (BitVec.ofInt 8 (55)))) = (x % (BitVec.ofInt 8 (55))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [56])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [56])) (Const8  <t> [56])))` -/
 theorem m1323_56 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (56)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (56))) * (BitVec.ofInt 8 (56)))) = (x % (BitVec.ofInt 8 (56))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [57])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [57])) (Const8  <t> [57])))` -/
 theorem m1323_57 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (57)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (57))) * (BitVec.ofInt 8 (57)))) = (x % (BitVec.ofInt 8 (57))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [58])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [58])) (Const8  <t> [58])))` -/
 theorem m1323_58 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (58)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (58))) * (BitVec.ofInt 8 (58)))) = (x % (BitVec.ofInt 8 (58))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [59])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [59])) (Const8  <t> [59])))` -/
 theorem m1323_59 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (59)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (59))) * (BitVec.ofInt 8 (59)))) = (x % (BitVec.ofInt 8 (59))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [60])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [60])) (Const8  <t> [60])))` -/
 theorem m1323_60 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (60)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (60))) * (BitVec.ofInt 8 (60)))) = (x % (BitVec.ofInt 8 (60))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [61])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [61])) (Const8  <t> [61])))` -/
 theorem m1323_61 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (61)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (61))) * (BitVec.ofInt 8 (61)))) = (x % (BitVec.ofInt 8 (61))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [62])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [62])) (Const8  <t> [62])))` -/
 theorem m1323_62 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (62)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (62))) * (BitVec.ofInt 8 (62)))) = (x % (BitVec.ofInt 8 (62))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [63])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [63])) (Const8  <t> [63])))` -/
 theorem m1323_63 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (63)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (63))) * (BitVec.ofInt 8 (63)))) = (x % (BitVec.ofInt 8 (63))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [65])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [65])) (Const8  <t> [65])))` -/
 theorem m1323_65 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (65)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (65))) * (BitVec.ofInt 8 (65)))) = (x % (BitVec.ofInt 8 (65))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [66])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [66])) (Const8  <t> [66])))` -/
 theorem m1323_66 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (66)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (66))) * (BitVec.ofInt 8 (66)))) = (x % (BitVec.ofInt 8 (66))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [67])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [67])) (Const8  <t> [67])))` -/
 theorem m1323_67 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (67)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (67))) * (BitVec.ofInt 8 (67)))) = (x % (BitVec.ofInt 8 (67))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [68])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [68])) (Const8  <t> [68])))` -/
 theorem m1323_68 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (68)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (68))) * (BitVec.ofInt 8 (68)))) = (x % (BitVec.ofInt 8 (68))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [69])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [69])) (Const8  <t> [69])))` -/
 theorem m1323_69 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (69)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (69))) * (BitVec.ofInt 8 (69)))) = (x % (BitVec.ofInt 8 (69))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [70])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [70])) (Const8  <t> [70])))` -/
 theorem m1323_70 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (70)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (70))) * (BitVec.ofInt 8 (70)))) = (x % (BitVec.ofInt 8 (70))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [71])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [71])) (Const8  <t> [71])))` -/
 theorem m1323_71 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (71)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (71))) * (BitVec.ofInt 8 (71)))) = (x % (BitVec.ofInt 8 (71))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [72])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [72])) (Const8  <t> [72])))` -/
 theorem m1323_72 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (72)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (72))) * (BitVec.ofInt 8 (72)))) = (x % (BitVec.ofInt 8 (72))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [73])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [73])) (Const8  <t> [73])))` -/
 theorem m1323_73 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (73)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (73))) * (BitVec.ofInt 8 (73)))) = (x % (BitVec.ofInt 8 (73))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [74])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [74])) (Const8  <t> [74])))` -/
 theorem m1323_74 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (74)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (74))) * (BitVec.ofInt 8 (74)))) = (x % (BitVec.ofInt 8 (74))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [75])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [75])) (Const8  <t> [75])))` -/
 theorem m1323_75 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (75)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (75))) * (BitVec.ofInt 8 (75)))) = (x % (BitVec.ofInt 8 (75))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [76])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [76])) (Const8  <t> [76])))` -/
 theorem m1323_76 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (76)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (76))) * (BitVec.ofInt 8 (76)))) = (x % (BitVec.ofInt 8 (76))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [77])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [77])) (Const8  <t> [77])))` -/
 theorem m1323_77 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (77)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (77))) * (BitVec.ofInt 8 (77)))) = (x % (BitVec.ofInt 8 (77))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [78])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [78])) (Const8  <t> [78])))` -/
 theorem m1323_78 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (78)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (78))) * (BitVec.ofInt 8 (78)))) = (x % (BitVec.ofInt 8 (78))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [79])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [79])) (Const8  <t> [79])))` -/
 theorem m1323_79 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (79)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (79))) * (BitVec.ofInt 8 (79)))) = (x % (BitVec.ofInt 8 (79))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [80])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [80])) (Const8  <t> [80])))` -/
 theorem m1323_80 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (80)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (80))) * (BitVec.ofInt 8 (80)))) = (x % (BitVec.ofInt 8 (80))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [81])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [81])) (Const8  <t> [81])))` -/
 theorem m1323_81 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (81)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (81))) * (BitVec.ofInt 8 (81)))) = (x % (BitVec.ofInt 8 (81))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [82])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [82])) (Const8  <t> [82])))` -/
 theorem m1323_82 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (82)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (82))) * (BitVec.ofInt 8 (82)))) = (x % (BitVec.ofInt 8 (82))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [83])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [83])) (Const8  <t> [83])))` -/
 theorem m1323_83 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (83)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (83))) * (BitVec.ofInt 8 (83)))) = (x % (BitVec.ofInt 8 (83))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [84])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [84])) (Const8  <t> [84])))` -/
 theorem m1323_84 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (84)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (84))) * (BitVec.ofInt 8 (84)))) = (x % (BitVec.ofInt 8 (84))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [85])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [85])) (Const8  <t> [85])))` -/
 theorem m1323_85 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (85)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (85))) * (BitVec.ofInt 8 (85)))) = (x % (BitVec.ofInt 8 (85))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [86])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [86])) (Const8  <t> [86])))` -/
 theorem m1323_86 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (86)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (86))) * (BitVec.ofInt 8 (86)))) = (x % (BitVec.ofInt 8 (86))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [87])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [87])) (Const8  <t> [87])))` -/
 theorem m1323_87 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (87)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (87))) * (BitVec.ofInt 8 (87)))) = (x % (BitVec.ofInt 8 (87))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [88])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [88])) (Const8  <t> [88])))` -/
 theorem m1323_88 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (88)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (88))) * (BitVec.ofInt 8 (88)))) = (x % (BitVec.ofInt 8 (88))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [89])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [89])) (Const8  <t> [89])))` -/
 theorem m1323_89 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (89)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (89))) * (BitVec.ofInt 8 (89)))) = (x % (BitVec.ofInt 8 (89))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [90])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [90])) (Const8  <t> [90])))` -/
 theorem m1323_90 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (90)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (90))) * (BitVec.ofInt 8 (90)))) = (x % (BitVec.ofInt 8 (90))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [91])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [91])) (Const8  <t> [91])))` -/
 theorem m1323_91 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (91)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (91))) * (BitVec.ofInt 8 (91)))) = (x % (BitVec.ofInt 8 (91))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [92])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [92])) (Const8  <t> [92])))` -/
 theorem m1323_92 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (92)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (92))) * (BitVec.ofInt 8 (92)))) = (x % (BitVec.ofInt 8 (92))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [93])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [93])) (Const8  <t> [93])))` -/
 theorem m1323_93 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (93)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (93))) * (BitVec.ofInt 8 (93)))) = (x % (BitVec.ofInt 8 (93))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [94])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [94])) (Const8  <t> [94])))` -/
 theorem m1323_94 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (94)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (94))) * (BitVec.ofInt 8 (94)))) = (x % (BitVec.ofInt 8 (94))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [95])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [95])) (Const8  <t> [95])))` -/
 theorem m1323_95 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (95)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (95))) * (BitVec.ofInt 8 (95)))) = (x % (BitVec.ofInt 8 (95))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [96])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [96])) (Const8  <t> [96])))` -/
 theorem m1323_96 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (96)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (96))) * (BitVec.ofInt 8 (96)))) = (x % (BitVec.ofInt 8 (96))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [97])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [97])) (Const8  <t> [97])))` -/
 theorem m1323_97 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (97)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (97))) * (BitVec.ofInt 8 (97)))) = (x % (BitVec.ofInt 8 (97))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [98])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [98])) (Const8  <t> [98])))` -/
 theorem m1323_98 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (98)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (98))) * (BitVec.ofInt 8 (98)))) = (x % (BitVec.ofInt 8 (98))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [99])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [99])) (Const8  <t> [99])))` -/
 theorem m1323_99 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (99)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (99))) * (BitVec.ofInt 8 (99)))) = (x % (BitVec.ofInt 8 (99))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [100])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [100])) (Const8  <t> [100])))` -/
 theorem m1323_100 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (100)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (100))) * (BitVec.ofInt 8 (100)))) = (x % (BitVec.ofInt 8 (100))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [101])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [101])) (Const8  <t> [101])))` -/
 theorem m1323_101 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (101)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (101))) * (BitVec.ofInt 8 (101)))) = (x % (BitVec.ofInt 8 (101))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [102])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [102])) (Const8  <t> [102])))` -/
 theorem m1323_102 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (102)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (102))) * (BitVec.ofInt 8 (102)))) = (x % (BitVec.ofInt 8 (102))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [103])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [103])) (Const8  <t> [103])))` -/
 theorem m1323_103 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (103)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (103))) * (BitVec.ofInt 8 (103)))) = (x % (BitVec.ofInt 8 (103))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [104])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [104])) (Const8  <t> [104])))` -/
 theorem m1323_104 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (104)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (104))) * (BitVec.ofInt 8 (104)))) = (x % (BitVec.ofInt 8 (104))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [105])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [105])) (Const8  <t> [105])))` -/
 theorem m1323_105 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (105)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (105))) * (BitVec.ofInt 8 (105)))) = (x % (BitVec.ofInt 8 (105))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [106])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [106])) (Const8  <t> [106])))` -/
 theorem m1323_106 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (106)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (106))) * (BitVec.ofInt 8 (106)))) = (x % (BitVec.ofInt 8 (106))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [107])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [107])) (Const8  <t> [107])))` -/
 theorem m1323_107 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (107)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (107))) * (BitVec.ofInt 8 (107)))) = (x % (BitVec.ofInt 8 (107))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [108])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [108])) (Const8  <t> [108])))` -/
 theorem m1323_108 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (108)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (108))) * (BitVec.ofInt 8 (108)))) = (x % (BitVec.ofInt 8 (108))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [109])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [109])) (Const8  <t> [109])))` -/
 theorem m1323_109 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (109)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (109))) * (BitVec.ofInt 8 (109)))) = (x % (BitVec.ofInt 8 (109))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [110])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [110])) (Const8  <t> [110])))` -/
 theorem m1323_110 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (110)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (110))) * (BitVec.ofInt 8 (110)))) = (x % (BitVec.ofInt 8 (110))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [111])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [111])) (Const8  <t> [111])))` -/
 theorem m1323_111 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (111)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (111))) * (BitVec.ofInt 8 (111)))) = (x % (BitVec.ofInt 8 (111))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [112])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [112])) (Const8  <t> [112])))` -/
 theorem m1323_112 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (112)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (112))) * (BitVec.ofInt 8 (112)))) = (x % (BitVec.ofInt 8 (112))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [113])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [113])) (Const8  <t> [113])))` -/
 theorem m1323_113 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (113)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (113))) * (BitVec.ofInt 8 (113)))) = (x % (BitVec.ofInt 8 (113))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [114])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [114])) (Const8  <t> [114])))` -/
 theorem m1323_114 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (114)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (114))) * (BitVec.ofInt 8 (114)))) = (x % (BitVec.ofInt 8 (114))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [115])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [115])) (Const8  <t> [115])))` -/
 theorem m1323_115 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (115)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (115))) * (BitVec.ofInt 8 (115)))) = (x % (BitVec.ofInt 8 (115))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [116])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [116])) (Const8  <t> [116])))` -/
 theorem m1323_116 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (116)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (116))) * (BitVec.ofInt 8 (116)))) = (x % (BitVec.ofInt 8 (116))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [117])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [117])) (Const8  <t> [117])))` -/
 theorem m1323_117 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (117)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (117))) * (BitVec.ofInt 8 (117)))) = (x % (BitVec.ofInt 8 (117))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [118])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [118])) (Const8  <t> [118])))` -/
 theorem m1323_118 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (118)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (118))) * (BitVec.ofInt 8 (118)))) = (x % (BitVec.ofInt 8 (118))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [119])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [119])) (Const8  <t> [119])))` -/
 theorem m1323_119 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (119)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (119))) * (BitVec.ofInt 8 (119)))) = (x % (BitVec.ofInt 8 (119))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [120])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [120])) (Const8  <t> [120])))` -/
 theorem m1323_120 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (120)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (120))) * (BitVec.ofInt 8 (120)))) = (x % (BitVec.ofInt 8 (120))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [121])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [121])) (Const8  <t> [121])))` -/
 theorem m1323_121 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (121)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (121))) * (BitVec.ofInt 8 (121)))) = (x % (BitVec.ofInt 8 (121))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [122])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [122])) (Const8  <t> [122])))` -/
 theorem m1323_122 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (122)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (122))) * (BitVec.ofInt 8 (122)))) = (x % (BitVec.ofInt 8 (122))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [123])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [123])) (Const8  <t> [123])))` -/
 theorem m1323_123 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (123)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (123))) * (BitVec.ofInt 8 (123)))) = (x % (BitVec.ofInt 8 (123))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [124])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [124])) (Const8  <t> [124])))` -/
 theorem m1323_124 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (124)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (124))) * (BitVec.ofInt 8 (124)))) = (x % (BitVec.ofInt 8 (124))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [125])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [125])) (Const8  <t> [125])))` -/
 theorem m1323_125 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (125)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (125))) * (BitVec.ofInt 8 (125)))) = (x % (BitVec.ofInt 8 (125))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [126])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [126])) (Const8  <t> [126])))` -/
 theorem m1323_126 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (126)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (126))) * (BitVec.ofInt 8 (126)))) = (x % (BitVec.ofInt 8 (126))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1323  `(Mod8u  <t> x (Const8  [127])) =>  (Sub8  x (Mul8  <t> (Div8u  <t> x (Const8  <t> [127])) (Const8  <t> [127])))` -/
 theorem m1323_127 (x : BitVec 8)
     (h0 : ((BitVec.ofInt 8 (127)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 8 (127))) * (BitVec.ofInt 8 (127)))) = (x % (BitVec.ofInt 8 (127))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [3])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [3])) (Const16 <t> [3])))` -/
 theorem m1325_3 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (3)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (3))) * (BitVec.ofInt 16 (3)))) = (x % (BitVec.ofInt 16 (3))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [5])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [5])) (Const16 <t> [5])))` -/
 theorem m1325_5 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (5)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (5))) * (BitVec.ofInt 16 (5)))) = (x % (BitVec.ofInt 16 (5))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [6])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [6])) (Const16 <t> [6])))` -/
 theorem m1325_6 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (6)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (6))) * (BitVec.ofInt 16 (6)))) = (x % (BitVec.ofInt 16 (6))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [7])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [7])) (Const16 <t> [7])))` -/
 theorem m1325_7 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (7)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (7))) * (BitVec.ofInt 16 (7)))) = (x % (BitVec.ofInt 16 (7))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [9])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [9])) (Const16 <t> [9])))` -/
 theorem m1325_9 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (9)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (9))) * (BitVec.ofInt 16 (9)))) = (x % (BitVec.ofInt 16 (9))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [10])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [10])) (Const16 <t> [10])))` -/
 theorem m1325_10 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (10)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (10))) * (BitVec.ofInt 16 (10)))) = (x % (BitVec.ofInt 16 (10))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [11])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [11])) (Const16 <t> [11])))` -/
 theorem m1325_11 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (11)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (11))) * (BitVec.ofInt 16 (11)))) = (x % (BitVec.ofInt 16 (11))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [12])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [12])) (Const16 <t> [12])))` -/
 theorem m1325_12 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (12)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (12))) * (BitVec.ofInt 16 (12)))) = (x % (BitVec.ofInt 16 (12))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [13])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [13])) (Const16 <t> [13])))` -/
 theorem m1325_13 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (13)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (13))) * (BitVec.ofInt 16 (13)))) = (x % (BitVec.ofInt 16 (13))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [25])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [25])) (Const16 <t> [25])))` -/
 theorem m1325_25 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (25)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (25))) * (BitVec.ofInt 16 (25)))) = (x % (BitVec.ofInt 16 (25))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [100])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [100])) (Const16 <t> [100])))` -/
 theorem m1325_100 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (100)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (100))) * (BitVec.ofInt 16 (100)))) = (x % (BitVec.ofInt 16 (100))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [641])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [641])) (Const16 <t> [641])))` -/
 theorem m1325_641 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (641)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (641))) * (BitVec.ofInt 16 (641)))) = (x % (BitVec.ofInt 16 (641))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [1000])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [1000])) (Const16 <t> [1000])))` -/
 theorem m1325_1000 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (1000)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (1000))) * (BitVec.ofInt 16 (1000)))) = (x % (BitVec.ofInt 16 (1000))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [15745])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [15745])) (Const16 <t> [15745])))` -/
 theorem m1325_15745 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (15745)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (15745))) * (BitVec.ofInt 16 (15745)))) = (x % (BitVec.ofInt 16 (15745))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [32767])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [32767])) (Const16 <t> [32767])))` -/
 theorem m1325_32767 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (32767)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (32767))) * (BitVec.ofInt 16 (32767)))) = (x % (BitVec.ofInt 16 (32767))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [16385])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [16385])) (Const16 <t> [16385])))` -/
 theorem m1325_16385 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (16385)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (16385))) * (BitVec.ofInt 16 (16385)))) = (x % (BitVec.ofInt 16 (16385))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [16383])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [16383])) (Const16 <t> [16383])))` -/
 theorem m1325_16383 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (16383)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (16383))) * (BitVec.ofInt 16 (16383)))) = (x % (BitVec.ofInt 16 (16383))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [10922])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [10922])) (Const16 <t> [10922])))` -/
 theorem m1325_10922 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (10922)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (10922))) * (BitVec.ofInt 16 (10922)))) = (x % (BitVec.ofInt 16 (10922))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1325  `(Mod16u <t> x (Const16 [1792])) =>  (Sub16 x (Mul16 <t> (Div16u <t> x (Const16 <t> [1792])) (Const16 <t> [1792])))` -/
 theorem m1325_1792 (x : BitVec 16)
     (h0 : ((BitVec.ofInt 16 (1792)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 16 (1792))) * (BitVec.ofInt 16 (1792)))) = (x % (BitVec.ofInt 16 (1792))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1327  `(Mod32u <t> x (Const32 [3])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [3])) (Const32 <t> [3])))` -/
 theorem m1327_3 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (3)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 32 (3))) * (BitVec.ofInt 32 (3)))) = (x % (BitVec.ofInt 32 (3))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1327  `(Mod32u <t> x (Const32 [5])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [5])) (Const32 <t> [5])))` -/
 theorem m1327_5 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (5)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 32 (5))) * (BitVec.ofInt 32 (5)))) = (x % (BitVec.ofInt 32 (5))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1327  `(Mod32u <t> x (Const32 [6])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [6])) (Const32 <t> [6])))` -/
 theorem m1327_6 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (6)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 32 (6))) * (BitVec.ofInt 32 (6)))) = (x % (BitVec.ofInt 32 (6))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1327  `(Mod32u <t> x (Const32 [7])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [7])) (Const32 <t> [7])))` -/
 theorem m1327_7 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (7)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 32 (7))) * (BitVec.ofInt 32 (7)))) = (x % (BitVec.ofInt 32 (7))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1327  `(Mod32u <t> x (Const32 [9])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [9])) (Const32 <t> [9])))` -/
 theorem m1327_9 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (9)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 32 (9))) * (BitVec.ofInt 32 (9)))) = (x % (BitVec.ofInt 32 (9))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1327  `(Mod32u <t> x (Const32 [10])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [10])) (Const32 <t> [10])))` -/
 theorem m1327_10 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (10)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 32 (10))) * (BitVec.ofInt 32 (10)))) = (x % (BitVec.ofInt 32 (10))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1327  `(Mod32u <t> x (Const32 [11])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [11])) (Const32 <t> [11])))` -/
 theorem m1327_11 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (11)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 32 (11))) * (BitVec.ofInt 32 (11)))) = (x % (BitVec.ofInt 32 (11))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1327  `(Mod32u <t> x (Const32 [12])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [12])) (Const32 <t> [12])))` -/
 theorem m1327_12 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (12)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 32 (12))) * (BitVec.ofInt 32 (12)))) = (x % (BitVec.ofInt 32 (12))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1327  `(Mod32u <t> x (Const32 [13])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [13])) (Const32 <t> [13])))` -/
 theorem m1327_13 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (13)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 32 (13))) * (BitVec.ofInt 32 (13)))) = (x % (BitVec.ofInt 32 (13))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1327  `(Mod32u <t> x (Const32 [25])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [25])) (Const32 <t> [25])))` -/
 theorem m1327_25 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (25)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 32 (25))) * (BitVec.ofInt 32 (25)))) = (x % (BitVec.ofInt 32 (25))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1327  `(Mod32u <t> x (Const32 [100])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [100])) (Const32 <t> [100])))` -/
 theorem m1327_100 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (100)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 32 (100))) * (BitVec.ofInt 32 (100)))) = (x % (BitVec.ofInt 32 (100))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1327  `(Mod32u <t> x (Const32 [2147483647])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [2147483647])) (Const32 <t> [2147483647])))` -/
 theorem m1327_2147483647 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (2147483647)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 32 (2147483647))) * (BitVec.ofInt 32 (2147483647)))) = (x % (BitVec.ofInt 32 (2147483647))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1327  `(Mod32u <t> x (Const32 [1073741825])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [1073741825])) (Const32 <t> [1073741825])))` -/
 theorem m1327_1073741825 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (1073741825)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 32 (1073741825))) * (BitVec.ofInt 32 (1073741825)))) = (x % (BitVec.ofInt 32 (1073741825))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1327  `(Mod32u <t> x (Const32 [1073741823])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [1073741823])) (Const32 <t> [1073741823])))` -/
 theorem m1327_1073741823 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (1073741823)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 32 (1073741823))) * (BitVec.ofInt 32 (1073741823)))) = (x % (BitVec.ofInt 32 (1073741823))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1327  `(Mod32u <t> x (Const32 [715827882])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [715827882])) (Const32 <t> [715827882])))` -/
 theorem m1327_715827882 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (715827882)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 32 (715827882))) * (BitVec.ofInt 32 (715827882)))) = (x % (BitVec.ofInt 32 (715827882))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1327  `(Mod32u <t> x (Const32 [117440512])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [117440512])) (Const32 <t> [117440512])))` -/
 theorem m1327_117440512 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (117440512)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 32 (117440512))) * (BitVec.ofInt 32 (117440512)))) = (x % (BitVec.ofInt 32 (117440512))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1327  `(Mod32u <t> x (Const32 [2147483643])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [2147483643])) (Const32 <t> [2147483643])))` -/
 theorem m1327_2147483643 (x : BitVec 32)
     (h0 : ((BitVec.ofInt 32 (2147483643)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 32 (2147483643))) * (BitVec.ofInt 32 (2147483643)))) = (x % (BitVec.ofInt 32 (2147483643))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1329  `(Mod64u <t> x (Const64 [3])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [3])) (Const64 <t> [3])))` -/
 theorem m1329_3 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (3)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 64 (3))) * (BitVec.ofInt 64 (3)))) = (x % (BitVec.ofInt 64 (3))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1329  `(Mod64u <t> x (Const64 [5])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [5])) (Const64 <t> [5])))` -/
 theorem m1329_5 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (5)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 64 (5))) * (BitVec.ofInt 64 (5)))) = (x % (BitVec.ofInt 64 (5))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1329  `(Mod64u <t> x (Const64 [6])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [6])) (Const64 <t> [6])))` -/
 theorem m1329_6 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (6)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 64 (6))) * (BitVec.ofInt 64 (6)))) = (x % (BitVec.ofInt 64 (6))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1329  `(Mod64u <t> x (Const64 [7])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [7])) (Const64 <t> [7])))` -/
 theorem m1329_7 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (7)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 64 (7))) * (BitVec.ofInt 64 (7)))) = (x % (BitVec.ofInt 64 (7))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1329  `(Mod64u <t> x (Const64 [9])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [9])) (Const64 <t> [9])))` -/
 theorem m1329_9 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (9)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 64 (9))) * (BitVec.ofInt 64 (9)))) = (x % (BitVec.ofInt 64 (9))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1329  `(Mod64u <t> x (Const64 [12])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [12])) (Const64 <t> [12])))` -/
 theorem m1329_12 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (12)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 64 (12))) * (BitVec.ofInt 64 (12)))) = (x % (BitVec.ofInt 64 (12))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1329  `(Mod64u <t> x (Const64 [9223372036854775807])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [9223372036854775807])) (Const64 <t> [9223372036854775807])))` -/
 theorem m1329_9223372036854775807 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (9223372036854775807)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 64 (9223372036854775807))) * (BitVec.ofInt 64 (9223372036854775807)))) = (x % (BitVec.ofInt 64 (9223372036854775807))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1329  `(Mod64u <t> x (Const64 [4611686018427387905])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [4611686018427387905])) (Const64 <t> [4611686018427387905])))` -/
 theorem m1329_4611686018427387905 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (4611686018427387905)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 64 (4611686018427387905))) * (BitVec.ofInt 64 (4611686018427387905)))) = (x % (BitVec.ofInt 64 (4611686018427387905))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1329  `(Mod64u <t> x (Const64 [4611686018427387903])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [4611686018427387903])) (Const64 <t> [4611686018427387903])))` -/
 theorem m1329_4611686018427387903 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (4611686018427387903)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 64 (4611686018427387903))) * (BitVec.ofInt 64 (4611686018427387903)))) = (x % (BitVec.ofInt 64 (4611686018427387903))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1329  `(Mod64u <t> x (Const64 [3074457345618258602])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [3074457345618258602])) (Const64 <t> [3074457345618258602])))` -/
 theorem m1329_3074457345618258602 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (3074457345618258602)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 64 (3074457345618258602))) * (BitVec.ofInt 64 (3074457345618258602)))) = (x % (BitVec.ofInt 64 (3074457345618258602))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1329  `(Mod64u <t> x (Const64 [504403158265495552])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [504403158265495552])) (Const64 <t> [504403158265495552])))` -/
 theorem m1329_504403158265495552 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (504403158265495552)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 64 (504403158265495552))) * (BitVec.ofInt 64 (504403158265495552)))) = (x % (BitVec.ofInt 64 (504403158265495552))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1329  `(Mod64u <t> x (Const64 [1000000000000000009])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [1000000000000000009])) (Const64 <t> [1000000000000000009])))` -/
 theorem m1329_1000000000000000009 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (1000000000000000009)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 64 (1000000000000000009))) * (BitVec.ofInt 64 (1000000000000000009)))) = (x % (BitVec.ofInt 64 (1000000000000000009))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1329  `(Mod64u <t> x (Const64 [3458764513820540928])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [3458764513820540928])) (Const64 <t> [3458764513820540928])))` -/
 theorem m1329_3458764513820540928 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (3458764513820540928)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 64 (3458764513820540928))) * (BitVec.ofInt 64 (3458764513820540928)))) = (x % (BitVec.ofInt 64 (3458764513820540928))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 /-- generic.rules:1329  `(Mod64u <t> x (Const64 [6148914691236517205])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [6148914691236517205])) (Const64 <t> [6148914691236517205])))` -/
 theorem m1329_6148914691236517205 (x : BitVec 64)
     (h0 : ((BitVec.ofInt 64 (6148914691236517205)) != 0) = true) :
     (x - ((x / (BitVec.ofInt 64 (6148914691236517205))) * (BitVec.ofInt 64 (6148914691236517205)))) = (x % (BitVec.ofInt 64 (6148914691236517205))) := by
-  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
+  first | rfl | (simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at * <;> bv_decide (config := {timeout := 120})) | bv_decide (config := {timeout := 120})
 
 end Go.Compiler.MagicDiv
