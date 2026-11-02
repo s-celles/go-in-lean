@@ -53,30 +53,30 @@ macro "unfold_rot" : tactic => `(tactic| simp only [goRotl, rotl, rotr, ror, ror
 /-- ARM64.rules:70 `(RotateLeft8 <t> x y) => (OR (SLL x (ANDconst [7] y)) (SRL (ZeroExt8to64 x) (ANDconst [7] (NEG y))))` -/
 theorem arm64_rotl8 (rx ry : BitVec 64) :
     ((Arm.sll rx (ry &&& 7)) ||| (Arm.srl (Arm.zext 8 rx) ((-ry) &&& 7))).setWidth 8 = goRotl 8 rx ry := by
-  unfold_rot; bv_decide
+  unfold_rot; bv_decide (config := {timeout := 120})
 /-- ARM64.rules:72 `(RotateLeft16 <t> x y) => (RORW (ORshiftLL (ZeroExt16to32 x) (ZeroExt16to32 x) [16]) (NEG y))` -/
 theorem arm64_rotl16 (rx ry : BitVec 64) :
     (rorw (orshiftLL 16 (Arm.zext 16 rx) (Arm.zext 16 rx)) (-ry)).setWidth 16 = goRotl 16 rx ry := by
-  unfold_rot; bv_decide
+  unfold_rot; bv_decide (config := {timeout := 120})
 /-- ARM64.rules:73 `(RotateLeft32 x y) => (RORW x (NEG y))` -/
 theorem arm64_rotl32 (rx ry : BitVec 64) : (rorw rx (-ry)).setWidth 32 = goRotl 32 rx ry := by
-  unfold_rot; bv_decide
+  unfold_rot; bv_decide (config := {timeout := 120})
 /-- ARM64.rules:74 `(RotateLeft64 x y) => (ROR x (NEG y))` -/
 theorem arm64_rotl64 (rx ry : BitVec 64) : ror rx (-ry) = goRotl 64 rx ry := by
-  unfold_rot; bv_decide
+  unfold_rot; bv_decide (config := {timeout := 120})
 /-- ARM64.rules:69 `(RotateLeft8 <t> x (MOVDconst [c])) => (Or8 (Lsh8x64 x (MOVDconst [c&7])) (Rsh8Ux64 x (MOVDconst [-c&7])))`
 (right-hand side in generic Go semantics: shifts by a 64-bit amount, saturating). -/
 theorem arm64_rotl8_const (rx c : BitVec 64) :
     (rx.setWidth 8 <<< (c &&& 7)) ||| (rx.setWidth 8 >>> ((-c) &&& 7)) = goRotl 8 rx c := by
-  unfold_rot; bv_decide
+  unfold_rot; bv_decide (config := {timeout := 120})
 /-- ARM64.rules:71 (16-bit analogue of :69) -/
 theorem arm64_rotl16_const (rx c : BitVec 64) :
     (rx.setWidth 16 <<< (c &&& 15)) ||| (rx.setWidth 16 >>> ((-c) &&& 15)) = goRotl 16 rx c := by
-  unfold_rot; bv_decide
+  unfold_rot; bv_decide (config := {timeout := 120})
 /-- ARM64.rules:1025-1026 `(ROR x (MOVDconst [c])) => (RORconst x [c&63])`, `(RORW x (MOVDconst [c])) => (RORWconst x [c&31])` -/
 theorem arm64_ror_const (rx c : BitVec 64) : ror rx c = rotr rx (c &&& 63) ∧
     rorw rx c = (rotr (rx.setWidth 32) ((c &&& 31).setWidth 32)).setWidth 64 := by
-  unfold_rot; constructor <;> bv_decide
+  unfold_rot; constructor <;> bv_decide (config := {timeout := 120})
 
 -- ---------------------------------------------------------------- AMD64
 
@@ -84,20 +84,20 @@ theorem arm64_ror_const (rx c : BitVec 64) : ror rx c = rotr rx (c &&& 63) ∧
 theorem amd64_rotl (rx ry : BitVec 64) :
     (rolb rx ry).setWidth 8 = goRotl 8 rx ry ∧ (rolw rx ry).setWidth 16 = goRotl 16 rx ry ∧
     (roll rx ry).setWidth 32 = goRotl 32 rx ry ∧ rolq rx ry = goRotl 64 rx ry := by
-  unfold_rot; refine ⟨?_, ?_, ?_, ?_⟩ <;> bv_decide
+  unfold_rot; refine ⟨?_, ?_, ?_, ?_⟩ <;> bv_decide (config := {timeout := 120})
 /-- AMD64.rules:824-833 `(ROLx x (NEG(Q|L) y)) => (RORx x y)` and `(RORx x (NEG(Q|L) y)) => (ROLx x y)` -/
 theorem amd64_rol_neg (rx ry : BitVec 64) :
     rolq rx (negq ry) = rorq rx ry ∧ rolq rx (negl ry) = rorq rx ry ∧
     roll rx (negq ry) = rorl rx ry ∧ roll rx (negl ry) = rorl rx ry ∧
     rolw rx (negq ry) = rorw' rx ry ∧ rolw rx (negl ry) = rorw' rx ry ∧
     rolb rx (negq ry) = rorb rx ry ∧ rolb rx (negl ry) = rorb rx ry := by
-  unfold_rot; refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> bv_decide
+  unfold_rot; refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> bv_decide (config := {timeout := 120})
 theorem amd64_ror_neg (rx ry : BitVec 64) :
     rorq rx (negq ry) = rolq rx ry ∧ rorq rx (negl ry) = rolq rx ry ∧
     rorl rx (negq ry) = roll rx ry ∧ rorl rx (negl ry) = roll rx ry ∧
     rorw' rx (negq ry) = rolw rx ry ∧ rorw' rx (negl ry) = rolw rx ry ∧
     rorb rx (negq ry) = rolb rx ry ∧ rorb rx (negl ry) = rolb rx ry := by
-  unfold_rot; refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> bv_decide
+  unfold_rot; refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> bv_decide (config := {timeout := 120})
 /-- AMD64.rules:836-844 `(ROLx x (MOV(Q|L)const [c])) => (ROLxconst [int8(c&m)] x)`,
 `(RORx x (MOV(Q|L)const [c])) => (ROLxconst [int8((-c)&m)] x)` with m = 63/31/15/7 -/
 theorem amd64_rot_const (rx c : BitVec 64) :
@@ -105,6 +105,6 @@ theorem amd64_rot_const (rx c : BitVec 64) :
     rolw rx c = rolw rx (c &&& 15) ∧ rolb rx c = rolb rx (c &&& 7) ∧
     rorq rx c = rolq rx ((-c) &&& 63) ∧ rorl rx c = roll rx ((-c) &&& 31) ∧
     rorw' rx c = rolw rx ((-c) &&& 15) ∧ rorb rx c = rolb rx ((-c) &&& 7) := by
-  unfold_rot; refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> bv_decide
+  unfold_rot; refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> bv_decide (config := {timeout := 120})
 
 end Go.Compiler.Rotates

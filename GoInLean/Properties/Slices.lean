@@ -13,7 +13,7 @@ theorem midpoint_spec (i j : int) (hi : (0#64).sle i = true) (hij : i.sle j = tr
     midpoint i j = ((i.zeroExtend 65 + j.zeroExtend 65) >>> 1).setWidth 64 ∧
     i.sle (midpoint i j) = true ∧ (i.slt j = true → (midpoint i j).slt j = true) := by
   unfold midpoint Go.convU
-  refine ⟨?_, ?_, ?_⟩ <;> bv_decide
+  refine ⟨?_, ?_, ?_⟩ <;> bv_decide (config := {timeout := 120})
 
 /-- SORT-SEARCH-MID-NAIVE (negative control): the naive `(i+j)/2` on signed `int` is *wrong*
 for valid indices because `i+j` overflows; witness `i = 1`, `j = MaxInt`. -/

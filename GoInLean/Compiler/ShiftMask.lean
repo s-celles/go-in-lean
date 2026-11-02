@@ -20,7 +20,7 @@ evaluator ever computes a shift by 2^63 (Lean's `Nat.shiftLeft` refuses such exp
 theorem rule527_counterexample (x c d e : BitVec 64) (hx : x = 0xFFFFFFFFFFFFFFFF)
     (hc : c = 0x8000000000000000) (hd : d = 3) (he : e = 1) :
     c.slt e = true ∧ ((x.sshiftRight' c) &&& d) <<< e ≠ (x <<< (e - c)) &&& (d <<< e) := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 
 /-- generic.rules:527 (64-bit signed instance) is unsound as written. -/
 theorem rule527_refuted :
@@ -36,88 +36,88 @@ theorem rule527_refuted :
 theorem fixed_ge_64s (x d : BitVec 64) (c e : BitVec 64) (hc : c.msb = false) (he : e.msb = false)
     (h : e.sle c = true) :
     ((x.sshiftRight' c) &&& d) <<< e = (x.sshiftRight' (c - e)) &&& (d <<< e) := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 /-- generic.rules:527 with `c < e`, fixed: also `0 <= c && 0 <= e`. -/
 theorem fixed_lt_64s (x d : BitVec 64) (c e : BitVec 64) (hc : c.msb = false) (he : e.msb = false)
     (h : c.slt e = true) :
     ((x.sshiftRight' c) &&& d) <<< e = (x <<< (e - c)) &&& (d <<< e) := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 
 /-- generic.rules:523 with `c >= e`, fixed: also `0 <= c && 0 <= e` (64-bit, unsigned inner shift). -/
 theorem fixed_ge_64u (x d : BitVec 64) (c e : BitVec 64) (hc : c.msb = false) (he : e.msb = false)
     (h : e.sle c = true) :
     ((x >>> c) &&& d) <<< e = (x >>> (c - e)) &&& (d <<< e) := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 /-- generic.rules:527 with `c < e`, fixed: also `0 <= c && 0 <= e`. -/
 theorem fixed_lt_64u (x d : BitVec 64) (c e : BitVec 64) (hc : c.msb = false) (he : e.msb = false)
     (h : c.slt e = true) :
     ((x >>> c) &&& d) <<< e = (x <<< (e - c)) &&& (d <<< e) := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 
 /-- generic.rules:524 with `c >= e`, fixed: also `0 <= c && 0 <= e` (32-bit, signed inner shift). -/
 theorem fixed_ge_32s (x d : BitVec 32) (c e : BitVec 64) (hc : c.msb = false) (he : e.msb = false)
     (h : e.sle c = true) :
     ((x.sshiftRight' c) &&& d) <<< e = (x.sshiftRight' (c - e)) &&& (d <<< e) := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 /-- generic.rules:528 with `c < e`, fixed: also `0 <= c && 0 <= e`. -/
 theorem fixed_lt_32s (x d : BitVec 32) (c e : BitVec 64) (hc : c.msb = false) (he : e.msb = false)
     (h : c.slt e = true) :
     ((x.sshiftRight' c) &&& d) <<< e = (x <<< (e - c)) &&& (d <<< e) := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 
 /-- generic.rules:524 with `c >= e`, fixed: also `0 <= c && 0 <= e` (32-bit, unsigned inner shift). -/
 theorem fixed_ge_32u (x d : BitVec 32) (c e : BitVec 64) (hc : c.msb = false) (he : e.msb = false)
     (h : e.sle c = true) :
     ((x >>> c) &&& d) <<< e = (x >>> (c - e)) &&& (d <<< e) := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 /-- generic.rules:528 with `c < e`, fixed: also `0 <= c && 0 <= e`. -/
 theorem fixed_lt_32u (x d : BitVec 32) (c e : BitVec 64) (hc : c.msb = false) (he : e.msb = false)
     (h : c.slt e = true) :
     ((x >>> c) &&& d) <<< e = (x <<< (e - c)) &&& (d <<< e) := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 
 /-- generic.rules:525 with `c >= e`, fixed: also `0 <= c && 0 <= e` (16-bit, signed inner shift). -/
 theorem fixed_ge_16s (x d : BitVec 16) (c e : BitVec 64) (hc : c.msb = false) (he : e.msb = false)
     (h : e.sle c = true) :
     ((x.sshiftRight' c) &&& d) <<< e = (x.sshiftRight' (c - e)) &&& (d <<< e) := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 /-- generic.rules:529 with `c < e`, fixed: also `0 <= c && 0 <= e`. -/
 theorem fixed_lt_16s (x d : BitVec 16) (c e : BitVec 64) (hc : c.msb = false) (he : e.msb = false)
     (h : c.slt e = true) :
     ((x.sshiftRight' c) &&& d) <<< e = (x <<< (e - c)) &&& (d <<< e) := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 
 /-- generic.rules:525 with `c >= e`, fixed: also `0 <= c && 0 <= e` (16-bit, unsigned inner shift). -/
 theorem fixed_ge_16u (x d : BitVec 16) (c e : BitVec 64) (hc : c.msb = false) (he : e.msb = false)
     (h : e.sle c = true) :
     ((x >>> c) &&& d) <<< e = (x >>> (c - e)) &&& (d <<< e) := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 /-- generic.rules:529 with `c < e`, fixed: also `0 <= c && 0 <= e`. -/
 theorem fixed_lt_16u (x d : BitVec 16) (c e : BitVec 64) (hc : c.msb = false) (he : e.msb = false)
     (h : c.slt e = true) :
     ((x >>> c) &&& d) <<< e = (x <<< (e - c)) &&& (d <<< e) := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 
 /-- generic.rules:526 with `c >= e`, fixed: also `0 <= c && 0 <= e` (8-bit, signed inner shift). -/
 theorem fixed_ge_8s (x d : BitVec 8) (c e : BitVec 64) (hc : c.msb = false) (he : e.msb = false)
     (h : e.sle c = true) :
     ((x.sshiftRight' c) &&& d) <<< e = (x.sshiftRight' (c - e)) &&& (d <<< e) := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 /-- generic.rules:530 with `c < e`, fixed: also `0 <= c && 0 <= e`. -/
 theorem fixed_lt_8s (x d : BitVec 8) (c e : BitVec 64) (hc : c.msb = false) (he : e.msb = false)
     (h : c.slt e = true) :
     ((x.sshiftRight' c) &&& d) <<< e = (x <<< (e - c)) &&& (d <<< e) := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 
 /-- generic.rules:526 with `c >= e`, fixed: also `0 <= c && 0 <= e` (8-bit, unsigned inner shift). -/
 theorem fixed_ge_8u (x d : BitVec 8) (c e : BitVec 64) (hc : c.msb = false) (he : e.msb = false)
     (h : e.sle c = true) :
     ((x >>> c) &&& d) <<< e = (x >>> (c - e)) &&& (d <<< e) := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 /-- generic.rules:530 with `c < e`, fixed: also `0 <= c && 0 <= e`. -/
 theorem fixed_lt_8u (x d : BitVec 8) (c e : BitVec 64) (hc : c.msb = false) (he : e.msb = false)
     (h : c.slt e = true) :
     ((x >>> c) &&& d) <<< e = (x <<< (e - c)) &&& (d <<< e) := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 
 end Go.Compiler.ShiftMask

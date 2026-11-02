@@ -18,12 +18,12 @@ def rotl (x k : BitVec 64) : BitVec 64 :=
 /-- Sound when the count is a genuine small value (`0 ≤ c < 64`). -/
 theorem rotate_sound (x c d : BitVec 64) (hc : c < 64) (hd : d = 64 - c) :
     (x <<< c) ||| (x >>> d) = rotl x c := by
-  unfold rotl; bv_decide
+  unfold rotl; bv_decide (config := {timeout := 120})
 
 /-- Refuted for the count `2^64-1` admitted by the signed test (x = 1, d = 65). -/
 theorem rotate_hugeCount_counterexample (x c d : BitVec 64) (hx : x = 1)
     (hc : c = 0xFFFFFFFFFFFFFFFF) (hd : d = 64 - c) :
     c.slt 64 = true ∧ (x <<< c) ||| (x >>> d) ≠ rotl x c := by
-  unfold rotl; bv_decide
+  unfold rotl; bv_decide (config := {timeout := 120})
 
 end Go.Compiler.LatentRotate

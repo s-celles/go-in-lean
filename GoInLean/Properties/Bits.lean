@@ -26,7 +26,7 @@ macro "unroll_spec" : tactic =>
 
 /-- BITS-LEN-8: `Len8 x` is the minimum number of bits required to represent x; 0 for x == 0. -/
 theorem Len8_spec (x : uint8) : Len8 x = len x := by
-  unfold Len8; rw [len8tab_eq_fn]; unroll_spec; unfold len8tabFn; bv_decide
+  unfold Len8; rw [len8tab_eq_fn]; unroll_spec; unfold len8tabFn; bv_decide (config := {timeout := 120})
 
 /-- Index-range lemma: the final table index of `Len16/32/64` fits in 8 bits, so `tab`
 on the wide index equals the table function on the truncated index. -/
@@ -41,19 +41,19 @@ theorem tab_len8_of_lt {w : Nat} (x : BitVec w) (hx : x.toNat < 256) :
 theorem Len16_spec (x : uint16) : Len16 x = len x := by
   dsimp only [Len16]
   rw [tab_len8_of_lt _ (by split <;> bv_omega)]
-  unroll_spec; unfold len8tabFn; bv_decide
+  unroll_spec; unfold len8tabFn; bv_decide (config := {timeout := 120})
 
 /-- BITS-LEN-32 -/
 theorem Len32_spec (x : uint32) : Len32 x = len x := by
   dsimp only [Len32]
   rw [tab_len8_of_lt _ (by split <;> split <;> bv_omega)]
-  unroll_spec; unfold len8tabFn; bv_decide
+  unroll_spec; unfold len8tabFn; bv_decide (config := {timeout := 120})
 
 /-- BITS-LEN-64 -/
 theorem Len64_spec (x : uint64) : Len64 x = len x := by
   dsimp only [Len64]
   rw [tab_len8_of_lt _ (by split <;> split <;> split <;> bv_omega)]
-  unroll_spec; unfold len8tabFn; bv_decide
+  unroll_spec; unfold len8tabFn; bv_decide (config := {timeout := 120})
 
 /-- BITS-LZ-64: `LeadingZeros64 x` is the number of leading zero bits; 64 for x == 0. -/
 theorem LeadingZeros64_spec (x : uint64) : LeadingZeros64 x = clz x := by
@@ -69,7 +69,7 @@ theorem LeadingZeros8_spec (x : uint8) : LeadingZeros8 x = clz x := by
 
 /-- BITS-TZ-8 -/
 theorem TrailingZeros8_spec (x : uint8) : TrailingZeros8 x = ctz x := by
-  unfold TrailingZeros8; rw [ntz8tab_eq_fn]; unroll_spec; unfold ntz8tabFn; bv_decide
+  unfold TrailingZeros8; rw [ntz8tab_eq_fn]; unroll_spec; unfold ntz8tabFn; bv_decide (config := {timeout := 120})
 
 theorem tab_deBruijn32_of_lt {w : Nat} (x : BitVec w) (hx : x.toNat < 32) :
     tab deBruijn32tab x = deBruijn32tabFn (x.setWidth 5) := by
@@ -88,25 +88,25 @@ theorem tab_deBruijn64_of_lt {w : Nat} (x : BitVec w) (hx : x.toNat < 64) :
 theorem TrailingZeros16_spec (x : uint16) : TrailingZeros16 x = ctz x := by
   dsimp only [TrailingZeros16]
   rw [tab_deBruijn32_of_lt _ (by bv_omega)]
-  unroll_spec; unfold deBruijn32tabFn deBruijn32 Go.convU; bv_decide
+  unroll_spec; unfold deBruijn32tabFn deBruijn32 Go.convU; bv_decide (config := {timeout := 120})
 
 /-- BITS-TZ-32 -/
 theorem TrailingZeros32_spec (x : uint32) : TrailingZeros32 x = ctz x := by
   dsimp only [TrailingZeros32]
   rw [tab_deBruijn32_of_lt _ (by bv_omega)]
-  unroll_spec; unfold deBruijn32tabFn deBruijn32; bv_decide
+  unroll_spec; unfold deBruijn32tabFn deBruijn32; bv_decide (config := {timeout := 120})
 
 /-- BITS-TZ-64 -/
 theorem TrailingZeros64_spec (x : uint64) : TrailingZeros64 x = ctz x := by
   dsimp only [TrailingZeros64]
   rw [tab_deBruijn64_of_lt _ (by bv_omega)]
-  unroll_spec; unfold deBruijn64tabFn deBruijn64; bv_decide
+  unroll_spec; unfold deBruijn64tabFn deBruijn64; bv_decide (config := {timeout := 120})
 
 -- ---------------------------------------------------------------- OnesCount
 
 /-- BITS-POP-8 -/
 theorem OnesCount8_spec (x : uint8) : OnesCount8 x = popcount x := by
-  unfold OnesCount8; rw [pop8tab_eq_fn]; unroll_spec; unfold pop8tabFn; bv_decide
+  unfold OnesCount8; rw [pop8tab_eq_fn]; unroll_spec; unfold pop8tabFn; bv_decide (config := {timeout := 120})
 
 /-- Generic index-range lemma: if the (wide) index is `< 256`, indexing the
 table equals the bit-blastable table function applied to the low byte. -/
@@ -125,22 +125,22 @@ theorem tab_lt {w : Nat} (t : Array (BitVec 8)) (f : BitVec 8 → BitVec 8)
 /-- BITS-POP-16 -/
 theorem OnesCount16_spec (x : uint16) : OnesCount16 x = popcount x := by
   dsimp only [OnesCount16]
-  rw [tab_lt _ _ pop8tab_eq_fn (x >>> 8) (by bv_decide) (by decide),
-      tab_lt _ _ pop8tab_eq_fn (x &&& 0xff) (by bv_decide) (by decide)]
-  unroll_spec; unfold pop8tabFn; bv_decide
+  rw [tab_lt _ _ pop8tab_eq_fn (x >>> 8) (by bv_decide (config := {timeout := 120})) (by decide),
+      tab_lt _ _ pop8tab_eq_fn (x &&& 0xff) (by bv_decide (config := {timeout := 120})) (by decide)]
+  unroll_spec; unfold pop8tabFn; bv_decide (config := {timeout := 120})
 
 /-- BITS-POP-32 -/
 theorem OnesCount32_spec (x : uint32) : OnesCount32 x = popcount x := by
   dsimp only [OnesCount32]
-  rw [tab_lt _ _ pop8tab_eq_fn (x >>> 24) (by bv_decide) (by decide),
-      tab_lt _ _ pop8tab_eq_fn ((x >>> 16) &&& 0xff) (by bv_decide) (by decide),
-      tab_lt _ _ pop8tab_eq_fn ((x >>> 8) &&& 0xff) (by bv_decide) (by decide),
-      tab_lt _ _ pop8tab_eq_fn (x &&& 0xff) (by bv_decide) (by decide)]
-  unroll_spec; unfold pop8tabFn; bv_decide
+  rw [tab_lt _ _ pop8tab_eq_fn (x >>> 24) (by bv_decide (config := {timeout := 120})) (by decide),
+      tab_lt _ _ pop8tab_eq_fn ((x >>> 16) &&& 0xff) (by bv_decide (config := {timeout := 120})) (by decide),
+      tab_lt _ _ pop8tab_eq_fn ((x >>> 8) &&& 0xff) (by bv_decide (config := {timeout := 120})) (by decide),
+      tab_lt _ _ pop8tab_eq_fn (x &&& 0xff) (by bv_decide (config := {timeout := 120})) (by decide)]
+  unroll_spec; unfold pop8tabFn; bv_decide (config := {timeout := 120})
 
 /-- BITS-POP-64: the SWAR ("Hacker's Delight") algorithm. -/
 theorem OnesCount64_spec (x : uint64) : OnesCount64 x = popcount x := by
-  dsimp only [OnesCount64, m0, m1, m2]; unroll_spec; bv_decide
+  dsimp only [OnesCount64, m0, m1, m2]; unroll_spec; bv_decide (config := {timeout := 120})
 
 -- ---------------------------------------------------------------- RotateLeft
 
@@ -150,7 +150,7 @@ theorem RotateLeft64_spec (x : uint64) (k : int) :
     RotateLeft64 x k = x.rotateLeft (k.toNat % 64) := by
   dsimp only [RotateLeft64]
   have hs : (k &&& (64 - 1)).toNat = k.toNat % 64 := by
-    have h1 : k &&& (64 - 1) = k % 64 := by bv_decide
+    have h1 : k &&& (64 - 1) = k % 64 := by bv_decide (config := {timeout := 120})
     rw [h1, BitVec.toNat_umod]; rfl
   have hlt : k.toNat % 64 < 64 := Nat.mod_lt _ (by decide)
   rw [BitVec.rotateLeft_eq_rotateLeftAux_of_lt hlt, BitVec.rotateLeftAux,
@@ -166,7 +166,7 @@ theorem RotateLeft32_spec (x : uint32) (k : int) :
     RotateLeft32 x k = x.rotateLeft (k.toNat % 32) := by
   dsimp only [RotateLeft32]
   have hs : (k &&& (32 - 1)).toNat = k.toNat % 32 := by
-    have h1 : k &&& (32 - 1) = k % 32 := by bv_decide
+    have h1 : k &&& (32 - 1) = k % 32 := by bv_decide (config := {timeout := 120})
     rw [h1, BitVec.toNat_umod]; rfl
   have hlt : k.toNat % 32 < 32 := Nat.mod_lt _ (by decide)
   rw [BitVec.rotateLeft_eq_rotateLeftAux_of_lt hlt, BitVec.rotateLeftAux,
@@ -180,7 +180,7 @@ theorem RotateLeft16_spec (x : uint16) (k : int) :
     RotateLeft16 x k = x.rotateLeft (k.toNat % 16) := by
   dsimp only [RotateLeft16]
   have hs : (k &&& (16 - 1)).toNat = k.toNat % 16 := by
-    have h1 : k &&& (16 - 1) = k % 16 := by bv_decide
+    have h1 : k &&& (16 - 1) = k % 16 := by bv_decide (config := {timeout := 120})
     rw [h1, BitVec.toNat_umod]; rfl
   have hlt : k.toNat % 16 < 16 := Nat.mod_lt _ (by decide)
   rw [BitVec.rotateLeft_eq_rotateLeftAux_of_lt hlt, BitVec.rotateLeftAux,
@@ -194,7 +194,7 @@ theorem RotateLeft8_spec (x : uint8) (k : int) :
     RotateLeft8 x k = x.rotateLeft (k.toNat % 8) := by
   dsimp only [RotateLeft8]
   have hs : (k &&& (8 - 1)).toNat = k.toNat % 8 := by
-    have h1 : k &&& (8 - 1) = k % 8 := by bv_decide
+    have h1 : k &&& (8 - 1) = k % 8 := by bv_decide (config := {timeout := 120})
     rw [h1, BitVec.toNat_umod]; rfl
   have hlt : k.toNat % 8 < 8 := Nat.mod_lt _ (by decide)
   rw [BitVec.rotateLeft_eq_rotateLeftAux_of_lt hlt, BitVec.rotateLeftAux,
@@ -223,7 +223,7 @@ theorem RotateLeft64_neg (x : uint64) (k : int) :
   rw [BitVec.rotateRight_eq_rotateRightAux_of_lt hr64]
   -- after fixing r, rotateLeft ((64 - r) % 64) is rotateLeftAux unless r = 0
   rcases Nat.eq_zero_or_pos r with h0 | hpos
-  · subst h0; simp only [BitVec.rotateRightAux, BitVec.rotateLeft, BitVec.rotateLeftAux]; bv_decide
+  · subst h0; simp only [BitVec.rotateRightAux, BitVec.rotateLeft, BitVec.rotateLeftAux]; bv_decide (config := {timeout := 120})
   · rw [BitVec.rotateLeft_eq_rotateLeftAux_of_lt (by omega)]
     simp only [BitVec.rotateLeftAux, BitVec.rotateRightAux]
     have : (64 - r) % 64 = 64 - r := Nat.mod_eq_of_lt (by omega)
@@ -235,29 +235,29 @@ theorem RotateLeft64_neg (x : uint64) (k : int) :
 
 /-- BITS-REVB-16 -/
 theorem ReverseBytes16_spec (x : uint16) : ReverseBytes16 x = reverseBytes16 x := by
-  dsimp only [ReverseBytes16, reverseBytes16]; bv_decide
+  dsimp only [ReverseBytes16, reverseBytes16]; bv_decide (config := {timeout := 120})
 /-- BITS-REVB-32 -/
 theorem ReverseBytes32_spec (x : uint32) : ReverseBytes32 x = reverseBytes32 x := by
-  dsimp only [ReverseBytes32, reverseBytes32, m3, Go.convU]; bv_decide
+  dsimp only [ReverseBytes32, reverseBytes32, m3, Go.convU]; bv_decide (config := {timeout := 120})
 /-- BITS-REVB-64 -/
 theorem ReverseBytes64_spec (x : uint64) : ReverseBytes64 x = reverseBytes64 x := by
-  dsimp only [ReverseBytes64, reverseBytes64, m3, m4]; bv_decide
+  dsimp only [ReverseBytes64, reverseBytes64, m3, m4]; bv_decide (config := {timeout := 120})
 
 /-- BITS-REV-8 -/
 theorem Reverse8_spec (x : uint8) : Reverse8 x = reverse x := by
-  unfold Reverse8; rw [rev8tab_eq_fn]; unroll_spec; unfold rev8tabFn; bv_decide
+  unfold Reverse8; rw [rev8tab_eq_fn]; unroll_spec; unfold rev8tabFn; bv_decide (config := {timeout := 120})
 /-- BITS-REV-16 -/
 theorem Reverse16_spec (x : uint16) : Reverse16 x = reverse x := by
   dsimp only [Reverse16]
-  rw [tab_lt _ _ rev8tab_eq_fn (x >>> 8) (by bv_decide) (by decide),
-      tab_lt _ _ rev8tab_eq_fn (x &&& 0xff) (by bv_decide) (by decide)]
-  unroll_spec; unfold rev8tabFn; bv_decide
+  rw [tab_lt _ _ rev8tab_eq_fn (x >>> 8) (by bv_decide (config := {timeout := 120})) (by decide),
+      tab_lt _ _ rev8tab_eq_fn (x &&& 0xff) (by bv_decide (config := {timeout := 120})) (by decide)]
+  unroll_spec; unfold rev8tabFn; bv_decide (config := {timeout := 120})
 /-- BITS-REV-32 -/
 theorem Reverse32_spec (x : uint32) : Reverse32 x = reverse x := by
-  dsimp only [Reverse32, ReverseBytes32, m0, m1, m2, m3, Go.convU]; unroll_spec; bv_decide
+  dsimp only [Reverse32, ReverseBytes32, m0, m1, m2, m3, Go.convU]; unroll_spec; bv_decide (config := {timeout := 120})
 /-- BITS-REV-64 -/
 theorem Reverse64_spec (x : uint64) : Reverse64 x = reverse x := by
-  dsimp only [Reverse64, ReverseBytes64, m0, m1, m2, m3, m4]; unroll_spec; bv_decide
+  dsimp only [Reverse64, ReverseBytes64, m0, m1, m2, m3, m4]; unroll_spec; bv_decide (config := {timeout := 120})
 
 -- ---------------------------------------------------------------- Add / Sub
 
@@ -266,14 +266,14 @@ The carryOut output is guaranteed to be 0 or 1." Stated as a 128-bit identity. -
 theorem Add64_spec (x y carry : uint64) (hc : carry = 0 ∨ carry = 1) :
     ((Add64 x y carry).2.zeroExtend 128 <<< 64) ||| (Add64 x y carry).1.zeroExtend 128
       = x.zeroExtend 128 + y.zeroExtend 128 + carry.zeroExtend 128 := by
-  dsimp only [Add64, Go.andNot]; bv_decide
+  dsimp only [Add64, Go.andNot]; bv_decide (config := {timeout := 120})
 theorem Add64_carryOut_le_one (x y carry : uint64) : (Add64 x y carry).2 ≤ 1 := by
-  dsimp only [Add64, Go.andNot]; bv_decide
+  dsimp only [Add64, Go.andNot]; bv_decide (config := {timeout := 120})
 /-- BITS-ADD-32 -/
 theorem Add32_spec (x y carry : uint32) (hc : carry = 0 ∨ carry = 1) :
     ((Add32 x y carry).2.zeroExtend 64 <<< 32) ||| (Add32 x y carry).1.zeroExtend 64
       = x.zeroExtend 64 + y.zeroExtend 64 + carry.zeroExtend 64 := by
-  dsimp only [Add32, Go.convU]; bv_decide
+  dsimp only [Add32, Go.convU]; bv_decide (config := {timeout := 120})
 
 /-- BITS-SUB-64: doc: "diff = x - y - borrow. The borrow input must be 0 or 1 …
 The borrowOut output is guaranteed to be 0 or 1." As a 128-bit identity:
@@ -281,14 +281,14 @@ x = y + borrow + diff - borrowOut·2^64. -/
 theorem Sub64_spec (x y borrow : uint64) (hb : borrow = 0 ∨ borrow = 1) :
     x.zeroExtend 128 = y.zeroExtend 128 + borrow.zeroExtend 128 + (Sub64 x y borrow).1.zeroExtend 128
       - ((Sub64 x y borrow).2.zeroExtend 128 <<< 64) := by
-  dsimp only [Sub64]; bv_decide
+  dsimp only [Sub64]; bv_decide (config := {timeout := 120})
 theorem Sub64_borrowOut_le_one (x y borrow : uint64) : (Sub64 x y borrow).2 ≤ 1 := by
-  dsimp only [Sub64]; bv_decide
+  dsimp only [Sub64]; bv_decide (config := {timeout := 120})
 /-- BITS-SUB-32 -/
 theorem Sub32_spec (x y borrow : uint32) (hb : borrow = 0 ∨ borrow = 1) :
     x.zeroExtend 64 = y.zeroExtend 64 + borrow.zeroExtend 64 + (Sub32 x y borrow).1.zeroExtend 64
       - ((Sub32 x y borrow).2.zeroExtend 64 <<< 32) := by
-  dsimp only [Sub32]; bv_decide
+  dsimp only [Sub32]; bv_decide (config := {timeout := 120})
 
 -- ---------------------------------------------------------------- Mul
 
@@ -297,7 +297,7 @@ theorem Mul32_spec (x y : uint32) :
     (Mul32 x y).1 ++ (Mul32 x y).2 = x.zeroExtend 64 * y.zeroExtend 64 := by
   dsimp only [Mul32, Go.convU]
   generalize x.zeroExtend 64 * y.zeroExtend 64 = t
-  bv_decide
+  bv_decide (config := {timeout := 120})
 
 /-- Oracle for the high half of a product at width `2h`. -/
 def mulhiSpec (h : Nat) (x y : BitVec (2*h)) : BitVec (2*h) :=
@@ -305,7 +305,7 @@ def mulhiSpec (h : Nat) (x y : BitVec (2*h)) : BitVec (2*h) :=
 
 /-- BITS-MULHI-8: the `Mul64` high-half algorithm instantiated at width 8 (h = 4). -/
 theorem mulhiGeneric_4 (x y : BitVec 8) : mulhiGeneric 4 x y = mulhiSpec 4 x y := by
-  dsimp only [mulhiGeneric, mulhiSpec]; bv_decide
+  dsimp only [mulhiGeneric, mulhiSpec]; bv_decide (config := {timeout := 120})
 -- The SAT encoding of general multiplication beyond 8×8 bits exceeds the
 -- solver budget (h = 8 fails at 400 s); see targets/properties.yaml (BITS-MUL-64,
 -- status `inconclusive`). `Mul64` is definitionally `mulhiGeneric 32`.
@@ -328,7 +328,7 @@ def divSpec (h : Nat) (hi lo y : BitVec (2*h)) : BitVec (2*h) × BitVec (2*h) :=
 theorem clzW_eq_clz64 (x : BitVec 64) : clzW x = clz x := by
   dsimp only [BitSpec.clzW, BitSpec.clz, BitSpec.len]
   simp only [List.range, List.range.loop, List.foldl, Nat.reduceSub]
-  bv_decide
+  bv_decide (config := {timeout := 120})
 /-- … and therefore with Go's `LeadingZeros64`, which `Div64` calls for the normalisation shift. -/
 theorem LeadingZeros64_eq_clzW (y : uint64) : LeadingZeros64 y = clzW y := by
   rw [LeadingZeros64_spec, clzW_eq_clz64]
@@ -353,12 +353,12 @@ theorem divGeneric_ok (h : Nat) (hi lo y : BitVec (2*h)) (hy : y ≠ 0) (hlt : h
 /-- BITS-DIV-8 (hi = 0 branch): the fast path is correct at width 8. -/
 theorem divGeneric_4_hi0 (lo y : BitVec 8) (hy : y ≠ 0) :
     divGeneric 4 0 lo y = .ok (divSpec 4 0 lo y) := by
-  have hle : ¬ y ≤ 0 := by bv_decide
+  have hle : ¬ y ≤ 0 := by bv_decide (config := {timeout := 120})
   unfold divGeneric
   simp only [hy, hle, ↓reduceIte]
   dsimp only [divSpec]
   simp only [Except.ok.injEq, Prod.mk.injEq]
-  constructor <;> bv_decide
+  constructor <;> bv_decide (config := {timeout := 120})
 
 set_option maxHeartbeats 20000000 in
 /-- BITS-DIV-8 (general branch, `hi ≠ 0`): the Knuth long-division algorithm of `Div64`,
@@ -374,7 +374,7 @@ theorem divGeneric_4_spec (hi lo y : BitVec 8) (hy : y ≠ 0) (hhi : hi < y) :
   · rename_i h0; subst h0
     dsimp only [divSpec]
     simp only [Except.ok.injEq, Prod.mk.injEq]
-    constructor <;> bv_decide
+    constructor <;> bv_decide (config := {timeout := 120})
   · dsimp only [divSpec, BitSpec.clzW]
     simp only [List.range, List.range.loop, List.foldl, divCorrect, Except.ok.injEq, Prod.mk.injEq,
       Nat.reduceMul, Nat.reduceSub]

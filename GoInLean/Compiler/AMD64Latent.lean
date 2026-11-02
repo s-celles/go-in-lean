@@ -25,7 +25,7 @@ theorem cmpl_shrl_sound (x c n : BitVec 64) (hc0 : 0 < c) (hc : c ≤ 31) (hn : 
   rcases Nat.lt_or_ge n.toNat (2^32) with h | h
   · left
     have : n < 0x100000000 := BitVec.lt_def.mpr (by simpa using h)
-    bv_decide
+    bv_decide (config := {timeout := 120})
   · right; exact h
 
 /-- …and unsound for `c = 32` as the rule's own side condition allows (`n = 1`, `x = 5`). -/
@@ -36,6 +36,6 @@ theorem cmpl_shrl_c32_refuted :
   revert this; unfold shrlconst; simp only [X86.shrl, X86.put, X86.low, ↓reduceIte]; decide
 
 /-- The producer only emits counts in `[0, 31]`. -/
-theorem producer_range (c : BitVec 64) : (c &&& 31) ≤ 31 := by bv_decide
+theorem producer_range (c : BitVec 64) : (c &&& 31) ≤ 31 := by bv_decide (config := {timeout := 120})
 
 end Go.Compiler.AMD64Latent

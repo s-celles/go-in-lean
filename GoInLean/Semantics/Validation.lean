@@ -32,9 +32,9 @@ example : ∀ x : uint8, Go.divU x 0 = .error .divideError := by decide
 example : ∀ x : int8, Go.divS x 0 = .error .divideError := by decide
 -- General: the spec's division identity x = q*y + r for all 8-bit signed pairs, y ≠ 0.
 theorem sdiv_srem_identity (x y : int8) (h : y ≠ 0) : x = (x.sdiv y) * y + x.srem y := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 theorem udiv_umod_identity (x y : uint8) (h : y ≠ 0) : x = (x / y) * y + x % y := by
-  bv_decide
+  bv_decide (config := {timeout := 120})
 example : Go.maxInt = 0x7FFFFFFFFFFFFFFF := by decide
 
 end Go.Semantics.Validation

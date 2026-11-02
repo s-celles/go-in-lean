@@ -27,7 +27,7 @@ theorem remGeneric_no_panic (h : Nat) (hi lo y : BitVec (2*h)) (hy : y ≠ 0) :
 
 theorem concat16_toNat (a b : BitVec 8) :
     (a.zeroExtend (4*4) <<< (2*4) ||| b.zeroExtend (4*4)).toNat = a.toNat * 2^8 + b.toNat := by
-  have h : a.zeroExtend (4*4) <<< (2*4) ||| b.zeroExtend (4*4) = a ++ b := by bv_decide
+  have h : a.zeroExtend (4*4) <<< (2*4) ||| b.zeroExtend (4*4) = a ++ b := by bv_decide (config := {timeout := 120})
   rw [h, BitVec.toNat_append, ← Nat.shiftLeft_add_eq_or_of_lt b.isLt, Nat.shiftLeft_eq]
 
 /-- BITS-REM-8: `Rem` at width 8 is the remainder of the 16-bit dividend, also when the
@@ -63,7 +63,7 @@ theorem Div32_spec (hi lo y : uint32) (hy : y ≠ 0) (hhi : hi < y) :
   have hle : ¬ (y ≤ hi) := BitVec.not_le.mpr hhi
   have hz : ((Go.convU 64 hi <<< 32) ||| Go.convU 64 lo).toNat = hi.toNat * 2^32 + lo.toNat := by
     have : (Go.convU 64 hi <<< 32) ||| Go.convU 64 lo = (Go.convU 64 hi <<< 32) + Go.convU 64 lo := by
-      unfold Go.convU; bv_decide
+      unfold Go.convU; bv_decide (config := {timeout := 120})
     rw [this, BitVec.toNat_add, BitVec.toNat_shiftLeft]
     simp only [Go.convU, BitVec.toNat_setWidth, Nat.shiftLeft_eq]
     have := hi.isLt; have := lo.isLt

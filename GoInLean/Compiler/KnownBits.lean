@@ -86,612 +86,612 @@ macro "kb_unfold" : tactic => `(tactic| simp only [rep, sx, inv, fits, norm, nor
 theorem and_sound_8 (a b : BitVec 8) (x xk y yk : I) (hx : inv 8 x xk) (hy : inv 8 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (rep (a &&& b)) (norm 8 (andF x xk y yk)).1 (norm 8 (andF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem or_sound_8 (a b : BitVec 8) (x xk y yk : I) (hx : inv 8 x xk) (hy : inv 8 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (rep (a ||| b)) (norm 8 (orF x xk y yk)).1 (norm 8 (orF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem xor_sound_8 (a b : BitVec 8) (x xk y yk : I) (hx : inv 8 x xk) (hy : inv 8 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (rep (a ^^^ b)) (norm 8 (xorF x xk y yk)).1 (norm 8 (xorF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem com_sound_8 (a : BitVec 8) (x xk : I) (hx : inv 8 x xk) (ha : fits (rep a) x xk) :
     fits (rep (~~~a)) (norm 8 (comF x xk)).1 (norm 8 (comF x xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem eq_sound_8 (a b : BitVec 8) (x xk y yk : I) (hx : inv 8 x xk) (hy : inv 8 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (brep (a == b)) (normB (eqF x xk y yk)).1 (normB (eqF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem neq_sound_8 (a b : BitVec 8) (x xk y yk : I) (hx : inv 8 x xk) (hy : inv 8 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (brep (a != b)) (normB (neqF x xk y yk)).1 (normB (neqF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem phi_sound_8 (a : BitVec 8) (x xk y yk : I) (hx : inv 8 x xk) (hy : inv 8 y yk)
     (h : fits (rep a) x xk ∨ fits (rep a) y yk) :
     fits (rep a) (norm 8 (phiF x xk y yk)).1 (norm 8 (phiF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 /-- simplifyValue, And: if every bit where `a` may be 1 is a known 1 of `b`, then `a & b = a`. -/
 theorem simplify_and_8 (a b : BitVec 8) (x xk y yk : I) (hx : inv 8 x xk) (hy : inv 8 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) (hc : (x ||| ~~~xk) &&& ~~~y = 0) :
     a &&& b = a := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 /-- simplifyValue, Or: if every bit where `b` may be 1 is a known 1 of `a`, then `a | b = a`. -/
 theorem simplify_or_8 (a b : BitVec 8) (x xk y yk : I) (hx : inv 8 x xk) (hy : inv 8 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) (hc : ~~~x &&& (y ||| ~~~yk) = 0) :
     a ||| b = a := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem and_sound_16 (a b : BitVec 16) (x xk y yk : I) (hx : inv 16 x xk) (hy : inv 16 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (rep (a &&& b)) (norm 16 (andF x xk y yk)).1 (norm 16 (andF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem or_sound_16 (a b : BitVec 16) (x xk y yk : I) (hx : inv 16 x xk) (hy : inv 16 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (rep (a ||| b)) (norm 16 (orF x xk y yk)).1 (norm 16 (orF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem xor_sound_16 (a b : BitVec 16) (x xk y yk : I) (hx : inv 16 x xk) (hy : inv 16 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (rep (a ^^^ b)) (norm 16 (xorF x xk y yk)).1 (norm 16 (xorF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem com_sound_16 (a : BitVec 16) (x xk : I) (hx : inv 16 x xk) (ha : fits (rep a) x xk) :
     fits (rep (~~~a)) (norm 16 (comF x xk)).1 (norm 16 (comF x xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem eq_sound_16 (a b : BitVec 16) (x xk y yk : I) (hx : inv 16 x xk) (hy : inv 16 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (brep (a == b)) (normB (eqF x xk y yk)).1 (normB (eqF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem neq_sound_16 (a b : BitVec 16) (x xk y yk : I) (hx : inv 16 x xk) (hy : inv 16 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (brep (a != b)) (normB (neqF x xk y yk)).1 (normB (neqF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem phi_sound_16 (a : BitVec 16) (x xk y yk : I) (hx : inv 16 x xk) (hy : inv 16 y yk)
     (h : fits (rep a) x xk ∨ fits (rep a) y yk) :
     fits (rep a) (norm 16 (phiF x xk y yk)).1 (norm 16 (phiF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 /-- simplifyValue, And: if every bit where `a` may be 1 is a known 1 of `b`, then `a & b = a`. -/
 theorem simplify_and_16 (a b : BitVec 16) (x xk y yk : I) (hx : inv 16 x xk) (hy : inv 16 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) (hc : (x ||| ~~~xk) &&& ~~~y = 0) :
     a &&& b = a := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 /-- simplifyValue, Or: if every bit where `b` may be 1 is a known 1 of `a`, then `a | b = a`. -/
 theorem simplify_or_16 (a b : BitVec 16) (x xk y yk : I) (hx : inv 16 x xk) (hy : inv 16 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) (hc : ~~~x &&& (y ||| ~~~yk) = 0) :
     a ||| b = a := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem and_sound_32 (a b : BitVec 32) (x xk y yk : I) (hx : inv 32 x xk) (hy : inv 32 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (rep (a &&& b)) (norm 32 (andF x xk y yk)).1 (norm 32 (andF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem or_sound_32 (a b : BitVec 32) (x xk y yk : I) (hx : inv 32 x xk) (hy : inv 32 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (rep (a ||| b)) (norm 32 (orF x xk y yk)).1 (norm 32 (orF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem xor_sound_32 (a b : BitVec 32) (x xk y yk : I) (hx : inv 32 x xk) (hy : inv 32 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (rep (a ^^^ b)) (norm 32 (xorF x xk y yk)).1 (norm 32 (xorF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem com_sound_32 (a : BitVec 32) (x xk : I) (hx : inv 32 x xk) (ha : fits (rep a) x xk) :
     fits (rep (~~~a)) (norm 32 (comF x xk)).1 (norm 32 (comF x xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem eq_sound_32 (a b : BitVec 32) (x xk y yk : I) (hx : inv 32 x xk) (hy : inv 32 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (brep (a == b)) (normB (eqF x xk y yk)).1 (normB (eqF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem neq_sound_32 (a b : BitVec 32) (x xk y yk : I) (hx : inv 32 x xk) (hy : inv 32 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (brep (a != b)) (normB (neqF x xk y yk)).1 (normB (neqF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem phi_sound_32 (a : BitVec 32) (x xk y yk : I) (hx : inv 32 x xk) (hy : inv 32 y yk)
     (h : fits (rep a) x xk ∨ fits (rep a) y yk) :
     fits (rep a) (norm 32 (phiF x xk y yk)).1 (norm 32 (phiF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 /-- simplifyValue, And: if every bit where `a` may be 1 is a known 1 of `b`, then `a & b = a`. -/
 theorem simplify_and_32 (a b : BitVec 32) (x xk y yk : I) (hx : inv 32 x xk) (hy : inv 32 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) (hc : (x ||| ~~~xk) &&& ~~~y = 0) :
     a &&& b = a := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 /-- simplifyValue, Or: if every bit where `b` may be 1 is a known 1 of `a`, then `a | b = a`. -/
 theorem simplify_or_32 (a b : BitVec 32) (x xk y yk : I) (hx : inv 32 x xk) (hy : inv 32 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) (hc : ~~~x &&& (y ||| ~~~yk) = 0) :
     a ||| b = a := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem and_sound_64 (a b : BitVec 64) (x xk y yk : I) (hx : inv 64 x xk) (hy : inv 64 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (rep (a &&& b)) (norm 64 (andF x xk y yk)).1 (norm 64 (andF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem or_sound_64 (a b : BitVec 64) (x xk y yk : I) (hx : inv 64 x xk) (hy : inv 64 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (rep (a ||| b)) (norm 64 (orF x xk y yk)).1 (norm 64 (orF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem xor_sound_64 (a b : BitVec 64) (x xk y yk : I) (hx : inv 64 x xk) (hy : inv 64 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (rep (a ^^^ b)) (norm 64 (xorF x xk y yk)).1 (norm 64 (xorF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem com_sound_64 (a : BitVec 64) (x xk : I) (hx : inv 64 x xk) (ha : fits (rep a) x xk) :
     fits (rep (~~~a)) (norm 64 (comF x xk)).1 (norm 64 (comF x xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem eq_sound_64 (a b : BitVec 64) (x xk y yk : I) (hx : inv 64 x xk) (hy : inv 64 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (brep (a == b)) (normB (eqF x xk y yk)).1 (normB (eqF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem neq_sound_64 (a b : BitVec 64) (x xk y yk : I) (hx : inv 64 x xk) (hy : inv 64 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) :
     fits (brep (a != b)) (normB (neqF x xk y yk)).1 (normB (neqF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem phi_sound_64 (a : BitVec 64) (x xk y yk : I) (hx : inv 64 x xk) (hy : inv 64 y yk)
     (h : fits (rep a) x xk ∨ fits (rep a) y yk) :
     fits (rep a) (norm 64 (phiF x xk y yk)).1 (norm 64 (phiF x xk y yk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 /-- simplifyValue, And: if every bit where `a` may be 1 is a known 1 of `b`, then `a & b = a`. -/
 theorem simplify_and_64 (a b : BitVec 64) (x xk y yk : I) (hx : inv 64 x xk) (hy : inv 64 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) (hc : (x ||| ~~~xk) &&& ~~~y = 0) :
     a &&& b = a := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 /-- simplifyValue, Or: if every bit where `b` may be 1 is a known 1 of `a`, then `a | b = a`. -/
 theorem simplify_or_64 (a b : BitVec 64) (x xk y yk : I) (hx : inv 64 x xk) (hy : inv 64 y yk)
     (ha : fits (rep a) x xk) (hb : fits (rep b) y yk) (hc : ~~~x &&& (y ||| ~~~yk) = 0) :
     a ||| b = a := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem zext_sound_8_16 (a : BitVec 8) (x xk : I) (hx : inv 8 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.setWidth 16)) (norm 16 (zextF 8 x xk)).1 (norm 16 (zextF 8 x xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem sext_sound_8_16 (a : BitVec 8) (x xk : I) (hx : inv 8 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.signExtend 16)) (norm 16 (x, xk)).1 (norm 16 (x, xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem trunc_sound_16_8 (a : BitVec 16) (x xk : I) (hx : inv 16 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.setWidth 8)) (norm 8 (x, xk)).1 (norm 8 (x, xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem zext_sound_8_32 (a : BitVec 8) (x xk : I) (hx : inv 8 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.setWidth 32)) (norm 32 (zextF 8 x xk)).1 (norm 32 (zextF 8 x xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem sext_sound_8_32 (a : BitVec 8) (x xk : I) (hx : inv 8 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.signExtend 32)) (norm 32 (x, xk)).1 (norm 32 (x, xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem trunc_sound_32_8 (a : BitVec 32) (x xk : I) (hx : inv 32 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.setWidth 8)) (norm 8 (x, xk)).1 (norm 8 (x, xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem zext_sound_8_64 (a : BitVec 8) (x xk : I) (hx : inv 8 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.setWidth 64)) (norm 64 (zextF 8 x xk)).1 (norm 64 (zextF 8 x xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem sext_sound_8_64 (a : BitVec 8) (x xk : I) (hx : inv 8 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.signExtend 64)) (norm 64 (x, xk)).1 (norm 64 (x, xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem trunc_sound_64_8 (a : BitVec 64) (x xk : I) (hx : inv 64 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.setWidth 8)) (norm 8 (x, xk)).1 (norm 8 (x, xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem zext_sound_16_32 (a : BitVec 16) (x xk : I) (hx : inv 16 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.setWidth 32)) (norm 32 (zextF 16 x xk)).1 (norm 32 (zextF 16 x xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem sext_sound_16_32 (a : BitVec 16) (x xk : I) (hx : inv 16 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.signExtend 32)) (norm 32 (x, xk)).1 (norm 32 (x, xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem trunc_sound_32_16 (a : BitVec 32) (x xk : I) (hx : inv 32 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.setWidth 16)) (norm 16 (x, xk)).1 (norm 16 (x, xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem zext_sound_16_64 (a : BitVec 16) (x xk : I) (hx : inv 16 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.setWidth 64)) (norm 64 (zextF 16 x xk)).1 (norm 64 (zextF 16 x xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem sext_sound_16_64 (a : BitVec 16) (x xk : I) (hx : inv 16 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.signExtend 64)) (norm 64 (x, xk)).1 (norm 64 (x, xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem trunc_sound_64_16 (a : BitVec 64) (x xk : I) (hx : inv 64 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.setWidth 16)) (norm 16 (x, xk)).1 (norm 16 (x, xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem zext_sound_32_64 (a : BitVec 32) (x xk : I) (hx : inv 32 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.setWidth 64)) (norm 64 (zextF 32 x xk)).1 (norm 64 (zextF 32 x xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem sext_sound_32_64 (a : BitVec 32) (x xk : I) (hx : inv 32 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.signExtend 64)) (norm 64 (x, xk)).1 (norm 64 (x, xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem trunc_sound_64_32 (a : BitVec 64) (x xk : I) (hx : inv 64 x xk) (ha : fits (rep a) x xk) :
     fits (rep (a.setWidth 32)) (norm 32 (x, xk)).1 (norm 32 (x, xk)).2 := by
-  kb_unfold; bv_decide
+  kb_unfold; bv_decide (config := {timeout := 120})
 theorem lsh_8x8_unbounded (a : BitVec 8) (c : BitVec 8) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a <<< c)) (norm 8 (shiftF 8 (lshV x) (lshK xk) y yk false)).1
       (norm 8 (shiftF 8 (lshV x) (lshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_8x8_bounded (a : BitVec 8) (c : BitVec 8) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 8#8) :
     fits (rep (a <<< c)) (norm 8 (shiftF 8 (lshV x) (lshK xk) y yk true)).1
       (norm 8 (shiftF 8 (lshV x) (lshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_8x8_unbounded (a : BitVec 8) (c : BitVec 8) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a >>> c)) (norm 8 (shiftF 8 (rshuV 8 x) (rshuK 8 xk) y yk false)).1
       (norm 8 (shiftF 8 (rshuV 8 x) (rshuK 8 xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_8x8_bounded (a : BitVec 8) (c : BitVec 8) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 8#8) :
     fits (rep (a >>> c)) (norm 8 (shiftF 8 (rshuV 8 x) (rshuK 8 xk) y yk true)).1
       (norm 8 (shiftF 8 (rshuV 8 x) (rshuK 8 xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_8x8_unbounded (a : BitVec 8) (c : BitVec 8) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a.sshiftRight' c)) (norm 8 (shiftF 8 (rshV x) (rshK xk) y yk false)).1
       (norm 8 (shiftF 8 (rshV x) (rshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_8x8_bounded (a : BitVec 8) (c : BitVec 8) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 8#8) :
     fits (rep (a.sshiftRight' c)) (norm 8 (shiftF 8 (rshV x) (rshK xk) y yk true)).1
       (norm 8 (shiftF 8 (rshV x) (rshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_8x16_unbounded (a : BitVec 8) (c : BitVec 16) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a <<< c)) (norm 8 (shiftF 8 (lshV x) (lshK xk) y yk false)).1
       (norm 8 (shiftF 8 (lshV x) (lshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_8x16_bounded (a : BitVec 8) (c : BitVec 16) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 8#16) :
     fits (rep (a <<< c)) (norm 8 (shiftF 8 (lshV x) (lshK xk) y yk true)).1
       (norm 8 (shiftF 8 (lshV x) (lshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_8x16_unbounded (a : BitVec 8) (c : BitVec 16) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a >>> c)) (norm 8 (shiftF 8 (rshuV 8 x) (rshuK 8 xk) y yk false)).1
       (norm 8 (shiftF 8 (rshuV 8 x) (rshuK 8 xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_8x16_bounded (a : BitVec 8) (c : BitVec 16) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 8#16) :
     fits (rep (a >>> c)) (norm 8 (shiftF 8 (rshuV 8 x) (rshuK 8 xk) y yk true)).1
       (norm 8 (shiftF 8 (rshuV 8 x) (rshuK 8 xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_8x16_unbounded (a : BitVec 8) (c : BitVec 16) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a.sshiftRight' c)) (norm 8 (shiftF 8 (rshV x) (rshK xk) y yk false)).1
       (norm 8 (shiftF 8 (rshV x) (rshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_8x16_bounded (a : BitVec 8) (c : BitVec 16) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 8#16) :
     fits (rep (a.sshiftRight' c)) (norm 8 (shiftF 8 (rshV x) (rshK xk) y yk true)).1
       (norm 8 (shiftF 8 (rshV x) (rshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_8x32_unbounded (a : BitVec 8) (c : BitVec 32) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a <<< c)) (norm 8 (shiftF 8 (lshV x) (lshK xk) y yk false)).1
       (norm 8 (shiftF 8 (lshV x) (lshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_8x32_bounded (a : BitVec 8) (c : BitVec 32) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 8#32) :
     fits (rep (a <<< c)) (norm 8 (shiftF 8 (lshV x) (lshK xk) y yk true)).1
       (norm 8 (shiftF 8 (lshV x) (lshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_8x32_unbounded (a : BitVec 8) (c : BitVec 32) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a >>> c)) (norm 8 (shiftF 8 (rshuV 8 x) (rshuK 8 xk) y yk false)).1
       (norm 8 (shiftF 8 (rshuV 8 x) (rshuK 8 xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_8x32_bounded (a : BitVec 8) (c : BitVec 32) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 8#32) :
     fits (rep (a >>> c)) (norm 8 (shiftF 8 (rshuV 8 x) (rshuK 8 xk) y yk true)).1
       (norm 8 (shiftF 8 (rshuV 8 x) (rshuK 8 xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_8x32_unbounded (a : BitVec 8) (c : BitVec 32) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a.sshiftRight' c)) (norm 8 (shiftF 8 (rshV x) (rshK xk) y yk false)).1
       (norm 8 (shiftF 8 (rshV x) (rshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_8x32_bounded (a : BitVec 8) (c : BitVec 32) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 8#32) :
     fits (rep (a.sshiftRight' c)) (norm 8 (shiftF 8 (rshV x) (rshK xk) y yk true)).1
       (norm 8 (shiftF 8 (rshV x) (rshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_8x64_unbounded (a : BitVec 8) (c : BitVec 64) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a <<< c)) (norm 8 (shiftF 8 (lshV x) (lshK xk) y yk false)).1
       (norm 8 (shiftF 8 (lshV x) (lshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_8x64_bounded (a : BitVec 8) (c : BitVec 64) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 8#64) :
     fits (rep (a <<< c)) (norm 8 (shiftF 8 (lshV x) (lshK xk) y yk true)).1
       (norm 8 (shiftF 8 (lshV x) (lshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_8x64_unbounded (a : BitVec 8) (c : BitVec 64) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a >>> c)) (norm 8 (shiftF 8 (rshuV 8 x) (rshuK 8 xk) y yk false)).1
       (norm 8 (shiftF 8 (rshuV 8 x) (rshuK 8 xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_8x64_bounded (a : BitVec 8) (c : BitVec 64) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 8#64) :
     fits (rep (a >>> c)) (norm 8 (shiftF 8 (rshuV 8 x) (rshuK 8 xk) y yk true)).1
       (norm 8 (shiftF 8 (rshuV 8 x) (rshuK 8 xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_8x64_unbounded (a : BitVec 8) (c : BitVec 64) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a.sshiftRight' c)) (norm 8 (shiftF 8 (rshV x) (rshK xk) y yk false)).1
       (norm 8 (shiftF 8 (rshV x) (rshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_8x64_bounded (a : BitVec 8) (c : BitVec 64) (x xk y yk : I) (hx : inv 8 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 8#64) :
     fits (rep (a.sshiftRight' c)) (norm 8 (shiftF 8 (rshV x) (rshK xk) y yk true)).1
       (norm 8 (shiftF 8 (rshV x) (rshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_16x8_unbounded (a : BitVec 16) (c : BitVec 8) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a <<< c)) (norm 16 (shiftF 16 (lshV x) (lshK xk) y yk false)).1
       (norm 16 (shiftF 16 (lshV x) (lshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_16x8_bounded (a : BitVec 16) (c : BitVec 8) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 16#8) :
     fits (rep (a <<< c)) (norm 16 (shiftF 16 (lshV x) (lshK xk) y yk true)).1
       (norm 16 (shiftF 16 (lshV x) (lshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_16x8_unbounded (a : BitVec 16) (c : BitVec 8) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a >>> c)) (norm 16 (shiftF 16 (rshuV 16 x) (rshuK 16 xk) y yk false)).1
       (norm 16 (shiftF 16 (rshuV 16 x) (rshuK 16 xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_16x8_bounded (a : BitVec 16) (c : BitVec 8) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 16#8) :
     fits (rep (a >>> c)) (norm 16 (shiftF 16 (rshuV 16 x) (rshuK 16 xk) y yk true)).1
       (norm 16 (shiftF 16 (rshuV 16 x) (rshuK 16 xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_16x8_unbounded (a : BitVec 16) (c : BitVec 8) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a.sshiftRight' c)) (norm 16 (shiftF 16 (rshV x) (rshK xk) y yk false)).1
       (norm 16 (shiftF 16 (rshV x) (rshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_16x8_bounded (a : BitVec 16) (c : BitVec 8) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 16#8) :
     fits (rep (a.sshiftRight' c)) (norm 16 (shiftF 16 (rshV x) (rshK xk) y yk true)).1
       (norm 16 (shiftF 16 (rshV x) (rshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_16x16_unbounded (a : BitVec 16) (c : BitVec 16) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a <<< c)) (norm 16 (shiftF 16 (lshV x) (lshK xk) y yk false)).1
       (norm 16 (shiftF 16 (lshV x) (lshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_16x16_bounded (a : BitVec 16) (c : BitVec 16) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 16#16) :
     fits (rep (a <<< c)) (norm 16 (shiftF 16 (lshV x) (lshK xk) y yk true)).1
       (norm 16 (shiftF 16 (lshV x) (lshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_16x16_unbounded (a : BitVec 16) (c : BitVec 16) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a >>> c)) (norm 16 (shiftF 16 (rshuV 16 x) (rshuK 16 xk) y yk false)).1
       (norm 16 (shiftF 16 (rshuV 16 x) (rshuK 16 xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_16x16_bounded (a : BitVec 16) (c : BitVec 16) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 16#16) :
     fits (rep (a >>> c)) (norm 16 (shiftF 16 (rshuV 16 x) (rshuK 16 xk) y yk true)).1
       (norm 16 (shiftF 16 (rshuV 16 x) (rshuK 16 xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_16x16_unbounded (a : BitVec 16) (c : BitVec 16) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a.sshiftRight' c)) (norm 16 (shiftF 16 (rshV x) (rshK xk) y yk false)).1
       (norm 16 (shiftF 16 (rshV x) (rshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_16x16_bounded (a : BitVec 16) (c : BitVec 16) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 16#16) :
     fits (rep (a.sshiftRight' c)) (norm 16 (shiftF 16 (rshV x) (rshK xk) y yk true)).1
       (norm 16 (shiftF 16 (rshV x) (rshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_16x32_unbounded (a : BitVec 16) (c : BitVec 32) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a <<< c)) (norm 16 (shiftF 16 (lshV x) (lshK xk) y yk false)).1
       (norm 16 (shiftF 16 (lshV x) (lshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_16x32_bounded (a : BitVec 16) (c : BitVec 32) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 16#32) :
     fits (rep (a <<< c)) (norm 16 (shiftF 16 (lshV x) (lshK xk) y yk true)).1
       (norm 16 (shiftF 16 (lshV x) (lshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_16x32_unbounded (a : BitVec 16) (c : BitVec 32) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a >>> c)) (norm 16 (shiftF 16 (rshuV 16 x) (rshuK 16 xk) y yk false)).1
       (norm 16 (shiftF 16 (rshuV 16 x) (rshuK 16 xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_16x32_bounded (a : BitVec 16) (c : BitVec 32) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 16#32) :
     fits (rep (a >>> c)) (norm 16 (shiftF 16 (rshuV 16 x) (rshuK 16 xk) y yk true)).1
       (norm 16 (shiftF 16 (rshuV 16 x) (rshuK 16 xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_16x32_unbounded (a : BitVec 16) (c : BitVec 32) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a.sshiftRight' c)) (norm 16 (shiftF 16 (rshV x) (rshK xk) y yk false)).1
       (norm 16 (shiftF 16 (rshV x) (rshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_16x32_bounded (a : BitVec 16) (c : BitVec 32) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 16#32) :
     fits (rep (a.sshiftRight' c)) (norm 16 (shiftF 16 (rshV x) (rshK xk) y yk true)).1
       (norm 16 (shiftF 16 (rshV x) (rshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_16x64_unbounded (a : BitVec 16) (c : BitVec 64) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a <<< c)) (norm 16 (shiftF 16 (lshV x) (lshK xk) y yk false)).1
       (norm 16 (shiftF 16 (lshV x) (lshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_16x64_bounded (a : BitVec 16) (c : BitVec 64) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 16#64) :
     fits (rep (a <<< c)) (norm 16 (shiftF 16 (lshV x) (lshK xk) y yk true)).1
       (norm 16 (shiftF 16 (lshV x) (lshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_16x64_unbounded (a : BitVec 16) (c : BitVec 64) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a >>> c)) (norm 16 (shiftF 16 (rshuV 16 x) (rshuK 16 xk) y yk false)).1
       (norm 16 (shiftF 16 (rshuV 16 x) (rshuK 16 xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_16x64_bounded (a : BitVec 16) (c : BitVec 64) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 16#64) :
     fits (rep (a >>> c)) (norm 16 (shiftF 16 (rshuV 16 x) (rshuK 16 xk) y yk true)).1
       (norm 16 (shiftF 16 (rshuV 16 x) (rshuK 16 xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_16x64_unbounded (a : BitVec 16) (c : BitVec 64) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a.sshiftRight' c)) (norm 16 (shiftF 16 (rshV x) (rshK xk) y yk false)).1
       (norm 16 (shiftF 16 (rshV x) (rshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_16x64_bounded (a : BitVec 16) (c : BitVec 64) (x xk y yk : I) (hx : inv 16 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 16#64) :
     fits (rep (a.sshiftRight' c)) (norm 16 (shiftF 16 (rshV x) (rshK xk) y yk true)).1
       (norm 16 (shiftF 16 (rshV x) (rshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_32x8_unbounded (a : BitVec 32) (c : BitVec 8) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a <<< c)) (norm 32 (shiftF 32 (lshV x) (lshK xk) y yk false)).1
       (norm 32 (shiftF 32 (lshV x) (lshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_32x8_bounded (a : BitVec 32) (c : BitVec 8) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 32#8) :
     fits (rep (a <<< c)) (norm 32 (shiftF 32 (lshV x) (lshK xk) y yk true)).1
       (norm 32 (shiftF 32 (lshV x) (lshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_32x8_unbounded (a : BitVec 32) (c : BitVec 8) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a >>> c)) (norm 32 (shiftF 32 (rshuV 32 x) (rshuK 32 xk) y yk false)).1
       (norm 32 (shiftF 32 (rshuV 32 x) (rshuK 32 xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_32x8_bounded (a : BitVec 32) (c : BitVec 8) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 32#8) :
     fits (rep (a >>> c)) (norm 32 (shiftF 32 (rshuV 32 x) (rshuK 32 xk) y yk true)).1
       (norm 32 (shiftF 32 (rshuV 32 x) (rshuK 32 xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_32x8_unbounded (a : BitVec 32) (c : BitVec 8) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a.sshiftRight' c)) (norm 32 (shiftF 32 (rshV x) (rshK xk) y yk false)).1
       (norm 32 (shiftF 32 (rshV x) (rshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_32x8_bounded (a : BitVec 32) (c : BitVec 8) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 32#8) :
     fits (rep (a.sshiftRight' c)) (norm 32 (shiftF 32 (rshV x) (rshK xk) y yk true)).1
       (norm 32 (shiftF 32 (rshV x) (rshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_32x16_unbounded (a : BitVec 32) (c : BitVec 16) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a <<< c)) (norm 32 (shiftF 32 (lshV x) (lshK xk) y yk false)).1
       (norm 32 (shiftF 32 (lshV x) (lshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_32x16_bounded (a : BitVec 32) (c : BitVec 16) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 32#16) :
     fits (rep (a <<< c)) (norm 32 (shiftF 32 (lshV x) (lshK xk) y yk true)).1
       (norm 32 (shiftF 32 (lshV x) (lshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_32x16_unbounded (a : BitVec 32) (c : BitVec 16) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a >>> c)) (norm 32 (shiftF 32 (rshuV 32 x) (rshuK 32 xk) y yk false)).1
       (norm 32 (shiftF 32 (rshuV 32 x) (rshuK 32 xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_32x16_bounded (a : BitVec 32) (c : BitVec 16) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 32#16) :
     fits (rep (a >>> c)) (norm 32 (shiftF 32 (rshuV 32 x) (rshuK 32 xk) y yk true)).1
       (norm 32 (shiftF 32 (rshuV 32 x) (rshuK 32 xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_32x16_unbounded (a : BitVec 32) (c : BitVec 16) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a.sshiftRight' c)) (norm 32 (shiftF 32 (rshV x) (rshK xk) y yk false)).1
       (norm 32 (shiftF 32 (rshV x) (rshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_32x16_bounded (a : BitVec 32) (c : BitVec 16) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 32#16) :
     fits (rep (a.sshiftRight' c)) (norm 32 (shiftF 32 (rshV x) (rshK xk) y yk true)).1
       (norm 32 (shiftF 32 (rshV x) (rshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_32x32_unbounded (a : BitVec 32) (c : BitVec 32) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a <<< c)) (norm 32 (shiftF 32 (lshV x) (lshK xk) y yk false)).1
       (norm 32 (shiftF 32 (lshV x) (lshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_32x32_bounded (a : BitVec 32) (c : BitVec 32) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 32#32) :
     fits (rep (a <<< c)) (norm 32 (shiftF 32 (lshV x) (lshK xk) y yk true)).1
       (norm 32 (shiftF 32 (lshV x) (lshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_32x32_unbounded (a : BitVec 32) (c : BitVec 32) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a >>> c)) (norm 32 (shiftF 32 (rshuV 32 x) (rshuK 32 xk) y yk false)).1
       (norm 32 (shiftF 32 (rshuV 32 x) (rshuK 32 xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_32x32_bounded (a : BitVec 32) (c : BitVec 32) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 32#32) :
     fits (rep (a >>> c)) (norm 32 (shiftF 32 (rshuV 32 x) (rshuK 32 xk) y yk true)).1
       (norm 32 (shiftF 32 (rshuV 32 x) (rshuK 32 xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_32x32_unbounded (a : BitVec 32) (c : BitVec 32) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a.sshiftRight' c)) (norm 32 (shiftF 32 (rshV x) (rshK xk) y yk false)).1
       (norm 32 (shiftF 32 (rshV x) (rshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_32x32_bounded (a : BitVec 32) (c : BitVec 32) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 32#32) :
     fits (rep (a.sshiftRight' c)) (norm 32 (shiftF 32 (rshV x) (rshK xk) y yk true)).1
       (norm 32 (shiftF 32 (rshV x) (rshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_32x64_unbounded (a : BitVec 32) (c : BitVec 64) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a <<< c)) (norm 32 (shiftF 32 (lshV x) (lshK xk) y yk false)).1
       (norm 32 (shiftF 32 (lshV x) (lshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_32x64_bounded (a : BitVec 32) (c : BitVec 64) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 32#64) :
     fits (rep (a <<< c)) (norm 32 (shiftF 32 (lshV x) (lshK xk) y yk true)).1
       (norm 32 (shiftF 32 (lshV x) (lshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_32x64_unbounded (a : BitVec 32) (c : BitVec 64) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a >>> c)) (norm 32 (shiftF 32 (rshuV 32 x) (rshuK 32 xk) y yk false)).1
       (norm 32 (shiftF 32 (rshuV 32 x) (rshuK 32 xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_32x64_bounded (a : BitVec 32) (c : BitVec 64) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 32#64) :
     fits (rep (a >>> c)) (norm 32 (shiftF 32 (rshuV 32 x) (rshuK 32 xk) y yk true)).1
       (norm 32 (shiftF 32 (rshuV 32 x) (rshuK 32 xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_32x64_unbounded (a : BitVec 32) (c : BitVec 64) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a.sshiftRight' c)) (norm 32 (shiftF 32 (rshV x) (rshK xk) y yk false)).1
       (norm 32 (shiftF 32 (rshV x) (rshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_32x64_bounded (a : BitVec 32) (c : BitVec 64) (x xk y yk : I) (hx : inv 32 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 32#64) :
     fits (rep (a.sshiftRight' c)) (norm 32 (shiftF 32 (rshV x) (rshK xk) y yk true)).1
       (norm 32 (shiftF 32 (rshV x) (rshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_64x8_unbounded (a : BitVec 64) (c : BitVec 8) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a <<< c)) (norm 64 (shiftF 64 (lshV x) (lshK xk) y yk false)).1
       (norm 64 (shiftF 64 (lshV x) (lshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_64x8_bounded (a : BitVec 64) (c : BitVec 8) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 64#8) :
     fits (rep (a <<< c)) (norm 64 (shiftF 64 (lshV x) (lshK xk) y yk true)).1
       (norm 64 (shiftF 64 (lshV x) (lshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_64x8_unbounded (a : BitVec 64) (c : BitVec 8) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a >>> c)) (norm 64 (shiftF 64 (rshuV 64 x) (rshuK 64 xk) y yk false)).1
@@ -702,29 +702,29 @@ theorem rshu_64x8_bounded (a : BitVec 64) (c : BitVec 8) (x xk y yk : I) (hx : i
     (hbd : c < 64#8) :
     fits (rep (a >>> c)) (norm 64 (shiftF 64 (rshuV 64 x) (rshuK 64 xk) y yk true)).1
       (norm 64 (shiftF 64 (rshuV 64 x) (rshuK 64 xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_64x8_unbounded (a : BitVec 64) (c : BitVec 8) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a.sshiftRight' c)) (norm 64 (shiftF 64 (rshV x) (rshK xk) y yk false)).1
       (norm 64 (shiftF 64 (rshV x) (rshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_64x8_bounded (a : BitVec 64) (c : BitVec 8) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 8 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 64#8) :
     fits (rep (a.sshiftRight' c)) (norm 64 (shiftF 64 (rshV x) (rshK xk) y yk true)).1
       (norm 64 (shiftF 64 (rshV x) (rshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_64x16_unbounded (a : BitVec 64) (c : BitVec 16) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a <<< c)) (norm 64 (shiftF 64 (lshV x) (lshK xk) y yk false)).1
       (norm 64 (shiftF 64 (lshV x) (lshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_64x16_bounded (a : BitVec 64) (c : BitVec 16) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 64#16) :
     fits (rep (a <<< c)) (norm 64 (shiftF 64 (lshV x) (lshK xk) y yk true)).1
       (norm 64 (shiftF 64 (lshV x) (lshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_64x16_unbounded (a : BitVec 64) (c : BitVec 16) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a >>> c)) (norm 64 (shiftF 64 (rshuV 64 x) (rshuK 64 xk) y yk false)).1
@@ -735,7 +735,7 @@ theorem rshu_64x16_bounded (a : BitVec 64) (c : BitVec 16) (x xk y yk : I) (hx :
     (hbd : c < 64#16) :
     fits (rep (a >>> c)) (norm 64 (shiftF 64 (rshuV 64 x) (rshuK 64 xk) y yk true)).1
       (norm 64 (shiftF 64 (rshuV 64 x) (rshuK 64 xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_64x16_unbounded (a : BitVec 64) (c : BitVec 16) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 16 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a.sshiftRight' c)) (norm 64 (shiftF 64 (rshV x) (rshK xk) y yk false)).1
@@ -746,7 +746,7 @@ theorem rsh_64x16_bounded (a : BitVec 64) (c : BitVec 16) (x xk y yk : I) (hx : 
     (hbd : c < 64#16) :
     fits (rep (a.sshiftRight' c)) (norm 64 (shiftF 64 (rshV x) (rshK xk) y yk true)).1
       (norm 64 (shiftF 64 (rshV x) (rshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_64x32_unbounded (a : BitVec 64) (c : BitVec 32) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a <<< c)) (norm 64 (shiftF 64 (lshV x) (lshK xk) y yk false)).1
@@ -757,7 +757,7 @@ theorem lsh_64x32_bounded (a : BitVec 64) (c : BitVec 32) (x xk y yk : I) (hx : 
     (hbd : c < 64#32) :
     fits (rep (a <<< c)) (norm 64 (shiftF 64 (lshV x) (lshK xk) y yk true)).1
       (norm 64 (shiftF 64 (lshV x) (lshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_64x32_unbounded (a : BitVec 64) (c : BitVec 32) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a >>> c)) (norm 64 (shiftF 64 (rshuV 64 x) (rshuK 64 xk) y yk false)).1
@@ -768,7 +768,7 @@ theorem rshu_64x32_bounded (a : BitVec 64) (c : BitVec 32) (x xk y yk : I) (hx :
     (hbd : c < 64#32) :
     fits (rep (a >>> c)) (norm 64 (shiftF 64 (rshuV 64 x) (rshuK 64 xk) y yk true)).1
       (norm 64 (shiftF 64 (rshuV 64 x) (rshuK 64 xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_64x32_unbounded (a : BitVec 64) (c : BitVec 32) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 32 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a.sshiftRight' c)) (norm 64 (shiftF 64 (rshV x) (rshK xk) y yk false)).1
@@ -779,38 +779,38 @@ theorem rsh_64x32_bounded (a : BitVec 64) (c : BitVec 32) (x xk y yk : I) (hx : 
     (hbd : c < 64#32) :
     fits (rep (a.sshiftRight' c)) (norm 64 (shiftF 64 (rshV x) (rshK xk) y yk true)).1
       (norm 64 (shiftF 64 (rshV x) (rshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_64x64_unbounded (a : BitVec 64) (c : BitVec 64) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a <<< c)) (norm 64 (shiftF 64 (lshV x) (lshK xk) y yk false)).1
       (norm 64 (shiftF 64 (lshV x) (lshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem lsh_64x64_bounded (a : BitVec 64) (c : BitVec 64) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 64#64) :
     fits (rep (a <<< c)) (norm 64 (shiftF 64 (lshV x) (lshK xk) y yk true)).1
       (norm 64 (shiftF 64 (lshV x) (lshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_64x64_unbounded (a : BitVec 64) (c : BitVec 64) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a >>> c)) (norm 64 (shiftF 64 (rshuV 64 x) (rshuK 64 xk) y yk false)).1
       (norm 64 (shiftF 64 (rshuV 64 x) (rshuK 64 xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rshu_64x64_bounded (a : BitVec 64) (c : BitVec 64) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 64#64) :
     fits (rep (a >>> c)) (norm 64 (shiftF 64 (rshuV 64 x) (rshuK 64 xk) y yk true)).1
       (norm 64 (shiftF 64 (rshuV 64 x) (rshuK 64 xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_64x64_unbounded (a : BitVec 64) (c : BitVec 64) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk) :
     fits (rep (a.sshiftRight' c)) (norm 64 (shiftF 64 (rshV x) (rshK xk) y yk false)).1
       (norm 64 (shiftF 64 (rshV x) (rshK xk) y yk false)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 theorem rsh_64x64_bounded (a : BitVec 64) (c : BitVec 64) (x xk y yk : I) (hx : inv 64 x xk)
     (hy : inv 64 y yk) (ha : fits (rep a) x xk) (hc : fits (rep c) y yk)
     (hbd : c < 64#64) :
     fits (rep (a.sshiftRight' c)) (norm 64 (shiftF 64 (rshV x) (rshK xk) y yk true)).1
       (norm 64 (shiftF 64 (rshV x) (rshK xk) y yk true)).2 := by
-  kb_shift; bv_decide
+  kb_shift; bv_decide (config := {timeout := 120})
 end Go.Compiler.KnownBits
