@@ -51,7 +51,7 @@ def main():
             bounded = neg == ""
             name = f"{kind}{W}{U}x{A}_{'bounded' if bounded else 'unbounded'}"
             if name in names:
-                continue
+                raise SystemExit(f"duplicate rule instance {name} at line {lineno}: refusing to skip it silently")
             names.add(name)
             hyp = f"\n    (hb : ry.setWidth {A} < ({W} : BitVec {A}))" if bounded else ""
             thms.append(f"""/-- AMD64.rules:{lineno}  `{r}` -/
@@ -61,6 +61,18 @@ theorem {name} (rx ry : BitVec 64){hyp} :
     ({body}).setWidth {W} = {go} := by
   intro x y
   simp only [x, y, X86.shlq, X86.shrq, X86.sarq, X86.shll, X86.shrl, X86.sarl, X86.shrw, X86.sarw,
+    X86.shrb, X86.sarb, X86.andq, X86.andl, X86.orq, X86.orl, X86.notq, X86.notl, X86.low, X86.put,
+    X86.cmpCarry, X86.sbbqCarrymask, X86.sbblCarrymask]
+  bv_decide
+""")
+            if W == 32:
+                # AMD64latelower.rules relies on 32-bit results having zero upper halves
+                # (`(MOVLQZX x) && zeroUpper32Bits(x,3) => x`).
+                thms.append(f"""/-- Upper 32 bits of the lowered `{kind}{W}{U}x{A}` ({'bounded' if bounded else 'unbounded'}) are zero
+(fact used by `AMD64latelower.rules`: `(MOVLQZX x) && zeroUpper32Bits(x,3) => x`). -/
+theorem {name}_zeroUpper (rx ry : BitVec 64){hyp} :
+    ({body}) >>> 32 = 0 := by
+  simp only [X86.shlq, X86.shrq, X86.sarq, X86.shll, X86.shrl, X86.sarl, X86.shrw, X86.sarw,
     X86.shrb, X86.sarb, X86.andq, X86.andl, X86.orq, X86.orl, X86.notq, X86.notl, X86.low, X86.put,
     X86.cmpCarry, X86.sbbqCarrymask, X86.sbblCarrymask]
   bv_decide

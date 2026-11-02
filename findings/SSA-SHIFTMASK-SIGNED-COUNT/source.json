@@ -1,0 +1,5 @@
+{"go_version": "go1.25.5", "file": "src/cmd/compile/internal/ssa/_gen/generic.rules", "lines": "522-530",
+ "generic_rules_sha256": "d3be070342f2579f6e51814a572cf31282f53b8cff001dd640f1a2cc0eea1ae8",
+ "master_checked": "2026-11-01, rule text identical (signed c >= e / c < e)",
+ "lean": "GoInLean/Compiler/ShiftMask.lean", "triage": "targets/generic_rules_triage.json (r527_0..r530_1)",
+ "lean_toolchain": "leanprover/lean4:v4.35.0"}

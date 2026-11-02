@@ -1,0 +1,310 @@
+{
+ "r1016_0": {
+  "category": "spurious",
+  "detail": "GeneratedRulesTriage.lean:3854:241: error: The prover found a potentially spurious counterexample:\n- It abstracted the following unsupported expressions as opaque variables:\n  - GSem.lg c\n  - GSem.isPowerOfTwo c\nConsider the following assignment:\nc = 18446744073709551615#64\nGSem.isPowerOfTwo c = true\nn = 18446744073709551615#64\nGSem.lg c = 18446744073709551615#64\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:3854:56: warning: This simp argument is unused:\n  GSem.ntz\n\nHint: Omit it from the simp argument list.\n  [apply] simp only [GSem.isPowerOfTwo, GSem.lg, GSem",
+  "line": 1016,
+  "message": "GeneratedRulesTriage.lean:3854:241: error: The prover found a potentially spurious counterexample:",
+  "rule": "(Div64u n (Const64 [c])) && isPowerOfTwo(c) => (Rsh64Ux64 n (Const64 <typ.UInt64> [log64(c)]))"
+ },
+ "r1211_0": {
+  "category": "spurious",
+  "detail": "GeneratedRulesTriage.lean:3944:241: error: The prover found a potentially spurious counterexample:\n- It abstracted the following unsupported expressions as opaque variables:\n  - GSem.isPowerOfTwo c\n  - GSem.lg c\nConsider the following assignment:\nc = 18446744073709551615#64\nGSem.isPowerOfTwo c = true\nn = 1#64\nGSem.lg c = 18446744073709551615#64\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:3944:56: warning: This simp argument is unused:\n  GSem.ntz\n\nHint: Omit it from the simp argument list.\n  [apply] simp only [GSem.isPowerOfTwo, GSem.lg, GSem.nlz, GSem.oneBit, ",
+  "line": 1211,
+  "message": "GeneratedRulesTriage.lean:3944:241: error: The prover found a potentially spurious counterexample:",
+  "rule": "(Div64 <t> n (Const64 [c])) && isPowerOfTwo(c) => (Rsh64x64 (Add64 <t> n (Rsh64Ux64 <t> (Rsh64x64 <t> n (Const64 <typ.UInt64> [63])) (Const64 <typ.UInt64> [int64(64-log64(c))]))) (Const64 <typ.UInt64> [int64(log64(c))]))"
+ },
+ "r1296_0": {
+  "category": "spurious",
+  "detail": "GeneratedRulesTriage.lean:3972:241: error: The prover found a potentially spurious counterexample:\n- It abstracted the following unsupported expressions as opaque variables:\n  - GSem.isPowerOfTwo c\nConsider the following assignment:\nc = 18446744073709551615#64\nGSem.isPowerOfTwo c = true\nn = 18446744073709551615#64\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:3972:47: warning: This simp argument is unused:\n  GSem.lg\n\nHint: Omit it from the simp argument list.\n  [apply] simp only [GSem.isPowerOfTwo, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSe",
+  "line": 1296,
+  "message": "GeneratedRulesTriage.lean:3972:241: error: The prover found a potentially spurious counterexample:",
+  "rule": "(Mod64u <t> n (Const64 [c])) && isPowerOfTwo(c) => (And64 n (Const64 <t> [c-1]))"
+ },
+ "r1317_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:4024:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:4031:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 1317,
+  "message": "GeneratedRulesTriage.lean:4024:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Mod16  <t> x (Const16 [c])) && x.Op != OpConst16 && (c > 0 || c == -1<<15) => (Sub16 x (Mul16 <t> (Div16  <t> x (Const16 <t> [c])) (Const16 <t> [c])))"
+ },
+ "r1319_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:4031:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:4038:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 1319,
+  "message": "GeneratedRulesTriage.lean:4031:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Mod32  <t> x (Const32 [c])) && x.Op != OpConst32 && (c > 0 || c == -1<<31) => (Sub32 x (Mul32 <t> (Div32  <t> x (Const32 <t> [c])) (Const32 <t> [c])))"
+ },
+ "r1321_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:4038:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:4084:28: warning: This simp argument is unused:\n  GSem.isPowerOfTwo\n\nHint: Omit it from the simp argument list.\n  [apply] simp only [GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len,\n    BitS",
+  "line": 1321,
+  "message": "GeneratedRulesTriage.lean:4038:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Mod64  <t> x (Const64 [c])) && x.Op != OpConst64 && (c > 0 || c == -1<<63) => (Sub64 x (Mul64 <t> (Div64  <t> x (Const64 <t> [c])) (Const64 <t> [c])))"
+ },
+ "r1983_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:4311:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:4316:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 1983,
+  "message": "GeneratedRulesTriage.lean:4311:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Mul64 (Mul64 i:(Const64 <t>) z) x) && (z.Op != OpConst64 && x.Op != OpConst64) => (Mul64 i (Mul64 <t> x z))"
+ },
+ "r1984_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:4316:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:4321:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 1984,
+  "message": "GeneratedRulesTriage.lean:4316:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Mul32 (Mul32 i:(Const32 <t>) z) x) && (z.Op != OpConst32 && x.Op != OpConst32) => (Mul32 i (Mul32 <t> x z))"
+ },
+ "r1985_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:4321:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:4326:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 1985,
+  "message": "GeneratedRulesTriage.lean:4321:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Mul16 (Mul16 i:(Const16 <t>) z) x) && (z.Op != OpConst16 && x.Op != OpConst16) => (Mul16 i (Mul16 <t> x z))"
+ },
+ "r1986_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:4326:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:4471:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 1986,
+  "message": "GeneratedRulesTriage.lean:4326:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Mul8  (Mul8  i:(Const8  <t>) z) x) && (z.Op != OpConst8  && x.Op != OpConst8)  => (Mul8  i (Mul8  <t> x z))"
+ },
+ "r2031_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:4471:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:4476:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 2031,
+  "message": "GeneratedRulesTriage.lean:4471:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Mul64 (Const64 <t> [c]) (Mul64 (Const64 <t> [d]) x)) => (Mul64 (Const64 <t> [c*d]) x)"
+ },
+ "r2032_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:4476:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:4481:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 2032,
+  "message": "GeneratedRulesTriage.lean:4476:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Mul32 (Const32 <t> [c]) (Mul32 (Const32 <t> [d]) x)) => (Mul32 (Const32 <t> [c*d]) x)"
+ },
+ "r2033_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:4481:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:4486:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 2033,
+  "message": "GeneratedRulesTriage.lean:4481:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Mul16 (Const16 <t> [c]) (Mul16 (Const16 <t> [d]) x)) => (Mul16 (Const16 <t> [c*d]) x)"
+ },
+ "r2034_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:4486:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n",
+  "line": 2034,
+  "message": "GeneratedRulesTriage.lean:4486:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Mul8  (Const8  <t> [c]) (Mul8  (Const8  <t> [d]) x)) => (Mul8  (Const8  <t> [c*d]) x)"
+ },
+ "r363_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:1319:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:1324:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 363,
+  "message": "GeneratedRulesTriage.lean:1319:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Mul64 (Const64 <t> [c]) (Add64 <t> (Const64 <t> [d]) x)) => (Add64 (Const64 <t> [c*d]) (Mul64 <t> (Const64 <t> [c]) x))"
+ },
+ "r365_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:1324:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:1329:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 365,
+  "message": "GeneratedRulesTriage.lean:1324:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Mul32 (Const32 <t> [c]) (Add32 <t> (Const32 <t> [d]) x)) => (Add32 (Const32 <t> [c*d]) (Mul32 <t> (Const32 <t> [c]) x))"
+ },
+ "r367_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:1329:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:1334:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 367,
+  "message": "GeneratedRulesTriage.lean:1329:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Mul16 (Const16 <t> [c]) (Add16 <t> (Const16 <t> [d]) x)) => (Add16 (Const16 <t> [c*d]) (Mul16 <t> (Const16 <t> [c]) x))"
+ },
+ "r369_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:1334:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:1339:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 369,
+  "message": "GeneratedRulesTriage.lean:1334:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Mul8 (Const8 <t> [c]) (Add8 <t> (Const8 <t> [d]) x)) => (Add8 (Const8 <t> [c*d]) (Mul8 <t> (Const8 <t> [c]) x))"
+ },
+ "r373_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:1339:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:1344:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 373,
+  "message": "GeneratedRulesTriage.lean:1339:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Add64 <t> (Mul64 x y) (Mul64 x z)) => (Mul64 x (Add64 <t> y z))"
+ },
+ "r373_1": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:1344:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:1349:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 373,
+  "message": "GeneratedRulesTriage.lean:1344:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Add32 <t> (Mul32 x y) (Mul32 x z)) => (Mul32 x (Add32 <t> y z))"
+ },
+ "r373_2": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:1349:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:1354:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 373,
+  "message": "GeneratedRulesTriage.lean:1349:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Add16 <t> (Mul16 x y) (Mul16 x z)) => (Mul16 x (Add16 <t> y z))"
+ },
+ "r373_3": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:1354:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:1359:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 373,
+  "message": "GeneratedRulesTriage.lean:1354:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Add8 <t> (Mul8 x y) (Mul8 x z)) => (Mul8 x (Add8 <t> y z))"
+ },
+ "r375_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:1359:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:1364:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 375,
+  "message": "GeneratedRulesTriage.lean:1359:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Sub64 <t> (Mul64 x y) (Mul64 x z)) => (Mul64 x (Sub64 <t> y z))"
+ },
+ "r375_1": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:1364:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:1369:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 375,
+  "message": "GeneratedRulesTriage.lean:1364:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Sub32 <t> (Mul32 x y) (Mul32 x z)) => (Mul32 x (Sub32 <t> y z))"
+ },
+ "r375_2": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:1369:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:1374:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enablin",
+  "line": 375,
+  "message": "GeneratedRulesTriage.lean:1369:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Sub16 <t> (Mul16 x y) (Mul16 x z)) => (Mul16 x (Sub16 <t> y z))"
+ },
+ "r375_3": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:1374:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:1908:28: warning: This simp argument is unused:\n  GSem.isPowerOfTwo\n\nHint: Omit it from the simp argument list.\n  [apply] simp only [GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i, BitSpec.len,\n    BitS",
+  "line": 375,
+  "message": "GeneratedRulesTriage.lean:1374:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Sub8 <t> (Mul8 x y) (Mul8 x z)) => (Mul8 x (Sub8 <t> y z))"
+ },
+ "r457_0": {
+  "category": "spurious",
+  "detail": "GeneratedRulesTriage.lean:1932:241: error: The prover found a potentially spurious counterexample:\n- It abstracted the following unsupported expressions as opaque variables:\n  - GSem.uaddOvf c d\nConsider the following assignment:\nGSem.uaddOvf c d = false\nx = 108086391056891903#64\nc = 13835058055282163760#64\nd = 4611686018427387911#64\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:1932:28: warning: This simp argument is unused:\n  GSem.isPowerOfTwo\n\nHint: Omit it from the simp argument list.\n  [apply] simp only [GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOv",
+  "line": 457,
+  "message": "GeneratedRulesTriage.lean:1932:241: error: The prover found a potentially spurious counterexample:",
+  "rule": "(Rsh64x64 <t> (Rsh64x64 x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Rsh64x64 x (Const64 <t> [c+d]))"
+ },
+ "r485_0": {
+  "category": "spurious",
+  "detail": "GeneratedRulesTriage.lean:2086:241: error: The prover found a potentially spurious counterexample:\n- It abstracted the following unsupported expressions as opaque variables:\n  - GSem.uaddOvf (c1 + (~~~c2 + 1#64)) c3\nConsider the following assignment:\nc1 = 18446744073709551615#64\nc2 = 18446744073709551614#64\nc3 = 18446744073709551615#64\nGSem.uaddOvf (c1 + (~~~c2 + 1#64)) c3 = false\nx = 18446744073709551615#64\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2086:28: warning: This simp argument is unused:\n  GSem.isPowerOfTwo\n\nHint: Omit it from the simp argument list",
+  "line": 485,
+  "message": "GeneratedRulesTriage.lean:2086:241: error: The prover found a potentially spurious counterexample:",
+  "rule": "(Rsh64Ux64 (Lsh64x64 (Rsh64Ux64 x (Const64 [c1])) (Const64 [c2])) (Const64 [c3])) && uint64(c1) >= uint64(c2) && uint64(c3) >= uint64(c2) && !uaddOvf(c1-c2, c3) => (Rsh64Ux64 x (Const64 <typ.UInt64> [c1-c2+c3]))"
+ },
+ "r485_1": {
+  "category": "spurious",
+  "detail": "GeneratedRulesTriage.lean:2094:241: error: The prover found a potentially spurious counterexample:\n- It abstracted the following unsupported expressions as opaque variables:\n  - GSem.uaddOvf (c1 + (~~~c2 + 1#64)) c3\nConsider the following assignment:\nc1 = 18446744073709551615#64\nc2 = 18446744073709551614#64\nc3 = 18446744073709551615#64\nGSem.uaddOvf (c1 + (~~~c2 + 1#64)) c3 = false\nx = 4294967295#32\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2094:28: warning: This simp argument is unused:\n  GSem.isPowerOfTwo\n\nHint: Omit it from the simp argument list.\n  [apply",
+  "line": 485,
+  "message": "GeneratedRulesTriage.lean:2094:241: error: The prover found a potentially spurious counterexample:",
+  "rule": "(Rsh32Ux64 (Lsh32x64 (Rsh32Ux64 x (Const64 [c1])) (Const64 [c2])) (Const64 [c3])) && uint64(c1) >= uint64(c2) && uint64(c3) >= uint64(c2) && !uaddOvf(c1-c2, c3) => (Rsh32Ux64 x (Const64 <typ.UInt64> [c1-c2+c3]))"
+ },
+ "r490_0": {
+  "category": "spurious",
+  "detail": "GeneratedRulesTriage.lean:2118:241: error: The prover found a potentially spurious counterexample:\n- It abstracted the following unsupported expressions as opaque variables:\n  - GSem.uaddOvf (c1 + (~~~c2 + 1#64)) c3\nConsider the following assignment:\nc1 = 18446744073709551615#64\nc2 = 18446744073709551614#64\nc3 = 18446744073709551615#64\nGSem.uaddOvf (c1 + (~~~c2 + 1#64)) c3 = false\nx = 18446744073709551615#64\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2118:28: warning: This simp argument is unused:\n  GSem.isPowerOfTwo\n\nHint: Omit it from the simp argument list",
+  "line": 490,
+  "message": "GeneratedRulesTriage.lean:2118:241: error: The prover found a potentially spurious counterexample:",
+  "rule": "(Lsh64x64 (Rsh64Ux64 (Lsh64x64 x (Const64 [c1])) (Const64 [c2])) (Const64 [c3])) && uint64(c1) >= uint64(c2) && uint64(c3) >= uint64(c2) && !uaddOvf(c1-c2, c3) => (Lsh64x64 x (Const64 <typ.UInt64> [c1-c2+c3]))"
+ },
+ "r516_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:2230:10: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached\n\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\n\nHint: Additional diagnostic information may be available using the `set_option diagnostics true` command.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2235:10: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached\n\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\n\nHint: Additional diagnostic information may be avail",
+  "line": 516,
+  "message": "GeneratedRulesTriage.lean:2230:10: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached",
+  "rule": "(Rsh32x64 (Lsh32x64 x (Const64 [24])) (Const64 [24])) => (SignExt8to32  (Trunc32to8  <typ.Int8>  x))"
+ },
+ "r517_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:2235:10: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached\n\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\n\nHint: Additional diagnostic information may be available using the `set_option diagnostics true` command.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2240:10: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached\n\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\n\nHint: Additional diagnostic information may be avail",
+  "line": 517,
+  "message": "GeneratedRulesTriage.lean:2235:10: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached",
+  "rule": "(Rsh64x64 (Lsh64x64 x (Const64 [56])) (Const64 [56])) => (SignExt8to64  (Trunc64to8  <typ.Int8>  x))"
+ },
+ "r518_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:2240:10: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached\n\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\n\nHint: Additional diagnostic information may be available using the `set_option diagnostics true` command.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2245:10: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached\n\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\n\nHint: Additional diagnostic information may be avail",
+  "line": 518,
+  "message": "GeneratedRulesTriage.lean:2240:10: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached",
+  "rule": "(Rsh32x64 (Lsh32x64 x (Const64 [16])) (Const64 [16])) => (SignExt16to32 (Trunc32to16 <typ.Int16> x))"
+ },
+ "r519_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:2245:10: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached\n\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\n\nHint: Additional diagnostic information may be available using the `set_option diagnostics true` command.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2250:10: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached\n\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\n\nHint: Additional diagnostic information may be avail",
+  "line": 519,
+  "message": "GeneratedRulesTriage.lean:2245:10: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached",
+  "rule": "(Rsh64x64 (Lsh64x64 x (Const64 [48])) (Const64 [48])) => (SignExt16to64 (Trunc64to16 <typ.Int16> x))"
+ },
+ "r520_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:2250:10: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached\n\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\n\nHint: Additional diagnostic information may be available using the `set_option diagnostics true` command.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2256:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, con",
+  "line": 520,
+  "message": "GeneratedRulesTriage.lean:2250:10: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached",
+  "rule": "(Rsh64x64 (Lsh64x64 x (Const64 [32])) (Const64 [32])) => (SignExt32to64 (Trunc64to32 <typ.Int32> x))"
+ },
+ "r523_0": {
+  "category": "timeout",
+  "detail": "GeneratedRulesTriage.lean:2256:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2304:241: error: The prover found a counterexample, consider the following assignment:\ne = 63#64\nc = 18446744073709551615#64\nx = 18446744073709551615#64\nd = 18446744073709551615#64\n/Users/scelles/git/github/s-celles/go-in-lean/build/G",
+  "line": 523,
+  "message": "GeneratedRulesTriage.lean:2256:241: error: The SAT solver timed out while solving the problem.",
+  "rule": "(Lsh64x64 (And64 (Rsh64x64 <t> x (Const64 <t2> [c])) (Const64 [d])) (Const64 [e])) && c >= e => (And64 (Rsh64x64 <t> x (Const64 <t2> [c-e])) (Const64 <t> [d<<e]))"
+ },
+ "r527_0": {
+  "category": "counterexample",
+  "detail": "GeneratedRulesTriage.lean:2304:241: error: The prover found a counterexample, consider the following assignment:\ne = 63#64\nc = 18446744073709551615#64\nx = 18446744073709551615#64\nd = 18446744073709551615#64\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2310:241: error: The prover found a counterexample, consider the following assignment:\ne = 2#64\nc = 18446744073709551613#64\nx = 18033611003211546623#64\nd = 17140122619803074560#64\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2316:241: error: The prover found a counterexample, consi",
+  "line": 527,
+  "message": "GeneratedRulesTriage.lean:2304:241: error: The prover found a counterexample, consider the following assignment:",
+  "rule": "(Lsh64x64 (And64 (Rsh64x64 <t> x (Const64 <t2> [c])) (Const64 [d])) (Const64 [e])) && c < e =>  (And64 (Lsh64x64 <t> x (Const64 <t2> [e-c])) (Const64 <t> [d<<e]))"
+ },
+ "r527_1": {
+  "category": "counterexample",
+  "detail": "GeneratedRulesTriage.lean:2310:241: error: The prover found a counterexample, consider the following assignment:\ne = 2#64\nc = 18446744073709551613#64\nx = 18033611003211546623#64\nd = 17140122619803074560#64\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2316:241: error: The prover found a counterexample, consider the following assignment:\ne = 31#64\nc = 18446744073709551615#64\nx = 4294967295#32\nd = 4294967295#32\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2322:241: error: The prover found a counterexample, consider the following as",
+  "line": 527,
+  "message": "GeneratedRulesTriage.lean:2310:241: error: The prover found a counterexample, consider the following assignment:",
+  "rule": "(Lsh64x64 (And64 (Rsh64Ux64 <t> x (Const64 <t2> [c])) (Const64 [d])) (Const64 [e])) && c < e =>  (And64 (Lsh64x64 <t> x (Const64 <t2> [e-c])) (Const64 <t> [d<<e]))"
+ },
+ "r528_0": {
+  "category": "counterexample",
+  "detail": "GeneratedRulesTriage.lean:2316:241: error: The prover found a counterexample, consider the following assignment:\ne = 31#64\nc = 18446744073709551615#64\nx = 4294967295#32\nd = 4294967295#32\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2322:241: error: The prover found a counterexample, consider the following assignment:\ne = 1#64\nc = 18446744073709551613#64\nx = 4277065631#32\nd = 4026516284#32\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2328:241: error: The prover found a counterexample, consider the following assignment:\ne = 15#64\n",
+  "line": 528,
+  "message": "GeneratedRulesTriage.lean:2316:241: error: The prover found a counterexample, consider the following assignment:",
+  "rule": "(Lsh32x64 (And32 (Rsh32x64 <t> x (Const64 <t2> [c])) (Const32 [d])) (Const64 [e])) && c < e =>  (And32 (Lsh32x64 <t> x (Const64 <t2> [e-c])) (Const32 <t> [d<<e]))"
+ },
+ "r528_1": {
+  "category": "counterexample",
+  "detail": "GeneratedRulesTriage.lean:2322:241: error: The prover found a counterexample, consider the following assignment:\ne = 1#64\nc = 18446744073709551613#64\nx = 4277065631#32\nd = 4026516284#32\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2328:241: error: The prover found a counterexample, consider the following assignment:\ne = 15#64\nc = 18446744073709551615#64\nx = 65535#16\nd = 65535#16\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2334:241: error: The prover found a counterexample, consider the following assignment:\ne = 0#64\nc = 1844674",
+  "line": 528,
+  "message": "GeneratedRulesTriage.lean:2322:241: error: The prover found a counterexample, consider the following assignment:",
+  "rule": "(Lsh32x64 (And32 (Rsh32Ux64 <t> x (Const64 <t2> [c])) (Const32 [d])) (Const64 [e])) && c < e =>  (And32 (Lsh32x64 <t> x (Const64 <t2> [e-c])) (Const32 <t> [d<<e]))"
+ },
+ "r529_0": {
+  "category": "counterexample",
+  "detail": "GeneratedRulesTriage.lean:2328:241: error: The prover found a counterexample, consider the following assignment:\ne = 15#64\nc = 18446744073709551615#64\nx = 65535#16\nd = 65535#16\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2334:241: error: The prover found a counterexample, consider the following assignment:\ne = 0#64\nc = 18446744073709551615#64\nx = 35799#16\nd = 65489#16\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2340:241: error: The prover found a counterexample, consider the following assignment:\ne = 7#64\nc = 18446744073709551",
+  "line": 529,
+  "message": "GeneratedRulesTriage.lean:2328:241: error: The prover found a counterexample, consider the following assignment:",
+  "rule": "(Lsh16x64 (And16 (Rsh16x64 <t> x (Const64 <t2> [c])) (Const16 [d])) (Const64 [e])) && c < e =>  (And16 (Lsh16x64 <t> x (Const64 <t2> [e-c])) (Const16 <t> [d<<e]))"
+ },
+ "r529_1": {
+  "category": "counterexample",
+  "detail": "GeneratedRulesTriage.lean:2334:241: error: The prover found a counterexample, consider the following assignment:\ne = 0#64\nc = 18446744073709551615#64\nx = 35799#16\nd = 65489#16\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2340:241: error: The prover found a counterexample, consider the following assignment:\ne = 7#64\nc = 18446744073709551615#64\nx = 255#8\nd = 255#8\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2346:241: error: The prover found a counterexample, consider the following assignment:\ne = 2#64\nc = 18446744073709551615#64\n",
+  "line": 529,
+  "message": "GeneratedRulesTriage.lean:2334:241: error: The prover found a counterexample, consider the following assignment:",
+  "rule": "(Lsh16x64 (And16 (Rsh16Ux64 <t> x (Const64 <t2> [c])) (Const16 [d])) (Const64 [e])) && c < e =>  (And16 (Lsh16x64 <t> x (Const64 <t2> [e-c])) (Const16 <t> [d<<e]))"
+ },
+ "r530_0": {
+  "category": "counterexample",
+  "detail": "GeneratedRulesTriage.lean:2340:241: error: The prover found a counterexample, consider the following assignment:\ne = 7#64\nc = 18446744073709551615#64\nx = 255#8\nd = 255#8\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:2346:241: error: The prover found a counterexample, consider the following assignment:\ne = 2#64\nc = 18446744073709551615#64\nx = 226#8\nd = 254#8\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:3833:56: warning: This simp argument is unused:\n  GSem.ntz\n\nHint: Omit it from the simp argument list.\n  [apply] simp only [GSem.i",
+  "line": 530,
+  "message": "GeneratedRulesTriage.lean:2340:241: error: The prover found a counterexample, consider the following assignment:",
+  "rule": "(Lsh8x64  (And8  (Rsh8x64   <t> x (Const64 <t2> [c])) (Const8  [d])) (Const64 [e])) && c < e =>  (And8  (Lsh8x64  <t> x (Const64 <t2> [e-c])) (Const8  <t> [d<<e]))"
+ },
+ "r530_1": {
+  "category": "counterexample",
+  "detail": "GeneratedRulesTriage.lean:2346:241: error: The prover found a counterexample, consider the following assignment:\ne = 2#64\nc = 18446744073709551615#64\nx = 226#8\nd = 254#8\n/Users/scelles/git/github/s-celles/go-in-lean/build/GeneratedRulesTriage.lean:3833:56: warning: This simp argument is unused:\n  GSem.ntz\n\nHint: Omit it from the simp argument list.\n  [apply] simp only [GSem.isPowerOfTwo, GSem.lg, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit, GSem.b2i,\n    BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at *\n\nNote: This linter can be disabled wit",
+  "line": 530,
+  "message": "GeneratedRulesTriage.lean:2346:241: error: The prover found a counterexample, consider the following assignment:",
+  "rule": "(Lsh8x64  (And8  (Rsh8Ux64   <t> x (Const64 <t2> [c])) (Const8  [d])) (Const64 [e])) && c < e =>  (And8  (Lsh8x64  <t> x (Const64 <t2> [e-c])) (Const8  <t> [d<<e]))"
+ }
+}

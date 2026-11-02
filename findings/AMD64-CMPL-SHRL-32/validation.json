@@ -1,0 +1,5 @@
+{"counterexample": {"c": 32, "n": 1, "x": 5}, "reachable": false,
+ "reason": "only producer emits c&31",
+ "go_reproducer": "not possible without modifying the compiler",
+ "classification_history": [{"date": "2026-11-01", "status": "counterexample_in_model"}],
+ "human_review": "pending; recommendation: optional robustness fix, no bug report"}

@@ -1,0 +1,91 @@
+{
+ "counterexample": {
+  "x": -1,
+  "c": "2^63",
+  "d": 3,
+  "e": 1,
+  "compiled_result": 0,
+  "spec_result": 6
+ },
+ "go_runs": [
+  {
+   "toolchain": "go1.25.5",
+   "goos": "darwin",
+   "goarch": "arm64",
+   "constant_count": 0,
+   "variable_count": 6,
+   "flags": [
+    "default",
+    "-N -l"
+   ]
+  },
+  {
+   "toolchain": "go1.25.5",
+   "goos": "darwin",
+   "goarch": "amd64 (Rosetta 2)",
+   "constant_count": 0,
+   "variable_count": 6
+  },
+  {
+   "toolchain": "go1.25.5",
+   "goos": "darwin",
+   "goarch": "arm64",
+   "inlined_helper": {
+    "g(1)": 4,
+    "g(-1)": 4
+   },
+   "spec": {
+    "g(1)": 0,
+    "g(-1)": 6
+   },
+   "with -l": {
+    "g(1)": 0,
+    "g(-1)": 6
+   }
+  }
+ ],
+ "extent": {
+  "mismatches": 208,
+  "types": [
+   "int8",
+   "int16",
+   "int32",
+   "int64"
+  ],
+  "unsigned_affected": false,
+  "counts": ">= 2^63"
+ },
+ "ssa_evidence": "start: Lsh64x64 (And64 (Rsh64x64 x (Const64 [-9223372036854775808])) (Const64 [3])) (Const64 [1]); after opt: Const64 [0]",
+ "fix_proved": "c >= 0 && e >= 0 added: 16 instances proved (GoInLean/Compiler/ShiftMask.lean)",
+ "known_issue_search": {
+  "date": "2026-11-01",
+  "result": "none found"
+ },
+ "classification_history": [
+  {
+   "date": "2026-11-01",
+   "status": "counterexample_in_model"
+  },
+  {
+   "date": "2026-11-01",
+   "status": "go_discrepancy_reproduced"
+  },
+  {
+   "date": "2026-11-02",
+   "status": "go_discrepancy_reproduced",
+   "note": "reported as golang/go#82763"
+  }
+ ],
+ "human_review": "approved 2026-11-02; reported upstream",
+ "versions": {
+  "go1.25.5": "wrong",
+  "go1.26.10": "wrong",
+  "go1.27.3": "wrong",
+  "master babb75be (2026-11-01)": "wrong",
+  "master babb75be + fix.patch": "correct; compiler tests pass"
+ },
+ "upstream": {
+  "issue": "https://github.com/golang/go/issues/82763",
+  "date": "2026-11-02"
+ }
+}

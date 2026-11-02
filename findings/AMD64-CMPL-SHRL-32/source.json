@@ -1,0 +1,2 @@
+{"go_version": "go1.25.5", "file": "src/cmd/compile/internal/ssa/_gen/AMD64.rules", "line": 1197,
+ "producer": "AMD64.rules:791", "lean": "GoInLean/Compiler/AMD64Latent.lean", "lean_toolchain": "leanprover/lean4:v4.35.0"}

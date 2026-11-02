@@ -19,3 +19,6 @@ import GoInLean.Compiler.AMD64
 import GoInLean.Compiler.AMD64Shifts
 import GoInLean.Properties.DivRem
 import GoInLean.Compiler.Rotates
+import GoInLean.Compiler.AMD64Latent
+import GoInLean.Compiler.ShiftMask
+import GoInLean.Compiler.GeneratedRules

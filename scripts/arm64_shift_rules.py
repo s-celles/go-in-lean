@@ -97,7 +97,7 @@ def main():
             bounded = neg == ""
             name = f"{kind}{W}{U}x{A}_{'bounded' if bounded else 'unbounded'}"
             if name in names:
-                continue
+                raise SystemExit(f"duplicate rule instance {name} at line {lineno}: refusing to skip it silently")
             names.add(name)
             hyp = f"\n    (hb : ry.setWidth {A} < ({W} : BitVec {A}))" if bounded else ""
             thms.append(f"""/-- ARM64.rules:{lineno}  `{r}` -/

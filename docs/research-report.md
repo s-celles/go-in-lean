@@ -15,9 +15,8 @@ Go compiler SSA rewrite rules:
   are checked exhaustively on a bounded domain but not proved in general),
   **1 model-level counterexample** (negative control), **2 known issues
   reproduced** (golang/go#54255, golang/go#15175).
-* **No new Go bug was found.** Everything proved and tested in `math/bits`,
-  `slices.Compact/Index/Contains`, `sort.Search` and the modelled compiler
-  rules behaves as documented in go1.25.5.
+* **One new Go compiler bug was found, reproduced and reported** (golang/go#82763, §3.8); no defect was found in the standard-library functions studied, which behave as documented
+  in go1.25.5.
 * **The pipeline detects defects**: 5 deliberately wrong models are refuted by
   `bv_decide` and every counterexample reproduces as a failing Go test
   against the Go mutant while the real function passes.
@@ -179,6 +178,29 @@ library when the session's budget ran out.
   only Go-side discrepancy found by the project; it is unreachable without
   `unsafe`, its alternative is a fatal out-of-memory, and it is recommended
   *not* to be reported.
+
+### 3.8 A compiler miscompilation found by the generated-rule triage
+
+`scripts/generic_rules_to_lean.py` translates 830 instances of `generic.rules` into Lean and
+bit-blasts each one; failures are triaged automatically (`targets/generic_rules_triage.json`):
+786 proved, 29 timeouts, 7 spurious, **8 counterexamples**, all in the `c < e` branch of the
+`((x >> c) & d) << e` rules. The rules compare the int64 AuxInts of the two constant shift
+counts with signed `c >= e` / `c < e`, while Go shift counts are unsigned; a count `c >= 2^63`
+takes the wrong branch. Reproduced on the real compiler (go1.25.5, go1.26.10, go1.27.3 and
+master `babb75be`, arm64 and amd64): `((x >> (1<<63)) & 3) << 1` is 0 for `x = -1` instead
+of 6; the variable-count version is correct; the SSA dump shows the rule firing in `opt`; the
+same wrong value appears when the constant arrives through inlining. Unsigned operands are
+protected by an earlier fold. Adding `c >= 0 && e >= 0` is proved sufficient for all 16
+instances in Lean and, applied to master, fixes the reproducer while the compiler's own tests
+still pass. After human review it was reported as
+[golang/go#82763](https://github.com/golang/go/issues/82763)
+(`findings/SSA-SHIFTMASK-SIGNED-COUNT/`). Severity: low–medium (silent wrong code for a
+pathological but legal constant count).
+
+Lesson for the pipeline: `lake env lean` once crashed on an internal panic
+(`Nat.shiftl exponent is too big`) while evaluating a shift by 2^63, and a filtered command
+output made the crash look like success. The triage scripts now fail on any Lean exit without
+a parsed error, and every generated file is also built by `lake build` in CI.
 
 ## 4. Success criteria check
 
