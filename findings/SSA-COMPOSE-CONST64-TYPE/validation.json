@@ -34,6 +34,7 @@
  "human_review": "approved 2026-11-02; reported upstream",
  "upstream": {
   "issue": "https://github.com/golang/go/issues/82767",
-  "date": "2026-11-02"
+  "date": "2026-11-02",
+  "follow_up_comment": "https://github.com/golang/go/issues/82767#issuecomment-6577479369"
  }
 }

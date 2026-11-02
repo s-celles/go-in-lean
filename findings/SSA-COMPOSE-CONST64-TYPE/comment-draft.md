@@ -1,4 +1,4 @@
-<!-- DRAFT follow-up comment for golang/go#82767. Not posted. -->
+<!-- Posted 2026-11-02: https://github.com/golang/go/issues/82767#issuecomment-6577479369 -->
 Additional data: the counts do not need to be huge. The combined count is truncated to the
 width of the shifted type, so for int8 any pair of constant counts whose sum is close to a
 multiple of 256 is enough:
