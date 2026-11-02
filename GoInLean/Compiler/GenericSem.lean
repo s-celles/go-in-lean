@@ -19,5 +19,8 @@ def oneBit {w : Nat} (x : BitVec w) : Bool := (x &&& (x - 1)) == 0 && x != 0
 def uaddOvf (a b : BitVec 64) : Bool := a + b < a
 def is32Bit (n : BitVec 64) : Bool := n == (n.setWidth 32).signExtend 64
 def b2i (b : Bool) : BitVec 64 := if b then 1 else 0
+/-- `bits.ReverseBytesN`: byte reversal by concatenation (w a multiple of 8). -/
+def revBytes {w : Nat} (x : BitVec w) : BitVec w :=
+  ((List.range (w / 8)).foldl (fun acc i => acc ||| (((x >>> (8 * i)) &&& 0xff) <<< (w - 8 - 8 * i))) 0)
 
 end Go.Compiler.GSem

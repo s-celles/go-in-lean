@@ -105,6 +105,8 @@ def opinfo(op):
     if op == "IsInBounds": return ("inb", "bool", ["any", "same"])
     if op == "IsSliceInBounds": return ("sinb", "bool", ["any", "same"])
     if op == "Slicemask": return ("smask", "bv64", ["bv64"])
+    m = re.fullmatch(r"(Bswap|BitRev)(8|16|32|64)", op)
+    if m: n = m.group(2); return (m.group(1).lower(), f"bv{n}", [f"bv{n}"])
     if op == "ConstBool": return ("constb", "bool", [])
     if op == "Not": return ("not", "bool", ["bool"])
     if op in ("AndB", "OrB", "EqB", "NeqB"): return (op.lower(), "bool", ["bool", "bool"])
@@ -242,7 +244,14 @@ def convert(v, t):
     if w2 <= w1: return (f"({v[0]}.setWidth {w2})", t)
     return ((f"({v[0]}.signExtend {w2})" if signed(v[1]) else f"({v[0]}.setWidth {w2})"), t)
 
+ALIASES = {"OneBit": "oneBit", "IsPowerOfTwo": "isPowerOfTwo", "Ntz64": "ntz64", "Ntz32": "ntz32",
+           "Ntz16": "ntz16", "Ntz8": "ntz8", "Nlz64": "nlz64", "Nlz32": "nlz32", "Nlz16": "nlz16", "Nlz8": "nlz8",
+           "Log64": "log64", "Log32": "log32", "Log16": "log16", "Log8": "log8", "Is32Bit": "is32Bit"}
+
 def call(f, args):
+    f = ALIASES.get(f, f)
+    m = re.fullmatch(r"Log64u", f)
+    if m: return (f"(GSem.lg {args[0][0]})", "i64")
     m = re.fullmatch(r"(u?)int(8|16|32|64)", f)
     if m and len(args) == 1:
         return convert(args[0], ("u" if m.group(1) else "i") + m.group(2))
@@ -258,6 +267,18 @@ def call(f, args):
     if f == "uaddOvf": return (f"(GSem.uaddOvf {args[0][0]} {args[1][0]})", "bool")
     if f == "is32Bit": return (f"(GSem.is32Bit {args[0][0]})", "bool")
     if f == "b2i": return (f"(GSem.b2i {args[0][0]})", "i64")
+    m = re.fullmatch(r"bits\.(ReverseBytes|Reverse)(8|16|32|64)", f)
+    if m:
+        w = int(m.group(2)); a = convert(args[0], f"u{w}")
+        fn = "GSem.revBytes" if m.group(1) == "ReverseBytes" else "BitSpec.reverse"
+        return (f"({fn} {a[0]})", f"u{w}")
+    m = re.fullmatch(r"bits\.RotateLeft(8|16|32|64)", f)
+    if m:
+        w = int(m.group(1)); a = convert(args[0], f"u{w}"); k = args[1]
+        if k[1] == "untyped": k = as_type(k, "i64")
+        kk = k[0] if width(k[1]) == 64 else f"({k[0]}.signExtend 64)"
+        amt = f"(({kk}.setWidth {w}) &&& {w - 1})"
+        return (f"(({a[0]} <<< {amt}) ||| ({a[0]} >>> ((({w} : BitVec {w}) - {amt}) &&& {w - 1})))", f"u{w}")
     raise Skip("call " + f)
 
 DROP = re.compile(r"\.Op\b|\.Uses|clobber|config\.|\.Type|canonLessThan|mergePoint|\.Block|isSameCall|"
@@ -429,6 +450,8 @@ def sem(kind, s, rt):
     if kind == "inb": return f"(!{s[0]}.msb && {s[0]}.slt {s[1]})"
     if kind == "sinb": return f"(!{s[0]}.msb && {s[0]}.sle {s[1]})"
     if kind == "smask": return f"(if {s[0]} == 0 then (0 : BitVec 64) else -1)"
+    if kind == "bswap": return f"(GSem.revBytes {s[0]})"
+    if kind == "bitrev": return f"(BitSpec.reverse {s[0]})"
     # Division: the generic ops only execute with a non-zero divisor (the divide-by-zero
     # panic check is a separate SSA value); `translate` adds `divisor != 0` hypotheses.
     if kind == "div": return f"({s[0]}.sdiv {s[1]})"
@@ -441,7 +464,7 @@ def sem(kind, s, rt):
     raise Skip(kind)
 
 UNFOLD = ("simp only [GSem.isPowerOfTwo, GSem.lg, GSem.ntz, GSem.nlz, GSem.oneBit, GSem.uaddOvf, GSem.is32Bit,"
-          " GSem.b2i, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at *")
+          " GSem.b2i, GSem.revBytes, BitSpec.reverse, BitSpec.len, BitSpec.ctz, BitSpec.clz, List.range, List.range.loop, List.foldl, List.foldr] at *")
 
 def theorem(tid, lineno, rule, tr):
     binders, hyps, lhs, rhs, rt = tr

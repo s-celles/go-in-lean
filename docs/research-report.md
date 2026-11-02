@@ -233,6 +233,21 @@ a parsed error, and every generated file is also built by `lake build` in CI.
   truncated to 8 bits, so `(y >> 128) >> 128` already misbehaves on master (100 instead of 0);
   a second campaign (200 seeds, master, amd64) found 8 failing seeds, all fixed by the patch.
 
+### 3.10 Iteration 5: what changed on master, and a type-consistency lint
+
+* **New rules on master** (`scripts/rules_diff.py`, `scripts/check_new_rules.py`): a
+  normalised diff of the rule files between go1.27.3 and master `babb75be` gives 241
+  new or modified generic rules (and a large refactor of the architecture and SIMD files).
+  95 new generic rule instances fall in the translatable fragment: 89 proved, 6 SAT
+  timeouts, 0 counterexamples. The rest are memory rules (Load/Store/Move/Zero, 111 with
+  symbolic aux) and 128-bit tuple ops.
+* **Type-consistency lint** (`scripts/rules_type_lint.py`): flags right-hand-side nodes
+  whose annotated type width differs from the op width (the class of golang/go#81868 and
+  golang/go#82767). It reports 74 annotations on go1.25.5, 45 on go1.27.3 and master: the
+  29 fixed by CL 795240 disappear, and on master it finds exactly the nine
+  shift-composition rules of golang/go#82767 plus deliberate "type punning" (lowering rules,
+  divmod expansions whose values fit, rules for 32-bit targets). No new instance.
+
 ## 4. Success criteria check
 
 | # | Criterion | Status |

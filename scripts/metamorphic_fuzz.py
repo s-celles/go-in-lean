@@ -86,6 +86,8 @@ def canary(g):
     return t, ("shift", "<<", ("bin", "&", sh, g.const(t, 3), t), g.const("uint64", 1), t)
 
 BRANCHY = "--branchy" in sys.argv
+INDEX = "--index" in sys.argv   # use the expression as an array index (bounds-check elimination)
+TABLES = [1, 7, 8, 16, 255, 256]
 
 def program(seed, n):
     rnd = random.Random(seed)
@@ -113,6 +115,23 @@ def program(seed, n):
             return f"func() {t} {{ r := {r}; if {render(e3, mode)} {op} {render(k, mode)} {{ r = {render(e2, mode)} }}; return r }}()"
         cexpr = body({"const": True, "vals": vals})
         vexpr = body({"const": False, "vals": vals})
+        if INDEX:
+            # index tab<N>[int(e)] (optionally masked or guarded); a panic is reported as a sentinel
+            n = rnd.choice(TABLES)
+            form = rnd.choice(["plain", "mask", "guard", "mod"])
+            def idx(ex):
+                i = f"int({ex})"
+                if form == "mask" and n & (n - 1) == 0: i = f"int(uint({ex}) & {n - 1})"
+                if form == "mod": i = f"int(uint({ex}) % {n})"
+                return i
+            def wrap(ex):
+                i = idx(ex)
+                if form == "guard":
+                    return (f"func() (r {t}) {{ defer func() {{ if recover() != nil {{ r = {t}(0x5A) }} }}(); "
+                            f"if i := {i}; i >= 0 && i < len(tab{n}) {{ return {t}(tab{n}[i]) }}; return {t}(0x33) }}()")
+                return (f"func() (r {t}) {{ defer func() {{ if recover() != nil {{ r = {t}(0x5A) }} }}(); "
+                        f"return {t}(tab{n}[{i}]) }}()")
+            cexpr, vexpr = wrap(cexpr), wrap(vexpr)
         sep = ", " if params else ""
         args = ", ".join(f"{ct}({v})" for ct, v in g.consts)
         funcs.append(f"//go:noinline\nfunc c{i}(x, y {t}) {t} {{ return {cexpr} }}\n"
@@ -137,6 +156,24 @@ var pairs = [][2]uint64{{0, 0}, {1, 2}, {^uint64(0), 1}, {1 << 63, 3}, {0x7f, 0x
 	{0x80000000, 0x7fffffff}, {0x0123456789abcdef, 0xfedcba9876543210}, {5, ^uint64(0)}, {0xff, 0x100}}
 
 var bad = 0
+
+var (
+	tab1   [1]int8
+	tab7   [7]int8
+	tab8   [8]int8
+	tab16  [16]int8
+	tab255 [255]int8
+	tab256 [256]int8
+)
+
+func init() {
+	fill := func(s []int8) {
+		for i := range s {
+			s[i] = int8(i*7 + 1)
+		}
+	}
+	fill(tab1[:]); fill(tab7[:]); fill(tab8[:]); fill(tab16[:]); fill(tab255[:]); fill(tab256[:])
+}
 
 func report(i int, kind string, x, y, got, want uint64) {
 	bad++
