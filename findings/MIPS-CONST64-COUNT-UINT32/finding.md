@@ -4,7 +4,7 @@
 **Severity:** low-medium: needs a constant count ≥ 2^32 created by merging two shifts after
 decomposition (e.g. `(x >> 7) >> (uint64(y) | 0xFFFFFFFF)`); silent wrong value.
 **Security:** no evident security impact. Private until reviewed.
-**Human review status:** pending. Not reported upstream. Distinct from golang/go#82772 (same port).
+**Human review status:** reviewed and approved by the maintainer of this repository on 2026-11-02; reported upstream as [golang/go#82776](https://github.com/golang/go/issues/82776). Distinct from golang/go#82772 (same port).
 
 ## Summary
 

@@ -1,11 +1,54 @@
 {
- "counterexample": {"expr": "(x >> 7) >> (uint64(y) | 0xFFFFFFFF)", "x": 127, "y": -128, "compiled_result": 1, "spec_result": 0},
- "more": [{"expr": "(x << 3) << (uint64(y) | 0xFFFFFFFF), uint16", "x": 1, "y": 0, "compiled_result": 0, "spec_result": 0, "note": "not triggered by this form"}],
+ "counterexample": {
+  "expr": "(x >> 7) >> (uint64(y) | 0xFFFFFFFF)",
+  "x": 127,
+  "y": -128,
+  "compiled_result": 1,
+  "spec_result": 0
+ },
+ "more": [
+  {
+   "expr": "(x << 3) << (uint64(y) | 0xFFFFFFFF), uint16",
+   "x": 1,
+   "y": 0,
+   "compiled_result": 0,
+   "spec_result": 0,
+   "note": "not triggered by this form"
+  }
+ ],
  "ssa_trace": "late_opt: Rsh8x64 <int8> v7 (Const64 <int8> [4294967302]); lower: SRAconst [30] (SLLconst [24] v7)",
- "versions": {"go1.21.13": "wrong", "go1.25.5": "wrong", "go1.26.10": "wrong", "go1.27.3": "wrong", "master babb75be": "wrong", "master babb75be + fix.patch": "correct"},
- "controls": {"386": "correct", "arm": "correct", "ppc64le": "correct"},
+ "versions": {
+  "go1.21.13": "wrong",
+  "go1.25.5": "wrong",
+  "go1.26.10": "wrong",
+  "go1.27.3": "wrong",
+  "master babb75be": "wrong",
+  "master babb75be + fix.patch": "correct"
+ },
+ "controls": {
+  "386": "correct",
+  "arm": "correct",
+  "ppc64le": "correct"
+ },
  "fix_tests": "master + fix.patch (+ the other fixes): go test -short cmd/compile/internal/ssa cmd/compile/internal/test ok; go test -count=1 cmd/internal/testdir -run Test/codegen ok; -run Test/fixedbugs ok",
- "known_issue_search": {"date": "2026-11-02", "result": "none found"},
- "classification_history": [{"date": "2026-11-02", "status": "go_discrepancy_reproduced"}],
- "human_review": "pending; not reported upstream"
+ "known_issue_search": {
+  "date": "2026-11-02",
+  "result": "none found"
+ },
+ "classification_history": [
+  {
+   "date": "2026-11-02",
+   "status": "go_discrepancy_reproduced"
+  },
+  {
+   "date": "2026-11-02",
+   "status": "go_discrepancy_reproduced",
+   "note": "reported as golang/go#82776"
+  }
+ ],
+ "human_review": "approved 2026-11-02; reported upstream",
+ "upstream": {
+  "issue": "https://github.com/golang/go/issues/82776",
+  "date": "2026-11-02"
+ }
 }

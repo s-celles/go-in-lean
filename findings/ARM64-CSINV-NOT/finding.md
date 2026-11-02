@@ -4,7 +4,7 @@
 **Severity:** medium: arm64 is a first-class port (Apple Silicon, Graviton). The trigger needs a
 conditional select whose condition becomes constant only after lowering, which is uncommon.
 **Security:** no evident security impact. Private until reviewed.
-**Human review status:** pending. Not reported upstream.
+**Human review status:** reviewed and approved by the maintainer of this repository on 2026-11-02; reported upstream as [golang/go#82777](https://github.com/golang/go/issues/82777).
 
 ## Summary
 

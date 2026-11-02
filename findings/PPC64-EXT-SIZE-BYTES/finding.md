@@ -5,7 +5,7 @@
 in ordinary code (power8 and power9 targets, both endiannesses).
 **Security:** a dropped truncation can turn an in-range index into an out-of-range one (the fuzz
 case panicked on a table lookup); no evident exploitable path. Private until reviewed.
-**Human review status:** pending. Not reported upstream.
+**Human review status:** reviewed and approved by the maintainer of this repository on 2026-11-02; reported upstream as [golang/go#82775](https://github.com/golang/go/issues/82775).
 
 ## Summary
 

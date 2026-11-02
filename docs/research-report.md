@@ -277,7 +277,7 @@ a parsed error, and every generated file is also built by `lake build` in CI.
   golang/go#82763 (go1.23.12 correct, go1.24.0 wrong).
 * **Architecture variants** (`SPECS` in `scripts/cross_campaigns.sh`): GORISCV64=rva22u64/rva23u64,
   GOPPC64=power9/power10, GOARM=5/6, GO386=softfloat, GOMIPS=softfloat, GOARM64=v9.0 and
-  GOAMD64=v4 (2,640 seeds). Two more defects, not yet reported (human review pending):
+  GOAMD64=v4 (2,640 seeds). Two more defects, reported after human review as golang/go#82775 (ppc64) and #82776 (MIPS):
   * `findings/PPC64-EXT-SIZE-BYTES`: ppc64 rules eliminating an extension after a 32-bit right
     shift compare `Type.Size()` (bytes) with bit widths, so `int32(int16(x >> 1))` keeps 32 bits
     (go1.21 .. master).
@@ -289,7 +289,7 @@ a parsed error, and every generated file is also built by `lake build` in CI.
   the extension of an `Arg` are safe in practice; the internal ABI document does not state it.
 * **`--bits`** (generator): `math/bits` intrinsics and `min`/`max`, lowered by
   architecture-specific rules (Zbb, power9 `cnttz`, s390x `FLOGR`).
-* **`--bits` campaign** (12 targets, 2,400 seeds): one more defect, not yet reported:
+* **`--bits` campaign** (12 targets, 2,400 seeds): one more defect, reported after human review as golang/go#82777:
   `findings/ARM64-CSINV-NOT` (native arm64, go1.21 .. master): a conditional select of `^y`
   whose condition becomes constant during `lower` folds to the boolean `Not`, i.e. `y ^ 1`.
   The master-only index-mode failures on riscv64 (rva23u64) are an instance of the open
