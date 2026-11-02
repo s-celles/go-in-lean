@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Run metamorphic_fuzz.py over a range of seeds with a given toolchain; print each mismatching
 # expression's source. Usage: fuzz_campaign.sh FIRST LAST N OUTDIR [GOTOOLCHAIN] [GOARCH]
+# Environment: JOBS (parallelism, default 6), FUZZ_FLAGS (--branchy, --index, --canary), GOAMD64.
 set -u
 FIRST=$1 LAST=$2 N=$3 OUT=$4 TC=${5:-go1.27.3} ARCH=${6:-}
 here=$(cd "$(dirname "$0")" && pwd)
@@ -16,5 +17,5 @@ run() {
   fi
 }
 export -f run; export OUT N TC ARCH here FUZZ_FLAGS
-seq "$FIRST" "$LAST" | xargs -P 6 -I{} bash -c 'run {}'
+seq "$FIRST" "$LAST" | xargs -P "${JOBS:-6}" -I{} bash -c 'run {}'
 echo "campaign $FIRST..$LAST done"
