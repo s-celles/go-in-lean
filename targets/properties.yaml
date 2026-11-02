@@ -1134,3 +1134,20 @@ properties:
     go_tests: []
     history:
       - {date: 2026-11-02, status: counterexample_in_model, note: "found by scripts/scan_signed_counts.py"}
+  - id: SSA-PROVE-LIMITS-SOUND
+    package: cmd/compile/internal/ssa (prove.go Limit arithmetic), Go master babb75be
+    function: "Limit.Add/Sub/Com/Neg/Mul/Bitlen/Ctz/Popcount and PropagateUnsignedSignedRelationship"
+    go_source: "master babb75be src/cmd/compile/internal/ssa/prove.go"
+    doc: "a Limit records known upper and lower bounds for a value"
+    preconditions: "operand limits normalised to the value width (maintained by newLimit, except for a Const64 typed narrower than 64 bits)"
+    postcondition: "the result of the Go operation lies in the computed limit"
+    lean_statement: "GoInLean/Compiler/ProveLimits.lean"
+    lean_theorem: [Go.Compiler.ProveLimits.com32_needs_norm, Go.Compiler.ProveLimits.add_sound_8, Go.Compiler.ProveLimits.sub_sound_8, Go.Compiler.ProveLimits.com_sound_8, Go.Compiler.ProveLimits.neg_sound_8, Go.Compiler.ProveLimits.propagate_sound_8, Go.Compiler.ProveLimits.bitlen_sound_8, Go.Compiler.ProveLimits.ctz_sound_8, Go.Compiler.ProveLimits.popcount_sound_8, Go.Compiler.ProveLimits.mul_sound_8, Go.Compiler.ProveLimits.add_sound_16, Go.Compiler.ProveLimits.sub_sound_16, Go.Compiler.ProveLimits.com_sound_16, Go.Compiler.ProveLimits.neg_sound_16, Go.Compiler.ProveLimits.propagate_sound_16, Go.Compiler.ProveLimits.bitlen_sound_16, Go.Compiler.ProveLimits.ctz_sound_16, Go.Compiler.ProveLimits.popcount_sound_16, Go.Compiler.ProveLimits.mul_sound_16, Go.Compiler.ProveLimits.add_sound_32, Go.Compiler.ProveLimits.sub_sound_32, Go.Compiler.ProveLimits.com_sound_32, Go.Compiler.ProveLimits.neg_sound_32, Go.Compiler.ProveLimits.propagate_sound_32, Go.Compiler.ProveLimits.bitlen_sound_32, Go.Compiler.ProveLimits.ctz_sound_32, Go.Compiler.ProveLimits.popcount_sound_32, Go.Compiler.ProveLimits.add_sound_64, Go.Compiler.ProveLimits.sub_sound_64, Go.Compiler.ProveLimits.com_sound_64, Go.Compiler.ProveLimits.neg_sound_64, Go.Compiler.ProveLimits.propagate_sound_64, Go.Compiler.ProveLimits.bitlen_sound_64, Go.Compiler.ProveLimits.ctz_sound_64, Go.Compiler.ProveLimits.popcount_sound_64]
+    oracle: "Go semantics; com32_needs_norm shows normalisation is necessary"
+    ambiguity_risk: "medium: Mul proved at 8/16 bits only (128-bit product in SAT)"
+    complexity: high
+    trust: bv_decide
+    status: proved_in_model
+    go_tests: []
+    history:
+      - {date: 2026-11-02, status: proved_in_model, note: "all widths 8..64 except Mul (8/16); the only unsound input is a non-normalised limit, i.e. the mistyped Const64 of golang/go#82767"}

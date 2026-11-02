@@ -25,3 +25,4 @@ import GoInLean.Compiler.GeneratedRules
 import GoInLean.Compiler.LatentRotate
 import GoInLean.Compiler.KnownBits
 import GoInLean.Compiler.MagicDiv
+import GoInLean.Compiler.ProveLimits

@@ -85,6 +85,8 @@ def canary(g):
     sh = ("shift", ">>", ("var", "x", t), g.const("uint64", 1 << 63), t)
     return t, ("shift", "<<", ("bin", "&", sh, g.const(t, 3), t), g.const("uint64", 1), t)
 
+BRANCHY = "--branchy" in sys.argv
+
 def program(seed, n):
     rnd = random.Random(seed)
     funcs, checks = [], []
@@ -92,12 +94,25 @@ def program(seed, n):
         g = Gen(rnd)
         t = rnd.choice(list(TYPES))
         e = g.expr(t, rnd.randint(2, 4))
+        branch = None
+        if BRANCHY and rnd.random() < 0.6:
+            # r := e; if (e3 cmp K) { r = e2 }: branch facts feed the prove pass
+            e2 = g.expr(t, rnd.randint(1, 3))
+            ct = rnd.choice(list(TYPES))
+            e3 = g.expr(ct, rnd.randint(0, 2))
+            branch = (rnd.choice(["<", "<=", ">", ">=", "==", "!="]), e3, g.const(ct), e2)
         if CANARY and i == 0:
-            t, e = canary(g)
+            t, e = canary(g); branch = None
         vals = [v for _, v in g.consts]
         params = ", ".join(f"k{j} {ct}" for j, (ct, _) in enumerate(g.consts))
-        cexpr = render(e, {"const": True, "vals": vals})
-        vexpr = render(e, {"const": False, "vals": vals})
+        def body(mode):
+            r = render(e, mode)
+            if branch is None:
+                return r
+            op, e3, k, e2 = branch
+            return f"func() {t} {{ r := {r}; if {render(e3, mode)} {op} {render(k, mode)} {{ r = {render(e2, mode)} }}; return r }}()"
+        cexpr = body({"const": True, "vals": vals})
+        vexpr = body({"const": False, "vals": vals})
         sep = ", " if params else ""
         args = ", ".join(f"{ct}({v})" for ct, v in g.consts)
         funcs.append(f"//go:noinline\nfunc c{i}(x, y {t}) {t} {{ return {cexpr} }}\n"

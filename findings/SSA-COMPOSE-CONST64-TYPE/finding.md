@@ -18,6 +18,20 @@ Extent (`(y op 1) op K`, all widths/kinds, K ∈ {1<<62, 1<<32, 1<<16, 1<<8, 256
 30 mismatches on tip (arm64 and amd64), 0 on go1.27.3. Only signed right shifts of
 int16/int32 (other kinds are folded to 0 first).
 
+## Addendum (2026-11-02): modest counts suffice for int8 / int16
+
+The combined count is truncated to the width of the *shifted* type, so for int8 any pair of
+constant counts whose sum is a multiple of 256 (plus a small remainder) misbehaves:
+
+```go
+func shr8(y int8, a, b uint) int8 { return (y >> a) >> b }
+// master: shr8(100, 128, 128) == 100, shr8(100, 100, 157) == 50, shr8(-7, 128, 128) == -7
+// spec / go1.27.3: 0, 0, -1.   int16: (100 >> 40000) >> 25537 == 50 on master (spec 0).
+```
+
+A second fuzzing campaign (200 seeds, master, GOARCH=amd64 under Rosetta) found 8 failing
+seeds, all of them fixed by `fix.patch` (e.g. `(x >> 256) >> 256` on int8).
+
 ## Root cause (two cooperating defects)
 
 1. `_gen/generic.rules:537-549` (master), the shift-composition rules, e.g.

@@ -224,6 +224,14 @@ a parsed error, and every generated file is also built by `lake build` in CI.
 * **`knownbits`** (new pass on master): every fold case, both simplifications and all 48 shift
   ops at all widths are proved sound against Go semantics (`KnownBits.lean`); a variant
   without the bounded hypothesis is refuted, so the theorems are not vacuous.
+* **`prove` interval arithmetic** (master): `Limit.Add/Sub/Com/Neg/Mul/Bitlen/Ctz/Popcount`
+  and `PropagateUnsignedSignedRelationship` proved sound at all widths (Mul at 8/16 bits) under
+  the hypothesis that operand limits are normalised to the value width; `com32_needs_norm`
+  shows the hypothesis is necessary, and the only way to violate it is a `Const64` typed
+  narrower than 64 bits, i.e. the root cause of golang/go#82767.
+* **golang/go#82767 is less exotic than first reported**: for int8 the combined count is
+  truncated to 8 bits, so `(y >> 128) >> 128` already misbehaves on master (100 instead of 0);
+  a second campaign (200 seeds, master, amd64) found 8 failing seeds, all fixed by the patch.
 
 ## 4. Success criteria check
 
