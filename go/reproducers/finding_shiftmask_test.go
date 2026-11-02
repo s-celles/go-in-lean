@@ -10,7 +10,7 @@ package reproducers
 import "testing"
 
 //go:noinline
-func smConst(x int64) int64 { return ((x >> (1 << 63)) & 3) << 1 }
+func smConst(x int64) int64 { return ((x >> uint64(1<<63)) & 3) << 1 }
 
 //go:noinline
 func smVar(x int64, n uint64) int64 { return ((x >> n) & 3) << 1 }

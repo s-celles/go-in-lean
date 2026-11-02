@@ -67,7 +67,8 @@ class Gen:
 
 def render(e, mode):
     tag = e[0]
-    if tag == "var": return e[1]
+    # x, y are declared with the function's type; a var node of another type is a conversion
+    if tag == "var": return f"{e[2]}({e[1]})"
     if tag == "k":
         t = e[2]
         return f"{t}({mode['vals'][e[1]]})" if mode["const"] else f"k{e[1]}"
@@ -200,10 +201,11 @@ def main():
     if not os.path.exists(os.path.join(outdir, "go.mod")):
         open(os.path.join(outdir, "go.mod"), "w").write("module fuzz\ngo 1.25\n")
     drop = set()
+    # Validate for the target GOARCH (inherited from the environment); -gcflags=-e reports every
+    # error, not just the first ten, so each round drops all failing expressions.
     for _ in range(30):
         src = write(seed, n, outdir, drop)
-        r = subprocess.run([gobin, "vet", "."], cwd=outdir, capture_output=True, text=True)
-        r = subprocess.run([gobin, "build", "-o", os.devnull, "."], cwd=outdir, capture_output=True, text=True)
+        r = subprocess.run([gobin, "build", "-gcflags=-e", "-o", os.devnull, "."], cwd=outdir, capture_output=True, text=True)
         if r.returncode == 0: break
         lines = src.splitlines()
         newly = set()
@@ -216,6 +218,8 @@ def main():
                 if mm and lines[j].startswith("\t"): newly.add(int(mm.group(1))); break
         if not newly: raise SystemExit("cannot fix compile errors:\n" + r.stderr[:2000])
         drop |= newly
+    else:
+        raise SystemExit("compile errors remain after 30 rounds:\n" + r.stderr[:2000])
     print(f"seed {seed}: wrote {n - len(drop)} expressions ({len(drop)} dropped for compile errors)")
 
 if __name__ == "__main__":
