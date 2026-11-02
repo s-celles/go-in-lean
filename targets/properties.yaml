@@ -1152,3 +1152,57 @@ properties:
     go_tests: []
     history:
       - {date: 2026-11-02, status: proved_in_model, note: "all widths 8..64 except Mul (8/16); the only unsound input is a non-normalised limit, i.e. the mistyped Const64 of golang/go#82767"}
+  - id: MIPS-RSH8-SIGNEXT16
+    package: cmd/compile/internal/ssa (MIPS.rules lowering, GOARCH=mips/mipsle)
+    function: "Rsh8x32 / Rsh8x16 / Rsh8x8: signed 8-bit right shift by a variable count"
+    go_source: "go1.27.3 and master babb75be: src/cmd/compile/internal/ssa/_gen/MIPS.rules:116-118 (same text since go1.8)"
+    doc: "(Rsh8x32 x y) => (SRA (SignExt16to32 x) ( CMOVZ <typ.UInt32> y (MOVWconst [31]) (SGTUconst [32] y)))"
+    preconditions: "x is an 8-bit value in a 32-bit register with unspecified upper bits (e.g. raw MUL/ADDU result)"
+    postcondition: "low byte of the result == int8(x) >> y as Go semantics  -- violated: sign taken from bit 15"
+    lean_statement: "GoInLean/Compiler/MIPSShift8.lean"
+    lean_theorem: [Go.Compiler.MIPSShift8.rsh8x32_refuted, Go.Compiler.MIPSShift8.rsh8x32_unsound, Go.Compiler.MIPSShift8.rsh8x32_fixed, Go.Compiler.MIPSShift8.rsh8x16_fixed, Go.Compiler.MIPSShift8.rsh8x8_fixed, Go.Compiler.MIPSShift8.rsh8x32_ok_if_extended, Go.Compiler.MIPSShift8.rsh16x32_sound, Go.Compiler.MIPSShift8.spec_eq]
+    oracle: "metamorphic: constant vs run-time counts (scripts/cross_campaigns.sh under qemu); 386/arm/mips64le as controls"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: go_discrepancy_reproduced
+    evidence: "findings/MIPS-RSH8-SIGNEXT16: int8(127 * -15) >> 8 == -8 (spec -1) and >> 3 == 17 (spec -15) on mips and mipsle (qemu 11.1.2) with go1.25.5, go1.27.3 and master babb75be; assembly shows MOVH (16-bit sign extension) before SRA; 386, arm, mips64le correct; fix (SignExt8to32) validated on master. Not reported upstream (awaiting human review)."
+    go_tests: []
+    history:
+      - {date: 2026-11-02, status: go_discrepancy_reproduced, note: "found by the first cross-arch fuzz campaign (12/60 mipsle seeds on go1.27.3 and master); rule text unchanged since go1.8; no existing issue found"}
+  - id: RISCV64-SLLI-NARROW-TYPE
+    package: cmd/compile/internal/ssa (RISCV64.rules lowering, GOARCH=riscv64)
+    function: "SRAI (MOV(B|H)reg y) lowering typed narrow, plus the go1.26 fold (SLLI <t> [c] (ADD x x)) => 0"
+    go_source: "go1.27.3 RISCV64.rules:698-699 and 788-789; master babb75be same text"
+    doc: "(SRAI <t> [x] (MOVBreg y)) && x >= 8 => (SRAI [63] (SLLI <t> [56] y)); (SLLI <t> [c] (ADD x x)) && c >= t.Size()*8-1 => (MOVDconst [0])"
+    preconditions: "int8/int16 value computed as x - (-x) (lowered to ADD x x), arithmetic right shift by a constant >= width"
+    postcondition: "result == sign fill of the narrow value  -- violated: constant 0"
+    lean_statement: "GoInLean/Compiler/RISCV64Narrow.lean"
+    lean_theorem: [Go.Compiler.RISCV64Narrow.fold_low_byte, Go.Compiler.RISCV64Narrow.fold_full_refuted, Go.Compiler.RISCV64Narrow.srai_movbreg_sound, Go.Compiler.RISCV64Narrow.composite_refuted, Go.Compiler.RISCV64Narrow.fixed_fold_sound, Go.Compiler.RISCV64Narrow.fixed_end_to_end]
+    oracle: "metamorphic: constant vs run-time counts (scripts/cross_campaigns.sh under qemu); amd64/arm64/s390x as controls"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: go_discrepancy_reproduced
+    evidence: "findings/RISCV64-SLLI-NARROW-TYPE: int8(x - (-x)) >> 8 == 0 for x = -1 (spec -1) on riscv64 with go1.26.10, go1.27.3, master babb75be; go1.22..go1.25.5 correct; fix (SLLI <typ.Int64>) validated on master. Not reported upstream (awaiting human review)."
+    go_tests: []
+    history:
+      - {date: 2026-11-02, status: go_discrepancy_reproduced, note: "cross-arch fuzz seed 40799; regression introduced in go1.26 by the (SLLI (ADD x x)) fold; no existing issue found"}
+  - id: S390X-CMPU-SIGNEXT
+    package: cmd/compile/internal/ssa (S390X.rules, GOARCH=s390x)
+    function: "narrowing 64-bit unsigned compares of sign-extended bytes/half-words to 32 bits"
+    go_source: "S390X.rules \"Convert 64-bit comparisons to 32-bit comparisons\" (go1.25.5 .. master babb75be)"
+    doc: "(CM(P|P|PU|PU)const x:(MOV(H|HZ|H|HZ)reg _) [c]) => (CMP(W|W|WU|WU)const x [c]) (and bytes)"
+    preconditions: "x sign-extended from 8 or 16 bits, unsigned compare with an immediate"
+    postcondition: "flags of the 32-bit compare == flags of the 64-bit compare  -- violated for negative x and c >= 2^32 - 2^15"
+    lean_statement: "GoInLean/Compiler/S390XCompare.lean"
+    lean_theorem: [Go.Compiler.S390XCompare.cmpu_movbreg_refuted, Go.Compiler.S390XCompare.cmpu_movhreg_refuted, Go.Compiler.S390XCompare.cmpu_movhreg_fixed, Go.Compiler.S390XCompare.cmpu_movbreg_fixed, Go.Compiler.S390XCompare.cmp_movhreg_sound, Go.Compiler.S390XCompare.cmp_movhzreg_sound, Go.Compiler.S390XCompare.cmpu_movhzreg_sound, Go.Compiler.S390XCompare.cmp_movbreg_sound, Go.Compiler.S390XCompare.cmp_movbzreg_sound, Go.Compiler.S390XCompare.cmpu_movbzreg_sound, Go.Compiler.S390XCompare.cmp_movwreg_sound, Go.Compiler.S390XCompare.cmpu_movwzreg_sound]
+    oracle: "metamorphic fuzzing (scripts/cross_campaigns.sh under qemu); amd64/riscv64 controls"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: go_discrepancy_reproduced
+    evidence: "findings/S390X-CMPU-SIGNEXT: uint64(int8(-128)) < 0xFFFFFFFF is true on s390x with go1.26.10, go1.27.3, master babb75be (spec false); go1.25.5 correct (rule not reached before the register ABI); fix (c >= 0 guard) validated on master. Not reported upstream (awaiting human review)."
+    go_tests: []
+    history:
+      - {date: 2026-11-02, status: go_discrepancy_reproduced, note: "cross-arch fuzz seed 41665 (index mode); no existing issue found"}

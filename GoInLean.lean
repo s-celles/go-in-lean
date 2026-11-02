@@ -26,3 +26,6 @@ import GoInLean.Compiler.LatentRotate
 import GoInLean.Compiler.KnownBits
 import GoInLean.Compiler.MagicDiv
 import GoInLean.Compiler.ProveLimits
+import GoInLean.Compiler.MIPSShift8
+import GoInLean.Compiler.S390XCompare
+import GoInLean.Compiler.RISCV64Narrow

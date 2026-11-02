@@ -1,0 +1,8 @@
+{"go_version": "go1.27.3 and master go1.28-devel_babb75be (2026-11-01)",
+ "file": "src/cmd/compile/internal/ssa/_gen/MIPS.rules", "lines": "116-118",
+ "generated": "src/cmd/compile/internal/ssa/rewrite/mips/rewriteMIPS.go (master layout)",
+ "rule_history": {"go1.8": "present (-> syntax, MOVWconst [-1])", "go1.12": "present", "go1.16": "present (=> syntax, MOVWconst [31])", "go1.27.3": "present", "master babb75be": "present"},
+ "unaffected_ports": ["MIPS64.rules uses SignExt8to64", "386", "arm"],
+ "lean": "GoInLean/Compiler/MIPSShift8.lean", "lean_toolchain": "leanprover/lean4:v4.35.0",
+ "found_by": "scripts/cross_campaigns.sh (metamorphic fuzzing under qemu-mipsel 11.1.2), seeds 30480..30539 and 30600..30659",
+ "emulator": "qemu-user 11.1.2 (nixpkgs) on GEEKR9, Linux amd64"}

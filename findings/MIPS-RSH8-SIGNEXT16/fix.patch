@@ -1,0 +1,66 @@
+diff --git a/src/cmd/compile/internal/ssa/_gen/MIPS.rules b/src/cmd/compile/internal/ssa/_gen/MIPS.rules
+index 0d1f0426..a98045a8 100644
+--- a/src/cmd/compile/internal/ssa/_gen/MIPS.rules
++++ b/src/cmd/compile/internal/ssa/_gen/MIPS.rules
+@@ -113,9 +113,9 @@
+ (Rsh16x16 x y) => (SRA (SignExt16to32 x) ( CMOVZ <typ.UInt32> (ZeroExt16to32 y) (MOVWconst [31]) (SGTUconst [32] (ZeroExt16to32 y))))
+ (Rsh16x8 x y)  => (SRA (SignExt16to32 x) ( CMOVZ <typ.UInt32> (ZeroExt8to32 y) (MOVWconst [31]) (SGTUconst [32] (ZeroExt8to32 y))))
+ 
+-(Rsh8x32 x y) => (SRA (SignExt16to32 x) ( CMOVZ <typ.UInt32> y (MOVWconst [31]) (SGTUconst [32] y)))
+-(Rsh8x16 x y) => (SRA (SignExt16to32 x) ( CMOVZ <typ.UInt32> (ZeroExt16to32 y) (MOVWconst [31]) (SGTUconst [32] (ZeroExt16to32 y))))
+-(Rsh8x8 x y)  => (SRA (SignExt16to32 x) ( CMOVZ <typ.UInt32> (ZeroExt8to32 y) (MOVWconst [31]) (SGTUconst [32] (ZeroExt8to32 y))))
++(Rsh8x32 x y) => (SRA (SignExt8to32 x) ( CMOVZ <typ.UInt32> y (MOVWconst [31]) (SGTUconst [32] y)))
++(Rsh8x16 x y) => (SRA (SignExt8to32 x) ( CMOVZ <typ.UInt32> (ZeroExt16to32 y) (MOVWconst [31]) (SGTUconst [32] (ZeroExt16to32 y))))
++(Rsh8x8 x y)  => (SRA (SignExt8to32 x) ( CMOVZ <typ.UInt32> (ZeroExt8to32 y) (MOVWconst [31]) (SGTUconst [32] (ZeroExt8to32 y))))
+ 
+ // rotates
+ (RotateLeft8  <t> x (MOVWconst [c])) => (Or8  (Lsh8x32 <t>  x (MOVWconst [c&7]))  (Rsh8Ux32 <t> x (MOVWconst [-c&7])))
+diff --git a/src/cmd/compile/internal/ssa/rewrite/mips/rewriteMIPS.go b/src/cmd/compile/internal/ssa/rewrite/mips/rewriteMIPS.go
+index 60a503b3..9b3d5592 100644
+--- a/src/cmd/compile/internal/ssa/rewrite/mips/rewriteMIPS.go
++++ b/src/cmd/compile/internal/ssa/rewrite/mips/rewriteMIPS.go
+@@ -6476,12 +6476,12 @@ func rewriteValue_OpRsh8x16(v *ssa.Value) bool {
+ 	b := v.Block
+ 	typ := &b.Func.Config.Types
+ 	// match: (Rsh8x16 x y)
+-	// result: (SRA (SignExt16to32 x) ( CMOVZ <typ.UInt32> (ZeroExt16to32 y) (MOVWconst [31]) (SGTUconst [32] (ZeroExt16to32 y))))
++	// result: (SRA (SignExt8to32 x) ( CMOVZ <typ.UInt32> (ZeroExt16to32 y) (MOVWconst [31]) (SGTUconst [32] (ZeroExt16to32 y))))
+ 	for {
+ 		x := v_0
+ 		y := v_1
+ 		v.Reset(ssaop.OpMIPSSRA)
+-		v0 := b.NewValue0(v.Pos, ssaop.OpSignExt16to32, typ.Int32)
++		v0 := b.NewValue0(v.Pos, ssaop.OpSignExt8to32, typ.Int32)
+ 		v0.AddArg(x)
+ 		v1 := b.NewValue0(v.Pos, ssaop.OpMIPSCMOVZ, typ.UInt32)
+ 		v2 := b.NewValue0(v.Pos, ssaop.OpZeroExt16to32, typ.UInt32)
+@@ -6502,12 +6502,12 @@ func rewriteValue_OpRsh8x32(v *ssa.Value) bool {
+ 	b := v.Block
+ 	typ := &b.Func.Config.Types
+ 	// match: (Rsh8x32 x y)
+-	// result: (SRA (SignExt16to32 x) ( CMOVZ <typ.UInt32> y (MOVWconst [31]) (SGTUconst [32] y)))
++	// result: (SRA (SignExt8to32 x) ( CMOVZ <typ.UInt32> y (MOVWconst [31]) (SGTUconst [32] y)))
+ 	for {
+ 		x := v_0
+ 		y := v_1
+ 		v.Reset(ssaop.OpMIPSSRA)
+-		v0 := b.NewValue0(v.Pos, ssaop.OpSignExt16to32, typ.Int32)
++		v0 := b.NewValue0(v.Pos, ssaop.OpSignExt8to32, typ.Int32)
+ 		v0.AddArg(x)
+ 		v1 := b.NewValue0(v.Pos, ssaop.OpMIPSCMOVZ, typ.UInt32)
+ 		v2 := b.NewValue0(v.Pos, ssaop.OpMIPSMOVWconst, typ.UInt32)
+@@ -6573,12 +6573,12 @@ func rewriteValue_OpRsh8x8(v *ssa.Value) bool {
+ 	b := v.Block
+ 	typ := &b.Func.Config.Types
+ 	// match: (Rsh8x8 x y)
+-	// result: (SRA (SignExt16to32 x) ( CMOVZ <typ.UInt32> (ZeroExt8to32 y) (MOVWconst [31]) (SGTUconst [32] (ZeroExt8to32 y))))
++	// result: (SRA (SignExt8to32 x) ( CMOVZ <typ.UInt32> (ZeroExt8to32 y) (MOVWconst [31]) (SGTUconst [32] (ZeroExt8to32 y))))
+ 	for {
+ 		x := v_0
+ 		y := v_1
+ 		v.Reset(ssaop.OpMIPSSRA)
+-		v0 := b.NewValue0(v.Pos, ssaop.OpSignExt16to32, typ.Int32)
++		v0 := b.NewValue0(v.Pos, ssaop.OpSignExt8to32, typ.Int32)
+ 		v0.AddArg(x)
+ 		v1 := b.NewValue0(v.Pos, ssaop.OpMIPSCMOVZ, typ.UInt32)
+ 		v2 := b.NewValue0(v.Pos, ssaop.OpZeroExt8to32, typ.UInt32)

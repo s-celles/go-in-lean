@@ -248,6 +248,38 @@ a parsed error, and every generated file is also built by `lake build` in CI.
   shift-composition rules of golang/go#82767 plus deliberate "type punning" (lowering rules,
   divmod expansions whose values fit, rules for 32-bit targets). No new instance.
 
+### 3.11 Iteration 6: other architectures under emulation
+
+* **Cross-architecture fuzzing** (`scripts/cross_campaigns.sh`): the metamorphic fuzzer
+  (`go run -exec qemu-<arch>`) on 386, arm, mipsle, riscv64, ppc64le, ppc64, s390x, loong64 and
+  mips64le, with go1.27.3 and master; a per-architecture canary (golang/go#82763) is detected on
+  all nine. 2,160 seeds per run (60 per configuration).
+* **Fuzzer defect found and fixed.** The program generator dropped ill-typed expressions in at
+  most 30 rounds of ten compiler errors, then silently kept a program that did not compile; the
+  campaign script counted a run without output as a pass. All `--branchy` and `--index` seeds of
+  the earlier amd64 campaigns were in that state (the plain campaigns were not affected and are
+  the only ones reported in §3.9). Fixed: `go build -gcflags=-e` reports every error, the build
+  uses the target `GOARCH`, exhaustion is an error, failed runs are reported, and variables are
+  rendered with an explicit conversion (half of the branchy expressions were ill-typed).
+* **Three architecture-specific miscompilations** (none reported upstream; human review pending):
+  * `findings/MIPS-RSH8-SIGNEXT16`: `MIPS.rules` lowers `Rsh8x(32|16|8)` with `SignExt16to32`
+    instead of `SignExt8to32` (since go1.8). `int8(127 * -15) >> 8` gives -8 instead of -1 on
+    mips and mipsle; 35 of 60 mipsle seeds failed on go1.27.3, 0 on master with the fix.
+  * `findings/RISCV64-SLLI-NARROW-TYPE`: go1.26 regression. A 64-bit `SLLI` created by a lowering
+    rule is typed `int8`, and the new `(SLLI <t> [c] (ADD x x))` fold trusts that type:
+    `int8(x - (-x)) >> 8` compiles to the constant 0 (spec -1). Same class as golang/go#82767.
+  * `findings/S390X-CMPU-SIGNEXT`: the rule narrowing 64-bit compares to 32 bits pairs an
+    unsigned compare with a sign-extended byte/half-word; `uint64(int8(-128)) < 0xFFFFFFFF` is
+    true. The rule is old; s390x's register ABI (go1.26) made it reachable.
+  Each has a Lean model with a kernel-checked counterexample and a proof of the fix, a Go
+  reproducer run under qemu, and a fix validated on master (compiler, codegen and fixedbugs
+  tests pass). The riscv64 and 386 failures of the first run with a `((x >> c) & d) << e` shape are
+  golang/go#82763 (go1.23.12 correct, go1.24.0 wrong).
+* **Host notes.** Lean proofs run on the development Mac; on a Linux host with little swap, `bv_decide`
+  can fail with "resource exhausted (error code: 12)" because the Lean process reserves more
+  virtual memory than RAM plus swap and the solver cannot be spawned. Hand-written `bv_decide`
+  calls now carry an explicit 120 s limit (the default 10 s was exceeded on loaded hosts).
+
 ## 4. Success criteria check
 
 | # | Criterion | Status |

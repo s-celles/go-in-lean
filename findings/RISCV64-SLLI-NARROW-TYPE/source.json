@@ -1,0 +1,7 @@
+{"go_version": "go1.26.10, go1.27.3, master go1.28-devel_babb75be",
+ "file": "src/cmd/compile/internal/ssa/_gen/RISCV64.rules",
+ "rules": {"lowering (typed t)": "go1.27.3 lines 698-699 (SRAI (MOVBreg/MOVHreg) => SRAI [63] (SLLI <t> ...)); go1.25.5 lines 715-716", "fold (new in go1.26)": "go1.27.3 lines 788-789 (SLLI <t> [c] (ADD x x))"},
+ "unaffected": ["go1.22.12", "go1.23.12", "go1.24.0", "go1.25.5"],
+ "lean": "GoInLean/Compiler/RISCV64Narrow.lean", "lean_toolchain": "leanprover/lean4:v4.35.0",
+ "found_by": "scripts/cross_campaigns.sh seed 40799 (go1.27.3 riscv64 --branchy)",
+ "emulator": "qemu-user 11.1.2 (nixpkgs) on Linux amd64"}

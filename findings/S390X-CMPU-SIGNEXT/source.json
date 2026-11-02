@@ -1,0 +1,7 @@
+{"go_version": "go1.26.10, go1.27.3, master go1.28-devel_babb75be",
+ "file": "src/cmd/compile/internal/ssa/_gen/S390X.rules",
+ "rules": "\"Convert 64-bit comparisons to 32-bit comparisons\": (CM(P|P|PU|PU)const x:(MOV(H|HZ|H|HZ)reg _) [c]) and the byte variant (go1.25.5 line 1104-1105, go1.26.10 line 1109-1110)",
+ "reachability": "go1.25.5: argument loaded with sign-extending MOVB from the stack, MOVBreg folded away; go1.26: register ABI on s390x keeps MOVBreg",
+ "lean": "GoInLean/Compiler/S390XCompare.lean", "lean_toolchain": "leanprover/lean4:v4.35.0",
+ "found_by": "scripts/cross_campaigns.sh seed 41665 (master s390x --index --branchy)",
+ "emulator": "qemu-user 11.1.2 (nixpkgs) on Linux amd64"}

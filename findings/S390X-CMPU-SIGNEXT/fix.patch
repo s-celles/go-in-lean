@@ -1,0 +1,85 @@
+diff --git a/src/cmd/compile/internal/ssa/_gen/S390X.rules b/src/cmd/compile/internal/ssa/_gen/S390X.rules
+index d1992ad5..21521bff 100644
+--- a/src/cmd/compile/internal/ssa/_gen/S390X.rules
++++ b/src/cmd/compile/internal/ssa/_gen/S390X.rules
+@@ -1107,8 +1107,12 @@
+ // to unsigned comparisons.
+ // Helps simplify constant comparison detection.
+ (CM(P|PU)const (MOV(W|WZ)reg x) [c]) => (CMP(W|WU)const x [c])
+-(CM(P|P|PU|PU)const x:(MOV(H|HZ|H|HZ)reg _) [c]) => (CMP(W|W|WU|WU)const x [c])
+-(CM(P|P|PU|PU)const x:(MOV(B|BZ|B|BZ)reg _) [c]) => (CMP(W|W|WU|WU)const x [c])
++(CM(P|P|PU)const x:(MOV(H|HZ|HZ)reg _) [c]) => (CMP(W|W|WU)const x [c])
++// A sign-extended value compared unsigned with a 64-bit compare is huge when negative;
++// the 32-bit compare agrees only if the zero-extended immediate is below 1<<31.
++(CMPUconst x:(MOVHreg _) [c]) && c >= 0 => (CMPWUconst x [c])
++(CM(P|P|PU)const x:(MOV(B|BZ|BZ)reg _) [c]) => (CMP(W|W|WU)const x [c])
++(CMPUconst x:(MOVBreg _) [c]) && c >= 0 => (CMPWUconst x [c])
+ (CMPconst  (MOV(WZ|W)reg x:(ANDWconst [m] _)) [c]) && int32(m) >= 0 && c >= 0 => (CMPWUconst x [c])
+ (CMPUconst (MOV(WZ|W)reg x:(ANDWconst [m] _)) [c]) && int32(m) >= 0           => (CMPWUconst x [c])
+ (CMPconst  x:(SRDconst _ [c]) [n]) && c > 0 && n >= 0 => (CMPUconst  x [n])
+diff --git a/src/cmd/compile/internal/ssa/rewrite/s390x/rewriteS390X.go b/src/cmd/compile/internal/ssa/rewrite/s390x/rewriteS390X.go
+index b5252201..3f33e441 100644
+--- a/src/cmd/compile/internal/ssa/rewrite/s390x/rewriteS390X.go
++++ b/src/cmd/compile/internal/ssa/rewrite/s390x/rewriteS390X.go
+@@ -6613,12 +6613,12 @@ func rewriteValue_OpS390XCMPUconst(v *ssa.Value) bool {
+ 		v.AddArg(x)
+ 		return true
+ 	}
+-	// match: (CMPUconst x:(MOVHreg _) [c])
++	// match: (CMPUconst x:(MOVHZreg _) [c])
+ 	// result: (CMPWUconst x [c])
+ 	for {
+ 		c := ssa.AuxIntToInt32(v.AuxInt)
+ 		x := v_0
+-		if x.Op != ssaop.OpS390XMOVHreg {
++		if x.Op != ssaop.OpS390XMOVHZreg {
+ 			break
+ 		}
+ 		v.Reset(ssaop.OpS390XCMPWUconst)
+@@ -6626,12 +6626,13 @@ func rewriteValue_OpS390XCMPUconst(v *ssa.Value) bool {
+ 		v.AddArg(x)
+ 		return true
+ 	}
+-	// match: (CMPUconst x:(MOVHZreg _) [c])
++	// match: (CMPUconst x:(MOVHreg _) [c])
++	// cond: c >= 0
+ 	// result: (CMPWUconst x [c])
+ 	for {
+ 		c := ssa.AuxIntToInt32(v.AuxInt)
+ 		x := v_0
+-		if x.Op != ssaop.OpS390XMOVHZreg {
++		if x.Op != ssaop.OpS390XMOVHreg || !(c >= 0) {
+ 			break
+ 		}
+ 		v.Reset(ssaop.OpS390XCMPWUconst)
+@@ -6639,12 +6640,12 @@ func rewriteValue_OpS390XCMPUconst(v *ssa.Value) bool {
+ 		v.AddArg(x)
+ 		return true
+ 	}
+-	// match: (CMPUconst x:(MOVBreg _) [c])
++	// match: (CMPUconst x:(MOVBZreg _) [c])
+ 	// result: (CMPWUconst x [c])
+ 	for {
+ 		c := ssa.AuxIntToInt32(v.AuxInt)
+ 		x := v_0
+-		if x.Op != ssaop.OpS390XMOVBreg {
++		if x.Op != ssaop.OpS390XMOVBZreg {
+ 			break
+ 		}
+ 		v.Reset(ssaop.OpS390XCMPWUconst)
+@@ -6652,12 +6653,13 @@ func rewriteValue_OpS390XCMPUconst(v *ssa.Value) bool {
+ 		v.AddArg(x)
+ 		return true
+ 	}
+-	// match: (CMPUconst x:(MOVBZreg _) [c])
++	// match: (CMPUconst x:(MOVBreg _) [c])
++	// cond: c >= 0
+ 	// result: (CMPWUconst x [c])
+ 	for {
+ 		c := ssa.AuxIntToInt32(v.AuxInt)
+ 		x := v_0
+-		if x.Op != ssaop.OpS390XMOVBZreg {
++		if x.Op != ssaop.OpS390XMOVBreg || !(c >= 0) {
+ 			break
+ 		}
+ 		v.Reset(ssaop.OpS390XCMPWUconst)
