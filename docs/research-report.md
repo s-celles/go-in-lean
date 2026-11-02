@@ -302,7 +302,7 @@ a parsed error, and every generated file is also built by `lake build` in CI.
 
 ### 3.12 Iteration 7: an ARM fold typo, floating point, and a ppc64 instance of #80577
 
-* **`findings/ARM-MVNSHIFTRA-CONST`** (not yet reported): `ARM.rules` folds
+* **`findings/ARM-MVNSHIFTRA-CONST`** (reported as golang/go#82786): `ARM.rules` folds
   `MVNshiftRA (MOVWconst [c]) [d]` to `c >> d`, dropping the complement that its LL/RL siblings keep;
   go1.15 had `^int64(int32(c)>>d)` and the `^` was lost in the go1.16 typed-AuxInt conversion. Through
   the 32-bit `Ctz64` decomposition, `bits.TrailingZeros64(0)` evaluates to 32. One-line fix validated on

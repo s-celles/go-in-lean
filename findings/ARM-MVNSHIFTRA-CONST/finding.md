@@ -6,7 +6,7 @@ arithmetic right shift) gets a constant operand during lowering, e.g. `bits.Trai
 evaluates to 32 instead of 64. No security impact.
 **Affected:** `GOARCH=arm`, go1.16 .. go1.27.3 and master `a0c8470e`. go1.15 and earlier are correct
 (regression from the conversion of ARM.rules to typed AuxInts in go1.16).
-**Human review status:** pending. Not reported upstream.
+**Human review status:** reviewed and approved by the maintainer of this repository on 2026-11-02; reported upstream as [golang/go#82786](https://github.com/golang/go/issues/82786).
 
 ## Summary
 

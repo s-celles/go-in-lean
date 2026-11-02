@@ -1318,10 +1318,11 @@ properties:
     complexity: low
     trust: bv_decide
     status: go_discrepancy_reproduced
-    evidence: "findings/ARM-MVNSHIFTRA-CONST: bits.TrailingZeros64(<value folding to 0 during lower>) == 32 (spec 64) on arm, go1.26.10, go1.27.3, master a0c8470e; rule correct through go1.15, wrong since go1.16; fix (restore ^) validated on master. Not reported upstream (awaiting human review)."
+    evidence: "findings/ARM-MVNSHIFTRA-CONST: bits.TrailingZeros64(<value folding to 0 during lower>) == 32 (spec 64) on arm, go1.26.10, go1.27.3, master a0c8470e; rule correct through go1.15, wrong since go1.16; fix (restore ^) validated on master. Reported as golang/go#82786 after human review (2026-11-02)."
     go_tests: []
     history:
       - {date: 2026-11-02, status: go_discrepancy_reproduced, note: "from the --bits index campaign, arm seed 60372; regression from the go1.16 typed-AuxInt conversion"}
+      - {date: 2026-11-02, status: go_discrepancy_reproduced, note: "reported as golang/go#82786"}
   - id: PPC64-SPILL-SIGNEXT-80577
     package: cmd/compile/internal/ssa (regalloc spill/restore + ppc64 extension elision)
     function: "ppc64 restore of a spilled uint16-typed but sign-extended value uses MOVHZ"

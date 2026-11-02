@@ -1,4 +1,4 @@
-<!-- DRAFT for human review. Do not file without explicit approval. -->
+<!-- Filed as golang/go#82786 on 2026-11-02 after human approval. -->
 ### Go version
 
 go1.16 through go1.27.3 and master (a0c8470e). go1.15 is correct.

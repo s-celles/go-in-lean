@@ -8,6 +8,6 @@ decomposition of Ctz64 reaches it through Zeromask lowered to SRAconst
 [31] merged into MVN, so TrailingZeros64(0) evaluated to 32 instead of 64
 when the low word folded to a constant during lowering.
 
-Fixes #NNNNN.
+Fixes #82786.
 
 Assisted-by: AI
