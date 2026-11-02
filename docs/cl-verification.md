@@ -40,3 +40,7 @@ test + commit message); see `docs/upstream-cls.md` for the Gerrit workflow.
 ## #82782 (migrated from private, 2026-11-02)
 
 `GOPPC64=power10`, test/fixedbugs/issue82782.go: before fix rc=2 (f=7), after fix rc=0. Reclassified from a suspected OOB to a wrong-code miscompilation after canary + `go tool objdump` showed no out-of-bounds access. CL https://go-review.googlesource.com/c/go/+/857542 (mailed 2026-11-02).
+
+## #82786 (ARM MVNshiftRA fold, 2026-11-02)
+
+`GOARCH=arm`, test/fixedbugs/issue82786.go: before fix `TrailingZeros64(0) = 32`, after fix 64 (qemu-arm). CL https://go-review.googlesource.com/c/go/+/857821.
