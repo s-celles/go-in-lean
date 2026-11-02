@@ -1,0 +1,14 @@
+{
+ "counterexample": {"expr": "int32(int16(x >> 1))", "x": -2147483648, "compiled_result": -1073741824, "spec_result": 0},
+ "more": [{"expr": "uint32(uint16(x >> 1))", "x": 2147483648, "compiled_result": 1073741824, "spec_result": 0},
+          {"expr": "int16(int32(x)>>8) < -513", "x": 2147483648, "compiled_result": true, "spec_result": false},
+          {"expr": "int64(int8(int32(x) >> 1))", "x": 2147483648, "compiled_result": 0, "spec_result": 0, "note": "byte rule not triggered by this form"}],
+ "assembly_evidence": "go1.27.3 ppc64le: p2 compiles to SRAW $1, R3, R3; JMP LR",
+ "rewrite_trace": "MOVHreg <int16> (SRAWconst [1] v6) -> SRAWconst <int16> [1] v6",
+ "versions": {"go1.21.13": "wrong", "go1.25.5": "wrong", "go1.26.10": "wrong", "go1.27.3": "wrong", "master babb75be": "wrong", "master babb75be + fix.patch": "correct"},
+ "controls": {"386": "correct", "arm": "correct", "mipsle": "correct", "arm64": "correct"},
+ "fix_tests": "master + fix.patch (+ the other fixes): go test -short cmd/compile/internal/ssa cmd/compile/internal/test ok; go test -count=1 cmd/internal/testdir -run Test/codegen ok; -run Test/fixedbugs ok",
+ "known_issue_search": {"date": "2026-11-02", "result": "none found"},
+ "classification_history": [{"date": "2026-11-02", "status": "go_discrepancy_reproduced"}],
+ "human_review": "pending; not reported upstream"
+}

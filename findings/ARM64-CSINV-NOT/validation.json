@@ -1,0 +1,11 @@
+{
+ "counterexample": {"expr": "r := x >> 33; if bits.OnesCount8(128) > 0 { r = ^y }", "x": 0, "y": 2, "compiled_result": 3, "spec_result": -3},
+ "assembly_evidence": "go1.27.3 darwin/arm64: EOR $1, R1, R0; RET",
+ "rewrite_trace": "CSEL [LessThan] (MVN y) (SRA x 33) -> CSINV [GreaterEqual] (SRAconst [33] x) y; flags -> FlagConstant; CSINV -> Not y -> XOR y (MOVDconst 1) -> XORconst [1] y",
+ "versions": {"go1.21.13": "wrong", "go1.22.12": "wrong", "go1.23.12": "wrong", "go1.24.0": "wrong", "go1.25.5": "wrong", "go1.26.10": "wrong", "go1.27.3": "wrong", "master babb75be": "wrong", "master babb75be + fix.patch": "correct (qemu-aarch64)"},
+ "controls": {"amd64": "correct"},
+ "fix_tests": "master + fix.patch (+ the other fixes): go test -short cmd/compile/internal/ssa cmd/compile/internal/test ok; go test -count=1 cmd/internal/testdir -run Test/codegen ok; -run Test/fixedbugs ok",
+ "known_issue_search": {"date": "2026-11-02", "queries": ["arm64 CSINV", "arm64 conditional select complement wrong", "ccARM64Eval"], "result": "none found (#30679 is an unrelated ICE)"},
+ "classification_history": [{"date": "2026-11-02", "status": "go_discrepancy_reproduced"}],
+ "human_review": "pending; not reported upstream"
+}

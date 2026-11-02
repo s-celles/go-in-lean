@@ -275,6 +275,26 @@ a parsed error, and every generated file is also built by `lake build` in CI.
   reproducer run under qemu, and a fix validated on master (compiler, codegen and fixedbugs
   tests pass). The riscv64 and 386 failures of the first run with a `((x >> c) & d) << e` shape are
   golang/go#82763 (go1.23.12 correct, go1.24.0 wrong).
+* **Architecture variants** (`SPECS` in `scripts/cross_campaigns.sh`): GORISCV64=rva22u64/rva23u64,
+  GOPPC64=power9/power10, GOARM=5/6, GO386=softfloat, GOMIPS=softfloat, GOARM64=v9.0 and
+  GOAMD64=v4 (2,640 seeds). Two more defects, not yet reported (human review pending):
+  * `findings/PPC64-EXT-SIZE-BYTES`: ppc64 rules eliminating an extension after a 32-bit right
+    shift compare `Type.Size()` (bytes) with bit widths, so `int32(int16(x >> 1))` keeps 32 bits
+    (go1.21 .. master).
+  * `findings/MIPS-CONST64-COUNT-UINT32`: MIPS lowers constant 64-bit shift counts with
+    `uint32(c)` (ARM and 386 use `uint64(c)`); a shift merge in `late_opt` after `dec64` creates a
+    count ≥ 2^32, so `(x >> 7) >> (uint64(y) | 0xFFFFFFFF)` becomes `x >> 6`.
+* **Narrow-argument ABI check**: callers extend narrow integer arguments on all nine
+  architectures (computed `int8`/`uint16`/`int32` arguments), so the ppc64/s390x rules that drop
+  the extension of an `Arg` are safe in practice; the internal ABI document does not state it.
+* **`--bits`** (generator): `math/bits` intrinsics and `min`/`max`, lowered by
+  architecture-specific rules (Zbb, power9 `cnttz`, s390x `FLOGR`).
+* **`--bits` campaign** (12 targets, 2,400 seeds): one more defect, not yet reported:
+  `findings/ARM64-CSINV-NOT` (native arm64, go1.21 .. master): a conditional select of `^y`
+  whose condition becomes constant during `lower` folds to the boolean `Not`, i.e. `y ^ 1`.
+  The master-only index-mode failures on riscv64 (rva23u64) are an instance of the open
+  golang/go#80577 (a `REV8` typed `uint16` spilled with 2 bytes); the arm and ppc64le ones are
+  not yet analysed.
 * **Host notes.** Lean proofs run on the development Mac; on a Linux host with little swap, `bv_decide`
   can fail with "resource exhausted (error code: 12)" because the Lean process reserves more
   virtual memory than RAM plus swap and the solver cannot be spawned. Hand-written `bv_decide`

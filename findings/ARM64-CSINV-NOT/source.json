@@ -1,0 +1,7 @@
+{"go_version": "go1.21.13 .. go1.27.3, master go1.28-devel_babb75be",
+ "file": "src/cmd/compile/internal/ssa/_gen/ARM64.rules", "lines": "go1.27.3 1409; master 1434",
+ "rule": "(CSINV [cc] _ y flag) && ccARM64Eval(cc, flag) < 0 => (Not y)",
+ "lowering_of_Not": "(Not x) => (XOR (MOVDconst [1]) x)",
+ "lean": "GoInLean/Compiler/ARM64CondSelect.lean", "lean_toolchain": "leanprover/lean4:v4.35.0",
+ "found_by": "scripts/cross_campaigns.sh EXTRA_FLAGS=--bits, seed 62089 (go1.27.3 arm64 --branchy)",
+ "reproduced_natively": "darwin/arm64 (Apple Silicon)"}

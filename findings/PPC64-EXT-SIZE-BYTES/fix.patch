@@ -1,0 +1,113 @@
+diff --git a/src/cmd/compile/internal/ssa/_gen/PPC64.rules b/src/cmd/compile/internal/ssa/_gen/PPC64.rules
+index cf170877..f5f31268 100644
+--- a/src/cmd/compile/internal/ssa/_gen/PPC64.rules
++++ b/src/cmd/compile/internal/ssa/_gen/PPC64.rules
+@@ -637,8 +637,6 @@
+ (MOVWreg (SRAWconst [c] (MOVWreg x))) => (SRAWconst [c] (MOVWreg x))
+ 
+ (MOV(WZ|W)reg (S(R|RA)Wconst [c] x)) && x.Type.Size() <= 32 => (S(R|RA)Wconst [c] x)
+-(MOV(HZ|H)reg (S(R|RA)Wconst [c] x)) && x.Type.Size() <= 16 => (S(R|RA)Wconst [c] x)
+-(MOV(BZ|B)reg (S(R|RA)Wconst [c] x)) && x.Type.Size() == 8 => (S(R|RA)Wconst [c] x)
+ 
+ // initial right shift will handle sign/zero extend
+ (MOVBZreg (SRDconst [c] x)) && c>=56 => (SRDconst [c] x)
+diff --git a/src/cmd/compile/internal/ssa/rewrite/ppc64/rewritePPC64.go b/src/cmd/compile/internal/ssa/rewrite/ppc64/rewritePPC64.go
+index 21f917f5..d5acff41 100644
+--- a/src/cmd/compile/internal/ssa/rewrite/ppc64/rewritePPC64.go
++++ b/src/cmd/compile/internal/ssa/rewrite/ppc64/rewritePPC64.go
+@@ -7223,23 +7223,6 @@ func rewriteValue_OpPPC64MOVBZreg(v *ssa.Value) bool {
+ 		v.AddArg(v0)
+ 		return true
+ 	}
+-	// match: (MOVBZreg (SRWconst [c] x))
+-	// cond: x.Type.Size() == 8
+-	// result: (SRWconst [c] x)
+-	for {
+-		if v_0.Op != ssaop.OpPPC64SRWconst {
+-			break
+-		}
+-		c := ssa.AuxIntToInt64(v_0.AuxInt)
+-		x := v_0.Args[0]
+-		if !(x.Type.Size() == 8) {
+-			break
+-		}
+-		v.Reset(ssaop.OpPPC64SRWconst)
+-		v.AuxInt = ssa.Int64ToAuxInt(c)
+-		v.AddArg(x)
+-		return true
+-	}
+ 	// match: (MOVBZreg (SRDconst [c] x))
+ 	// cond: c>=56
+ 	// result: (SRDconst [c] x)
+@@ -7678,23 +7661,6 @@ func rewriteValue_OpPPC64MOVBreg(v *ssa.Value) bool {
+ 		v.AddArg(v0)
+ 		return true
+ 	}
+-	// match: (MOVBreg (SRAWconst [c] x))
+-	// cond: x.Type.Size() == 8
+-	// result: (SRAWconst [c] x)
+-	for {
+-		if v_0.Op != ssaop.OpPPC64SRAWconst {
+-			break
+-		}
+-		c := ssa.AuxIntToInt64(v_0.AuxInt)
+-		x := v_0.Args[0]
+-		if !(x.Type.Size() == 8) {
+-			break
+-		}
+-		v.Reset(ssaop.OpPPC64SRAWconst)
+-		v.AuxInt = ssa.Int64ToAuxInt(c)
+-		v.AddArg(x)
+-		return true
+-	}
+ 	// match: (MOVBreg (SRDconst [c] x))
+ 	// cond: c>56
+ 	// result: (SRDconst [c] x)
+@@ -9111,23 +9077,6 @@ func rewriteValue_OpPPC64MOVHZreg(v *ssa.Value) bool {
+ 		v.AddArg(v0)
+ 		return true
+ 	}
+-	// match: (MOVHZreg (SRWconst [c] x))
+-	// cond: x.Type.Size() <= 16
+-	// result: (SRWconst [c] x)
+-	for {
+-		if v_0.Op != ssaop.OpPPC64SRWconst {
+-			break
+-		}
+-		c := ssa.AuxIntToInt64(v_0.AuxInt)
+-		x := v_0.Args[0]
+-		if !(x.Type.Size() <= 16) {
+-			break
+-		}
+-		v.Reset(ssaop.OpPPC64SRWconst)
+-		v.AuxInt = ssa.Int64ToAuxInt(c)
+-		v.AddArg(x)
+-		return true
+-	}
+ 	// match: (MOVHZreg (SRDconst [c] x))
+ 	// cond: c>=48
+ 	// result: (SRDconst [c] x)
+@@ -9650,23 +9599,6 @@ func rewriteValue_OpPPC64MOVHreg(v *ssa.Value) bool {
+ 		v.AddArg(v0)
+ 		return true
+ 	}
+-	// match: (MOVHreg (SRAWconst [c] x))
+-	// cond: x.Type.Size() <= 16
+-	// result: (SRAWconst [c] x)
+-	for {
+-		if v_0.Op != ssaop.OpPPC64SRAWconst {
+-			break
+-		}
+-		c := ssa.AuxIntToInt64(v_0.AuxInt)
+-		x := v_0.Args[0]
+-		if !(x.Type.Size() <= 16) {
+-			break
+-		}
+-		v.Reset(ssaop.OpPPC64SRAWconst)
+-		v.AuxInt = ssa.Int64ToAuxInt(c)
+-		v.AddArg(x)
+-		return true
+-	}
+ 	// match: (MOVHreg (SRDconst [c] x))
+ 	// cond: c>48
+ 	// result: (SRDconst [c] x)

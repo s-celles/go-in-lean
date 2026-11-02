@@ -29,3 +29,6 @@ import GoInLean.Compiler.ProveLimits
 import GoInLean.Compiler.MIPSShift8
 import GoInLean.Compiler.S390XCompare
 import GoInLean.Compiler.RISCV64Narrow
+import GoInLean.Compiler.PPC64ExtShift
+import GoInLean.Compiler.MIPSConstCount
+import GoInLean.Compiler.ARM64CondSelect

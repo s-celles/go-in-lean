@@ -1211,3 +1211,75 @@ properties:
     history:
       - {date: 2026-11-02, status: go_discrepancy_reproduced, note: "cross-arch fuzz seed 41665 (index mode); no existing issue found"}
       - {date: 2026-11-02, status: go_discrepancy_reproduced, note: "reported as golang/go#82774"}
+  - id: PPC64-EXT-SIZE-BYTES
+    package: cmd/compile/internal/ssa (PPC64.rules, GOARCH=ppc64/ppc64le)
+    function: "elimination of 16/8-bit extensions after 32-bit right shifts, guarded by Type.Size() compared with bit widths"
+    go_source: "PPC64.rules (MOV(HZ|H)reg (S(R|RA)Wconst [c] x)) && x.Type.Size() <= 16, (MOV(BZ|B)reg ...) && x.Type.Size() == 8 (go1.21 .. master babb75be)"
+    doc: "(MOV(HZ|H)reg (S(R|RA)Wconst [c] x)) && x.Type.Size() <= 16 => (S(R|RA)Wconst [c] x)"
+    preconditions: "32-bit right shift by c < 16 followed by a 16-bit (or 8-bit) conversion"
+    postcondition: "extension kept unless the shifted value fits  -- violated: Size() is in bytes"
+    lean_statement: "GoInLean/Compiler/PPC64ExtShift.lean"
+    lean_theorem: [Go.Compiler.PPC64ExtShift.movhreg_sraw_refuted, Go.Compiler.PPC64ExtShift.movhzreg_srw_refuted, Go.Compiler.PPC64ExtShift.movbreg_sraw_refuted, Go.Compiler.PPC64ExtShift.movbzreg_srw_refuted, Go.Compiler.PPC64ExtShift.movwreg_sraw_sound, Go.Compiler.PPC64ExtShift.movwzreg_srw_sound, Go.Compiler.PPC64ExtShift.movhreg_sraw_movhreg_sound, Go.Compiler.PPC64ExtShift.movhzreg_srw_movhzreg_sound, Go.Compiler.PPC64ExtShift.movhreg_sraw_c16_sound]
+    oracle: "metamorphic fuzzing under qemu (GOPPC64=power9); 386/arm/mipsle/arm64 controls"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: go_discrepancy_reproduced
+    evidence: "findings/PPC64-EXT-SIZE-BYTES: int32(int16(x >> 1)) == -2^30 for x = -2^31 (spec 0) on ppc64 and ppc64le, go1.21.13 .. master babb75be; fix (delete the H and B rules) validated on master, codegen tests pass. Not reported upstream (awaiting human review)."
+    go_tests: []
+    history:
+      - {date: 2026-11-02, status: go_discrepancy_reproduced, note: "variant campaign seeds 50589 (go1.27.3) and 50694 (master); no existing issue found"}
+  - id: MIPS-CONST64-COUNT-UINT32
+    package: cmd/compile/internal/ssa (MIPS.rules lowering, GOARCH=mips/mipsle)
+    function: "constant 64-bit shift counts tested with uint32(c), reached by a post-dec64 shift merge"
+    go_source: "MIPS.rules:58-79 (go1.12 .. master babb75be); generic.rules shift-merging rules"
+    doc: "(Rsh8x64 x (Const64 [c])) && uint32(c) < 8 => (SRAconst (SLLconst <typ.UInt32> x [24]) [int32(c+24)])"
+    preconditions: "constant count >= 2^32 after late_opt"
+    postcondition: "result == x >> c as Go semantics  -- violated: count truncated to 32 bits"
+    lean_statement: "GoInLean/Compiler/MIPSConstCount.lean"
+    lean_theorem: [Go.Compiler.MIPSConstCount.merged_count, Go.Compiler.MIPSConstCount.rsh8x64_refuted, Go.Compiler.MIPSConstCount.rsh8x64_fixed, Go.Compiler.MIPSConstCount.rsh8x64_ok_below_2_32]
+    oracle: "metamorphic fuzzing under qemu (GOMIPS=softfloat); 386/arm controls"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: go_discrepancy_reproduced
+    evidence: "findings/MIPS-CONST64-COUNT-UINT32: (int8(127) >> 7) >> (uint64(y) | 0xFFFFFFFF) == 1 (spec 0) on mips and mipsle, go1.21.13 .. master babb75be; fix (uint64(c)) validated on master. Not reported upstream (awaiting human review)."
+    go_tests: []
+    history:
+      - {date: 2026-11-02, status: go_discrepancy_reproduced, note: "variant campaign seed 52073 on master with the golang/go#82772 fix; no existing issue found"}
+  - id: ARM64-CSINV-NOT
+    package: cmd/compile/internal/ssa (ARM64.rules, GOARCH=arm64)
+    function: "constant-flag folding of CSINV"
+    go_source: "ARM64.rules (CSINV [cc] _ y flag) && ccARM64Eval(cc, flag) < 0 => (Not y) (go1.21 .. master babb75be)"
+    doc: "(CSINV [cc] _ y flag) && ccARM64Eval(cc, flag) < 0 => (Not y)"
+    preconditions: "conditional select of ^y whose condition becomes a constant during lower"
+    postcondition: "result == ^y  -- violated: boolean Not lowers to y ^ 1"
+    lean_statement: "GoInLean/Compiler/ARM64CondSelect.lean"
+    lean_theorem: [Go.Compiler.ARM64CondSelect.csinv_not_refuted, Go.Compiler.ARM64CondSelect.csinv_not_unsound, Go.Compiler.ARM64CondSelect.csinv_mvn_fixed, Go.Compiler.ARM64CondSelect.csinv_true, Go.Compiler.ARM64CondSelect.csneg_false, Go.Compiler.ARM64CondSelect.csinc_false, Go.Compiler.ARM64CondSelect.not_ne_mvn]
+    oracle: "metamorphic fuzzing with math/bits intrinsics; native darwin/arm64 reproduction; amd64 control"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: go_discrepancy_reproduced
+    evidence: "findings/ARM64-CSINV-NOT: r := x >> 33; if bits.OnesCount8(128) > 0 { r = ^y } returns y ^ 1 (3 for y = 2; spec -3) on arm64, go1.21.13 .. master babb75be; fix (MVN y) validated on master. Not reported upstream (awaiting human review)."
+    go_tests: []
+    history:
+      - {date: 2026-11-02, status: go_discrepancy_reproduced, note: "--bits campaign seed 62089; reproduced natively on darwin/arm64; no existing issue found"}
+  - id: RISCV64-BSWAP16-SPILL
+    package: cmd/compile/internal/ssa (RISCV64.rules lowering + regalloc spill width)
+    function: "ReverseBytes16 lowered as (SRLI [48] (REV8 <t> x)) with t = uint16; the 64-bit REV8 value is spilled with 2 bytes"
+    go_source: "RISCV64.rules (Bswap16 <t> x) lowering (GORISCV64=rva22u64+); go1.27.3 and master babb75be"
+    doc: "spill/restore uses the value's (narrow) type"
+    preconditions: "ReverseBytes16 result live across a call (e.g. a non-intrinsified bits.Reverse8)"
+    postcondition: "ReverseBytes16(8193) == 288  -- violated: 0 after spill/restore"
+    lean_statement: "not modelled (register allocation)"
+    lean_theorem: []
+    oracle: "metamorphic fuzzing (--bits --index), GORISCV64=rva23u64 under qemu"
+    ambiguity_risk: low
+    complexity: medium
+    trust: kernel
+    status: known_issue
+    evidence: "instance of the open class golang/go#80577 (regalloc restores choose the extension from unreliable narrow types; contract CLs 825904/827284 in review); reproduced on go1.27.3 and master: MOVH of the REV8 result to a stack temp, MOVHU reload, SRLI $48 -> 0. Not separately reported."
+    go_tests: []
+    history:
+      - {date: 2026-11-02, status: known_issue, note: "--bits campaign seeds 60958/60961/60970 (master, riscv64 rva23u64); classified as an instance of golang/go#80577"}
