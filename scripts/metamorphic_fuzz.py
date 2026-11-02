@@ -47,6 +47,8 @@ class Gen:
         r = self.r
         if depth <= 0 or r.random() < 0.25:
             return r.choice([("var", "x", t), ("var", "y", t), self.const(t)])
+        if BITS and r.random() < 0.25:
+            return self.call(t, depth)
         k = r.random()
         if k < 0.30:
             op = r.choice(["+", "-", "*", "&", "|", "^", "&^"])
@@ -65,6 +67,23 @@ class Gen:
         src = r.choice(list(TYPES))
         return ("conv", t, self.expr(src, depth - 1))
 
+    def call(self, t, depth):
+        """math/bits intrinsics and the min/max builtins (arch-specific lowering rules)."""
+        r = self.r
+        if r.random() < 0.3:
+            return ("mm", r.choice(["min", "max"]), self.expr(t, depth - 1), self.expr(t, depth - 1), t)
+        w = TYPES[t][0]
+        u = f"uint{w}"
+        fns = ["OnesCount", "LeadingZeros", "TrailingZeros", "Len", "Reverse", "RotateLeft"]
+        if w > 8: fns.append("ReverseBytes")
+        fn = r.choice(fns)
+        arg = self.expr(u, depth - 1)
+        extra = None
+        if fn == "RotateLeft":
+            extra = ("conv", "int", self.expr("int8", 1)) if r.random() < 0.5 else \
+                    ("lit", r.choice([-65, -1, 0, 1, 3, w - 1, w, w + 1, 63, 64]))
+        return ("call", f"{fn}{w}", arg, extra, t)
+
 def render(e, mode):
     tag = e[0]
     # x, y are declared with the function's type; a var node of another type is a conversion
@@ -76,6 +95,11 @@ def render(e, mode):
     if tag == "shift": return f"({render(e[2], mode)} {e[1]} {render(e[3], mode)})"
     if tag == "un": return f"({e[1]}{render(e[2], mode)})"
     if tag == "conv": return f"{e[1]}({render(e[2], mode)})"
+    if tag == "lit": return str(e[1])
+    if tag == "mm": return f"{e[1]}({render(e[2], mode)}, {render(e[3], mode)})"
+    if tag == "call":
+        args = render(e[2], mode) + (", " + render(e[3], mode) if e[3] is not None else "")
+        return f"{e[4]}(bits.{e[1]}({args}))"
     raise ValueError(tag)
 
 CANARY = "--canary" in sys.argv
@@ -87,6 +111,7 @@ def canary(g):
     return t, ("shift", "<<", ("bin", "&", sh, g.const(t, 3), t), g.const("uint64", 1), t)
 
 BRANCHY = "--branchy" in sys.argv
+BITS = "--bits" in sys.argv     # math/bits intrinsics and min/max builtins
 INDEX = "--index" in sys.argv   # use the expression as an array index (bounds-check elimination)
 TABLES = [1, 7, 8, 16, 255, 256]
 
@@ -150,8 +175,11 @@ package main
 
 import (
 	"fmt"
+	"math/bits"
 	"os"
 )
+
+var _ = bits.Len
 
 var pairs = [][2]uint64{{0, 0}, {1, 2}, {^uint64(0), 1}, {1 << 63, 3}, {0x7f, 0x80}, {0x8000, 0xffff},
 	{0x80000000, 0x7fffffff}, {0x0123456789abcdef, 0xfedcba9876543210}, {5, ^uint64(0)}, {0xff, 0x100}}
