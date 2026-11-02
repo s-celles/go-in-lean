@@ -1,0 +1,35 @@
+diff --git a/src/cmd/compile/internal/ssa/_gen/ARM.rules b/src/cmd/compile/internal/ssa/_gen/ARM.rules
+index b1f9bad0..5ec50eaa 100644
+--- a/src/cmd/compile/internal/ssa/_gen/ARM.rules
++++ b/src/cmd/compile/internal/ssa/_gen/ARM.rules
+@@ -1064,7 +1064,7 @@
+ (BICshiftRA x (MOVWconst [c]) [d]) => (BICconst x [c>>uint64(d)])
+ (MVNshiftLL (MOVWconst [c]) [d]) => (MOVWconst [^(c<<uint64(d))])
+ (MVNshiftRL (MOVWconst [c]) [d]) => (MOVWconst [^int32(uint32(c)>>uint64(d))])
+-(MVNshiftRA (MOVWconst [c]) [d]) => (MOVWconst [int32(c)>>uint64(d)])
++(MVNshiftRA (MOVWconst [c]) [d]) => (MOVWconst [^(c>>uint64(d))])
+ (CMPshiftLL x (MOVWconst [c]) [d]) => (CMPconst x [c<<uint64(d)])
+ (CMPshiftRL x (MOVWconst [c]) [d]) => (CMPconst x [int32(uint32(c)>>uint64(d))])
+ (CMPshiftRA x (MOVWconst [c]) [d]) => (CMPconst x [c>>uint64(d)])
+diff --git a/src/cmd/compile/internal/ssa/rewrite/arm/rewriteARM.go b/src/cmd/compile/internal/ssa/rewrite/arm/rewriteARM.go
+index 3a57b1bc..aaadff39 100644
+--- a/src/cmd/compile/internal/ssa/rewrite/arm/rewriteARM.go
++++ b/src/cmd/compile/internal/ssa/rewrite/arm/rewriteARM.go
+@@ -8351,7 +8351,7 @@ func rewriteValue_OpARMMVNshiftLLreg(v *ssa.Value) bool {
+ func rewriteValue_OpARMMVNshiftRA(v *ssa.Value) bool {
+ 	v_0 := v.Args[0]
+ 	// match: (MVNshiftRA (MOVWconst [c]) [d])
+-	// result: (MOVWconst [int32(c)>>uint64(d)])
++	// result: (MOVWconst [^(c>>uint64(d))])
+ 	for {
+ 		d := ssa.AuxIntToInt32(v.AuxInt)
+ 		if v_0.Op != ssaop.OpARMMOVWconst {
+@@ -8359,7 +8359,7 @@ func rewriteValue_OpARMMVNshiftRA(v *ssa.Value) bool {
+ 		}
+ 		c := ssa.AuxIntToInt32(v_0.AuxInt)
+ 		v.Reset(ssaop.OpARMMOVWconst)
+-		v.AuxInt = ssa.Int32ToAuxInt(int32(c) >> uint64(d))
++		v.AuxInt = ssa.Int32ToAuxInt(^(c >> uint64(d)))
+ 		return true
+ 	}
+ 	return false

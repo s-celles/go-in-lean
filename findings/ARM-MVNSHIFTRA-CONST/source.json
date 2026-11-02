@@ -1,0 +1,7 @@
+{"go_version": "go1.16 .. go1.27.3 and master a0c8470e; go1.15 and earlier correct",
+ "file": "src/cmd/compile/internal/ssa/_gen/ARM.rules", "lines": "go1.27.3 1071, master 1067",
+ "rule": "(MVNshiftRA (MOVWconst [c]) [d]) => (MOVWconst [int32(c)>>uint64(d)])  -- missing ^",
+ "history": {"go1.12": "-> (MOVWconst [^int64(int32(c)>>uint64(d))])  correct", "go1.15": "correct", "go1.16": "=> without ^  WRONG", "go1.20": "wrong", "master": "wrong"},
+ "lean": "GoInLean/Compiler/ARMMvnShift.lean", "lean_toolchain": "leanprover/lean4:v4.35.0",
+ "found_by": "scripts/cross_campaigns.sh EXTRA_FLAGS=--bits, tip-arm-index seed 60372",
+ "emulator": "qemu-user 11.1.2 (nixpkgs)"}

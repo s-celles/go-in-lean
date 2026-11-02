@@ -300,6 +300,28 @@ a parsed error, and every generated file is also built by `lake build` in CI.
   virtual memory than RAM plus swap and the solver cannot be spawned. Hand-written `bv_decide`
   calls now carry an explicit 120 s limit (the default 10 s was exceeded on loaded hosts).
 
+### 3.12 Iteration 7: an ARM fold typo, floating point, and a ppc64 instance of #80577
+
+* **`findings/ARM-MVNSHIFTRA-CONST`** (not yet reported): `ARM.rules` folds
+  `MVNshiftRA (MOVWconst [c]) [d]` to `c >> d`, dropping the complement that its LL/RL siblings keep;
+  go1.15 had `^int64(int32(c)>>d)` and the `^` was lost in the go1.16 typed-AuxInt conversion. Through
+  the 32-bit `Ctz64` decomposition, `bits.TrailingZeros64(0)` evaluates to 32. One-line fix validated on
+  master. A scan of every `<op>shift(LL|RL|RA) (MOVWconst [c]) [d]` fold in ARM.rules finds no other
+  inconsistency.
+* **Floating point and conversions** (`scripts/float_fuzz.py`, `float_cross.sh`): constants are
+  injected as `math.Float64frombits(bits)` so the SSA backend folds them on the host with IEEE
+  semantics (Go constant expressions are exact and would differ legitimately); every arithmetic result
+  is wrapped in an explicit conversion (no FMA fusion); float->int conversions are range-guarded; NaNs
+  are canonicalised. Disassembly confirms the constant versions are folded at compile time. 16 targets
+  (incl. `GOARM=5`, `GO386=softfloat`, `GOMIPS=softfloat`, power10, rva23) x go1.27.3 and master x 30
+  seeds: **no mismatch**, every canary detected. Conversions (incl. int64->float32 double-rounding
+  candidates and uint64 on 32-bit ports) and the math intrinsics are consistent on these vectors.
+* **`findings/PPC64-SPILL-SIGNEXT-80577`** (known issue): on ppc64, `int16(uint16(int8 y))` keeps type
+  `uint16` but holds a sign-extended register; the signed compare's `MOVHreg` is elided, and when the
+  value is spilled across a call regalloc restores it with `MOVHZ` (zero-extend) chosen from the type.
+  An instance of the open golang/go#80577 not covered by its riscv64 fix. Whether a program hits it
+  depends on scheduling, down to source line layout (the scheduler breaks ties by position).
+
 ## 4. Success criteria check
 
 | # | Criterion | Status |

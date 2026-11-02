@@ -1,0 +1,13 @@
+cmd/compile: restore the complement in ARM MVNshiftRA constant folding
+
+The ARM rule (MVNshiftRA (MOVWconst [c]) [d]) folds to int32(c)>>d,
+dropping the bitwise NOT that the instruction performs (the LL and RL
+siblings fold to ^(...), and go1.15 had ^int64(int32(c)>>d); the
+complement was lost when the rules moved to typed AuxInts). The 32-bit
+decomposition of Ctz64 reaches it through Zeromask lowered to SRAconst
+[31] merged into MVN, so TrailingZeros64(0) evaluated to 32 instead of 64
+when the low word folded to a constant during lowering.
+
+Fixes #NNNNN.
+
+Assisted-by: AI

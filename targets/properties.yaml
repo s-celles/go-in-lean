@@ -1304,3 +1304,39 @@ properties:
     go_tests: []
     history:
       - {date: 2026-11-02, status: go_discrepancy_reproduced, note: "found via --bits power10 fuzzing; first thought OOB, canary disproved it; miscompilation; reported as golang/go#82782"}
+  - id: ARM-MVNSHIFTRA-CONST
+    package: cmd/compile/internal/ssa (ARM.rules, GOARCH=arm)
+    function: "constant folding of MVNshiftRA (NOT of an arithmetic right shift)"
+    go_source: "ARM.rules (MVNshiftRA (MOVWconst [c]) [d]) => (MOVWconst [int32(c)>>uint64(d)]) (go1.16 .. master a0c8470e)"
+    doc: "MVNshiftRA x [d] computes ^(x >> d); the fold omits ^"
+    preconditions: "MVNshiftRA whose operand becomes a constant during lower (e.g. Ctz64 decomposition with a constant low word)"
+    postcondition: "fold == ^(c >> d)  -- violated: c >> d"
+    lean_statement: "GoInLean/Compiler/ARMMvnShift.lean"
+    lean_theorem: [Go.Compiler.ARMMvnShift.fold_refuted, Go.Compiler.ARMMvnShift.fold_unsound, Go.Compiler.ARMMvnShift.fold_fixed, Go.Compiler.ARMMvnShift.fold_always_wrong, Go.Compiler.ARMMvnShift.ctz64_zero_needs_complement]
+    oracle: "metamorphic fuzzing (--bits, index mode) under qemu-arm; 386/mipsle/arm64 controls"
+    ambiguity_risk: low
+    complexity: low
+    trust: bv_decide
+    status: go_discrepancy_reproduced
+    evidence: "findings/ARM-MVNSHIFTRA-CONST: bits.TrailingZeros64(<value folding to 0 during lower>) == 32 (spec 64) on arm, go1.26.10, go1.27.3, master a0c8470e; rule correct through go1.15, wrong since go1.16; fix (restore ^) validated on master. Not reported upstream (awaiting human review)."
+    go_tests: []
+    history:
+      - {date: 2026-11-02, status: go_discrepancy_reproduced, note: "from the --bits index campaign, arm seed 60372; regression from the go1.16 typed-AuxInt conversion"}
+  - id: PPC64-SPILL-SIGNEXT-80577
+    package: cmd/compile/internal/ssa (regalloc spill/restore + ppc64 extension elision)
+    function: "ppc64 restore of a spilled uint16-typed but sign-extended value uses MOVHZ"
+    go_source: "ppc64 lowering elides MOVHreg on EXTSB; regalloc restores by the (unsigned) type"
+    doc: "spill stores t.Size() bytes; restore re-extends by t alone (golang/go#80577 contract)"
+    preconditions: "int16(uint16(int8 y)) live across a call, then compared signed"
+    postcondition: "the comparison sees -1  -- violated: sees 65535"
+    lean_statement: "not modelled (register allocation)"
+    lean_theorem: []
+    oracle: "metamorphic fuzzing (--bits index, GOPPC64=power9) under qemu; objdump; amd64/arm64/riscv64/s390x controls"
+    ambiguity_risk: low
+    complexity: medium
+    trust: kernel
+    status: known_issue
+    evidence: "findings/PPC64-SPILL-SIGNEXT-80577: v174(0,-1,...) prints 1 (spec -6) on ppc64le power8/power9 and ppc64, go1.27.3 and master babb75be; MOVH spill + MOVHZ restore before a signed CMPW. Instance of the open golang/go#80577 (riscv64 fix CL 806340 does not cover ppc64). Layout-dependent (scheduling ties by source position). Not commented upstream yet."
+    go_tests: []
+    history:
+      - {date: 2026-11-02, status: known_issue, note: "--bits index seed 61164 (power9); reduced; classified as a ppc64 instance of golang/go#80577"}

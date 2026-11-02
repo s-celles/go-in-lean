@@ -1,0 +1,12 @@
+{
+ "counterexample": {"expr": "bits.TrailingZeros64(uint64(uint16(bits.OnesCount16(16384))) &^ 16777217)", "compiled_result": 32, "spec_result": 64},
+ "rewrite_trace": "lower: MVNshiftRA [31] (MOVWconst [0]) -> MOVWconst [0] (should be -1); ANDconst [32] -> 0; ADD -> Copy (Ctz32 lo only)",
+ "versions": {"go1.26.10": "wrong", "go1.27.3": "wrong", "master a0c8470e": "wrong", "master a0c8470e + fix.patch": "correct"},
+ "rule_history": {"go1.12": "correct", "go1.13": "correct", "go1.14": "correct", "go1.15": "correct", "go1.16": "wrong", "go1.20": "wrong"},
+ "controls": {"386": "correct", "mipsle": "correct", "arm64 native": "correct"},
+ "sibling_scan": "all <op>shift(LL|RL|RA) (MOVWconst [c]) [d] folds in ARM.rules checked; only MVN RA inconsistent",
+ "fix_tests": "master a0c8470e + fix.patch: go test -short cmd/compile/internal/ssa cmd/compile/internal/test ok; go test -count=1 cmd/internal/testdir -run Test/codegen ok",
+ "known_issue_search": {"date": "2026-11-02", "result": "none found"},
+ "classification_history": [{"date": "2026-11-02", "status": "go_discrepancy_reproduced"}],
+ "human_review": "pending; not reported upstream"
+}
