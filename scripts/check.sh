@@ -30,6 +30,7 @@ python3 -I scripts/arm64_shift_rules.py --check
 python3 -I scripts/amd64_shift_rules.py --check
 python3 -I scripts/generic_rules_to_lean.py --check
 python3 -I scripts/magic_rules_to_lean.py --check
+python3 -I scripts/gen_brand.py --check
 
 step "3. lake build (all models, specs and proofs)"
 lake build

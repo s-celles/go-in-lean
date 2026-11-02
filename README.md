@@ -1,4 +1,9 @@
-# go-in-lean
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/brand/lockup-dark.svg">
+    <img alt="go-in-lean" src="assets/brand/lockup.svg" height="56">
+  </picture>
+</h1>
 
 **Finding correctness bugs in Go's standard library with Lean 4: a proof-of-concept.**
 
@@ -65,8 +70,10 @@ go/reference/           Go twins of the mutants
 go/reproducers/         generated reproducers (one per Lean counterexample)
 targets/properties.yaml property manifest with status history
 findings/               reproduced findings awaiting human review (none yet)
-scripts/                check.sh, gen_bits_tables.py, validate_manifest.py, mutation_test.py
-docs/                   prior-art, semantic-boundary, architecture, compiler feasibility, report
+scripts/                check.sh, gen_bits_tables.py, validate_manifest.py, mutation_test.py,
+                        gen_brand.py (visual identity)
+docs/                   prior-art, semantic-boundary, architecture, compiler feasibility, report, brand
+assets/brand/           logo, lockups, favicon, social preview (generated, see docs/brand.md)
 ```
 
 ## Reading the results
