@@ -50,10 +50,23 @@ Lean and bit-blasted each one (`targets/generic_rules_triage.json`). Nine instan
 SSA dump (`GOSSAFUNC`) shows the input `Lsh64x64 (And64 (Rsh64x64 x (Const64 [-9223372036854775808]))
 (Const64 [3])) (Const64 [1])` reduced to `Const64 [0]` by the `opt` pass.
 
+## Upstream status (2026-11-02)
+
+* A Go contributor (cuonglm) bisected the issue to commit
+  `32f4864216366f355a589c99a8d789f3341bc85c` ("cmd/compile: arithmetic optimization for
+  shifts", CL 621357, fixes golang/go#69635, October 2024), which *introduced* the
+  `((x >> c) & d) << e` rules. It is contained in go1.24.0.
+* Confirmed locally: go1.23.12 gives the correct results (6, and 0/6 via inlining);
+  go1.24.0 gives the wrong ones (0, and 4/4). Affected releases: Go 1.24 to 1.27 and master.
+* An automated bot (gabyhelp) listed related issues, including golang/go#82767 (our second
+  report) and golang/go#81868; none is a duplicate.
+
 ## Versions tested (2026-11-02)
 
 | Toolchain | arm64 | amd64 (Rosetta 2) |
 |---|---|---|
+| go1.23.12 | **correct** | n/a |
+| go1.24.0 | wrong | n/a |
 | go1.25.5 | wrong (0, 4, 4) | wrong |
 | go1.26.10 (latest 1.26) | wrong | wrong |
 | go1.27.3 (latest release) | wrong | wrong |

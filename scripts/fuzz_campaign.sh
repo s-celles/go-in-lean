@@ -7,7 +7,7 @@ here=$(cd "$(dirname "$0")" && pwd)
 mkdir -p "$OUT"
 run() {
   s=$1; d="$OUT/s$s"
-  GOTOOLCHAIN=$TC python3 -I "$here/metamorphic_fuzz.py" "$s" "$N" "$d" >/dev/null 2>&1 || { echo "seed $s: generator failed"; return; }
+  GOTOOLCHAIN=$TC python3 -I "$here/metamorphic_fuzz.py" "$s" "$N" "$d" ${FUZZ_FLAGS:-} >/dev/null 2>&1 || { echo "seed $s: generator failed"; return; }
   res=$(cd "$d" && GOTOOLCHAIN=$TC GOARCH=$ARCH go run . 2>&1)
   if echo "$res" | grep -q "mismatches" && ! echo "$res" | grep -q " 0 mismatches"; then
     echo "== seed $s ($TC ${ARCH:-native})"
@@ -15,6 +15,6 @@ run() {
     for i in $(echo "$res" | grep -o "^expr [0-9]*" | awk '{print $2}' | sort -u); do grep "^func c$i(" "$d/main.go"; done
   fi
 }
-export -f run; export OUT N TC ARCH here
+export -f run; export OUT N TC ARCH here FUZZ_FLAGS
 seq "$FIRST" "$LAST" | xargs -P 6 -I{} bash -c 'run {}'
 echo "campaign $FIRST..$LAST done"

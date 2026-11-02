@@ -1064,6 +1064,7 @@ properties:
       - {date: 2026-11-01, status: counterexample_in_model, note: "8 triage counterexamples r527_0..r530_1"}
       - {date: 2026-11-01, status: go_discrepancy_reproduced, note: "reproduced with the real compiler; SSA dump identifies the rule; fix proved"}
       - {date: 2026-11-02, status: go_discrepancy_reproduced, note: "also present in go1.26.10, go1.27.3 and master babb75be; fix validated on master; reported as golang/go#82763"}
+      - {date: 2026-11-02, status: go_discrepancy_reproduced, note: "upstream bisect to CL 621357 (introduced the rules, Go 1.24); go1.23.12 correct, go1.24.0 wrong"}
   - id: SSA-COMPOSE-CONST64-TYPE
     package: cmd/compile/internal/ssa (generic.rules + prove), Go master
     function: "shift-composition rules (8/16/32-bit) with a mistyped Const64, exploited by master's prove"

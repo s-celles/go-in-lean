@@ -82,10 +82,18 @@
   "go1.26.10": "wrong",
   "go1.27.3": "wrong",
   "master babb75be (2026-11-01)": "wrong",
-  "master babb75be + fix.patch": "correct; compiler tests pass"
+  "master babb75be + fix.patch": "correct; compiler tests pass",
+  "go1.23.12": "correct",
+  "go1.24.0": "wrong"
  },
  "upstream": {
   "issue": "https://github.com/golang/go/issues/82763",
-  "date": "2026-11-02"
+  "date": "2026-11-02",
+  "bisect": {
+   "by": "cuonglm (Go contributor)",
+   "commit": "32f4864216366f355a589c99a8d789f3341bc85c",
+   "cl": "CL 621357",
+   "introduced_in": "go1.24.0"
+  }
  }
 }
