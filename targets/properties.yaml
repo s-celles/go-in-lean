@@ -1342,3 +1342,21 @@ properties:
     history:
       - {date: 2026-11-02, status: known_issue, note: "--bits index seed 61164 (power9); reduced; classified as a ppc64 instance of golang/go#80577"}
       - {date: 2026-11-02, status: known_issue, note: "ppc64 reproducer posted on golang/go#80577"}
+  - id: PROVE-EXT-CONST-TRUNC
+    package: cmd/compile/internal/ssacompile (prove), all GOARCH
+    function: "factsTable.update: look-through of value-preserving extensions + x+delta>w constant step"
+    go_source: "prove.go update: isCleanExt look-through repeats ext(x) op w on x with the same w; x+delta case computes int16(w.AuxInt)-int16(delta)"
+    doc: "a fact on ext(x) carried to x with a constant out of x's range is then truncated"
+    preconditions: "SignExt(x + c) compared with a constant outside x's range"
+    postcondition: "branch decided per real values  -- violated: impossible branch taken"
+    lean_statement: "GoInLean/Compiler/ProveExtDelta.lean"
+    lean_theorem: [Go.Compiler.ProveExtDelta.xdelta_sound, Go.Compiler.ProveExtDelta.fits_iff, Go.Compiler.ProveExtDelta.unguarded_refuted]
+    oracle: "metamorphic fuzzing (--late --bits --index); native arm64 and amd64 reproduction; prove debug output"
+    ambiguity_risk: low
+    complexity: medium
+    trust: bv_decide
+    status: go_discrepancy_reproduced
+    evidence: "findings/PROVE-EXT-CONST-TRUNC: if int32(int16(x)-513) < -536870911 { sink = 1 } runs for x = 0 on go1.26.6..1.26.10, go1.27.3 and master (all arches); simpler return forms wrong from go1.24.13; fix (constFitsIn guard) validated, prove/loopbce/checkbce/codegen/fixedbugs pass. Not reported upstream (awaiting human review)."
+    go_tests: []
+    history:
+      - {date: 2026-11-02, status: go_discrepancy_reproduced, note: "--late --bits index campaign, arm seed 90587, on master with all earlier fixes; reproduced natively"}

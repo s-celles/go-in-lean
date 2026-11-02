@@ -34,3 +34,4 @@ import GoInLean.Compiler.MIPSConstCount
 import GoInLean.Compiler.ARM64CondSelect
 import GoInLean.Compiler.PPC64Bswap16
 import GoInLean.Compiler.ARMMvnShift
+import GoInLean.Compiler.ProveExtDelta

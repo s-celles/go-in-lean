@@ -1,0 +1,12 @@
+{
+ "counterexample": {"expr": "if int32(int16(x)-513) < -536870911 { sink = 1 }", "x": 0, "compiled": "sink = 1", "spec": "sink stays 0"},
+ "prove_debug": "x+d >= w; x:v64 b4 delta:-513 w:-536870911 d:signed  ->  Proved Less32 (v75)",
+ "versions_reproducer": {"go1.21.13": "correct", "go1.22.12": "correct", "go1.23.12": "correct", "go1.24.0": "correct", "go1.24.13": "correct", "go1.25.5": "correct", "go1.26.0": "correct", "go1.26.3": "correct", "go1.26.4": "correct", "go1.26.5": "correct", "go1.26.6": "wrong", "go1.26.8": "wrong", "go1.26.10": "wrong", "go1.27.3": "wrong", "master": "wrong", "master + fix.patch": "correct"},
+ "versions_return_form": {"go1.24.13": "wrong", "go1.25.5": "wrong", "go1.26.10": "wrong", "go1.27.3": "correct (masked)", "master": "correct (masked)"},
+ "architectures": "arm64 (native darwin), amd64 (Rosetta and GEEKR9), arm (qemu)",
+ "oob": "not demonstrated; the mechanism forces or deletes branches",
+ "fix_tests": "master + fix.patch: go test -short cmd/compile/internal/ssa cmd/compile/internal/ssacompile cmd/compile/internal/test ok; testdir Test/prove|Test/loopbce|Test/checkbce ok; Test/codegen ok; Test/fixedbugs ok",
+ "known_issue_search": {"date": "2026-11-02", "result": "none found"},
+ "classification_history": [{"date": "2026-11-02", "status": "go_discrepancy_reproduced"}],
+ "human_review": "pending; not reported upstream"
+}

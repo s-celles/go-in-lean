@@ -322,6 +322,25 @@ a parsed error, and every generated file is also built by `lake build` in CI.
   An instance of the open golang/go#80577 not covered by its riscv64 fix. Whether a program hits it
   depends on scheduling, down to source line layout (the scheduler breaks ties by position).
 
+### 3.13 Iteration 8: a sibling-consistency lint, late constants, and a prove soundness bug
+
+* **Sibling-consistency lint** (`scripts/rules_sibling_lint.py`): flags a rule that disagrees with its
+  shift-kind (LL/RL/RA) or width siblings, a 64-bit constant count tested through a 32-bit cast, and
+  `Size()` (bytes) compared with bit widths. On master it reports exactly the three defects already
+  reported (golang/go#82786, #82776, #82775) and nothing else: no other instance of those classes.
+* **Late constants** (`metamorphic_fuzz.py --late`): the constants of the const version are loads
+  from a read-only string recombined with shifts and ORs, so they fold during lowering and exercise
+  the architecture-specific folding rules. Campaign: 15 targets x {--late, --late --bits} x go1.27.3
+  and a master carrying all ten earlier fixes (so master failures are new). Every go1.27.3 failure
+  disappears with all fixes (known bugs); the riscv64 rva23 index failures are the known golang/go#80577
+  instance (REV8 spilled with 2 bytes).
+* **`findings/PROVE-EXT-CONST-TRUNC`** (not yet reported; all architectures): prove carries a fact
+  `ext(x) op c` over to the narrow `x` with the same constant, and the "x+delta > w" step then truncates
+  `c` to `x`'s width. `if int32(int16(x)-513) < -536870911 { sink = 1 }` runs for x = 0 on go1.26.6+,
+  go1.27.3 and master (amd64, arm64, arm); a return-form variant is wrong from go1.24.13. The code is
+  unchanged since go1.24; go1.26.6's "fix time traveling proofs" backport made the reproducer reach it.
+  Fix: carry the fact only when the constant fits (prove, loopbce, checkbce, codegen and fixedbugs pass).
+
 ## 4. Success criteria check
 
 | # | Criterion | Status |

@@ -1,0 +1,49 @@
+diff --git a/src/cmd/compile/internal/ssacompile/prove.go b/src/cmd/compile/internal/ssacompile/prove.go
+index ae1dd244..fa6b03b3 100644
+--- a/src/cmd/compile/internal/ssacompile/prove.go
++++ b/src/cmd/compile/internal/ssacompile/prove.go
+@@ -870,7 +870,7 @@ func (ft *factsTable) update(parent *ssa.Block, v, w *ssa.Value, d domain, r rel
+ 	// Look through value-preserving extensions.
+ 	// If the domain is appropriate for the pre-extension Type,
+ 	// repeat the update with the pre-extension Value.
+-	if isCleanExt(v) {
++	if isCleanExt(v) && constFitsIn(w, v.Args[0].Type.Size(), d) {
+ 		switch {
+ 		case d == signed && v.Args[0].Type.IsSigned():
+ 			fallthrough
+@@ -878,7 +878,7 @@ func (ft *factsTable) update(parent *ssa.Block, v, w *ssa.Value, d domain, r rel
+ 			ft.update(parent, v.Args[0], w, d, r)
+ 		}
+ 	}
+-	if isCleanExt(w) {
++	if isCleanExt(w) && constFitsIn(v, w.Args[0].Type.Size(), d) {
+ 		switch {
+ 		case d == signed && w.Args[0].Type.IsSigned():
+ 			fallthrough
+@@ -2823,6 +2823,26 @@ func (ft *factsTable) compareConstDelta(b *ssa.Block, v1 *ssa.Value) {
+ 	}
+ }
+ 
++// constFitsIn reports whether c, if it is an integer constant, is representable in a value of
++// the given size under domain d. A fact ext(x) op c is only carried over to x when it is: an
++// out-of-range constant makes the fact on x trivially true or false (already decided by the
++// limits of ext(x)), and later steps such as the x+delta reasoning compute with c at x's width,
++// which would truncate it.
++func constFitsIn(c *ssa.Value, size int64, d domain) bool {
++	if !c.IsGenericIntConst() || size >= 8 {
++		return true
++	}
++	bits := uint(size * 8)
++	if d == signed {
++		return c.AuxInt >= -(1<<(bits-1)) && c.AuxInt < 1<<(bits-1)
++	}
++	u := uint64(c.AuxInt)
++	if cs := c.Type.Size(); cs < 8 {
++		u &= 1<<(uint(cs)*8) - 1
++	}
++	return u < 1<<bits
++}
++
+ // isCleanExt reports whether v is the result of a value-preserving
+ // sign or zero extension.
+ func isCleanExt(v *ssa.Value) bool {

@@ -1,0 +1,6 @@
+{"go_version": "go1.26.6 .. go1.27.3 and master 2885c994 (reproducer); other shapes go1.24.13 .. go1.26.x",
+ "file": "src/cmd/compile/internal/ssacompile/prove.go (master; ssa/prove.go in releases)",
+ "code": "factsTable.update: look-through of value-preserving extensions (master 870-888) + x+delta>w constant case computing int16(w.AuxInt)-int16(delta) (833)",
+ "exposed_by": "52e5e2f22a [release-branch.go1.26] cmd/compile: fix time traveling proofs in prove (CL 804220, golang/go#80619), in go1.26.6",
+ "lean": "GoInLean/Compiler/ProveExtDelta.lean", "lean_toolchain": "leanprover/lean4:v4.35.0",
+ "found_by": "metamorphic_fuzz.py --late --bits --index, arm, seed 90587 (master with all earlier fixes)"}

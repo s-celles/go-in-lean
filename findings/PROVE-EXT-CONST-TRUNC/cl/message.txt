@@ -1,0 +1,19 @@
+cmd/compile: do not carry a wider constant through an extension in prove
+
+factsTable.update looks through value-preserving extensions and repeats
+a fact ext(x) op w on x with the same w. When w is a constant that does
+not fit in x's type, the x+delta > w step then computes w - delta at
+x's width, truncating w: for SignExt16to32(x - 513) >= -536870911 it
+derives x >= 514 and declares the branch impossible, so
+
+	if int32(int16(x)-513) < -536870911 { ... }
+
+was taken for every x.
+
+Only carry the fact through the extension when the constant fits; when
+it does not, the fact on x is trivially true or false and the limits of
+ext(x) already decide it.
+
+Fixes #NNNNN.
+
+Assisted-by: AI
