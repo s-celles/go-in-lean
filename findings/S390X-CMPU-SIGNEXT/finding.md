@@ -6,7 +6,7 @@ against a constant close to 2^32. Only `GOARCH=s390x` is affected.
 **Security:** a wrong unsigned comparison can matter for range checks written by hand; no
 evident exploitable path (bounds checks use `IsInBounds` on full-width values). Handled as a
 private report until reviewed.
-**Human review status:** pending. Not reported upstream.
+**Human review status:** reviewed and approved by the maintainer of this repository on 2026-11-02; reported upstream as [golang/go#82774](https://github.com/golang/go/issues/82774).
 
 ## Summary
 

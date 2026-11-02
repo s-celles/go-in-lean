@@ -1,27 +1,105 @@
 {
- "counterexample": {"x": "int8(127 * -15) (register 0xFFFFF88F)", "count": 8, "compiled_result": -8, "spec_result": -1},
+ "counterexample": {
+  "x": "int8(127 * -15) (register 0xFFFFF88F)",
+  "count": 8,
+  "compiled_result": -8,
+  "spec_result": -1
+ },
  "more": [
-  {"expr": "int8(127 + 1) >> 8", "compiled_result": 0, "spec_result": -1},
-  {"expr": "int8(127 * -15) >> 3", "compiled_result": 17, "spec_result": -15}
+  {
+   "expr": "int8(127 + 1) >> 8",
+   "compiled_result": 0,
+   "spec_result": -1
+  },
+  {
+   "expr": "int8(127 * -15) >> 3",
+   "compiled_result": 17,
+   "spec_result": -15
+  }
  ],
  "assembly_evidence": "go1.27.3 GOARCH=mipsle, func (x, k int8, s uint64) int8 { return (x*k) >> s }: MUL R2, R1, R1; MOVH R1, R1; ... SRA R2, R1, R1 (MOVH = 16-bit sign extension of an int8)",
  "go_runs": [
-  {"toolchain": "go1.25.5", "goarch": "mipsle", "runner": "qemu-mipsel", "result": "wrong (-8, 0, 17)"},
-  {"toolchain": "go1.27.3", "goarch": "mipsle", "runner": "qemu-mipsel", "result": "wrong (-8, 0, 17)"},
-  {"toolchain": "go1.27.3", "goarch": "mips", "runner": "qemu-mips", "result": "wrong (-8, 0, 17)"},
-  {"toolchain": "master babb75be", "goarch": "mipsle", "runner": "qemu-mipsel", "result": "wrong (-8, 0, 17)"},
-  {"toolchain": "master babb75be", "goarch": "mips", "runner": "qemu-mips", "result": "wrong (-8, 0, 17)"},
-  {"toolchain": "master babb75be + fix.patch", "goarch": "mips, mipsle", "runner": "qemu", "result": "correct"},
-  {"toolchain": "go1.27.3", "goarch": "386", "runner": "native", "result": "correct (control)"},
-  {"toolchain": "go1.27.3", "goarch": "arm", "runner": "qemu-arm", "result": "correct (control)"},
-  {"toolchain": "go1.27.3", "goarch": "mips64le", "runner": "qemu-mips64el", "result": "correct (control)"}
+  {
+   "toolchain": "go1.25.5",
+   "goarch": "mipsle",
+   "runner": "qemu-mipsel",
+   "result": "wrong (-8, 0, 17)"
+  },
+  {
+   "toolchain": "go1.27.3",
+   "goarch": "mipsle",
+   "runner": "qemu-mipsel",
+   "result": "wrong (-8, 0, 17)"
+  },
+  {
+   "toolchain": "go1.27.3",
+   "goarch": "mips",
+   "runner": "qemu-mips",
+   "result": "wrong (-8, 0, 17)"
+  },
+  {
+   "toolchain": "master babb75be",
+   "goarch": "mipsle",
+   "runner": "qemu-mipsel",
+   "result": "wrong (-8, 0, 17)"
+  },
+  {
+   "toolchain": "master babb75be",
+   "goarch": "mips",
+   "runner": "qemu-mips",
+   "result": "wrong (-8, 0, 17)"
+  },
+  {
+   "toolchain": "master babb75be + fix.patch",
+   "goarch": "mips, mipsle",
+   "runner": "qemu",
+   "result": "correct"
+  },
+  {
+   "toolchain": "go1.27.3",
+   "goarch": "386",
+   "runner": "native",
+   "result": "correct (control)"
+  },
+  {
+   "toolchain": "go1.27.3",
+   "goarch": "arm",
+   "runner": "qemu-arm",
+   "result": "correct (control)"
+  },
+  {
+   "toolchain": "go1.27.3",
+   "goarch": "mips64le",
+   "runner": "qemu-mips64el",
+   "result": "correct (control)"
+  }
  ],
  "emulator_independence": "the defect is visible in the compiler's assembly output (MOVH before SRA); qemu only confirms the run-time consequence",
  "fix_proved": "SignExt8to32: rsh8x32_fixed / rsh8x16_fixed / rsh8x8_fixed (GoInLean/Compiler/MIPSShift8.lean)",
  "fix_tests": "master + fix.patch: go test -short cmd/compile/internal/ssa cmd/compile/internal/test pass",
- "known_issue_search": {"date": "2026-11-02", "queries": ["repo:golang/go mips shift int8 sign", "repo:golang/go \"SignExt16to32\" mips", "Rsh8x32 MIPS"], "result": "none found"},
+ "known_issue_search": {
+  "date": "2026-11-02",
+  "queries": [
+   "repo:golang/go mips shift int8 sign",
+   "repo:golang/go \"SignExt16to32\" mips",
+   "Rsh8x32 MIPS"
+  ],
+  "result": "none found"
+ },
  "classification_history": [
-  {"date": "2026-11-02", "status": "go_discrepancy_reproduced"}
+  {
+   "date": "2026-11-02",
+   "status": "go_discrepancy_reproduced"
+  },
+  {
+   "date": "2026-11-02",
+   "status": "go_discrepancy_reproduced",
+   "note": "reported as golang/go#82772"
+  }
  ],
- "human_review": "pending; not reported upstream"
+ "human_review": "approved 2026-11-02; reported upstream",
+ "upstream": {
+  "issue": "https://github.com/golang/go/issues/82772",
+  "date": "2026-11-02"
+ }
 }

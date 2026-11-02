@@ -1,14 +1,60 @@
 {
- "counterexample": {"expr": "int8(x - (-x)) >> 8", "x": -1, "compiled_result": 0, "spec_result": -1},
- "more": [{"expr": "int16(x - (-x)) >> 16", "x": -3, "compiled_result": 0, "spec_result": -1},
-          {"expr": "b := -a; (a - b) >> 9", "a": -5, "compiled_result": 0, "spec_result": -1}],
+ "counterexample": {
+  "expr": "int8(x - (-x)) >> 8",
+  "x": -1,
+  "compiled_result": 0,
+  "spec_result": -1
+ },
+ "more": [
+  {
+   "expr": "int16(x - (-x)) >> 16",
+   "x": -3,
+   "compiled_result": 0,
+   "spec_result": -1
+  },
+  {
+   "expr": "b := -a; (a - b) >> 9",
+   "a": -5,
+   "compiled_result": 0,
+   "spec_result": -1
+  }
+ ],
  "assembly_evidence": "go1.27.3 riscv64: subneg63 compiles to MOV $0, X10; JALR X0, X1",
  "rewrite_trace": "lower: SRAI [63] (MOVBreg v9) -> SRAI [63] (SLLI <int8> [56] v9); SLLI <int8> [56] (ADD v6 v6) -> MOVDconst [0]",
- "versions": {"go1.22.12": "correct", "go1.23.12": "correct", "go1.24.0": "correct", "go1.25.5": "correct",
-              "go1.26.10": "wrong", "go1.27.3": "wrong", "master babb75be": "wrong", "master babb75be + fix.patch": "correct"},
- "controls": {"amd64": "correct", "arm64 (qemu)": "correct", "s390x (qemu)": "correct"},
+ "versions": {
+  "go1.22.12": "correct",
+  "go1.23.12": "correct",
+  "go1.24.0": "correct",
+  "go1.25.5": "correct",
+  "go1.26.10": "wrong",
+  "go1.27.3": "wrong",
+  "master babb75be": "wrong",
+  "master babb75be + fix.patch": "correct"
+ },
+ "controls": {
+  "amd64": "correct",
+  "arm64 (qemu)": "correct",
+  "s390x (qemu)": "correct"
+ },
  "fix_tests": "master + fix.patch (+ MIPS and s390x fixes): go test -short cmd/compile/internal/ssa cmd/compile/internal/test ok; go test -count=1 cmd/internal/testdir -run Test/codegen ok; -run Test/fixedbugs ok",
- "known_issue_search": {"date": "2026-11-02", "result": "none found"},
- "classification_history": [{"date": "2026-11-02", "status": "go_discrepancy_reproduced"}],
- "human_review": "pending; not reported upstream"
+ "known_issue_search": {
+  "date": "2026-11-02",
+  "result": "none found"
+ },
+ "classification_history": [
+  {
+   "date": "2026-11-02",
+   "status": "go_discrepancy_reproduced"
+  },
+  {
+   "date": "2026-11-02",
+   "status": "go_discrepancy_reproduced",
+   "note": "reported as golang/go#82773"
+  }
+ ],
+ "human_review": "approved 2026-11-02; reported upstream",
+ "upstream": {
+  "issue": "https://github.com/golang/go/issues/82773",
+  "date": "2026-11-02"
+ }
 }

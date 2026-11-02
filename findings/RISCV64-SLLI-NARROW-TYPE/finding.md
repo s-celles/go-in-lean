@@ -4,7 +4,7 @@
 **Severity:** medium for riscv64: silent wrong constant for ordinary source, a regression in
 go1.26. Only `GOARCH=riscv64` is affected.
 **Security:** no evident security impact; handled as a private report until reviewed.
-**Human review status:** pending. Not reported upstream.
+**Human review status:** reviewed and approved by the maintainer of this repository on 2026-11-02; reported upstream as [golang/go#82773](https://github.com/golang/go/issues/82773).
 
 ## Summary
 

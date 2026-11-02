@@ -5,7 +5,7 @@
 arithmetic followed by `>>` with a non-constant count), no unusual constants needed.
 Only `GOARCH=mips` and `GOARCH=mipsle` are affected (both endiannesses).
 **Security:** no evident security impact; handled as a private report until reviewed.
-**Human review status:** pending. Not reported upstream.
+**Human review status:** reviewed and approved by the maintainer of this repository on 2026-11-02; reported upstream as [golang/go#82772](https://github.com/golang/go/issues/82772).
 
 ## Summary
 

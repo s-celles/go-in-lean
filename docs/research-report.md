@@ -261,7 +261,7 @@ a parsed error, and every generated file is also built by `lake build` in CI.
   the only ones reported in §3.9). Fixed: `go build -gcflags=-e` reports every error, the build
   uses the target `GOARCH`, exhaustion is an error, failed runs are reported, and variables are
   rendered with an explicit conversion (half of the branchy expressions were ill-typed).
-* **Three architecture-specific miscompilations** (none reported upstream; human review pending):
+* **Three architecture-specific miscompilations**, reported after human review as golang/go#82772 (MIPS), #82773 (riscv64) and #82774 (s390x):
   * `findings/MIPS-RSH8-SIGNEXT16`: `MIPS.rules` lowers `Rsh8x(32|16|8)` with `SignExt16to32`
     instead of `SignExt8to32` (since go1.8). `int8(127 * -15) >> 8` gives -8 instead of -1 on
     mips and mipsle; 35 of 60 mipsle seeds failed on go1.27.3, 0 on master with the fix.
