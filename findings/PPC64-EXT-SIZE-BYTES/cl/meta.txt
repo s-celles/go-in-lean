@@ -1,0 +1,4 @@
+issue=82775
+arch=ppc64le
+emu=qemu-ppc64le
+env=

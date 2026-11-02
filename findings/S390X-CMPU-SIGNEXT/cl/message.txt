@@ -1,0 +1,12 @@
+cmd/compile: do not narrow an unsigned compare of a sign-extended value
+
+The S390X rules that narrow 64-bit compares to 32 bits include
+(CMPUconst x:(MOV(H|B)reg _) [c]) => (CMPWUconst x [c]). For a negative
+sign-extended value the 64-bit register is larger than any zero-extended
+immediate, but its low 32 bits can be smaller, so uint64(int8(-128)) <
+0xFFFFFFFF folds to true. Restrict that instance to c>=0; the three other
+instances (signed compare, or zero-extended value) stay.
+
+Fixes #82774.
+
+Assisted-by: AI

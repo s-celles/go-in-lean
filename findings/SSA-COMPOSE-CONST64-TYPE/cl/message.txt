@@ -1,0 +1,12 @@
+cmd/compile: give the combined count the right type in shift-composition rules
+
+The 8/16/32-bit shift-composition rules type the combined constant count
+Const64 with the shifted value's type instead of a 64-bit type. The prove
+pass then truncates the count to the value width and may treat the shift
+as bounded, so (int32(2)>>1)>>(1<<62) is folded to 1 instead of 0.
+
+Type the combined Const64 with its own 64-bit type.
+
+Fixes #82767.
+
+Assisted-by: AI

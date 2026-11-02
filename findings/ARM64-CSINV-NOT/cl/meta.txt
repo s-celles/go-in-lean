@@ -1,0 +1,4 @@
+issue=82777
+arch=arm64
+emu=qemu-aarch64
+env=

@@ -1,0 +1,12 @@
+cmd/compile: sign-extend from the correct bit in MIPS Rsh8 lowering
+
+The MIPS lowering of Rsh8x32/Rsh8x16/Rsh8x8 sign-extends the 8-bit value
+with SignExt16to32 instead of SignExt8to32, so bits 8..15 of the register
+(garbage for an 8-bit value such as a raw MUL result) leak into the
+arithmetic shift: int8(127*-15)>>8 gives -8 instead of -1 on mips/mipsle.
+
+Use SignExt8to32, as the other signed 8-bit rules and MIPS64 do.
+
+Fixes #82772.
+
+Assisted-by: AI

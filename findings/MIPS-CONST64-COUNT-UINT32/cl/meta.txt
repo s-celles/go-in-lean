@@ -1,0 +1,4 @@
+issue=82776
+arch=mipsle
+emu=qemu-mipsel
+env=

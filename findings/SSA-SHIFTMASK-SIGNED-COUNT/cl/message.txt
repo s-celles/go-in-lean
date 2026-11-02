@@ -1,0 +1,14 @@
+cmd/compile: fix signed comparison of constant shift counts in ((x>>c)&d)<<e
+
+The generic rules that rewrite ((x>>c)&d)<<e with constant c and e choose
+the branch using the signed comparisons c>=e / c<e on the int64 AuxInts,
+and compute the new count as e-c or c-e. Shift counts are unsigned, so a
+constant count c>=2^63 (a negative AuxInt) takes the wrong branch and the
+rewrite computes a shift by a wrapped amount. For a signed value this
+produces wrong code: ((x>>(1<<63))&3)<<1 returns 0 instead of 6 for x=-1.
+
+Guard the rules with 0<=c and 0<=e.
+
+Fixes #82763.
+
+Assisted-by: AI

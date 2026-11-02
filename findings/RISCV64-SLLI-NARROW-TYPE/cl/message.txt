@@ -1,0 +1,13 @@
+cmd/compile: type the inner shift as int64 in riscv64 SRAI(MOVBreg) lowering
+
+The riscv64 rules (SRAI [x] (MOVBreg y)) && x>=8 => (SRAI [63] (SLLI <t>
+[56] y)) type the 64-bit SLLI with the narrow result type t. Since go1.26
+the fold (SLLI <t> [c] (ADD x x)) && c>=t.Size()*8-1 => (MOVDconst [0])
+trusts that type and folds the shift to zero, although the outer SRAI [63]
+reads bit 63: int8(x-(-x))>>8 compiles to the constant 0 for x=-1.
+
+Type the inner SLLI as Int64 so the width-correct fold applies.
+
+Fixes #82773.
+
+Assisted-by: AI

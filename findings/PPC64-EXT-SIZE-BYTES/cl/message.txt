@@ -1,0 +1,12 @@
+cmd/compile: compare Type.Size() in bytes in PPC64 extension-elision rules
+
+The PPC64 rules that drop a sign/zero extension after a 32-bit right
+shift test x.Type.Size() against bit widths (<=16, ==8), but Size() is in
+bytes, so the half-word rule always fires and drops the 16-bit extension
+of a 32-bit shift whose result does not fit: int32(int16(x>>1)) keeps 32
+bits for x=-1<<31. Remove the half-word and byte rules; the pattern-based
+rules above them still handle explicitly extended operands.
+
+Fixes #82775.
+
+Assisted-by: AI

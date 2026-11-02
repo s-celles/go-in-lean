@@ -31,3 +31,195 @@ index e407a943..d1f8cc32 100644
  
  // Remove signed right shift before an unsigned right shift that extracts the sign bit.
  (Rsh8Ux64  (Rsh8x64  x _) (Const64 <t> [7] )) => (Rsh8Ux64  x (Const64 <t> [7] ))
+diff --git a/src/cmd/compile/internal/ssa/rewrite/generic/rewritegeneric.go b/src/cmd/compile/internal/ssa/rewrite/generic/rewritegeneric.go
+index 485b7efc..ce97c6bc 100644
+--- a/src/cmd/compile/internal/ssa/rewrite/generic/rewritegeneric.go
++++ b/src/cmd/compile/internal/ssa/rewrite/generic/rewritegeneric.go
+@@ -15721,9 +15721,8 @@ func rewriteValue_OpLsh16x64(v *ssa.Value) bool {
+ 	}
+ 	// match: (Lsh16x64 <t> (Lsh16x64 x (Const64 [c])) (Const64 [d]))
+ 	// cond: !uaddOvf(c,d)
+-	// result: (Lsh16x64 x (Const64 <t> [c+d]))
++	// result: (Lsh16x64 x (Const64 <typ.UInt64> [c+d]))
+ 	for {
+-		t := v.Type
+ 		if v_0.Op != ssaop.OpLsh16x64 {
+ 			break
+ 		}
+@@ -15742,7 +15741,7 @@ func rewriteValue_OpLsh16x64(v *ssa.Value) bool {
+ 			break
+ 		}
+ 		v.Reset(ssaop.OpLsh16x64)
+-		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, t)
++		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, typ.UInt64)
+ 		v0.AuxInt = ssa.Int64ToAuxInt(c + d)
+ 		v.AddArg2(x, v0)
+ 		return true
+@@ -16249,9 +16248,8 @@ func rewriteValue_OpLsh32x64(v *ssa.Value) bool {
+ 	}
+ 	// match: (Lsh32x64 <t> (Lsh32x64 x (Const64 [c])) (Const64 [d]))
+ 	// cond: !uaddOvf(c,d)
+-	// result: (Lsh32x64 x (Const64 <t> [c+d]))
++	// result: (Lsh32x64 x (Const64 <typ.UInt64> [c+d]))
+ 	for {
+-		t := v.Type
+ 		if v_0.Op != ssaop.OpLsh32x64 {
+ 			break
+ 		}
+@@ -16270,7 +16268,7 @@ func rewriteValue_OpLsh32x64(v *ssa.Value) bool {
+ 			break
+ 		}
+ 		v.Reset(ssaop.OpLsh32x64)
+-		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, t)
++		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, typ.UInt64)
+ 		v0.AuxInt = ssa.Int64ToAuxInt(c + d)
+ 		v.AddArg2(x, v0)
+ 		return true
+@@ -17305,9 +17303,8 @@ func rewriteValue_OpLsh8x64(v *ssa.Value) bool {
+ 	}
+ 	// match: (Lsh8x64 <t> (Lsh8x64 x (Const64 [c])) (Const64 [d]))
+ 	// cond: !uaddOvf(c,d)
+-	// result: (Lsh8x64 x (Const64 <t> [c+d]))
++	// result: (Lsh8x64 x (Const64 <typ.UInt64> [c+d]))
+ 	for {
+-		t := v.Type
+ 		if v_0.Op != ssaop.OpLsh8x64 {
+ 			break
+ 		}
+@@ -17326,7 +17323,7 @@ func rewriteValue_OpLsh8x64(v *ssa.Value) bool {
+ 			break
+ 		}
+ 		v.Reset(ssaop.OpLsh8x64)
+-		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, t)
++		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, typ.UInt64)
+ 		v0.AuxInt = ssa.Int64ToAuxInt(c + d)
+ 		v.AddArg2(x, v0)
+ 		return true
+@@ -31306,9 +31303,8 @@ func rewriteValue_OpRsh16Ux64(v *ssa.Value) bool {
+ 	}
+ 	// match: (Rsh16Ux64 <t> (Rsh16Ux64 x (Const64 [c])) (Const64 [d]))
+ 	// cond: !uaddOvf(c,d)
+-	// result: (Rsh16Ux64 x (Const64 <t> [c+d]))
++	// result: (Rsh16Ux64 x (Const64 <typ.UInt64> [c+d]))
+ 	for {
+-		t := v.Type
+ 		if v_0.Op != ssaop.OpRsh16Ux64 {
+ 			break
+ 		}
+@@ -31327,7 +31323,7 @@ func rewriteValue_OpRsh16Ux64(v *ssa.Value) bool {
+ 			break
+ 		}
+ 		v.Reset(ssaop.OpRsh16Ux64)
+-		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, t)
++		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, typ.UInt64)
+ 		v0.AuxInt = ssa.Int64ToAuxInt(c + d)
+ 		v.AddArg2(x, v0)
+ 		return true
+@@ -31649,9 +31645,8 @@ func rewriteValue_OpRsh16x64(v *ssa.Value) bool {
+ 	}
+ 	// match: (Rsh16x64 <t> (Rsh16x64 x (Const64 [c])) (Const64 [d]))
+ 	// cond: !uaddOvf(c,d)
+-	// result: (Rsh16x64 x (Const64 <t> [c+d]))
++	// result: (Rsh16x64 x (Const64 <typ.UInt64> [c+d]))
+ 	for {
+-		t := v.Type
+ 		if v_0.Op != ssaop.OpRsh16x64 {
+ 			break
+ 		}
+@@ -31670,7 +31665,7 @@ func rewriteValue_OpRsh16x64(v *ssa.Value) bool {
+ 			break
+ 		}
+ 		v.Reset(ssaop.OpRsh16x64)
+-		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, t)
++		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, typ.UInt64)
+ 		v0.AuxInt = ssa.Int64ToAuxInt(c + d)
+ 		v.AddArg2(x, v0)
+ 		return true
+@@ -31926,9 +31921,8 @@ func rewriteValue_OpRsh32Ux64(v *ssa.Value) bool {
+ 	}
+ 	// match: (Rsh32Ux64 <t> (Rsh32Ux64 x (Const64 [c])) (Const64 [d]))
+ 	// cond: !uaddOvf(c,d)
+-	// result: (Rsh32Ux64 x (Const64 <t> [c+d]))
++	// result: (Rsh32Ux64 x (Const64 <typ.UInt64> [c+d]))
+ 	for {
+-		t := v.Type
+ 		if v_0.Op != ssaop.OpRsh32Ux64 {
+ 			break
+ 		}
+@@ -31947,7 +31941,7 @@ func rewriteValue_OpRsh32Ux64(v *ssa.Value) bool {
+ 			break
+ 		}
+ 		v.Reset(ssaop.OpRsh32Ux64)
+-		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, t)
++		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, typ.UInt64)
+ 		v0.AuxInt = ssa.Int64ToAuxInt(c + d)
+ 		v.AddArg2(x, v0)
+ 		return true
+@@ -32287,9 +32281,8 @@ func rewriteValue_OpRsh32x64(v *ssa.Value) bool {
+ 	}
+ 	// match: (Rsh32x64 <t> (Rsh32x64 x (Const64 [c])) (Const64 [d]))
+ 	// cond: !uaddOvf(c,d)
+-	// result: (Rsh32x64 x (Const64 <t> [c+d]))
++	// result: (Rsh32x64 x (Const64 <typ.UInt64> [c+d]))
+ 	for {
+-		t := v.Type
+ 		if v_0.Op != ssaop.OpRsh32x64 {
+ 			break
+ 		}
+@@ -32308,7 +32301,7 @@ func rewriteValue_OpRsh32x64(v *ssa.Value) bool {
+ 			break
+ 		}
+ 		v.Reset(ssaop.OpRsh32x64)
+-		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, t)
++		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, typ.UInt64)
+ 		v0.AuxInt = ssa.Int64ToAuxInt(c + d)
+ 		v.AddArg2(x, v0)
+ 		return true
+@@ -33274,9 +33267,8 @@ func rewriteValue_OpRsh8Ux64(v *ssa.Value) bool {
+ 	}
+ 	// match: (Rsh8Ux64 <t> (Rsh8Ux64 x (Const64 [c])) (Const64 [d]))
+ 	// cond: !uaddOvf(c,d)
+-	// result: (Rsh8Ux64 x (Const64 <t> [c+d]))
++	// result: (Rsh8Ux64 x (Const64 <typ.UInt64> [c+d]))
+ 	for {
+-		t := v.Type
+ 		if v_0.Op != ssaop.OpRsh8Ux64 {
+ 			break
+ 		}
+@@ -33295,7 +33287,7 @@ func rewriteValue_OpRsh8Ux64(v *ssa.Value) bool {
+ 			break
+ 		}
+ 		v.Reset(ssaop.OpRsh8Ux64)
+-		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, t)
++		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, typ.UInt64)
+ 		v0.AuxInt = ssa.Int64ToAuxInt(c + d)
+ 		v.AddArg2(x, v0)
+ 		return true
+@@ -33561,6 +33553,7 @@ func rewriteValue_OpRsh8x64(v *ssa.Value) bool {
+ 	v_1 := v.Args[1]
+ 	v_0 := v.Args[0]
+ 	b := v.Block
++	typ := &b.Func.Config.Types
+ 	// match: (Rsh8x64 (Const8 [c]) (Const64 [d]))
+ 	// result: (Const8 [c >> uint64(d)])
+ 	for {
+@@ -33598,9 +33591,8 @@ func rewriteValue_OpRsh8x64(v *ssa.Value) bool {
+ 	}
+ 	// match: (Rsh8x64 <t> (Rsh8x64 x (Const64 [c])) (Const64 [d]))
+ 	// cond: !uaddOvf(c,d)
+-	// result: (Rsh8x64 x (Const64 <t> [c+d]))
++	// result: (Rsh8x64 x (Const64 <typ.UInt64> [c+d]))
+ 	for {
+-		t := v.Type
+ 		if v_0.Op != ssaop.OpRsh8x64 {
+ 			break
+ 		}
+@@ -33619,7 +33611,7 @@ func rewriteValue_OpRsh8x64(v *ssa.Value) bool {
+ 			break
+ 		}
+ 		v.Reset(ssaop.OpRsh8x64)
+-		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, t)
++		v0 := b.NewValue0(v.Pos, ssaop.OpConst64, typ.UInt64)
+ 		v0.AuxInt = ssa.Int64ToAuxInt(c + d)
+ 		v.AddArg2(x, v0)
+ 		return true

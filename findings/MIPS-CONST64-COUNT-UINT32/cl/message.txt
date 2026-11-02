@@ -1,0 +1,11 @@
+cmd/compile: test the full 64-bit constant shift count in MIPS lowering
+
+The MIPS rules lowering shifts by a constant 64-bit count test uint32(c)
+instead of uint64(c) (ARM and 386 use uint64(c)). A shift merge in late
+opt after dec64 can produce a count >= 2^32, so (x>>7)>>(uint64(y)|
+0xFFFFFFFF) is lowered as x>>6. Use uint64(c) in the constant-count shift
+rules.
+
+Fixes #82776.
+
+Assisted-by: AI

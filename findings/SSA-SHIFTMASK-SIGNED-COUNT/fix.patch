@@ -25,3 +25,295 @@ index e407a943..58d763a7 100644
  
  // constant comparisons
  (Eq(64|32|16|8)   (Const(64|32|16|8) [c]) (Const(64|32|16|8) [d])) => (ConstBool [c == d])
+diff --git a/src/cmd/compile/internal/ssa/rewrite/generic/rewritegeneric.go b/src/cmd/compile/internal/ssa/rewrite/generic/rewritegeneric.go
+index 485b7efc..46f8315a 100644
+--- a/src/cmd/compile/internal/ssa/rewrite/generic/rewritegeneric.go
++++ b/src/cmd/compile/internal/ssa/rewrite/generic/rewritegeneric.go
+@@ -15833,7 +15833,7 @@ func rewriteValue_OpLsh16x64(v *ssa.Value) bool {
+ 		return true
+ 	}
+ 	// match: (Lsh16x64 (And16 (Rsh16x64 <t> x (Const64 <t2> [c])) (Const16 [d])) (Const64 [e]))
+-	// cond: c >= e
++	// cond: c >= e && c >= 0 && e >= 0
+ 	// result: (And16 (Rsh16x64 <t> x (Const64 <t2> [c-e])) (Const16 <t> [d<<e]))
+ 	for {
+ 		if v_0.Op != ssaop.OpAnd16 {
+@@ -15863,7 +15863,7 @@ func rewriteValue_OpLsh16x64(v *ssa.Value) bool {
+ 				continue
+ 			}
+ 			e := ssa.AuxIntToInt64(v_1.AuxInt)
+-			if !(c >= e) {
++			if !(c >= e && c >= 0 && e >= 0) {
+ 				continue
+ 			}
+ 			v.Reset(ssaop.OpAnd16)
+@@ -15879,7 +15879,7 @@ func rewriteValue_OpLsh16x64(v *ssa.Value) bool {
+ 		break
+ 	}
+ 	// match: (Lsh16x64 (And16 (Rsh16Ux64 <t> x (Const64 <t2> [c])) (Const16 [d])) (Const64 [e]))
+-	// cond: c >= e
++	// cond: c >= e && c >= 0 && e >= 0
+ 	// result: (And16 (Rsh16Ux64 <t> x (Const64 <t2> [c-e])) (Const16 <t> [d<<e]))
+ 	for {
+ 		if v_0.Op != ssaop.OpAnd16 {
+@@ -15909,7 +15909,7 @@ func rewriteValue_OpLsh16x64(v *ssa.Value) bool {
+ 				continue
+ 			}
+ 			e := ssa.AuxIntToInt64(v_1.AuxInt)
+-			if !(c >= e) {
++			if !(c >= e && c >= 0 && e >= 0) {
+ 				continue
+ 			}
+ 			v.Reset(ssaop.OpAnd16)
+@@ -15925,7 +15925,7 @@ func rewriteValue_OpLsh16x64(v *ssa.Value) bool {
+ 		break
+ 	}
+ 	// match: (Lsh16x64 (And16 (Rsh16x64 <t> x (Const64 <t2> [c])) (Const16 [d])) (Const64 [e]))
+-	// cond: c < e
++	// cond: c < e && c >= 0 && e >= 0
+ 	// result: (And16 (Lsh16x64 <t> x (Const64 <t2> [e-c])) (Const16 <t> [d<<e]))
+ 	for {
+ 		if v_0.Op != ssaop.OpAnd16 {
+@@ -15955,7 +15955,7 @@ func rewriteValue_OpLsh16x64(v *ssa.Value) bool {
+ 				continue
+ 			}
+ 			e := ssa.AuxIntToInt64(v_1.AuxInt)
+-			if !(c < e) {
++			if !(c < e && c >= 0 && e >= 0) {
+ 				continue
+ 			}
+ 			v.Reset(ssaop.OpAnd16)
+@@ -15971,7 +15971,7 @@ func rewriteValue_OpLsh16x64(v *ssa.Value) bool {
+ 		break
+ 	}
+ 	// match: (Lsh16x64 (And16 (Rsh16Ux64 <t> x (Const64 <t2> [c])) (Const16 [d])) (Const64 [e]))
+-	// cond: c < e
++	// cond: c < e && c >= 0 && e >= 0
+ 	// result: (And16 (Lsh16x64 <t> x (Const64 <t2> [e-c])) (Const16 <t> [d<<e]))
+ 	for {
+ 		if v_0.Op != ssaop.OpAnd16 {
+@@ -16001,7 +16001,7 @@ func rewriteValue_OpLsh16x64(v *ssa.Value) bool {
+ 				continue
+ 			}
+ 			e := ssa.AuxIntToInt64(v_1.AuxInt)
+-			if !(c < e) {
++			if !(c < e && c >= 0 && e >= 0) {
+ 				continue
+ 			}
+ 			v.Reset(ssaop.OpAnd16)
+@@ -16361,7 +16361,7 @@ func rewriteValue_OpLsh32x64(v *ssa.Value) bool {
+ 		return true
+ 	}
+ 	// match: (Lsh32x64 (And32 (Rsh32x64 <t> x (Const64 <t2> [c])) (Const32 [d])) (Const64 [e]))
+-	// cond: c >= e
++	// cond: c >= e && c >= 0 && e >= 0
+ 	// result: (And32 (Rsh32x64 <t> x (Const64 <t2> [c-e])) (Const32 <t> [d<<e]))
+ 	for {
+ 		if v_0.Op != ssaop.OpAnd32 {
+@@ -16391,7 +16391,7 @@ func rewriteValue_OpLsh32x64(v *ssa.Value) bool {
+ 				continue
+ 			}
+ 			e := ssa.AuxIntToInt64(v_1.AuxInt)
+-			if !(c >= e) {
++			if !(c >= e && c >= 0 && e >= 0) {
+ 				continue
+ 			}
+ 			v.Reset(ssaop.OpAnd32)
+@@ -16407,7 +16407,7 @@ func rewriteValue_OpLsh32x64(v *ssa.Value) bool {
+ 		break
+ 	}
+ 	// match: (Lsh32x64 (And32 (Rsh32Ux64 <t> x (Const64 <t2> [c])) (Const32 [d])) (Const64 [e]))
+-	// cond: c >= e
++	// cond: c >= e && c >= 0 && e >= 0
+ 	// result: (And32 (Rsh32Ux64 <t> x (Const64 <t2> [c-e])) (Const32 <t> [d<<e]))
+ 	for {
+ 		if v_0.Op != ssaop.OpAnd32 {
+@@ -16437,7 +16437,7 @@ func rewriteValue_OpLsh32x64(v *ssa.Value) bool {
+ 				continue
+ 			}
+ 			e := ssa.AuxIntToInt64(v_1.AuxInt)
+-			if !(c >= e) {
++			if !(c >= e && c >= 0 && e >= 0) {
+ 				continue
+ 			}
+ 			v.Reset(ssaop.OpAnd32)
+@@ -16453,7 +16453,7 @@ func rewriteValue_OpLsh32x64(v *ssa.Value) bool {
+ 		break
+ 	}
+ 	// match: (Lsh32x64 (And32 (Rsh32x64 <t> x (Const64 <t2> [c])) (Const32 [d])) (Const64 [e]))
+-	// cond: c < e
++	// cond: c < e && c >= 0 && e >= 0
+ 	// result: (And32 (Lsh32x64 <t> x (Const64 <t2> [e-c])) (Const32 <t> [d<<e]))
+ 	for {
+ 		if v_0.Op != ssaop.OpAnd32 {
+@@ -16483,7 +16483,7 @@ func rewriteValue_OpLsh32x64(v *ssa.Value) bool {
+ 				continue
+ 			}
+ 			e := ssa.AuxIntToInt64(v_1.AuxInt)
+-			if !(c < e) {
++			if !(c < e && c >= 0 && e >= 0) {
+ 				continue
+ 			}
+ 			v.Reset(ssaop.OpAnd32)
+@@ -16499,7 +16499,7 @@ func rewriteValue_OpLsh32x64(v *ssa.Value) bool {
+ 		break
+ 	}
+ 	// match: (Lsh32x64 (And32 (Rsh32Ux64 <t> x (Const64 <t2> [c])) (Const32 [d])) (Const64 [e]))
+-	// cond: c < e
++	// cond: c < e && c >= 0 && e >= 0
+ 	// result: (And32 (Lsh32x64 <t> x (Const64 <t2> [e-c])) (Const32 <t> [d<<e]))
+ 	for {
+ 		if v_0.Op != ssaop.OpAnd32 {
+@@ -16529,7 +16529,7 @@ func rewriteValue_OpLsh32x64(v *ssa.Value) bool {
+ 				continue
+ 			}
+ 			e := ssa.AuxIntToInt64(v_1.AuxInt)
+-			if !(c < e) {
++			if !(c < e && c >= 0 && e >= 0) {
+ 				continue
+ 			}
+ 			v.Reset(ssaop.OpAnd32)
+@@ -16889,7 +16889,7 @@ func rewriteValue_OpLsh64x64(v *ssa.Value) bool {
+ 		return true
+ 	}
+ 	// match: (Lsh64x64 (And64 (Rsh64x64 <t> x (Const64 <t2> [c])) (Const64 [d])) (Const64 [e]))
+-	// cond: c >= e
++	// cond: c >= e && c >= 0 && e >= 0
+ 	// result: (And64 (Rsh64x64 <t> x (Const64 <t2> [c-e])) (Const64 <t> [d<<e]))
+ 	for {
+ 		if v_0.Op != ssaop.OpAnd64 {
+@@ -16919,7 +16919,7 @@ func rewriteValue_OpLsh64x64(v *ssa.Value) bool {
+ 				continue
+ 			}
+ 			e := ssa.AuxIntToInt64(v_1.AuxInt)
+-			if !(c >= e) {
++			if !(c >= e && c >= 0 && e >= 0) {
+ 				continue
+ 			}
+ 			v.Reset(ssaop.OpAnd64)
+@@ -16935,7 +16935,7 @@ func rewriteValue_OpLsh64x64(v *ssa.Value) bool {
+ 		break
+ 	}
+ 	// match: (Lsh64x64 (And64 (Rsh64Ux64 <t> x (Const64 <t2> [c])) (Const64 [d])) (Const64 [e]))
+-	// cond: c >= e
++	// cond: c >= e && c >= 0 && e >= 0
+ 	// result: (And64 (Rsh64Ux64 <t> x (Const64 <t2> [c-e])) (Const64 <t> [d<<e]))
+ 	for {
+ 		if v_0.Op != ssaop.OpAnd64 {
+@@ -16965,7 +16965,7 @@ func rewriteValue_OpLsh64x64(v *ssa.Value) bool {
+ 				continue
+ 			}
+ 			e := ssa.AuxIntToInt64(v_1.AuxInt)
+-			if !(c >= e) {
++			if !(c >= e && c >= 0 && e >= 0) {
+ 				continue
+ 			}
+ 			v.Reset(ssaop.OpAnd64)
+@@ -16981,7 +16981,7 @@ func rewriteValue_OpLsh64x64(v *ssa.Value) bool {
+ 		break
+ 	}
+ 	// match: (Lsh64x64 (And64 (Rsh64x64 <t> x (Const64 <t2> [c])) (Const64 [d])) (Const64 [e]))
+-	// cond: c < e
++	// cond: c < e && c >= 0 && e >= 0
+ 	// result: (And64 (Lsh64x64 <t> x (Const64 <t2> [e-c])) (Const64 <t> [d<<e]))
+ 	for {
+ 		if v_0.Op != ssaop.OpAnd64 {
+@@ -17011,7 +17011,7 @@ func rewriteValue_OpLsh64x64(v *ssa.Value) bool {
+ 				continue
+ 			}
+ 			e := ssa.AuxIntToInt64(v_1.AuxInt)
+-			if !(c < e) {
++			if !(c < e && c >= 0 && e >= 0) {
+ 				continue
+ 			}
+ 			v.Reset(ssaop.OpAnd64)
+@@ -17027,7 +17027,7 @@ func rewriteValue_OpLsh64x64(v *ssa.Value) bool {
+ 		break
+ 	}
+ 	// match: (Lsh64x64 (And64 (Rsh64Ux64 <t> x (Const64 <t2> [c])) (Const64 [d])) (Const64 [e]))
+-	// cond: c < e
++	// cond: c < e && c >= 0 && e >= 0
+ 	// result: (And64 (Lsh64x64 <t> x (Const64 <t2> [e-c])) (Const64 <t> [d<<e]))
+ 	for {
+ 		if v_0.Op != ssaop.OpAnd64 {
+@@ -17057,7 +17057,7 @@ func rewriteValue_OpLsh64x64(v *ssa.Value) bool {
+ 				continue
+ 			}
+ 			e := ssa.AuxIntToInt64(v_1.AuxInt)
+-			if !(c < e) {
++			if !(c < e && c >= 0 && e >= 0) {
+ 				continue
+ 			}
+ 			v.Reset(ssaop.OpAnd64)
+@@ -17417,7 +17417,7 @@ func rewriteValue_OpLsh8x64(v *ssa.Value) bool {
+ 		return true
+ 	}
+ 	// match: (Lsh8x64 (And8 (Rsh8x64 <t> x (Const64 <t2> [c])) (Const8 [d])) (Const64 [e]))
+-	// cond: c >= e
++	// cond: c >= e && c >= 0 && e >= 0
+ 	// result: (And8 (Rsh8x64 <t> x (Const64 <t2> [c-e])) (Const8 <t> [d<<e]))
+ 	for {
+ 		if v_0.Op != ssaop.OpAnd8 {
+@@ -17447,7 +17447,7 @@ func rewriteValue_OpLsh8x64(v *ssa.Value) bool {
+ 				continue
+ 			}
+ 			e := ssa.AuxIntToInt64(v_1.AuxInt)
+-			if !(c >= e) {
++			if !(c >= e && c >= 0 && e >= 0) {
+ 				continue
+ 			}
+ 			v.Reset(ssaop.OpAnd8)
+@@ -17463,7 +17463,7 @@ func rewriteValue_OpLsh8x64(v *ssa.Value) bool {
+ 		break
+ 	}
+ 	// match: (Lsh8x64 (And8 (Rsh8Ux64 <t> x (Const64 <t2> [c])) (Const8 [d])) (Const64 [e]))
+-	// cond: c >= e
++	// cond: c >= e && c >= 0 && e >= 0
+ 	// result: (And8 (Rsh8Ux64 <t> x (Const64 <t2> [c-e])) (Const8 <t> [d<<e]))
+ 	for {
+ 		if v_0.Op != ssaop.OpAnd8 {
+@@ -17493,7 +17493,7 @@ func rewriteValue_OpLsh8x64(v *ssa.Value) bool {
+ 				continue
+ 			}
+ 			e := ssa.AuxIntToInt64(v_1.AuxInt)
+-			if !(c >= e) {
++			if !(c >= e && c >= 0 && e >= 0) {
+ 				continue
+ 			}
+ 			v.Reset(ssaop.OpAnd8)
+@@ -17509,7 +17509,7 @@ func rewriteValue_OpLsh8x64(v *ssa.Value) bool {
+ 		break
+ 	}
+ 	// match: (Lsh8x64 (And8 (Rsh8x64 <t> x (Const64 <t2> [c])) (Const8 [d])) (Const64 [e]))
+-	// cond: c < e
++	// cond: c < e && c >= 0 && e >= 0
+ 	// result: (And8 (Lsh8x64 <t> x (Const64 <t2> [e-c])) (Const8 <t> [d<<e]))
+ 	for {
+ 		if v_0.Op != ssaop.OpAnd8 {
+@@ -17539,7 +17539,7 @@ func rewriteValue_OpLsh8x64(v *ssa.Value) bool {
+ 				continue
+ 			}
+ 			e := ssa.AuxIntToInt64(v_1.AuxInt)
+-			if !(c < e) {
++			if !(c < e && c >= 0 && e >= 0) {
+ 				continue
+ 			}
+ 			v.Reset(ssaop.OpAnd8)
+@@ -17555,7 +17555,7 @@ func rewriteValue_OpLsh8x64(v *ssa.Value) bool {
+ 		break
+ 	}
+ 	// match: (Lsh8x64 (And8 (Rsh8Ux64 <t> x (Const64 <t2> [c])) (Const8 [d])) (Const64 [e]))
+-	// cond: c < e
++	// cond: c < e && c >= 0 && e >= 0
+ 	// result: (And8 (Lsh8x64 <t> x (Const64 <t2> [e-c])) (Const8 <t> [d<<e]))
+ 	for {
+ 		if v_0.Op != ssaop.OpAnd8 {
+@@ -17585,7 +17585,7 @@ func rewriteValue_OpLsh8x64(v *ssa.Value) bool {
+ 				continue
+ 			}
+ 			e := ssa.AuxIntToInt64(v_1.AuxInt)
+-			if !(c < e) {
++			if !(c < e && c >= 0 && e >= 0) {
+ 				continue
+ 			}
+ 			v.Reset(ssaop.OpAnd8)

@@ -1,0 +1,4 @@
+issue=82774
+arch=s390x
+emu=qemu-s390x
+env=

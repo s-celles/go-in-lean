@@ -1,0 +1,4 @@
+issue=82773
+arch=riscv64
+emu=qemu-riscv64
+env=

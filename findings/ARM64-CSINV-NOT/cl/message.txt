@@ -1,0 +1,10 @@
+cmd/compile: fold constant-flag CSINV to MVN, not the boolean Not
+
+When the flags of a CSINV are a known constant and the condition is
+false, the rule produces the generic op Not, which is the boolean
+negation and lowers to XOR $1: a selected ^y becomes y^1. Produce MVN y
+instead, matching the CSNEG (NEG) and CSINC (ADDconst [1]) siblings.
+
+Fixes #82777.
+
+Assisted-by: AI
