@@ -1337,7 +1337,8 @@ properties:
     complexity: medium
     trust: kernel
     status: known_issue
-    evidence: "findings/PPC64-SPILL-SIGNEXT-80577: v174(0,-1,...) prints 1 (spec -6) on ppc64le power8/power9 and ppc64, go1.27.3 and master babb75be; MOVH spill + MOVHZ restore before a signed CMPW. Instance of the open golang/go#80577 (riscv64 fix CL 806340 does not cover ppc64). Layout-dependent (scheduling ties by source position). Not commented upstream yet."
+    evidence: "findings/PPC64-SPILL-SIGNEXT-80577: v174(0,-1,...) prints 1 (spec -6) on ppc64le power8/power9 and ppc64, go1.27.3 and master babb75be; MOVH spill + MOVHZ restore before a signed CMPW. Instance of the open golang/go#80577 (riscv64 fix CL 806340 does not cover ppc64). Layout-dependent (scheduling ties by source position). Commented on golang/go#80577 after human review (2026-11-02)."
     go_tests: []
     history:
       - {date: 2026-11-02, status: known_issue, note: "--bits index seed 61164 (power9); reduced; classified as a ppc64 instance of golang/go#80577"}
+      - {date: 2026-11-02, status: known_issue, note: "ppc64 reproducer posted on golang/go#80577"}

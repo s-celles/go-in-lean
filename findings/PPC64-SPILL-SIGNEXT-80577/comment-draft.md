@@ -1,4 +1,4 @@
-<!-- DRAFT comment for golang/go#80577, for human review. Do not post without explicit approval. -->
+<!-- Posted on golang/go#80577 on 2026-11-02 after human approval: https://github.com/golang/go/issues/80577#issuecomment-6588709343 -->
 A ppc64/ppc64le instance of the same contract problem, which the riscv64-specific CL 806340 does
 not cover. Reproduces with go1.27.3 and master on ppc64le (power8, power9) and ppc64; amd64, arm64,
 riscv64 and s390x are correct.

@@ -6,7 +6,7 @@ which was opened for riscv64. The riscv64-specific fix (CL 806340) does not cove
 **Impact:** silent wrong results (a signed comparison evaluated on a zero-extended value).
 **Affected:** `GOARCH=ppc64le` (power8, power9) and `ppc64`, go1.27.3 and master `babb75be`.
 amd64, arm64, riscv64 and s390x run the same program correctly.
-**Human review status:** pending. Not commented upstream.
+**Human review status:** approved 2026-11-02; posted as a comment on golang/go#80577 (https://github.com/golang/go/issues/80577#issuecomment-6588709343).
 
 ## What happens
 
