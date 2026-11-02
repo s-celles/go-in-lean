@@ -1,0 +1,4 @@
+issue=82782
+arch=ppc64le
+emu=qemu-ppc64le
+env=GOPPC64=power10

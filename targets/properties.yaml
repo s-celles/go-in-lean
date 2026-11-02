@@ -1286,3 +1286,21 @@ properties:
     go_tests: []
     history:
       - {date: 2026-11-02, status: known_issue, note: "--bits campaign seeds 60958/60961/60970 (master, riscv64 rva23u64); classified as an instance of golang/go#80577"}
+  - id: PPC64-POWER10-BSWAP16-MISCOMPILE
+    package: cmd/compile/internal/ssagen (intrinsics), GOARCH=ppc64le/ppc64 GOPPC64=power10
+    function: "Power10 ReverseBytes16 intrinsic types OpBswap16 as 64-bit uint instead of uint16"
+    go_source: "ssagen/intrinsics.go: Power10 (cfg.goppc64>=10) ReverseBytes16 -> OpBswap16 types.Types[types.TUINT] (loong64/riscv64 use TUINT16); go1.27 .. master a0c8470e"
+    doc: "a 16-bit byte reversal typed as 64-bit unsigned; prove derives a false sign fact on ^int16(ReverseBytes16(k))"
+    preconditions: "GOPPC64=power10; ^int16(bits.ReverseBytes16(k)) used in a comparison"
+    postcondition: "the comparison reflects the true int16 value -- violated: folded to the wrong result"
+    lean_statement: "GoInLean/Compiler/PPC64Bswap16.lean"
+    lean_theorem: [Go.Compiler.PPC64Bswap16.notRev_neg_witness, Go.Compiler.PPC64Bswap16.notRev_nonneg_witness, Go.Compiler.PPC64Bswap16.mistyping_unsound, Go.Compiler.PPC64Bswap16.both_branches_reachable]
+    oracle: "metamorphic fuzzing (--bits, GOPPC64=power10) under qemu; power9/amd64/arm64 controls; canary + objdump to exclude OOB"
+    ambiguity_risk: low
+    complexity: low
+    trust: kernel
+    status: go_discrepancy_reproduced
+    evidence: "findings/PPC64-POWER10-BSWAP16-MISCOMPILE: f(0x0400,5,1) returns 7 (spec -5) on GOPPC64=power10, go1.27.3 and master a0c8470e; power9 and go1.26 correct; one-line fix (TUINT16) validated (ssa/test/codegen pass). Canary + disassembly show no out-of-bounds. Reported as golang/go#82782."
+    go_tests: []
+    history:
+      - {date: 2026-11-02, status: go_discrepancy_reproduced, note: "found via --bits power10 fuzzing; first thought OOB, canary disproved it; miscompilation; reported as golang/go#82782"}

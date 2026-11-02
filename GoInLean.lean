@@ -32,3 +32,4 @@ import GoInLean.Compiler.RISCV64Narrow
 import GoInLean.Compiler.PPC64ExtShift
 import GoInLean.Compiler.MIPSConstCount
 import GoInLean.Compiler.ARM64CondSelect
+import GoInLean.Compiler.PPC64Bswap16

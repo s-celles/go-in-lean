@@ -1,0 +1,13 @@
+diff --git a/src/cmd/compile/internal/ssagen/intrinsics.go b/src/cmd/compile/internal/ssagen/intrinsics.go
+index 95ccf15d..08c49ddd 100644
+--- a/src/cmd/compile/internal/ssagen/intrinsics.go
++++ b/src/cmd/compile/internal/ssagen/intrinsics.go
+@@ -1044,7 +1044,7 @@ func initIntrinsics(cfg *intrinsicBuildConfig) {
+ 		// On Power10, 16-bit rotate is not available so use BRH instruction
+ 		addF("math/bits", "ReverseBytes16",
+ 			func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value {
+-				return s.newValue1(ssaop.OpBswap16, types.Types[types.TUINT], args[0])
++				return s.newValue1(ssaop.OpBswap16, types.Types[types.TUINT16], args[0])
+ 			},
+ 			sys.PPC64)
+ 	}

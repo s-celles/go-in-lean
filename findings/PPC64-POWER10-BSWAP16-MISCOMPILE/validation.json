@@ -1,0 +1,47 @@
+{
+ "security_impact": "none demonstrated: wrong-code miscompilation (wrong value/branch). Out-of-bounds read tested via canary + disassembly and NOT observed; the index/bounds-check paths tested stay correctly checked.",
+ "disclosure": "public (golang/go#82782); ordinary miscompilation, same class as #82772-#82777",
+ "counterexample_value": {
+  "expr": "r := ^int16(bits.ReverseBytes16(0x0400)); if 5 <= 1 { r = 7 }; return r",
+  "optimised": 7,
+  "spec": -5
+ },
+ "versions": {
+  "go1.21.13": "correct",
+  "go1.23.12": "correct",
+  "go1.25.5": "correct",
+  "go1.26.10": "correct",
+  "go1.27.3": "wrong",
+  "master a0c8470e (2026-11-02)": "wrong",
+  "master babb75be + fix.patch": "correct"
+ },
+ "controls": {
+  "power9": "correct",
+  "amd64": "correct",
+  "arm64": "correct"
+ },
+ "fix": "type the Power10 OpBswap16 as types.Types[types.TUINT16] (one line), matching loong64/riscv64",
+ "fix_tests": "master + fix.patch: go test -short cmd/compile/internal/ssa cmd/compile/internal/test ok; go test -count=1 cmd/internal/testdir -run Test/codegen ok",
+ "known_issue_search": {
+  "date": "2026-11-02",
+  "result": "none found; related class golang/go#82767, #80577"
+ },
+ "classification_history": [
+  {
+   "date": "2026-11-02",
+   "status": "go_discrepancy_reproduced",
+   "note": "private; awaiting maintainer GHSA"
+  }
+ ],
+ "oob_tested_not_observed": {
+  "branch_case": "main.oob compiles to MOVD $0,R3; RET (returns 0, no load); sentinel past slice never returned",
+  "index_case": "s[int(ReverseBytes16(k))] on len-32768 slice keeps RLWINM mask + CMPU/BLE panicBounds; panics correctly",
+  "method": "go tool objdump -s 'main\\.<fn>$' + sentinel in valid backing memory"
+ },
+ "upstream": {
+  "issue": "https://github.com/golang/go/issues/82782",
+  "date": "2026-11-02",
+  "cl": "https://go-review.googlesource.com/c/go/+/857542",
+  "cl_mailed": "2026-11-02"
+ }
+}

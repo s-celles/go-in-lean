@@ -1,0 +1,7 @@
+{"go_version": "go1.27.3 and master go1.28-devel_babb75be; go1.26.10 and earlier correct",
+ "file": "src/cmd/compile/internal/ssagen/intrinsics.go",
+ "rule": "Power10 ReverseBytes16 intrinsic (cfg.goppc64 >= 10): OpBswap16 typed types.Types[types.TUINT] instead of TUINT16 (loong64/riscv64 use TUINT16)",
+ "arch": "ppc64le and ppc64, GOPPC64=power10",
+ "lean": "GoInLeanPrivate/PPC64Bswap16.lean", "lean_toolchain": "leanprover/lean4:v4.35.0",
+ "found_by": "go-in-lean public metamorphic_fuzz.py --bits, GOPPC64=power10 variant, seeds 61164/61353/61374/61381",
+ "emulator": "qemu-user 11.1.2 (nixpkgs), -cpu power10"}

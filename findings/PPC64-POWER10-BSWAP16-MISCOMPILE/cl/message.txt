@@ -1,0 +1,15 @@
+cmd/compile: type Power10 ReverseBytes16 as uint16, not uint
+
+The Power10 ReverseBytes16 intrinsic builds OpBswap16 with result type
+types.Types[types.TUINT] (64-bit unsigned); the loong64 and riscv64
+intrinsics for the same function use types.Types[types.TUINT16]. The
+value is a 16-bit byte reversal typed as a 64-bit unsigned, so the prove
+pass derives a false fact about ^int16(bits.ReverseBytes16(k)) and folds
+a comparison to the wrong result: a selected value is miscomputed on
+GOPPC64=power10 (go1.27 regression; power9 and earlier releases correct).
+
+Type the Power10 OpBswap16 as TUINT16, matching loong64 and riscv64.
+
+Fixes #82782.
+
+Assisted-by: AI
