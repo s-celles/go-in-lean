@@ -1,0 +1,614 @@
+{
+ "m1083_10": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1802:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1083,
+  "rule": "(Div32u x (Const32 [10])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(2576980378)]) x)) (Const64 <typ.UInt64> [4-1]))"
+ },
+ "m1083_100": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1832:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1083,
+  "rule": "(Div32u x (Const32 [100])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(1202590843)]) x)) (Const64 <typ.UInt64> [7-1]))"
+ },
+ "m1083_1000": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1844:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/MagicTriage.lean:1848:5: warning: Variable name `h0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h0\n\nNote: This linter can be ",
+  "line": 1083,
+  "rule": "(Div32u x (Const32 [1000])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(103079216)]) x)) (Const64 <typ.UInt64> [10-1]))"
+ },
+ "m1083_1000003": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1910:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/MagicTriage.lean:1914:5: warning: Variable name `h0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h0\n\nNote: This linter can be ",
+  "line": 1083,
+  "rule": "(Div32u x (Const32 [1000003])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(208618821)]) x)) (Const64 <typ.UInt64> [20-1]))"
+ },
+ "m1083_11": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1808:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1083,
+  "rule": "(Div32u x (Const32 [11])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(1952257862)]) x)) (Const64 <typ.UInt64> [4-1]))"
+ },
+ "m1083_12": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1814:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1083,
+  "rule": "(Div32u x (Const32 [12])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(1431655766)]) x)) (Const64 <typ.UInt64> [4-1]))"
+ },
+ "m1083_13": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1820:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1083,
+  "rule": "(Div32u x (Const32 [13])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(991146300)]) x)) (Const64 <typ.UInt64> [4-1]))"
+ },
+ "m1083_25": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1826:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1083,
+  "rule": "(Div32u x (Const32 [25])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(1202590843)]) x)) (Const64 <typ.UInt64> [5-1]))"
+ },
+ "m1083_3": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1772:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1083,
+  "rule": "(Div32u x (Const32 [3])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(1431655766)]) x)) (Const64 <typ.UInt64> [2-1]))"
+ },
+ "m1083_5": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1778:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1083,
+  "rule": "(Div32u x (Const32 [5])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(2576980378)]) x)) (Const64 <typ.UInt64> [3-1]))"
+ },
+ "m1083_6": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1784:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1083,
+  "rule": "(Div32u x (Const32 [6])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(1431655766)]) x)) (Const64 <typ.UInt64> [3-1]))"
+ },
+ "m1083_641": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1838:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1083,
+  "rule": "(Div32u x (Const32 [641])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(2566259711)]) x)) (Const64 <typ.UInt64> [10-1]))"
+ },
+ "m1083_7": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1790:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1083,
+  "rule": "(Div32u x (Const32 [7])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(613566757)]) x)) (Const64 <typ.UInt64> [3-1]))"
+ },
+ "m1083_9": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1796:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1083,
+  "rule": "(Div32u x (Const32 [9])) =>  (Rsh32Ux64 <typ.UInt32> (Avg32u x (Hmul32u <typ.UInt32> (Const32 <typ.UInt32> [int32(3340530120)]) x)) (Const64 <typ.UInt64> [4-1]))"
+ },
+ "m1108_10": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1952:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1108,
+  "rule": "(Div32u x (Const32 [10])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(2576980378)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+4-1])))"
+ },
+ "m1108_100": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1982:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1108,
+  "rule": "(Div32u x (Const32 [100])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(1202590843)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+7-1])))"
+ },
+ "m1108_1000": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1994:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/MagicTriage.lean:1998:5: warning: Variable name `h0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h0\n\nNote: This linter can be ",
+  "line": 1108,
+  "rule": "(Div32u x (Const32 [1000])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(103079216)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+10-1])))"
+ },
+ "m1108_1000003": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:2060:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/MagicTriage.lean:2064:5: warning: Variable name `h0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h0\n\nNote: This linter can be ",
+  "line": 1108,
+  "rule": "(Div32u x (Const32 [1000003])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(208618821)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+20-1])))"
+ },
+ "m1108_11": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1958:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1108,
+  "rule": "(Div32u x (Const32 [11])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(1952257862)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+4-1])))"
+ },
+ "m1108_12": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1964:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1108,
+  "rule": "(Div32u x (Const32 [12])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(1431655766)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+4-1])))"
+ },
+ "m1108_13": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1970:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1108,
+  "rule": "(Div32u x (Const32 [13])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(991146300)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+4-1])))"
+ },
+ "m1108_25": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1976:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1108,
+  "rule": "(Div32u x (Const32 [25])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(1202590843)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+5-1])))"
+ },
+ "m1108_3": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1922:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1108,
+  "rule": "(Div32u x (Const32 [3])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(1431655766)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+2-1])))"
+ },
+ "m1108_5": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1928:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1108,
+  "rule": "(Div32u x (Const32 [5])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(2576980378)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+3-1])))"
+ },
+ "m1108_6": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1934:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1108,
+  "rule": "(Div32u x (Const32 [6])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(1431655766)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+3-1])))"
+ },
+ "m1108_641": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1988:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1108,
+  "rule": "(Div32u x (Const32 [641])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(2566259711)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+10-1])))"
+ },
+ "m1108_7": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1940:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1108,
+  "rule": "(Div32u x (Const32 [7])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(613566757)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+3-1])))"
+ },
+ "m1108_9": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:1946:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1108,
+  "rule": "(Div32u x (Const32 [9])) =>  (Trunc64to32 (Rsh64Ux64 <typ.UInt64> (Avg64u (Lsh64x64 <typ.UInt64> (ZeroExt32to64 x) (Const64 <typ.UInt64> [32])) (Mul64 <typ.UInt64> (Const64 <typ.UInt32> [int64(3340530120)]) (ZeroExt32to64 x))) (Const64 <typ.UInt64> [32+4-1])))"
+ },
+ "m1172_10": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:2102:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1172,
+  "rule": "(Div64u x (Const64 [10])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(11068046444225730970)]) x)) (Const64 <typ.UInt64> [4-1]))"
+ },
+ "m1172_100": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:2132:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1172,
+  "rule": "(Div64u x (Const64 [100])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(5165088340638674453)]) x)) (Const64 <typ.UInt64> [7-1]))"
+ },
+ "m1172_1000": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:2144:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1172,
+  "rule": "(Div64u x (Const64 [1000])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(442721857769029239)]) x)) (Const64 <typ.UInt64> [10-1]))"
+ },
+ "m1172_1000003": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:2210:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/MagicTriage.lean:2214:5: warning: Variable name `h0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h0\n\nNote: This linter can be ",
+  "line": 1172,
+  "rule": "(Div64u x (Const64 [1000003])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(896011011859258473)]) x)) (Const64 <typ.UInt64> [20-1]))"
+ },
+ "m1172_11": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:2108:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1172,
+  "rule": "(Div64u x (Const64 [11])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(8384883669867978008)]) x)) (Const64 <typ.UInt64> [4-1]))"
+ },
+ "m1172_12": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:2114:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1172,
+  "rule": "(Div64u x (Const64 [12])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(6148914691236517206)]) x)) (Const64 <typ.UInt64> [4-1]))"
+ },
+ "m1172_13": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:2120:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1172,
+  "rule": "(Div64u x (Const64 [13])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(4256940940086819604)]) x)) (Const64 <typ.UInt64> [4-1]))"
+ },
+ "m1172_25": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:2126:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1172,
+  "rule": "(Div64u x (Const64 [25])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(5165088340638674453)]) x)) (Const64 <typ.UInt64> [5-1]))"
+ },
+ "m1172_3": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:2072:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1172,
+  "rule": "(Div64u x (Const64 [3])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(6148914691236517206)]) x)) (Const64 <typ.UInt64> [2-1]))"
+ },
+ "m1172_4294967291": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:2222:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/MagicTriage.lean:2226:5: warning: Variable name `h0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h0\n\nNote: This linter can be ",
+  "line": 1172,
+  "rule": "(Div64u x (Const64 [4294967291])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(21474836506)]) x)) (Const64 <typ.UInt64> [32-1]))"
+ },
+ "m1172_5": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:2078:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1172,
+  "rule": "(Div64u x (Const64 [5])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(11068046444225730970)]) x)) (Const64 <typ.UInt64> [3-1]))"
+ },
+ "m1172_6": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:2084:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1172,
+  "rule": "(Div64u x (Const64 [6])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(6148914691236517206)]) x)) (Const64 <typ.UInt64> [3-1]))"
+ },
+ "m1172_641": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:2138:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1172,
+  "rule": "(Div64u x (Const64 [641])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(11022001529221151746)]) x)) (Const64 <typ.UInt64> [10-1]))"
+ },
+ "m1172_6700417": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:2150:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/MagicTriage.lean:2154:5: warning: Variable name `h0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h0\n\nNote: This linter can be ",
+  "line": 1172,
+  "rule": "(Div64u x (Const64 [6700417])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(4647714810069254146)]) x)) (Const64 <typ.UInt64> [23-1]))"
+ },
+ "m1172_7": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:2090:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1172,
+  "rule": "(Div64u x (Const64 [7])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(2635249153387078803)]) x)) (Const64 <typ.UInt64> [3-1]))"
+ },
+ "m1172_9": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:2096:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1172,
+  "rule": "(Div64u x (Const64 [9])) =>  (Rsh64Ux64 <typ.UInt64> (Avg64u x (Hmul64u <typ.UInt64> (Const64 <typ.UInt64> [int64(14347467612885206813)]) x)) (Const64 <typ.UInt64> [4-1]))"
+ },
+ "m1237_10": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3116:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1237,
+  "rule": "(Div32 <t> x (Const32 [10])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(3435973837)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+3])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))"
+ },
+ "m1237_100": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3146:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1237,
+  "rule": "(Div32 <t> x (Const32 [100])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(2748779070)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+6])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))"
+ },
+ "m1237_1000": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3158:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1237,
+  "rule": "(Div32 <t> x (Const32 [1000])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(2199023256)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+9])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))"
+ },
+ "m1237_1000003": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3200:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/MagicTriage.lean:3204:5: warning: Variable name `h0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h0\n\nNote: This linter can be ",
+  "line": 1237,
+  "rule": "(Div32 <t> x (Const32 [1000003])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(2251793059)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+19])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))"
+ },
+ "m1237_11": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3122:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1237,
+  "rule": "(Div32 <t> x (Const32 [11])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(3123612579)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+3])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))"
+ },
+ "m1237_12": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3128:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1237,
+  "rule": "(Div32 <t> x (Const32 [12])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(2863311531)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+3])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))"
+ },
+ "m1237_13": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3134:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1237,
+  "rule": "(Div32 <t> x (Const32 [13])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(2643056798)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+3])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))"
+ },
+ "m1237_25": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3140:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1237,
+  "rule": "(Div32 <t> x (Const32 [25])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(2748779070)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+4])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))"
+ },
+ "m1237_3": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3086:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1237,
+  "rule": "(Div32 <t> x (Const32 [3])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(2863311531)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+1])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))"
+ },
+ "m1237_5": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3092:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1237,
+  "rule": "(Div32 <t> x (Const32 [5])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(3435973837)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+2])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))"
+ },
+ "m1237_6": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3098:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1237,
+  "rule": "(Div32 <t> x (Const32 [6])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(2863311531)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+2])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))"
+ },
+ "m1237_641": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3152:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1237,
+  "rule": "(Div32 <t> x (Const32 [641])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(3430613504)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+9])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))"
+ },
+ "m1237_6700417": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3164:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/MagicTriage.lean:3168:5: warning: Variable name `h0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h0\n\nNote: This linter can be ",
+  "line": 1237,
+  "rule": "(Div32 <t> x (Const32 [6700417])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(2688548864)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+22])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))"
+ },
+ "m1237_7": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3104:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1237,
+  "rule": "(Div32 <t> x (Const32 [7])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(2454267027)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+2])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))"
+ },
+ "m1237_9": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3110:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1237,
+  "rule": "(Div32 <t> x (Const32 [9])) =>  (Sub32 <t> (Rsh64x64 <t> (Mul64 <typ.UInt64> (Const64 <typ.UInt64> [int64(3817748708)]) (SignExt32to64 x)) (Const64 <typ.UInt64> [32+3])) (Rsh64x64 <t> (SignExt32to64 x) (Const64 <typ.UInt64> [63])))"
+ },
+ "m1257_10": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3236:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1257,
+  "rule": "(Div32 <t> x (Const32 [10])) =>  (Sub32 <t> (Rsh32x64 <t> (Add32 <t> (Hmul32 <t> (Const32 <typ.UInt32> [int32(3435973837)]) x) x) (Const64 <typ.UInt64> [3])) (Rsh32x64 <t> x (Const64 <typ.UInt64> [31])))"
+ },
+ "m1257_1000003": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3272:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1257,
+  "rule": "(Div32 <t> x (Const32 [1000003])) =>  (Sub32 <t> (Rsh32x64 <t> (Add32 <t> (Hmul32 <t> (Const32 <typ.UInt32> [int32(2251793059)]) x) x) (Const64 <typ.UInt64> [19])) (Rsh32x64 <t> x (Const64 <typ.UInt64> [31])))"
+ },
+ "m1257_1073741823": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3260:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1257,
+  "rule": "(Div32 <t> x (Const32 [1073741823])) =>  (Sub32 <t> (Rsh32x64 <t> (Add32 <t> (Hmul32 <t> (Const32 <typ.UInt32> [int32(2147483651)]) x) x) (Const64 <typ.UInt64> [29])) (Rsh32x64 <t> x (Const64 <typ.UInt64> [31])))"
+ },
+ "m1257_1073741825": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3254:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1257,
+  "rule": "(Div32 <t> x (Const32 [1073741825])) =>  (Sub32 <t> (Rsh32x64 <t> (Add32 <t> (Hmul32 <t> (Const32 <typ.UInt32> [int32(4294967293)]) x) x) (Const64 <typ.UInt64> [30])) (Rsh32x64 <t> x (Const64 <typ.UInt64> [31])))"
+ },
+ "m1257_11": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3242:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1257,
+  "rule": "(Div32 <t> x (Const32 [11])) =>  (Sub32 <t> (Rsh32x64 <t> (Add32 <t> (Hmul32 <t> (Const32 <typ.UInt32> [int32(3123612579)]) x) x) (Const64 <typ.UInt64> [3])) (Rsh32x64 <t> x (Const64 <typ.UInt64> [31])))"
+ },
+ "m1257_117440512": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3266:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1257,
+  "rule": "(Div32 <t> x (Const32 [117440512])) =>  (Sub32 <t> (Rsh32x64 <t> (Add32 <t> (Hmul32 <t> (Const32 <typ.UInt32> [int32(2454267027)]) x) x) (Const64 <typ.UInt64> [26])) (Rsh32x64 <t> x (Const64 <typ.UInt64> [31])))"
+ },
+ "m1257_12": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3248:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1257,
+  "rule": "(Div32 <t> x (Const32 [12])) =>  (Sub32 <t> (Rsh32x64 <t> (Add32 <t> (Hmul32 <t> (Const32 <typ.UInt32> [int32(2863311531)]) x) x) (Const64 <typ.UInt64> [3])) (Rsh32x64 <t> x (Const64 <typ.UInt64> [31])))"
+ },
+ "m1257_3": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3212:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1257,
+  "rule": "(Div32 <t> x (Const32 [3])) =>  (Sub32 <t> (Rsh32x64 <t> (Add32 <t> (Hmul32 <t> (Const32 <typ.UInt32> [int32(2863311531)]) x) x) (Const64 <typ.UInt64> [1])) (Rsh32x64 <t> x (Const64 <typ.UInt64> [31])))"
+ },
+ "m1257_5": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3218:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1257,
+  "rule": "(Div32 <t> x (Const32 [5])) =>  (Sub32 <t> (Rsh32x64 <t> (Add32 <t> (Hmul32 <t> (Const32 <typ.UInt32> [int32(3435973837)]) x) x) (Const64 <typ.UInt64> [2])) (Rsh32x64 <t> x (Const64 <typ.UInt64> [31])))"
+ },
+ "m1257_6": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3224:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1257,
+  "rule": "(Div32 <t> x (Const32 [6])) =>  (Sub32 <t> (Rsh32x64 <t> (Add32 <t> (Hmul32 <t> (Const32 <typ.UInt32> [int32(2863311531)]) x) x) (Const64 <typ.UInt64> [2])) (Rsh32x64 <t> x (Const64 <typ.UInt64> [31])))"
+ },
+ "m1257_7": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3230:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1257,
+  "rule": "(Div32 <t> x (Const32 [7])) =>  (Sub32 <t> (Rsh32x64 <t> (Add32 <t> (Hmul32 <t> (Const32 <typ.UInt32> [int32(2454267027)]) x) x) (Const64 <typ.UInt64> [2])) (Rsh32x64 <t> x (Const64 <typ.UInt64> [31])))"
+ },
+ "m1279_10": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3302:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1279,
+  "rule": "(Div64 <t> x (Const64 [10])) =>  (Sub64 <t> (Rsh64x64 <t> (Add64 <t> (Hmul64 <t> (Const64 <typ.UInt64> [int64(14757395258967641293)]) x) x) (Const64 <typ.UInt64> [3])) (Rsh64x64 <t> x (Const64 <typ.UInt64> [63])))"
+ },
+ "m1279_100": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3320:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1279,
+  "rule": "(Div64 <t> x (Const64 [100])) =>  (Sub64 <t> (Rsh64x64 <t> (Add64 <t> (Hmul64 <t> (Const64 <typ.UInt64> [int64(11805916207174113035)]) x) x) (Const64 <typ.UInt64> [6])) (Rsh64x64 <t> x (Const64 <typ.UInt64> [63])))"
+ },
+ "m1279_1000003": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3350:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1279,
+  "rule": "(Div64 <t> x (Const64 [1000003])) =>  (Sub64 <t> (Rsh64x64 <t> (Add64 <t> (Hmul64 <t> (Const64 <typ.UInt64> [int64(9671377542784405045)]) x) x) (Const64 <typ.UInt64> [19])) (Rsh64x64 <t> x (Const64 <typ.UInt64> [63])))"
+ },
+ "m1279_12": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3308:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1279,
+  "rule": "(Div64 <t> x (Const64 [12])) =>  (Sub64 <t> (Rsh64x64 <t> (Add64 <t> (Hmul64 <t> (Const64 <typ.UInt64> [int64(12297829382473034411)]) x) x) (Const64 <typ.UInt64> [3])) (Rsh64x64 <t> x (Const64 <typ.UInt64> [63])))"
+ },
+ "m1279_2147483647": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3356:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1279,
+  "rule": "(Div64 <t> x (Const64 [2147483647])) =>  (Sub64 <t> (Rsh64x64 <t> (Add64 <t> (Hmul64 <t> (Const64 <typ.UInt64> [int64(9223372041149743107)]) x) x) (Const64 <typ.UInt64> [30])) (Rsh64x64 <t> x (Const64 <typ.UInt64> [63])))"
+ },
+ "m1279_25": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3314:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1279,
+  "rule": "(Div64 <t> x (Const64 [25])) =>  (Sub64 <t> (Rsh64x64 <t> (Add64 <t> (Hmul64 <t> (Const64 <typ.UInt64> [int64(11805916207174113035)]) x) x) (Const64 <typ.UInt64> [4])) (Rsh64x64 <t> x (Const64 <typ.UInt64> [63])))"
+ },
+ "m1279_3": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3278:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1279,
+  "rule": "(Div64 <t> x (Const64 [3])) =>  (Sub64 <t> (Rsh64x64 <t> (Add64 <t> (Hmul64 <t> (Const64 <typ.UInt64> [int64(12297829382473034411)]) x) x) (Const64 <typ.UInt64> [1])) (Rsh64x64 <t> x (Const64 <typ.UInt64> [63])))"
+ },
+ "m1279_3458764513820540928": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3368:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1279,
+  "rule": "(Div64 <t> x (Const64 [3458764513820540928])) =>  (Sub64 <t> (Rsh64x64 <t> (Add64 <t> (Hmul64 <t> (Const64 <typ.UInt64> [int64(12297829382473034411)]) x) x) (Const64 <typ.UInt64> [61])) (Rsh64x64 <t> x (Const64 <typ.UInt64> [63])))"
+ },
+ "m1279_4294967291": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3362:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1279,
+  "rule": "(Div64 <t> x (Const64 [4294967291])) =>  (Sub64 <t> (Rsh64x64 <t> (Add64 <t> (Hmul64 <t> (Const64 <typ.UInt64> [int64(9223372047592194061)]) x) x) (Const64 <typ.UInt64> [31])) (Rsh64x64 <t> x (Const64 <typ.UInt64> [63])))"
+ },
+ "m1279_4611686018427387903": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3344:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1279,
+  "rule": "(Div64 <t> x (Const64 [4611686018427387903])) =>  (Sub64 <t> (Rsh64x64 <t> (Add64 <t> (Hmul64 <t> (Const64 <typ.UInt64> [int64(9223372036854775811)]) x) x) (Const64 <typ.UInt64> [61])) (Rsh64x64 <t> x (Const64 <typ.UInt64> [63])))"
+ },
+ "m1279_4611686018427387905": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3338:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1279,
+  "rule": "(Div64 <t> x (Const64 [4611686018427387905])) =>  (Sub64 <t> (Rsh64x64 <t> (Add64 <t> (Hmul64 <t> (Const64 <typ.UInt64> [int64(18446744073709551613)]) x) x) (Const64 <typ.UInt64> [62])) (Rsh64x64 <t> x (Const64 <typ.UInt64> [63])))"
+ },
+ "m1279_5": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3284:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1279,
+  "rule": "(Div64 <t> x (Const64 [5])) =>  (Sub64 <t> (Rsh64x64 <t> (Add64 <t> (Hmul64 <t> (Const64 <typ.UInt64> [int64(14757395258967641293)]) x) x) (Const64 <typ.UInt64> [2])) (Rsh64x64 <t> x (Const64 <typ.UInt64> [63])))"
+ },
+ "m1279_6": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3290:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1279,
+  "rule": "(Div64 <t> x (Const64 [6])) =>  (Sub64 <t> (Rsh64x64 <t> (Add64 <t> (Hmul64 <t> (Const64 <typ.UInt64> [int64(12297829382473034411)]) x) x) (Const64 <typ.UInt64> [2])) (Rsh64x64 <t> x (Const64 <typ.UInt64> [63])))"
+ },
+ "m1279_6148914691236517205": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3374:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/MagicTriage.lean:3378:5: warning: Variable name `h0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h0\n\nNote: This linter can be ",
+  "line": 1279,
+  "rule": "(Div64 <t> x (Const64 [6148914691236517205])) =>  (Sub64 <t> (Rsh64x64 <t> (Add64 <t> (Hmul64 <t> (Const64 <typ.UInt64> [int64(13835058055282163713)]) x) x) (Const64 <typ.UInt64> [62])) (Rsh64x64 <t> x (Const64 <typ.UInt64> [63])))"
+ },
+ "m1279_641": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3326:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1279,
+  "rule": "(Div64 <t> x (Const64 [641])) =>  (Sub64 <t> (Rsh64x64 <t> (Add64 <t> (Hmul64 <t> (Const64 <typ.UInt64> [int64(14734372801465351681)]) x) x) (Const64 <typ.UInt64> [9])) (Rsh64x64 <t> x (Const64 <typ.UInt64> [63])))"
+ },
+ "m1279_6700417": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3332:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1279,
+  "rule": "(Div64 <t> x (Const64 [6700417])) =>  (Sub64 <t> (Rsh64x64 <t> (Add64 <t> (Hmul64 <t> (Const64 <typ.UInt64> [int64(11547229441889402881)]) x) x) (Const64 <typ.UInt64> [22])) (Rsh64x64 <t> x (Const64 <typ.UInt64> [63])))"
+ },
+ "m1279_9": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:3296:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1279,
+  "rule": "(Div64 <t> x (Const64 [9])) =>  (Sub64 <t> (Rsh64x64 <t> (Add64 <t> (Hmul64 <t> (Const64 <typ.UInt64> [int64(16397105843297379215)]) x) x) (Const64 <typ.UInt64> [3])) (Rsh64x64 <t> x (Const64 <typ.UInt64> [63])))"
+ },
+ "m1327_1000": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:4286:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1327,
+  "rule": "(Mod32u <t> x (Const32 [1000])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [1000])) (Const32 <t> [1000])))"
+ },
+ "m1327_1000003": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:4328:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/MagicTriage.lean:4332:5: warning: Variable name `h0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h0\n\nNote: This linter can be ",
+  "line": 1327,
+  "rule": "(Mod32u <t> x (Const32 [1000003])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [1000003])) (Const32 <t> [1000003])))"
+ },
+ "m1327_641": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:4280:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1327,
+  "rule": "(Mod32u <t> x (Const32 [641])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [641])) (Const32 <t> [641])))"
+ },
+ "m1327_6700417": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:4292:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/MagicTriage.lean:4296:5: warning: Variable name `h0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h0\n\nNote: This linter can be ",
+  "line": 1327,
+  "rule": "(Mod32u <t> x (Const32 [6700417])) =>  (Sub32 x (Mul32 <t> (Div32u <t> x (Const32 <t> [6700417])) (Const32 <t> [6700417])))"
+ },
+ "m1329_10": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:4370:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1329,
+  "rule": "(Mod64u <t> x (Const64 [10])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [10])) (Const64 <t> [10])))"
+ },
+ "m1329_100": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:4400:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1329,
+  "rule": "(Mod64u <t> x (Const64 [100])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [100])) (Const64 <t> [100])))"
+ },
+ "m1329_1000": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:4412:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1329,
+  "rule": "(Mod64u <t> x (Const64 [1000])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [1000])) (Const64 <t> [1000])))"
+ },
+ "m1329_1000003": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:4454:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1329,
+  "rule": "(Mod64u <t> x (Const64 [1000003])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [1000003])) (Const64 <t> [1000003])))"
+ },
+ "m1329_11": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:4376:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/MagicTriage.lean:4380:5: warning: Variable name `h0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h0\n\nNote: This linter can be ",
+  "line": 1329,
+  "rule": "(Mod64u <t> x (Const64 [11])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [11])) (Const64 <t> [11])))"
+ },
+ "m1329_13": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:4388:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1329,
+  "rule": "(Mod64u <t> x (Const64 [13])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [13])) (Const64 <t> [13])))"
+ },
+ "m1329_2147483647": {
+  "category": "elab_error",
+  "detail": "MagicTriage.lean:4460:241: error: maximum number of errors (100; from option `maxErrors`) reached, exiting\n",
+  "line": 1329,
+  "rule": "(Mod64u <t> x (Const64 [2147483647])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [2147483647])) (Const64 <t> [2147483647])))"
+ },
+ "m1329_25": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:4394:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1329,
+  "rule": "(Mod64u <t> x (Const64 [25])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [25])) (Const64 <t> [25])))"
+ },
+ "m1329_4294967291": {
+  "category": "timeout",
+  "detail": "SAT timeout at 120 s during the full build (lake parallel build)",
+  "line": 1329,
+  "rule": "(Mod64u <t> x (Const64 [4294967291])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [4294967291])) (Const64 <t> [4294967291])))"
+ },
+ "m1329_641": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:4406:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.",
+  "line": 1329,
+  "rule": "(Mod64u <t> x (Const64 [641])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [641])) (Const64 <t> [641])))"
+ },
+ "m1329_6700417": {
+  "category": "timeout",
+  "detail": "MagicTriage.lean:4418:241: error: The SAT solver timed out while solving the problem.\nConsider increasing the timeout with the `timeout` config option.\nIf solving your problem relies inherently on using associativity or commutativity, consider enabling the `acNf` config option.\n/Users/scelles/git/github/s-celles/go-in-lean/build/MagicTriage.lean:4422:5: warning: Variable name `h0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h0\n\nNote: This linter can be ",
+  "line": 1329,
+  "rule": "(Mod64u <t> x (Const64 [6700417])) =>  (Sub64 x (Mul64 <t> (Div64u <t> x (Const64 <t> [6700417])) (Const64 <t> [6700417])))"
+ }
+}

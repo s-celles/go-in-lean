@@ -1,0 +1,39 @@
+{
+ "reproducer": {
+  "code": "(y >> 1) >> (1 << 62), y int32",
+  "tip": {
+   "y=2": 1,
+   "y=-5": -3
+  },
+  "spec": {
+   "y=2": 0,
+   "y=-5": -1
+  }
+ },
+ "extent": {
+  "tip_arm64": 30,
+  "tip_amd64": 30,
+  "go1.27.3": 0,
+  "kinds": "signed right shift of int16/int32"
+ },
+ "ssa_evidence": "after opt: Const64 <int32> [4611686018427387905]; prove sets Rsh32x64 AuxInt [true]",
+ "fix": {
+  "patch": "fix.patch (Const64 <typ.UInt64> in 9 rules)",
+  "tip_after_fix": "0 mismatches; fuzz seeds clean; cmd/compile/internal/{ssa,test} and codegen/shift.go pass"
+ },
+ "known_issue_search": {
+  "date": "2026-11-02",
+  "result": "golang/go#81868 covers the same defect class in other rules (canonicalisation), fixed; these rules unchanged"
+ },
+ "classification_history": [
+  {
+   "date": "2026-11-02",
+   "status": "go_discrepancy_reproduced"
+  }
+ ],
+ "human_review": "approved 2026-11-02; reported upstream",
+ "upstream": {
+  "issue": "https://github.com/golang/go/issues/82767",
+  "date": "2026-11-02"
+ }
+}

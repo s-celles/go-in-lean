@@ -22,3 +22,6 @@ import GoInLean.Compiler.Rotates
 import GoInLean.Compiler.AMD64Latent
 import GoInLean.Compiler.ShiftMask
 import GoInLean.Compiler.GeneratedRules
+import GoInLean.Compiler.LatentRotate
+import GoInLean.Compiler.KnownBits
+import GoInLean.Compiler.MagicDiv

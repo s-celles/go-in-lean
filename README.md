@@ -21,13 +21,13 @@ annotated verification of new code (see `docs/prior-art.md`).
 |---|---|
 | Go version modelled | go1.25.5: all of `math/bits`; `slices.Compact/Index/Contains/Insert/Delete/Replace/Concat/Repeat`, `sort.Search`, `strings`/`bytes` `Repeat`/`Join` guards; 12 families of `generic.rules` + 74 generated constant folds; all 96 instances of the ARM64 and of the AMD64 shift-lowering rules, the rotate lowering rules of both; 64-bit targets |
 | Lean | 4.35.0, no Mathlib, zero Lake dependencies |
-| Properties registered | 60 (`targets/properties.yaml`) |
-| Proved in model | 49 entries, 1,242 audited theorems (585 kernel-only, 657 `bv_decide`): `math/bits` in full (incl. `Mul64` at 64 bits), slices/sort/strings guards, 786 generated `generic.rules` instances, ARM64/AMD64 shift and rotate lowering |
-| Checked exhaustively, not proved | `slices.Insert/Delete/Replace` with aliasing: 531,531 configurations vs spec, 16,128 replayed through real Go, 0 mismatches |
-| Inconclusive | `Div64` at 64 bits; 36 `generic.rules` instances (SAT timeouts / unsupported subterms) |
-| **Compiler miscompilation found and reported** | `((x >> c) & d) << e` rules compare constant shift counts as signed: `((x >> (1<<63)) & 3) << 1` returns 0 for `x = -1` (spec: 6), also through inlining; present in go1.25.5 … go1.27.3 and master; fix proved in Lean and validated on master; [golang/go#82763](https://github.com/golang/go/issues/82763), `findings/SSA-SHIFTMASK-SIGNED-COUNT` |
-| Other discrepancies | `strings`/`bytes` `Join` conservative overflow guard (`unsafe` only, negligible); AMD64 `CMPLconst (SHRLconst _ [32])` rule wrong but unreachable |
-| Known issues reproduced | golang/go#54255 (`Add64` carry = 2); golang/go#15175 (Go 1.6 `Rsh8Ux64` folding) |
+| Properties registered | 64 (`targets/properties.yaml`) |
+| Proved in model | 2,148 audited theorems (592 kernel-only, 1,556 `bv_decide`): `math/bits` in full, slices/sort/strings guards, 896 generated `generic.rules` instances (incl. bounds-check and rotate rules), 644 magic-division instances, ARM64/AMD64 shift and rotate lowering, and the new `knownbits` pass of Go master |
+| Checked exhaustively, not proved | `slices.Insert/Delete/Replace` with aliasing: 531,531 configurations vs spec, 16,128 replayed through real Go |
+| Metamorphic fuzzing | `scripts/metamorphic_fuzz.py`: constant vs run-time vs inlined versions of random integer expressions; 400 seeds (go1.27.3, master) |
+| **Compiler bugs found** | (1) `((x >> c) & d) << e` rules compare constant counts as signed: wrong code in go1.25–1.27 and master; reported as [golang/go#82763](https://github.com/golang/go/issues/82763). (2) Master-only regression: shift-composition rules type the combined count with the shifted value's type and master's `prove` now trusts it: `(int32(2) >> 1) >> (1<<62)` is 1 (spec 0); fix validated; reported as [golang/go#82767](https://github.com/golang/go/issues/82767), `findings/SSA-COMPOSE-CONST64-TYPE` |
+| Other discrepancies | `strings`/`bytes` `Join` conservative overflow guard (`unsafe` only, negligible); two latent rules wrong for unreachable counts (AMD64 `CMPLconst (SHRLconst _ [32])`, generic rotate recognition with a count ≥ 2^63) |
+| Known issues reproduced | golang/go#54255, golang/go#15175 |
 | Mutation test | 8 mutants refuted in Lean and reproduced in Go |
 
 ## Quick start

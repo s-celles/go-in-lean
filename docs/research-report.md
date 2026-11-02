@@ -15,7 +15,7 @@ Go compiler SSA rewrite rules:
   are checked exhaustively on a bounded domain but not proved in general),
   **1 model-level counterexample** (negative control), **2 known issues
   reproduced** (golang/go#54255, golang/go#15175).
-* **One new Go compiler bug was found, reproduced and reported** (golang/go#82763, §3.8); no defect was found in the standard-library functions studied, which behave as documented
+* **Two new Go compiler bugs were found and reproduced**: golang/go#82763 (§3.8, reported) and golang/go#82767, a master-only regression (§3.9), both reported; no defect was found in the standard-library functions studied, which behave as documented
   in go1.25.5.
 * **The pipeline detects defects**: 5 deliberately wrong models are refuted by
   `bv_decide` and every counterexample reproduces as a failing Go test
@@ -201,6 +201,29 @@ Lesson for the pipeline: `lake env lean` once crashed on an internal panic
 (`Nat.shiftl exponent is too big`) while evaluating a shift by 2^63, and a filtered command
 output made the crash look like success. The triage scripts now fail on any Lean exit without
 a parsed error, and every generated file is also built by `lake build` in CI.
+
+### 3.9 Iteration 4: magic division, signed-count scan, metamorphic fuzzing, knownbits
+
+* **Magic-constant division** (`scripts/magic_rules_to_lean.py`): the `umagic`/`smagic`
+  rules instantiated on all 8-bit divisors and sampled 16/32/64-bit ones; 644 instances
+  proved, 0 counterexamples (timeouts excluded, recorded in the triage file).
+* **Signed-count lint** (`scripts/scan_signed_counts.py`): 48 rules on master treat a constant
+  shift count as signed; all but two families only become more conservative. The rotate
+  recognition rules (generic.rules:2220-2223) are wrong for a count ≥ 2^63 but unreachable
+  (refuted in `LatentRotate.lean`, correct results on go1.27.3 and master).
+* **Metamorphic fuzzing** (`scripts/metamorphic_fuzz.py`, `scripts/fuzz_campaign.sh`): each
+  random integer expression is compiled with its constants inline, passed at run time, and
+  through an inlined helper; a canary with the golang/go#82763 pattern checks sensitivity.
+  200 seeds on go1.27.3: 0 mismatches. 200 seeds on master: 7 failing seeds, all explained by
+  a **master-only regression** (`findings/SSA-COMPOSE-CONST64-TYPE`): the 8/16/32-bit
+  shift-composition rules type the combined count with the shifted value's type (the class of
+  golang/go#81868, whose fix did not touch these rules), and master's `InitLimit` now
+  truncates that constant to the type width, so `prove` marks the shift bounded.
+  `(int32(2) >> 1) >> (1<<62)` gives 1 instead of 0; a one-type fix in nine rules is
+  validated on master. Reported as golang/go#82767 after human review.
+* **`knownbits`** (new pass on master): every fold case, both simplifications and all 48 shift
+  ops at all widths are proved sound against Go semantics (`KnownBits.lean`); a variant
+  without the bounded hypothesis is refuted, so the theorems are not vacuous.
 
 ## 4. Success criteria check
 

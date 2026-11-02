@@ -1,0 +1,4 @@
+{"go_version": "go1.28-devel_babb75be (master, 2026-11-01)", "unaffected": ["go1.25.5", "go1.27.3"],
+ "rules": "src/cmd/compile/internal/ssa/_gen/generic.rules:537-549 (master)",
+ "prove": "src/cmd/compile/internal/ssa/prove.go InitLimit -> PropagateUnsignedSignedRelationship(v.Type.Size()*8); src/cmd/compile/internal/ssacompile/prove.go:2454",
+ "related": ["golang/go#81868", "CL 795240"], "found_by": "scripts/metamorphic_fuzz.py seeds 303 320 343 437 451 457 470"}

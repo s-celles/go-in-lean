@@ -1,0 +1,33 @@
+diff --git a/src/cmd/compile/internal/ssa/_gen/generic.rules b/src/cmd/compile/internal/ssa/_gen/generic.rules
+index e407a943..d1f8cc32 100644
+--- a/src/cmd/compile/internal/ssa/_gen/generic.rules
++++ b/src/cmd/compile/internal/ssa/_gen/generic.rules
+@@ -534,19 +534,19 @@
+ 
+ // combine const shifts
+ (Lsh64x64 <t> (Lsh64x64 x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Lsh64x64 x (Const64 <t> [c+d]))
+-(Lsh32x64 <t> (Lsh32x64 x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Lsh32x64 x (Const64 <t> [c+d]))
+-(Lsh16x64 <t> (Lsh16x64 x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Lsh16x64 x (Const64 <t> [c+d]))
+-(Lsh8x64  <t> (Lsh8x64  x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Lsh8x64  x (Const64 <t> [c+d]))
++(Lsh32x64 <t> (Lsh32x64 x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Lsh32x64 x (Const64 <typ.UInt64> [c+d]))
++(Lsh16x64 <t> (Lsh16x64 x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Lsh16x64 x (Const64 <typ.UInt64> [c+d]))
++(Lsh8x64  <t> (Lsh8x64  x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Lsh8x64  x (Const64 <typ.UInt64> [c+d]))
+ 
+ (Rsh64x64 <t> (Rsh64x64 x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Rsh64x64 x (Const64 <t> [c+d]))
+-(Rsh32x64 <t> (Rsh32x64 x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Rsh32x64 x (Const64 <t> [c+d]))
+-(Rsh16x64 <t> (Rsh16x64 x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Rsh16x64 x (Const64 <t> [c+d]))
+-(Rsh8x64  <t> (Rsh8x64  x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Rsh8x64  x (Const64 <t> [c+d]))
++(Rsh32x64 <t> (Rsh32x64 x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Rsh32x64 x (Const64 <typ.UInt64> [c+d]))
++(Rsh16x64 <t> (Rsh16x64 x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Rsh16x64 x (Const64 <typ.UInt64> [c+d]))
++(Rsh8x64  <t> (Rsh8x64  x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Rsh8x64  x (Const64 <typ.UInt64> [c+d]))
+ 
+ (Rsh64Ux64 <t> (Rsh64Ux64 x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Rsh64Ux64 x (Const64 <t> [c+d]))
+-(Rsh32Ux64 <t> (Rsh32Ux64 x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Rsh32Ux64 x (Const64 <t> [c+d]))
+-(Rsh16Ux64 <t> (Rsh16Ux64 x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Rsh16Ux64 x (Const64 <t> [c+d]))
+-(Rsh8Ux64  <t> (Rsh8Ux64  x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Rsh8Ux64  x (Const64 <t> [c+d]))
++(Rsh32Ux64 <t> (Rsh32Ux64 x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Rsh32Ux64 x (Const64 <typ.UInt64> [c+d]))
++(Rsh16Ux64 <t> (Rsh16Ux64 x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Rsh16Ux64 x (Const64 <typ.UInt64> [c+d]))
++(Rsh8Ux64  <t> (Rsh8Ux64  x (Const64 [c])) (Const64 [d])) && !uaddOvf(c,d) => (Rsh8Ux64  x (Const64 <typ.UInt64> [c+d]))
+ 
+ // Remove signed right shift before an unsigned right shift that extracts the sign bit.
+ (Rsh8Ux64  (Rsh8x64  x _) (Const64 <t> [7] )) => (Rsh8Ux64  x (Const64 <t> [7] ))
