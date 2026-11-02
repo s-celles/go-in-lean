@@ -23,3 +23,16 @@ cmd/compile/internal/test` and `go test -count=1 cmd/internal/testdir -run Test/
 Each `fix.patch` includes both the `_gen/*.rules` edit and the regenerated `rewrite*.go`, as a Go
 CL is expected to. The ready-to-mail package per finding is in `findings/<ID>/cl/` (regression
 test + commit message); see `docs/upstream-cls.md` for the Gerrit workflow.
+
+## Gerrit CLs (mailed 2026-11-02)
+
+| Issue | CL |
+|---|---|
+| #82763 | https://go-review.googlesource.com/c/go/+/857741 |
+| #82767 | https://go-review.googlesource.com/c/go/+/857342 |
+| #82772 | https://go-review.googlesource.com/c/go/+/857442 |
+| #82773 | https://go-review.googlesource.com/c/go/+/857143 |
+| #82774 | https://go-review.googlesource.com/c/go/+/856905 |
+| #82775 | https://go-review.googlesource.com/c/go/+/857742 |
+| #82776 | https://go-review.googlesource.com/c/go/+/857343 |
+| #82777 | https://go-review.googlesource.com/c/go/+/857344 |

@@ -94,6 +94,8 @@
    "commit": "32f4864216366f355a589c99a8d789f3341bc85c",
    "cl": "CL 621357",
    "introduced_in": "go1.24.0"
-  }
+  },
+  "cl": "https://go-review.googlesource.com/c/go/+/857741",
+  "cl_mailed": "2026-11-02"
  }
 }

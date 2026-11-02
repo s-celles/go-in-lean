@@ -35,6 +35,8 @@
  "upstream": {
   "issue": "https://github.com/golang/go/issues/82767",
   "date": "2026-11-02",
-  "follow_up_comment": "https://github.com/golang/go/issues/82767#issuecomment-6577479369"
+  "follow_up_comment": "https://github.com/golang/go/issues/82767#issuecomment-6577479369",
+  "cl": "https://go-review.googlesource.com/c/go/+/857342",
+  "cl_mailed": "2026-11-02"
  }
 }

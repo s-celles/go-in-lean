@@ -55,6 +55,8 @@
  "human_review": "approved 2026-11-02; reported upstream",
  "upstream": {
   "issue": "https://github.com/golang/go/issues/82773",
-  "date": "2026-11-02"
+  "date": "2026-11-02",
+  "cl": "https://go-review.googlesource.com/c/go/+/857143",
+  "cl_mailed": "2026-11-02"
  }
 }
