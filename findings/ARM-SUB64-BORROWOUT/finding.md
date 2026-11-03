@@ -83,6 +83,20 @@ with comparisons), campaign `carrycross` on GEEKR9: seed 997146, `rel-arm-branch
 (go1.27.3), expr 153. Found organically by the fuzzer; reduced by hand; the differential
 harness (constant vs run-time minuend) isolated the wrong side.
 
+## Root cause update (2026-11-03, posted on the issue)
+
+The inlined formula's 64-bit decomposition is correct through `writebarrier`:
+the borrow extraction is `Or32(^x_hi & y_hi, ^(x_hi^y_hi) & diff_hi) >> 31` on the
+high half. During `lower` it collapses to `BICshiftRA [31] diff_hi sub_lo` +
+`SRLconst [31]` - `(diff_hi &^ (sub_lo>>31)) >> 31` - **dropping the `^x_hi & y_hi`
+term**. When the minuend folds to a positive constant (`x_hi = Signmask(17) = 0`)
+that term equals `y_hi = sub_lo>>31`, so the correct extraction is
+`(y_hi | diff_hi) >> 31`; for a negative subtrahend the compiled form masks
+`diff_hi` with zero instead of OR-ing in the sign bit. Two other hypotheses were
+tested and refuted with local patches (ARM.rules:525/529 MOVHreg/MOVBreg folds;
+the arm/ssa.go LoadReg fast path skipping the re-extension) - neither changes the
+outcome, so the defect is in the Or/And extraction rewrite of the lower phase.
+
 ## Known-issue search (2026-11-03)
 
 No golang/go issue found for a wrong `bits.Sub64` borrow on 32-bit ARM (searched
