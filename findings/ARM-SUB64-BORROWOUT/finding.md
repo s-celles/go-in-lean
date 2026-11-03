@@ -83,6 +83,30 @@ with comparisons), campaign `carrycross` on GEEKR9: seed 997146, `rel-arm-branch
 (go1.27.3), expr 153. Found organically by the fuzzer; reduced by hand; the differential
 harness (constant vs run-time minuend) isolated the wrong side.
 
+## RESOLVED: a manifestation of golang/go#82786 (2026-11-03, second update)
+
+Instrumenting the generated ARM rewrites (trace of every Or32/ARMOR visit in the
+reproducer's function) showed the `^x_hi & y_hi` term of the borrow extraction folding to
+`MOVWconst[0]`: the `^x_hi` value is `MVN(SRAconst(x_lo, [31]))`, which ARM.rules:888 lowers
+to `MVNshiftRA`, and the constant fold at ARM.rules:1067
+
+```
+(MVNshiftRA (MOVWconst [c]) [d]) => (MOVWconst [int32(c)>>uint64(d)])
+```
+
+**drops the complement** - the defect reported as golang/go#82786 (CL 857821). With `^x_hi`
+wrongly 0 instead of 0xFFFFFFFF, the `^x_hi & y_hi` term dies (`ANDconst[0]`), `ORconst[0]`
+then deletes the OR, and the extraction keeps only `^(x_hi^y_hi) & diff_hi` - wrong for any
+negative subtrahend.
+
+Verified end to end: applying the #82786 fix (`^(c>>uint64(d))`) on top of master makes the
+reproducer return the correct 1 (linux/arm under qemu, GOARM default and 5). The earlier
+"dropped term" observation is fully explained by this chain; the two refuted hypotheses
+(ARM.rules:525/529 folds, arm/ssa.go LoadReg fast path) stand as recorded. **Not a separate
+bug: no new issue or CL needed; the fix is already in review as CL 857821.** Posted as a
+comment on golang/go#82834 - it widens #82786's impact to `bits.Sub64` (math/big,
+multi-word arithmetic) beyond `bits.TrailingZeros64`.
+
 ## Root cause update (2026-11-03, posted on the issue)
 
 The inlined formula's 64-bit decomposition is correct through `writebarrier`:
