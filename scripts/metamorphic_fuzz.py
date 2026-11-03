@@ -79,11 +79,13 @@ class Gen:
             # Add64/Sub64 (carry/borrow tuple): the lowering emits flag-writing ALU ops
             # (ADDQcarry, ADDLcarry chains, SUBS/RSBS shifts, ANDCC) that share the
             # flags register with neighbouring comparisons - the golang/go#82825 class.
+            # The carry/borrow input is masked to 0/1: math/bits leaves the results
+            # undefined for other inputs, which the const fold may legitimately ignore.
             fn = r.choice(["Add64", "Sub64"])
             which = r.choice([0, 1])
             a = self.expr("uint64", depth - 1)
             b = self.expr("uint64", depth - 1)
-            c = ("conv", "uint64", self.expr("uint8", 0))
+            c = ("conv", "uint64", ("bin", "&", self.expr("uint8", 0), ("lit", 1), "uint8"))
             return ("carry", fn, which, a, b, c, t)
         if r.random() < 0.3:
             return ("mm", r.choice(["min", "max"]), self.expr(t, depth - 1), self.expr(t, depth - 1), t)
