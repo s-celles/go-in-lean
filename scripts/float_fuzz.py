@@ -8,6 +8,11 @@ Each random expression is compiled three ways, as in metamorphic_fuzz.py:
   v<i>  the same constants passed as run-time parameters;
   h<i>  an inlined helper with constant arguments.
 Results are compared bit-exactly after NaN canonicalisation (NaN payloads are unspecified).
+With --late, a fourth version l<i> injects every constant as bytes loaded from the
+read-only string lateS (lateS[i] == i) recombined with shifts and ORs: the generic
+optimiser cannot fold the loads, the arch lowering can (symIsRO), so architecture-
+specific constant-folding rules - conversions with double rounding, float op folds -
+see the value in the lower phase only (the class of golang/go#82775).
 
 False positives avoided by construction:
   * every float * / + - result is wrapped in an explicit conversion, which forbids FMA fusion
@@ -21,6 +26,18 @@ intrinsics, whose lowering is architecture-specific.
 Usage: float_fuzz.py SEED N OUTDIR [--canary]
 """
 import os, random, re, struct, subprocess, sys
+
+LATE = "--late" in sys.argv
+
+def late_u64(v):
+    """The uint64 v as bytes of the read-only string lateS (lateS[i] == i), ORed together:
+    a value the generic optimiser cannot fold but the arch lowering can (symIsRO)."""
+    parts = [f"uint64(lateS[{(v >> 8 * i) & 0xFF}])" + (f"<<{8 * i}" if i else "")
+             for i in range(8) if (v >> 8 * i) & 0xFF]
+    if not parts:
+        return "uint64(lateS[0])"
+    return "(" + " | ".join(parts) + ")"
+
 
 def f64bits(v):  return struct.unpack("<Q", struct.pack("<d", v))[0]
 def f32bits(v):  return struct.unpack("<I", struct.pack("<f", v))[0]
@@ -98,6 +115,13 @@ def render(e, mode, intype):
         return f"{t}(x)" if intype != t else "x"
     if tag == "k":
         t, v = mode["consts"][e[1]], mode["vals"][e[1]]
+        if mode.get("late"):
+            u = late_u64(v)
+            if t == "float64":
+                return f"math.Float64frombits({u})"
+            if t == "float32":
+                return f"math.Float32frombits(uint32({u}))"
+            return f"{t}({u})"
         if t == "float64":
             return f"math.Float64frombits({v:#x})" if mode["const"] else f"math.Float64frombits(k{e[1]})"
         if t == "float32":
@@ -177,10 +201,14 @@ INPUTS = {
     "uint64": [str(v) for v in U64],
 }
 
+LATE_S = '"' + "".join(f"\\x{b:02x}" for b in range(256)) + '"'
+
 
 def program(seed, n, drop, canary=False):
     r = random.Random(seed)
     src = HEADER + guards()
+    if LATE:
+        src += f"\nconst lateS = {LATE_S}\nvar _ = lateS\n"
     checks = []
     for i in range(n):
         g = Gen(r)
@@ -202,19 +230,24 @@ def program(seed, n, drop, canary=False):
         consts = [t for t, _ in g.consts]; vals = [v for _, v in g.consts]
         cm = {"const": True, "consts": consts, "vals": vals}
         vm = {"const": False, "consts": consts, "vals": vals}
+        lm = {"const": False, "late": True, "consts": consts, "vals": vals}
         params = "".join(f", k{j} uint64" for j in range(len(consts)))
         args = "".join(f", uint64({v:#x})" if t in FT else f", uint64({t}({v}))" for t, v in g.consts)
         src += (f"//go:noinline\nfunc c{i}(x {intype}) uint64 {{ return {canon(rt, render(e, cm, intype))} }}\n"
                 f"//go:noinline\nfunc v{i}(x {intype}{params}) uint64 {{ return {canon(rt, render(e, vm, intype))} }}\n"
                 f"func hh{i}(x {intype}{params}) uint64 {{ return {canon(rt, render(e, vm, intype))} }}\n"
                 f"//go:noinline\nfunc h{i}(x {intype}) uint64 {{ return hh{i}(x{args}) }}\n")
+        if LATE:
+            src += f"//go:noinline\nfunc l{i}(x {intype}) uint64 {{ return {canon(rt, render(e, lm, intype))} }}\n"
         vargs = "".join(f", uint64({v:#x})" if t in FT else f", uint64({t}({v}))" for t, v in g.consts)
         xs = ", ".join(INPUTS[intype])
         xv = "math.Float64bits(x)" if intype == "float64" else "uint64(x)"
         checks.append(f"\tfor _, x := range []{intype}{{{xs}}} {{\n"
                       f"\t\tvv := v{i}(x{vargs})\n"
                       f"\t\tif cc := c{i}(x); cc != vv {{ report({i}, \"const\", {xv}, cc, vv) }}\n"
-                      f"\t\tif hv := h{i}(x); hv != vv {{ report({i}, \"inline\", {xv}, hv, vv) }}\n\t}}\n")
+                      f"\t\tif hv := h{i}(x); hv != vv {{ report({i}, \"inline\", {xv}, hv, vv) }}\n"
+                      + (f"\t\tif lv := l{i}(x); lv != vv {{ report({i}, \"late\", {xv}, lv, vv) }}\n" if LATE else "")
+                      + "\t}\n")
     src += "\nfunc main() {\n" + "".join(checks)
     src += ('\tfmt.Printf("seed %d: %d expressions, %d mismatches\\n", ' + f"{seed}, {n - len(drop)}" +
             ', bad)\n\tif bad > 0 {\n\t\tos.Exit(1)\n\t}\n}\n')
@@ -239,7 +272,7 @@ def main():
         lines = src.splitlines(); newly = set()
         for m in re.finditer(r"main\.go:(\d+):", rr.stderr):
             for j in range(int(m.group(1)) - 1, -1, -1):
-                mm = re.match(r"func (?:c|v|hh|h)(\d+)\(", lines[j]) or re.search(r"\b[vch](\d+)\(x", lines[j])
+                mm = re.match(r"func (?:c|v|hh|h|l)(\d+)\(", lines[j]) or re.search(r"\b[vchl](\d+)\(x", lines[j])
                 if mm:
                     newly.add(int(mm.group(1))); break
         if not newly:
