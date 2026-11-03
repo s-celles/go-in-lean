@@ -128,3 +128,15 @@ No golang/go issue found for x86 carry masks clobbering flags (searched
 "flagalloc SETEQ wrong"); golang/go#81842 is the same class on ppc64x, golang/go#21080 the
 same class on s390x, golang/go#80399 is a carry-mask codegen regression without
 correctness impact.
+
+## Class sweep after the fix (2026-11-03)
+
+`scripts/ops_clobber_lint.py` re-run against master 2b74366d + fix: after excluding
+flag *producers* (CMP definitions, `<carry,result>` tuples — `Value.ClobbersFlags()`
+already models those), pure flag *readers* (SETcc, CSEL/CSNEG, ARM ADC/SBC/RSC without
+S, s390x LOCGR) and the flags-unaffected BMI2 shifts (SHLX/SHRX/SARX), the lint
+reports **0 candidates on every backend**. All 114 pre-triage candidates were false
+positives of the earlier lint version; the ARM `ADDSshift*`/`RSBSshift*`, 386
+`ADDLcarry`/`SUBLcarry` and PPC64 `ANDCC` families are flag producers covered by the
+tuple rule in `ClobbersFlags()`. The class is closed: the carry-mask ops of #82825
+were the only unmarked flag writers reachable on master.
