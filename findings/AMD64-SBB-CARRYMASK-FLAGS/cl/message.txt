@@ -1,0 +1,40 @@
+cmd/compile: mark the x86 SBB carry-mask ops as clobbering flags
+
+SBBQcarrymask and SBBLcarrymask (AMD64Ops.go, 386Ops.go) expand to an SBB
+instruction, which writes the flags register, but their OpcodeTable entries
+do not set clobberFlags, unlike the borrow-taking SBBQ/SBBL/SBBLconst forms.
+
+The lowering of an unbounded shift emits CMPQconst [width] count feeding the
+count mask. When the program also compares the count against the same width,
+the comparison's SETcc shares those flags; flagalloc believes they stay live
+across the SBB, and the assembler can place the SBB between the CMP and the
+SETcc, which then reads the SBB's flags. The compiled condition for
+"y == 64" is "y >= 64":
+
+	func f(x, y uint64) uint64 {
+		r := x << y
+		eq := uint64(0)
+		if y == 64 {
+			eq = 1
+		}
+		return r + eq
+	}
+	// f(1, 65) returns 1; the spec says 0.
+
+The same wrong code affects y != 64 (compiled as y < 64), unsigned and
+signed right shifts, the 32-bit form (y == 32), and on 386 a decomposed
+64-bit comparison whose high-word CMP is shared with the shift's count
+saturation (a uint64(int16) comparison folded to "always true").
+
+The comparison may also use <= or >: each of ==, !=, <= and > against the
+width lowers to the same CMP const [width] count as the shift's bounds mask,
+so all four operators are affected, on all four integer widths (a
+count-variable differential fuzzer finds the family at ~4% of its seeds;
+the added regression test covers <= and >). Wrong
+booleans only: compiler-inserted bounds checks compare an index against a
+run-time length, a different comparison from this width-constant one, and
+branch control values are handled separately by flagalloc.
+
+Fixes #82825.
+
+Assisted-by: AI

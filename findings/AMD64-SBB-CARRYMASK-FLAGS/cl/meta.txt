@@ -1,0 +1,5 @@
+issue=82825
+arch=amd64            # the regression test fails on pristine master on amd64
+emu=                  # amd64/386 are native on this host; before/after 386 run natively (GOARCH=386)
+env=
+note=filed as golang/go#82825; mailed as Gerrit CL 858262 (Change-Id Ia4e6b5060246058a13505ef272b7090011bbeeec) on 2026-11-03 from the maintainer MacBook (sdk/gotip branch fix-82825).

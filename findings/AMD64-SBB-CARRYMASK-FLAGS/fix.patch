@@ -1,0 +1,72 @@
+diff --git a/src/cmd/compile/internal/ssa/_gen/386Ops.go b/src/cmd/compile/internal/ssa/_gen/386Ops.go
+index e686227d..b80c8a0a 100644
+--- a/src/cmd/compile/internal/ssa/_gen/386Ops.go
++++ b/src/cmd/compile/internal/ssa/_gen/386Ops.go
+@@ -314,7 +314,7 @@ func init() {
+ 		{name: "SQRTSD", argLength: 1, reg: fp11, asm: "SQRTSD", earlyOk: true}, // sqrt(arg0)
+ 		{name: "SQRTSS", argLength: 1, reg: fp11, asm: "SQRTSS", earlyOk: true}, // sqrt(arg0), float32
+ 
+-		{name: "SBBLcarrymask", argLength: 1, reg: flagsgp, asm: "SBBL", earlyOk: true}, // (int32)(-1) if carry is set, 0 if carry is clear.
++		{name: "SBBLcarrymask", argLength: 1, reg: flagsgp, asm: "SBBL", earlyOk: true, clobberFlags: true}, // (int32)(-1) if carry is set, 0 if carry is clear.
+ 		// Note: SBBW and SBBB are subsumed by SBBL
+ 
+ 		{name: "SETEQ", argLength: 1, reg: readflags, asm: "SETEQ", earlyOk: true}, // extract == condition from arg0
+diff --git a/src/cmd/compile/internal/ssa/_gen/AMD64Ops.go b/src/cmd/compile/internal/ssa/_gen/AMD64Ops.go
+index 32d1ed77..0f2f42a3 100644
+--- a/src/cmd/compile/internal/ssa/_gen/AMD64Ops.go
++++ b/src/cmd/compile/internal/ssa/_gen/AMD64Ops.go
+@@ -852,8 +852,8 @@ func init() {
+ 		{name: "MAXSD", argLength: 2, reg: fp21, resultInArg0: true, asm: "MAXSD", earlyOk: true}, // max(arg0,arg1)
+ 		{name: "MAXSS", argLength: 2, reg: fp21, resultInArg0: true, asm: "MAXSS", earlyOk: true}, // max(arg0,arg1)
+ 
+-		{name: "SBBQcarrymask", argLength: 1, reg: flagsgp, asm: "SBBQ", earlyOk: true},                    // (int64)(-1) if carry is set, 0 if carry is clear.
+-		{name: "SBBLcarrymask", argLength: 1, reg: flagsgp, asm: "SBBL", earlyOk: true, zeroUpperBits: 32}, // (int32)(-1) if carry is set, 0 if carry is clear.
++		{name: "SBBQcarrymask", argLength: 1, reg: flagsgp, asm: "SBBQ", earlyOk: true, clobberFlags: true},                    // (int64)(-1) if carry is set, 0 if carry is clear.
++		{name: "SBBLcarrymask", argLength: 1, reg: flagsgp, asm: "SBBL", earlyOk: true, zeroUpperBits: 32, clobberFlags: true}, // (int32)(-1) if carry is set, 0 if carry is clear.
+ 		// Note: SBBW and SBBB are subsumed by SBBL
+ 
+ 		{name: "SETEQ", argLength: 1, reg: readflags, asm: "SETEQ", earlyOk: true}, // extract == condition from arg0
+diff --git a/src/cmd/compile/internal/ssa/ssaop/opGen.go b/src/cmd/compile/internal/ssa/ssaop/opGen.go
+index b3b083fb..915a2a2e 100644
+--- a/src/cmd/compile/internal/ssa/ssaop/opGen.go
++++ b/src/cmd/compile/internal/ssa/ssaop/opGen.go
+@@ -11241,10 +11241,11 @@ var OpcodeTable = [...]OpInfo{
+ 		},
+ 	},
+ 	{
+-		Name:    "SBBLcarrymask",
+-		ArgLen:  1,
+-		EarlyOk: true,
+-		asm:     x86.ASBBL,
++		Name:         "SBBLcarrymask",
++		ArgLen:       1,
++		ClobberFlags: true,
++		EarlyOk:      true,
++		asm:          x86.ASBBL,
+ 		Reg: RegInfo{
+ 			Outputs: []OutputInfo{
+ 				{0, RegMask{V1: 239, V2: 0}}, // AX CX DX BX BP SI DI
+@@ -19019,10 +19020,11 @@ var OpcodeTable = [...]OpInfo{
+ 		},
+ 	},
+ 	{
+-		Name:    "SBBQcarrymask",
+-		ArgLen:  1,
+-		EarlyOk: true,
+-		asm:     x86.ASBBQ,
++		Name:         "SBBQcarrymask",
++		ArgLen:       1,
++		ClobberFlags: true,
++		EarlyOk:      true,
++		asm:          x86.ASBBQ,
+ 		Reg: RegInfo{
+ 			Outputs: []OutputInfo{
+ 				{0, RegMask{V1: 49135, V2: 0}}, // AX CX DX BX BP SI DI R8 R9 R10 R11 R12 R13 R15
+@@ -19032,6 +19034,7 @@ var OpcodeTable = [...]OpInfo{
+ 	{
+ 		Name:          "SBBLcarrymask",
+ 		ArgLen:        1,
++		ClobberFlags:  true,
+ 		EarlyOk:       true,
+ 		asm:           x86.ASBBL,
+ 		ZeroUpperBits: 32,
