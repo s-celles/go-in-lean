@@ -33,12 +33,17 @@ SHIFT_COUNTS = [0, 1, 2, 7, 8, 15, 16, 31, 32, 33, 63, 64, 65, 127, 255, 256,
 
 class Gen:
     def __init__(self, rnd):
-        self.r = rnd; self.consts = []
+        self.r = rnd; self.consts = []; self.count_var = None
     def const(self, t, val=None):
         if val is None: val = self.r.choice(edge_consts(t))
         self.consts.append((t, val))
         return ("k", len(self.consts) - 1, t)
     def count(self):
+        if COUNTVAR and self.count_var is not None and self.r.random() < 0.5:
+            # the count is the run-time variable itself: the compiled c/h versions keep an
+            # unbounded count, so the lowering emits the width mask (CMP const [w] count)
+            name, vt = self.count_var
+            return ("conv", "uint64", ("var", name, vt))
         if self.r.random() < 0.7:
             self.consts.append(("uint64", self.r.choice(SHIFT_COUNTS)))
             return ("k", len(self.consts) - 1, "uint64")
@@ -47,7 +52,7 @@ class Gen:
         r = self.r
         if depth <= 0 or r.random() < 0.25:
             return r.choice([("var", "x", t), ("var", "y", t), self.const(t)])
-        if BITS and r.random() < 0.25:
+        if (BITS or CARRY) and r.random() < 0.25:
             return self.call(t, depth)
         k = r.random()
         if k < 0.30:
@@ -70,6 +75,16 @@ class Gen:
     def call(self, t, depth):
         """math/bits intrinsics and the min/max builtins (arch-specific lowering rules)."""
         r = self.r
+        if CARRY and r.random() < 0.35:
+            # Add64/Sub64 (carry/borrow tuple): the lowering emits flag-writing ALU ops
+            # (ADDQcarry, ADDLcarry chains, SUBS/RSBS shifts, ANDCC) that share the
+            # flags register with neighbouring comparisons - the golang/go#82825 class.
+            fn = r.choice(["Add64", "Sub64"])
+            which = r.choice([0, 1])
+            a = self.expr("uint64", depth - 1)
+            b = self.expr("uint64", depth - 1)
+            c = ("conv", "uint64", self.expr("uint8", 0))
+            return ("carry", fn, which, a, b, c, t)
         if r.random() < 0.3:
             return ("mm", r.choice(["min", "max"]), self.expr(t, depth - 1), self.expr(t, depth - 1), t)
         w = TYPES[t][0]
@@ -104,6 +119,15 @@ def render(e, mode):
     if tag == "call":
         args = render(e[2], mode) + (", " + render(e[3], mode) if e[3] is not None else "")
         return f"{e[4]}(bits.{e[1]}({args}))"
+    if tag == "carry":
+        _, fn, which, a, b, c, t = e
+        hi, lo = ("carry", "sum") if fn == "Add64" else ("borrow", "diff")
+        if which == 0:
+            hi, sel = "_", lo
+        else:
+            lo, sel = "_", hi
+        return (f"{t}(func() uint64 {{ {hi}, {lo} := bits.{fn}({render(a, mode)}, "
+                f"{render(b, mode)}, {render(c, mode)}); return {sel} }}())")
     raise ValueError(tag)
 
 CANARY = "--canary" in sys.argv
@@ -118,6 +142,12 @@ BRANCHY = "--branchy" in sys.argv
 BITS = "--bits" in sys.argv     # math/bits intrinsics and min/max builtins
 INDEX = "--index" in sys.argv   # use the expression as an array index (bounds-check elimination)
 LATE = "--late" in sys.argv     # constants become loads from read-only data, folded only in lower
+COUNTVAR = "--countvar" in sys.argv  # some shift counts become the variable x/y, and branches
+                                     # sometimes compare that same value with a width-class
+                                     # constant (the flag-sharing shape of golang/go#82825)
+CARRY = "--carry" in sys.argv        # bits.Add64/Sub64 tuples: flag-writing carry chains
+                                     # (ADDQcarry, ADDLcarry, SUBS/RSBS shifts, ANDCC) sharing
+                                     # the flags register with neighbouring comparisons
 
 
 def late_const(t, v):
@@ -142,9 +172,20 @@ def program(seed, n):
     for i in range(n):
         g = Gen(rnd)
         t = rnd.choice(list(TYPES))
+        if COUNTVAR:
+            g.count_var = (rnd.choice(["x", "y"]), t)
         e = g.expr(t, rnd.randint(2, 4))
         branch = None
-        if BRANCHY and rnd.random() < 0.6:
+        if COUNTVAR and rnd.random() < 0.4 and g.count_var is not None:
+            # compare the count variable against a width-class constant (63/64/65/127/128
+            # are in the uint64 edge pool): with ==/!= this shares the shift mask's CMP.
+            # The condition feeds an all-constant phi (b := 0; if cond { b = 1 }), which
+            # phiopt materialises as a SETcc value - the second flag consumer of
+            # golang/go#82825.
+            name, vt = g.count_var
+            branch = ("countcmp", rnd.choice(["<", "<=", "==", "!=", ">", ">="]),
+                      ("conv", "uint64", ("var", name, vt)), g.const("uint64"))
+        if BRANCHY and branch is None and rnd.random() < 0.6:
             # r := e; if (e3 cmp K) { r = e2 }: branch facts feed the prove pass
             e2 = g.expr(t, rnd.randint(1, 3))
             ct = rnd.choice(list(TYPES))
@@ -158,6 +199,11 @@ def program(seed, n):
             r = render(e, mode)
             if branch is None:
                 return r
+            if branch[0] == "countcmp":
+                _, op, e3, k = branch
+                return (f"func() {t} {{ r := {r}; b := 0; "
+                        f"if {render(e3, mode)} {op} {render(k, mode)} {{ b = 1 }}; "
+                        f"return r + {t}(b) }}()")
             op, e3, k, e2 = branch
             return f"func() {t} {{ r := {r}; if {render(e3, mode)} {op} {render(k, mode)} {{ r = {render(e2, mode)} }}; return r }}()"
         cexpr = body({"const": True, "vals": vals})
