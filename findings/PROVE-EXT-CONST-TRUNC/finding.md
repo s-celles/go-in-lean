@@ -7,7 +7,7 @@ was demonstrated: the mechanism makes prove declare a branch impossible, so it f
 branches (wrong values), as in the reproducer.
 **Affected:** go1.26.6 .. go1.26.10, go1.27.3 and master `2885c994` for the reproducer below; other
 shapes already from go1.24.13 / go1.25.5 (see Versions). go1.26.5 and earlier are correct for it.
-**Human review status:** pending. Not reported upstream.
+**Human review status:** reviewed and filed as golang/go#82839 on 2026-11-03 (maintainer approval); fix re-validated on master 740d909b (reproducer, ssa/ssacompile/test short, prove|loopbce|checkbce|codegen|fixedbugs all pass).
 
 ## Reproducer
 

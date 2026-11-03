@@ -67,3 +67,12 @@ Patchset 2 of CL 858262 (2026-11-03, same Change-Id `Ia4e6b506`): the regression
 master+patch (amd64 and 386); commit message extended to state that all four comparison
 operators share the width mask's flags. Pushed from the Linux workstation (its own Gerrit
 credentials).
+
+## PROVE-EXT-CONST-TRUNC / golang/go#82839 (2026-11-03)
+
+Fix re-validated on master `740d909b` (the 2026-11-02 validation was against `2885c994`):
+`fix.patch` applies cleanly (one file, `ssacompile/prove.go`, +22/−2), the reproducer goes from
+`sink=1` (wrong) to `sink=0` (spec), the regression test `issue82839.go` panics on go1.27.3 and
+passes on master+patch, and the `ssa`/`ssacompile`/`test` (short) plus
+`prove|loopbce|checkbce|codegen|fixedbugs` suites pass. Mailed as Gerrit CL
+https://go-review.googlesource.com/c/go/+/858581 (mailed from the Linux workstation).

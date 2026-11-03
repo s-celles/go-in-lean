@@ -14,6 +14,6 @@ Only carry the fact through the extension when the constant fits; when
 it does not, the fact on x is trivially true or false and the limits of
 ext(x) already decide it.
 
-Fixes #NNNNN.
+Fixes #82839.
 
 Assisted-by: AI

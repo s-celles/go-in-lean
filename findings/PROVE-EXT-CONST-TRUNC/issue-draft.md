@@ -1,4 +1,4 @@
-<!-- DRAFT for human review. Do not file without explicit approval. -->
+<!-- Filed as golang/go#82839 on 2026-11-03 after maintainer approval. -->
 ### Go version
 
 go1.26.6 through go1.26.10, go1.27.3 and master (2885c994). go1.26.5 is correct for this program.
