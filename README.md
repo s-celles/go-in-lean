@@ -38,6 +38,68 @@ annotated verification of new code (see `docs/prior-art.md`).
 | Known issues reproduced | golang/go#54255, golang/go#15175 |
 | Mutation test | 8 mutants refuted in Lean and reproduced in Go |
 
+## Research map
+
+Past and planned exploration axes, and what each found (2026-11):
+
+```mermaid
+flowchart LR
+    subgraph F["Formal (Lean 4, kernel + bv_decide)"]
+        F1["2,241 theorems: math/bits, slices guards,<br/>generic.rules instances, shift &amp; rotate lowering,<br/>magic division, prove interval arithmetic"]
+        F2["check_new_rules: 95 rules new on master,<br/>87 proved, 7 SAT timeouts (benign)"]
+    end
+    subgraph L["Rule &amp; op lints"]
+        L1["rules_sibling_lint<br/>(flags the shapes of #82786, #82776, #82775)"]
+        L2["rules_type_lint"]
+        L3["ops_clobber_lint<br/>(OpcodeTable clobberFlags)"]
+    end
+    subgraph Z["Metamorphic differential fuzzing"]
+        Z1["cross campaigns: plain / branchy / index / late,<br/>go1.27.3 + master, rel vs tip"]
+        Z2["--countvar mode"]
+        Z3["--carry mode"]
+        Z4["float / conversion fuzzer"]
+        Z5["BCE fuzzer + poison guards (private repo)"]
+        Z6["rewrite-trace instrumentation<br/>(generated matchers, per function)"]
+    end
+    subgraph T["Targets"]
+        T1["amd64 v1 / v3 / v4, 386, arm v5 / v7, arm64"]
+        T2["ppc64 / ppc64le, riscv64, s390x, mips / mipsle, loong64"]
+        T3["wasm (js), wasip1"]
+    end
+    subgraph B["Findings 2026-11 (all with CLs in review)"]
+        B1["#82763-#82786: 10 miscompilations"]
+        B2["#82825 SBB carry masks - CL 858262"]
+        B3["#82834 arm bits.Sub64 borrow<br/>= 3rd manifestation of #82786"]
+        B4["#82839 prove extension/constant - CL 858581"]
+        B0["clean: no OOB in BCE (4,800 poison seeds),<br/>wasm / wasip1 / v4 backends clean on rel"]
+    end
+    subgraph U["Upcoming"]
+        U1["SIMD (GOEXPERIMENT=simd):<br/>~4,300 vector rules new on master"]
+        U2["float fuzzer x late / countvar-style modes"]
+        U3["BCE: loop-induction poison arrangements"]
+        U4["knownbits / ZeroUpper*Bits pass (LOONG64latelower)"]
+        U5["generator bug seed 997643"]
+    end
+
+    T1 --> Z1
+    T2 --> Z1
+    T3 --> Z1
+    Z1 --> B1
+    Z1 --> B4
+    Z2 --> B2
+    Z3 --> B3
+    Z5 --> B0
+    Z6 --> B3
+    F2 --> B0
+    L3 -.-> B2
+    L1 -.-> B1
+```
+
+Axes interact: the lints name the defect class, the fuzzer modes find instances
+organically, the formal layer proves the fixes sound, and the rewrite-trace
+instrumentation isolates root causes (it resolved #82834 as a third face of
+#82786).
+
 ## Quick start
 
 Prerequisites: [elan](https://github.com/leanprover/elan) (installs Lean
