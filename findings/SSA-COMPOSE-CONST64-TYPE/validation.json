@@ -21,6 +21,16 @@
   "patch": "fix.patch (Const64 <typ.UInt64> in 9 rules)",
   "tip_after_fix": "0 mismatches; fuzz seeds clean; cmd/compile/internal/{ssa,test} and codegen/shift.go pass"
  },
+ "ice_addendum": {
+  "date": "2026-11-04",
+  "tip": "go1.28-devel_67219752 linux/amd64",
+  "code": "(y >> 1) >> (uint32(1) << 31), y int32",
+  "result": "internal compiler error: negative shift amount in ssacompile.(*factsTable).flowLimit at prove.go:1518",
+  "post_opt_ssa": "Const64 <int32> [2147483649]; Rsh32x64 <int32>",
+  "limit": "unsatisfiable signed interval Min=2147483649 Max=-2147483647",
+  "controls": "no first shift, unknown count parameter, signed-negative count, and unsigned y compile",
+  "cl_857342_ps1": "reproducer compiles; cmd/compile/internal/ssa and cmd/compile/internal/test pass"
+ },
  "known_issue_search": {
   "date": "2026-11-02",
   "result": "golang/go#81868 covers the same defect class in other rules (canonicalisation), fixed; these rules unchanged"
@@ -29,6 +39,11 @@
   {
    "date": "2026-11-02",
    "status": "go_discrepancy_reproduced"
+  },
+  {
+   "date": "2026-11-04",
+   "status": "compiler_ice_reproduced",
+   "note": "same #82767 root cause; CL 857342 patchset 1 fixes it"
   }
  ],
  "human_review": "approved 2026-11-02; reported upstream",

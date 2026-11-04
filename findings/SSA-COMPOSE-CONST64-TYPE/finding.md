@@ -32,6 +32,39 @@ func shr8(y int8, a, b uint) int8 { return (y >> a) >> b }
 A second fuzzing campaign (200 seeds, master, GOARCH=amd64 under Rosetta) found 8 failing
 seeds, all of them fixed by `fix.patch` (e.g. `(x >> 256) >> 256` on int8).
 
+## Addendum (2026-11-04): the same defect can crash the compiler
+
+Current tip `672197524bb0` panics in `ssacompile.(*factsTable).flowLimit` at
+`prove.go:1518` while compiling this smaller boundary case (`ice_reproducer.go`):
+
+```go
+func f(y int32) int32 {
+	return (y >> 1) >> (uint32(1) << 31)
+}
+```
+
+The first shift is necessary: without it there is no shift-composition rewrite and no ICE.
+An unknown `uint32` parameter also stays clean; a local or direct constant triggers the crash.
+An unsigned `y` stays clean because it takes the unsigned-right-shift path.
+
+With `prove` disabled, the post-`opt` SSA is:
+
+```text
+v5  = Const64 <int32> [2147483649]
+v13 = Rsh32x64 <int32> [false] y v5
+```
+
+`InitLimit` first records the exact positive `Const64`, then propagates its relationship using
+the erroneous `int32` type. Intersecting `2147483649` with its 32-bit signed interpretation
+`-2147483647` yields an unsatisfiable limit with `Min=2147483649` and `Max=-2147483647`.
+`flowLimit` checks only `b.Min >= 0` and then evaluates `a.Min >> b.Max`, causing Go's own
+`negative shift amount` panic.
+
+This is another consequence of #82767, not a separate root cause. Patchset 1 of CL 857342,
+applied unchanged on top of `672197524bb0`, makes the reproducer compile and passes
+`cmd/compile/internal/ssa` and `cmd/compile/internal/test`. A separate defensive
+`!b.Unsat()` check would prevent the panic, but would not repair the mistyped SSA value.
+
 ## Root cause (two cooperating defects)
 
 1. `_gen/generic.rules:537-549` (master), the shift-composition rules, e.g.
@@ -68,4 +101,6 @@ and `cmd/internal/testdir -run Test/codegen/shift.go` pass. Making `InitLimit` r
 
 ```sh
 cd go && go test -tags reproduce_findings ./reproducers -run ComposeConst64 -v   # with gotip
+# Compile-only ICE boundary on an unpatched tip:
+gotip tool compile findings/SSA-COMPOSE-CONST64-TYPE/ice_reproducer.go
 ```

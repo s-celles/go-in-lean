@@ -1083,6 +1083,7 @@ properties:
     go_tests: []
     history:
       - {date: 2026-11-02, status: go_discrepancy_reproduced, note: "7 fuzz seeds on master, all explained; fix validated"}
+      - {date: 2026-11-04, status: go_discrepancy_reproduced, note: "current tip 67219752 also ICEs in prove flowLimit on (y >> 1) >> (uint32(1) << 31); CL 857342 ps1 fixes the compile crash"}
   - id: SSA-KNOWNBITS-SOUND
     package: cmd/compile/internal/ssa (known_bits.go), Go master babb75be
     function: "the new knownbits pass: fold cases And/Or/Xor/Com/Not, Eq/Neq, Phi, ZeroExt/SignExt/Trunc, all 48 shift ops (bounded and unbounded), simplifyValue And/Or"
