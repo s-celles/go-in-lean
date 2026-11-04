@@ -1,0 +1,23 @@
+diff --git a/src/cmd/compile/internal/amd64/ssa.go b/src/cmd/compile/internal/amd64/ssa.go
+index 5d34c93d52..7c693a57ef 100644
+--- a/src/cmd/compile/internal/amd64/ssa.go
++++ b/src/cmd/compile/internal/amd64/ssa.go
+@@ -2164,8 +2164,16 @@ func simdV2kv(s *ssagen.State, v *ssa.Value) *obj.Prog {
+ // Example instruction: VPABSB X1, X2, K3 (masking merging)
+ func simdV2kvResultInArg0(s *ssagen.State, v *ssa.Value) *obj.Prog {
+ 	p := s.Prog(v.Op.Asm())
+-	p.From.Type = obj.TYPE_REG
+-	p.From.Reg = simdReg(v.Args[1])
++	if ssaop.OpcodeTable[v.Op].AuxType != ssaop.AuxTypeNone {
++		// Immediate form, e.g. VPSLLQ $c, Zsrc, K1, Zdst: the aux int
++		// is the shift count and comes first in the operand list.
++		p.From.Type = obj.TYPE_CONST
++		p.From.Offset = v.AuxInt
++		p.AddRestSourceReg(simdReg(v.Args[1]))
++	} else {
++		p.From.Type = obj.TYPE_REG
++		p.From.Reg = simdReg(v.Args[1])
++	}
+ 	// These "simd*" series of functions assumes:
+ 	// Any "K" register that serves as the write-mask
+ 	// or "predicate" for "predicated AVX512 instructions"
