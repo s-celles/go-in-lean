@@ -1,4 +1,4 @@
-<!-- Draft follow-up for https://github.com/golang/go/issues/80577; not posted. -->
+<!-- Posted 2026-11-04: https://github.com/golang/go/issues/80577#issuecomment-6643325028 -->
 
 The same restore-by-type problem has a much smaller reproducer on current tip
 `ede4e4ff00`, and it also affects arm64:

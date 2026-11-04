@@ -7,7 +7,10 @@ which was opened for riscv64. The riscv64-specific fix (CL 806340) does not cove
 **Affected:** `GOARCH=arm64`, `ppc64le` and `ppc64`, from at least go1.21.13 through
 go1.27.3 and master `ede4e4ff00`. amd64, 386, arm, mipsle, mips64le, riscv64, s390x
 and loong64 run the minimal program correctly.
-**Human review status:** approved 2026-11-02; posted as a comment on golang/go#80577 (https://github.com/golang/go/issues/80577#issuecomment-6588709343).
+**Human review status:** approved 2026-11-02; initial comment posted on golang/go#80577
+(https://github.com/golang/go/issues/80577#issuecomment-6588709343). Minimal arm64/ppc64
+follow-up approved and posted 2026-11-04
+(https://github.com/golang/go/issues/80577#issuecomment-6643325028).
 
 ## What happens
 
@@ -73,8 +76,7 @@ The 16→32 ppc64 form is `int32(uint32(int16(-1)))`; after the call it is resto
 as 4294967295 instead of -1. Both minimal widths fail on ppc64le with every tested
 toolchain from go1.21.13 through go1.27.3 and current tip. The arm64 8→16 case has
 the same version range. This is a broader manifestation of #80577, not a new root
-cause; the follow-up upstream comment remains in `comment-followup-draft.md` pending
-human review.
+cause; the follow-up was posted on #80577 after human review.
 
 ### ARM64 rule and experimental guard
 
