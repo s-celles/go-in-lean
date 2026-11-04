@@ -1,107 +1,111 @@
-# Fuzzing différentiel piloté par les spécifications Lean — vision et positionnement
+# Specification-driven differential fuzzing — vision and positioning
 
-Étude des fuzzers existants (Mozilla Security, Project Zero, cedar-spec) et
-architecture cible pour go-in-lean : réutiliser les moteurs existants et faire de
-la sémantique formelle la valeur ajoutée — à la fois comme oracle et comme
-producteur de programmes de test.
+A study of the existing fuzzers (Mozilla Security, Project Zero, cedar-spec)
+and the target architecture for go-in-lean: reuse the existing engines and
+make formal semantics the added value — both as an oracle and as a producer
+of test programs.
 
-## 1. Ce que font les frameworks étudiés
+## 1. What the studied frameworks do
 
-| Framework | Mécanisme | Ce qu'on en retient pour go-in-lean |
+| Framework | Mechanism | What we keep for go-in-lean |
 |---|---|---|
-| [jsfunfuzz](https://github.com/MozillaSecurity/funfuzz)/[funfuzz](https://github.com/MozillaSecurity/funfuzz) | Génération grammaticale de corps de fonctions JS, mode `--compare-jit` (différentiel interprète/JIT/versions), réduction par Lithium. | C'est *déjà* notre approche : générateurs par formes + oracle différentiel cross-configuration (GODEBUG, GOARCH, opt vs `-N`). Notre valeur ajoutée est ailleurs. |
-| [Fuzzilli](https://github.com/googleprojectzero/fuzzilli) (NDSS 2023) | Coverage-guidé sur une **IR typée** (FuzzIL) + mutations préservant la validité + propriétés de correction ; différentiel interprète/JIT. | L'IR typée : nos générateurs émergent déjà des IR typées (chaînes typées de `simd_fuzz.py`, IR de `metamorphic_fuzz.py`). Le coverage-guidé est une optimisation possible, pas un changement de méthode — il compense par la force brute ce que le ciblage sémantique fait directement. |
-| [cedar-drt](https://github.com/cedar-policy/cedar-spec/tree/main/cedar-drt) | **Fuzzing différentiel de l'implémentation Rust contre la spec Lean** (DRT) + property-based testing (round-trip, général) ; `build_lean_lib.sh` compile la spec en bibliothèque appelée depuis les cibles de fuzz ; `synthesize_tests.sh` synthétise des tests. | Le patron exact de notre trajectoire : la spec Lean devient l'**oracle dans la boucle** (pas seulement l'outil de réfutation hors ligne) et une source de **tests synthétisés**. |
-| [dharma](https://github.com/MozillaSecurity/dharma)/Peach/ffuf | Grammaires context-free, model-based, fuzzing web. | Hors domaine (formats/protocoles), pas d'oracle sémantique. |
+| [jsfunfuzz](https://github.com/MozillaSecurity/funfuzz)/[funfuzz](https://github.com/MozillaSecurity/funfuzz) | Grammar-based generation of JS function bodies, `--compare-jit` mode (interpreter/JIT/versions differential), Lithium reduction. | This *is already* our approach: shape-based generators plus the cross-configuration differential oracle (GODEBUG, GOARCH, optimized vs `-N`). Our added value lies elsewhere. |
+| [Fuzzilli](https://github.com/googleprojectzero/fuzzilli) (NDSS 2023) | Coverage-guided over a **typed IR** (FuzzIL) + validity-preserving mutations + correctness properties; interpreter/JIT differential. | The typed IR: our generators already emerge as typed IRs (the typed chains of `simd_fuzz.py`, the IR of `metamorphic_fuzz.py`). Coverage guidance is a possible optimization, not a change of method — it compensates by brute force what semantic targeting does directly. |
+| [cedar-drt](https://github.com/cedar-policy/cedar-spec/tree/main/cedar-drt) | **Differential fuzzing of the Rust implementation against the Lean spec** (DRT) + property-based testing (round trip, general); `build_lean_lib.sh` compiles the spec into a library called from the fuzz targets; `synthesize_tests.sh` synthesizes tests. | The exact pattern for our trajectory: the Lean spec becomes the **oracle in the loop** (not just an offline refutation tool) and a source of **synthesized tests**. See `docs/cedar-notes.md` for the full anatomy. |
+| [dharma](https://github.com/MozillaSecurity/dharma)/Peach/ffuf | Context-free grammars, model-based, web fuzzing. | Out of domain (formats/protocols), no semantic oracle. |
 
-Pourquoi pas AFL++/libFuzzer/Atheris : ils mutent des octets vers des *crashes*
-sur des parsers. Notre cible a une entrée structurée (programmes valides), un
-coût par exécution élevé (build+run), et des bugs *silencieux* (wrong code) qu'aucun
-crash ne révèle — l'oracle sémantique est indispensable. Notre méthode est celle de
-Csmith/jsfunfuzz : générateur grammatical + test différentiel. Le verdict des trois
-derniers jours (13 issues/CLs + 1 build failure trouvées par ciblage de classes)
-plaide pour garder le ciblage sémantique comme mécanisme de guidage.
+Why not AFL++/libFuzzer/Atheris: they mutate bytes toward *crashes* on parsers.
+Our target takes structured input (valid programs), pays a high cost per
+execution (build+run), and its bugs are *silent* (wrong code) that no crash
+reveals — a semantic oracle is indispensable. Our method is the one of
+Csmith/jsfunfuzz: grammar-based generation plus differential testing. The track
+record of the last three days (13 issues/CLs plus one build failure found by
+class-targeted generation) argues for keeping semantic targeting as the
+steering mechanism.
 
-## 2. Ce que go-in-lean a déjà (état 2026-11-03)
+## 2. What go-in-lean already has (state 2026-11-03)
 
-- Sémantique opérationnelle : `GoInLean/Compiler/OpSem.lean`, `GenericSem.lean`
-  (SSA op → sémantique sur vecteurs de bits), `KnownBits.lean` (analyse de bits
-  connus, l'analogue du compilateur).
-- Règles traduites : `GeneratedRules.lean`/`GeneratedFolds.lean` (lowering + folds
-  constants générés depuis les `.rules`), familles ARM64/AMD64/MIPS/PPC64/RISCV/S390X.
-- 13 `findings/*/property.lean` : chaque bug trouvé formalisé en propriété Lean.
-- Le workflow existant : théorème (comportement documenté) → preuve (kernel,
-  `bv_decide`) → échec de preuve = contre-exemple → test Go concret → exécution
-  contre le toolchain épinglé. Une réfutation n'est jamais un bug tant qu'elle ne
-  reproduit pas en Go.
-- Les générateurs spécialisés « par langage/zone » : `metamorphic_fuzz.py`
-  (dépassements d'entiers, conversions, replis tardifs, flags x86, late/bits/countvar
-  /carry/branchy), `float_fuzz.py` (floats, conversions, FMA, `--late`),
-  `bce_fuzz.py` (élimination de bounds checks), `simd_fuzz.py` (chaînes SIMD) —
-  exactement les zones listées : overflows, conversions, ordre, optimisations SSA,
-  différences d'architectures.
+- Operational semantics: `GoInLean/Compiler/OpSem.lean`, `GenericSem.lean`
+  (SSA op → semantics over bitvectors), `KnownBits.lean` (a known-bits
+  analysis, the compiler's analogue).
+- Translated rules: `GeneratedRules.lean`/`GeneratedFolds.lean` (lowering and
+  constant folds generated from the `.rules`), with ARM64/AMD64/MIPS/PPC64/
+  RISCV/S390X families.
+- 13 `findings/*/property.lean`: every bug found, formalized as a Lean
+  property.
+- The existing workflow: theorem (documented behaviour) → proof (kernel,
+  `bv_decide`) → failed proof = counterexample → a concrete Go test → run
+  against the pinned toolchain. A refutation is never a Go bug until it
+  reproduces in Go.
+- The specialized per-domain generators: `metamorphic_fuzz.py` (integer
+  overflows, conversions, late folds, x86 flags, late/bits/countvar/carry/
+  branchy), `float_fuzz.py` (floats, conversions, FMA, `--late`),
+  `bce_fuzz.py` (bounds-check elimination), `simd_fuzz.py` (SIMD chains) —
+  exactly the listed zones: overflows, conversions, evaluation order, SSA
+  optimizations, architecture differences.
 
-Ce qui manque pour la vision « Lean producteur *et* oracle » :
-1. l'oracle Lean **dans** la boucle de fuzz (aujourd'hui l'oracle est
-   cross-configuration ; Lean n'intervient qu'en amont, à la réfutation) ;
-2. la **synthèse de tests dirigée par le modèle** (aujourd'hui le modèle produit
-   des contre-exemples de propriétés déjà écrites, pas des programmes de fuzz).
+What is missing for the "Lean as producer *and* oracle" vision:
+1. the Lean oracle **inside** the fuzz loop (today the oracle is
+   cross-configuration; Lean only intervenes upstream, at refutation);
+2. **model-steered test synthesis** (today the model produces counterexamples
+   of properties already written, not fuzz programs).
 
-## 3. Architecture cible
+## 3. Target architecture
 
 ```
-Modèle Lean (OpSem, GenericSem, KnownBits, GeneratedRules)
-   │
-   ├─ (a) Oracle : GoInLean compilé en bibliothèque (patron build_lean_lib.sh
-   │      de cedar-drt) → évaluation sémantique d'un programme généré, comparée
-   │      à l'exécution du binaire réel.
-   │
-   ├─ (b) Producteur : contre-exemples et frontières de préconditions
-   │      (bv_decide / dites) → seeds et formes pour les générateurs
-   │      (le fuzzer attaque systématiquement les zones où les théorèmes sont
-   │      serrés : carry/borrow, largeurs mixtes, replis en chaîne, NaN, masques).
-   │
-   └─ (c) Réfutation : nouvelle règle lowering/fold traduite (rules_to_lean.py)
-          → propriété → échec = nouveau finding (boucle actuelle, conservée).
+Lean model (OpSem, GenericSem, KnownBits, GeneratedRules)
+   |
+   |- (a) Oracle: GoInLean compiled into a library (the build_lean_lib.sh
+   |      pattern of cedar-drt) -> semantic evaluation of a generated
+   |      program, compared against the execution of the real binary.
+   |
+   |- (b) Producer: counterexamples and precondition boundaries
+   |      (bv_decide / said) -> seeds and shapes for the generators
+   |      (the fuzzer systematically attacks the zones where the theorems
+   |      are tight: carry/borrow, mixed widths, chained folds, NaN, masks).
+   |
+   +- (c) Refutation: new lowering/fold rule translated (rules_to_lean.py)
+          -> property -> failure = a new finding (the current loop, kept).
 
-Générateurs spécialisés (par langage/zone) → programmes Go
-   → oracle (a) + oracle différentiel cross-config (existant, conservé)
-   → mismatch → minimisation → finding → issue/CL (workflow établi)
+Specialized generators (per domain) -> Go programs
+   -> oracle (a) + cross-configuration differential oracle (existing, kept)
+   -> mismatch -> minimization -> finding -> issue/CL (the established workflow)
 ```
 
-Les deux oracles se complètent : le différentiel cross-config attrape les écarts
-*entre implémentations* (et couvre tout ce que le modèle ne formalise pas encore),
-l'oracle Lean compare à la *sémantique documentée* — il attrape les classes où
-toutes les implémentations se trompent ensemble, invisibles au différentiel.
+The two oracles complement each other: the cross-configuration one catches
+divergences *between implementations* (and covers everything the model does
+not formalize yet), the Lean oracle compares against the *documented
+semantics* — it catches the classes where every implementation is wrong
+together, invisible to the differential.
 
-## 4. Jalons
+## 4. Milestones
 
-1. **J1 — Patron cedar-drt sur notre sous-ensemble** : brancher un oracle Lean
-   sur `metamorphic_fuzz.py --bits` (entiers, `math/bits`, le sous-ensemble déjà
-   modélisé), en **sous-processus** dans un premier temps : un exécutable Lean
-   évalue une expression sérialisée émise par le générateur (notre coût dominant
-   est le build Go, pas l'évaluation, donc pas besoin de l'FFI in-process de
-   cedar-lean-ffi ; voir `docs/cedar-notes.md` pour le patron exact et la
-   variante FFI). Critère de succès : le fuzzer signale les contre-exemples
-   connus (les 13 property.lean doivent être retrouvées par les
-   graines) et rien de faux.
-2. **J2 — Synthèse dirigée** : `synthesize_tests` à la cedar-drt : générer des
-   programmes aux frontières des théorèmes (points où une hypothèse de
-   précondition change de vérité) et les injecter comme seeds/formes des
-   générateurs. Critère : densité de formes sémantiquement chaudes par graine
-   supérieure à la génération aléatoire (mesurée en flags/1000 graines).
-3. **J3 — Étendre le modèle** aux zones non couvertes : sémantique des masques
-   SIMD (SIMD-MASKED-SHIFT-NOIMM a montré que le domaine est jeune), puis floats.
-   Chaque extension du modèle = nouveau domaine pour (a) et (b).
-4. **J4 (optionnel) — guidance par couverture** : si la génération par classes
-   sature, ajouter un feedback de couverture du compilateur aux générateurs
-   (à la Fuzzilli, mais sur nos IR typées).
+1. **J1 — the cedar-drt pattern on our subset**: plug a Lean oracle into
+   `metamorphic_fuzz.py --bits` (integers, `math/bits`, the already-modelled
+   subset), as a **subprocess** first (a Lean executable that evaluates a
+   serialized expression emitted by the generator — our dominant cost is the
+   Go build, not the evaluation, so no need for the in-process FFI of
+   cedar-lean-ffi; see `docs/cedar-notes.md` for the exact pattern and the
+   FFI variant). Success criterion: the fuzzer flags the known
+   counterexamples (the 13 `property.lean` findings must be recovered by the
+   seeds) with nothing spurious.
+2. **J2 — steered synthesis**: `synthesize_tests`, cedar-drt style: generate
+   programs at theorem boundaries (the points where a precondition flips) and
+   inject them as seeds and shapes of the generators. Criterion: a higher
+   density of semantically hot shapes per seed than random generation
+   (measured as flags per 1000 seeds).
+3. **J3 — extend the model** to the uncovered zones: the semantics of SIMD
+   masks (SIMD-MASKED-SHIFT-NOIMM showed how young the domain is), then
+   floats. Every model extension is a new domain for (a) and (b).
+4. **J4 (optional) — coverage guidance**: if class-targeted generation
+   saturates, add compiler coverage feedback to the generators
+   (Fuzzilli-style, but over our typed IRs).
 
-## 5. Positionnement
+## 5. Positioning
 
-Ne pas construire un concurrent généraliste d'AFL++ : les moteurs de fuzzing et
-les corpus existent. La contribution de go-in-lean est la sémantique formelle —
-modèle bit-précis des règles de lowering de Go, preuves kernel-checked, et
-l'exploitation du modèle comme oracle et comme stratège de génération. C'est le
-rapprochement de cedar-drt (spec Lean comme oracle d'implémentation) avec la
-tradition Csmith/jsfunfuzz (génération de programmes), appliqué à un compilateur.
+Do not build a generalist competitor to AFL++: fuzzing engines and corpora
+already exist. The contribution of go-in-lean is the formal semantics — a
+bit-precise model of Go's lowering rules, kernel-checked proofs, and the
+exploitation of the model as an oracle and as a generation strategist. It is
+the meeting of cedar-drt (a Lean spec as an implementation oracle) with the
+Csmith/jsfunfuzz tradition (program generation), applied to a compiler.

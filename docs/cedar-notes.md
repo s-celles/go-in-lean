@@ -1,89 +1,90 @@
-# cedar-spec / cedar-drt — anatomie et enseignements pour go-in-lean
+# cedar-spec / cedar-drt — anatomy and lessons for go-in-lean
 
-Comment Cedar (AWS) formalise son langage de policies en Lean 4 et s'en sert
-comme oracle *dans* la boucle de fuzz. Source : dépôt
-[cedar-policy/cedar-spec](https://github.com/cedar-policy/cedar-spec) (README,
-cedar-drt/README, cedar-lean-ffi/README, scripts buildés), novembre 2026.
+How Cedar (AWS) formalizes its policy language in Lean 4 and uses the
+specification as an oracle *inside* the fuzz loop. Sources: the
+[cedar-policy/cedar-spec](https://github.com/cedar-policy/cedar-spec)
+repository (README, cedar-drt/README, cedar-lean-ffi/README, build scripts),
+November 2026.
 
 ## 1. Structure
 
-| Composant | Rôle |
+| Component | Role |
 |---|---|
-| `cedar-lean` | La formalisation Lean 4 de Cedar (sémantique exécutable + preuves), buildée par `lake build Cedar` |
-| `cedar-lean-ffi` | **Le pont** : Rust bindings vers la spec Lean ; `build_lean_lib.sh` fait `lake build CedarFFI:static` (bibliothèque statique avec le runtime Lean embarqué) |
-| `cedar-drt` | Cibles `cargo fuzz` (libFuzzer) : différentiel Rust-vs-Lean (DRT) + property-based testing (PBT) |
-| `cedar-policy-generators` | Générateurs de schemas/entities/policies/requests via la crate `arbitrary` (côté Rust, pas Lean) |
+| `cedar-lean` | The Lean 4 formalization of Cedar (executable semantics + proofs), built with `lake build Cedar` |
+| `cedar-lean-ffi` | **The bridge**: Rust bindings to the Lean spec; `build_lean_lib.sh` runs `lake build CedarFFI:static` (a static library with the Lean runtime embedded) |
+| `cedar-drt` | `cargo fuzz` targets (libFuzzer): Rust-vs-Lean differential testing (DRT) + property-based testing (PBT) |
+| `cedar-policy-generators` | Generators for schemas/entities/policies/requests via the `arbitrary` crate (host side, not Lean) |
 
-## 2. Les trois décisions techniques qui rendent l'oracle Lean praticable
+## 2. The three technical decisions that make the Lean oracle practical
 
-1. **Sérialisation plutôt que marshalling de types.** Le FFI ne convertit pas les
-   types Rust en types Lean : les structures Cedar passent en **Protobuf**
-   (feature protobuf de la crate Cedar côté Rust, target `CedarProto` côté Lean).
-   Le pont ne transporte que des octets. C'est ce qui rend le pont maintenable :
-   les deux côtés évoluent indépendamment, le contrat est le schéma.
-2. **La spec Lean est *exécutable*.** L'oracle n'invoque pas de preuve à runtime :
-   `lake build CedarFFI:static` compile la sémantique opérationnelle de Cedar en
-   code C natif via le compilateur Lean ; le runtime Lean (`libleanshared.so`)
-   est lié statiquement. Les preuves (decidability, théorèmes) garantissent
-   en amont que la sémantique évaluée est la bonne — l'oracle est la sémantique
-   *prouvée*, exécutée.
-3. **Le générateur vit côté hôte, pas côté Lean.** `cedar-policy-generators`
-   produit les entrées (souvent « type-directed », c'est-à-dire façonnées vers
-   des entrées bien typées — l'équivalent de nos chaînes typées). Lean n'est
-   que l'arbitre. C'est la même séparation que la nôtre : génération par
-   classes côté Python, sémantique côté Lean.
+1. **Serialization rather than type marshalling.** The FFI does not convert
+   Rust types into Lean types: Cedar structures travel as **Protobuf** (the
+   protobuf feature of the Rust crate, the `CedarProto` target on the Lean
+   side). The bridge only carries bytes. That is what keeps it maintainable:
+   both sides evolve independently, and the contract is the schema.
+2. **The Lean spec is *executable*.** The oracle does not invoke a proof at
+   runtime: `lake build CedarFFI:static` compiles Cedar's operational semantics
+   into native code through Lean's compiler, with the Lean runtime
+   (`libleanshared.so`) linked statically. The proofs (decidability, theorems)
+   guarantee upstream that the semantics being executed is the right one — the
+   oracle is the *proven* semantics, evaluated.
+3. **The generator lives on the host, not in Lean.** `cedar-policy-generators`
+   produces the inputs (often "type-directed", i.e. shaped toward well-typed
+   inputs — the counterpart of our typed chains). Lean is only the arbiter.
+   It is the same separation as ours: class-targeted generation on the Python
+   side, semantics on the Lean side.
 
-## 3. La boucle DRT
+## 3. The DRT loop
 
 ```
-arbitrary/générateur → entrée (policy, entités, requête)
-   → évaluation par l'implémentation Rust (cedar)
-   → évaluation par la spec Lean (via protobuf + FFI)
-   → divergence = bug (réduit, dumpé comme test de régression)
+arbitrary/generator → input (policy, entities, request)
+   → evaluation by the Rust implementation (cedar)
+   → evaluation by the Lean spec (via protobuf + FFI)
+   → divergence = bug (reduced, dumped as a regression test)
 ```
 
-- ~18 cibles : authorizer, evaluator, validator, entités/requêtes, et la
-  famille TPE (autorisation partielle : décisions, catégorisations de policies,
-  expressions résiduelles).
-- `synthesize_tests.sh` n'est **pas** un générateur : c'est le harness qui,
-  quand `DUMP_TEST_DIR` est positionné, rejoue le corpus et **dump** chaque
-  entrée comme test de régression. La « synthèse » vient du fuzzing lui-même.
-- Le tout tourne sous `cargo fuzz` (libFuzzer) — throughput in-process élevé,
-  d'où l'FFI plutôt qu'un sous-processus.
+- About 18 targets: authorizer, evaluator, validator, entity/request
+  validation, and the TPE family (partial evaluation: decisions, policy
+  categorizations, residual expressions).
+- `synthesize_tests.sh` is **not** a generator: it is the harness which, when
+  `DUMP_TEST_DIR` is set, replays the corpus and **dumps** every input as a
+  regression test. The "synthesis" comes from the fuzzing itself.
+- Everything runs under `cargo fuzz` (libFuzzer) — a high in-process
+  throughput, hence the FFI rather than a subprocess.
 
-## 4. Traduction pour go-in-lean (affinage de J1)
+## 4. Translation for go-in-lean (refining J1)
 
-Le patron transposé, du plus simple au plus fidèle :
+The pattern transposed, from simplest to most faithful:
 
-1. **Oracle par sous-processus (J1a, suffisant à notre échelle).** Notre
-   coût dominant est un build+run Go par graine (secondes), pas des millions
-   d'exécutations/seconde : point de besoin d'FFI in-process. Un exécutable
-   Lean (`lake build goinlean-oracle`) qui lit une expression sérialisée
-   (s-expression émise par le générateur à côté du programme Go) sur stdin,
-   l'évalue selon `OpSem`/`GenericSem`, imprime le résultat — comparé au
-   checksum du binaire réel. Contrat = la forme sérialisée, l'équivalent de
-   leur protobuf.
-2. **Oracle par FFI (J1b, si le throughput le justifie un jour).** Leur schéma
-   exact : cible Lean `:static` + un canal binaire minimal. À ne construire
-   que si l'oracle par processus devient le goulot.
-3. **Tests synthétisés (J2).** Deux sens chez Cedar, à garder tous les deux :
-   (a) dump de régression à partir du fuzzing (le leur) — notre triage fait
-   déjà l'équivalent ; (b) notre ajout propre : **générer aux frontières des
-   théorèmes** (les entrées où une précondition du modèle change de vérité —
-   là où `bv_decide` produit ses contre-exemples) et injecter ces points
-   comme seeds/formes. C'est le point où go-in-lean va au-delà de cedar-drt :
-   leur modèle n'oriente pas la génération, le nôtre le peut.
+1. **Subprocess oracle (J1a, sufficient at our scale).** Our dominant cost is
+   one Go build+run per seed (seconds), not millions of executions per second:
+   there is no need for in-process FFI. A Lean executable
+   (`lake build goinlean-oracle`) reads a serialized expression (an
+   s-expression emitted by the generator next to the Go program) on stdin,
+   evaluates it against `OpSem`/`GenericSem`, and prints the result — compared
+   against the checksum of the real binary. The contract is the serialized
+   shape, the equivalent of their protobuf.
+2. **FFI oracle (J1b, if throughput ever justifies it).** Their exact scheme:
+   a `:static` Lean target plus a minimal binary channel. Only worth building
+   if the subprocess oracle ever becomes the bottleneck.
+3. **Synthesized tests (J2).** Two meanings at Cedar, and we want both:
+   (a) regression dumps from fuzzing (theirs) — our triage already does the
+   equivalent; (b) our own addition: **generate at theorem boundaries** (the
+   inputs where a model precondition flips truth value — where `bv_decide`
+   produces its counterexamples) and inject those points as seeds and shapes.
+   This is the point where go-in-lean goes beyond cedar-drt: their model does
+   not steer generation, ours can.
 
-Ce qu'il faut vérifier avant J1 (dette de modèle) : la sémantique exécutable
-de `OpSem`/`GenericSem` couvre-t-elle *toutes* les opérations que le
-générateur émet (sinon l'oracle refuse des programmes valides), et le
-modèle est-il d'accord avec la spec Go sur les coins déjà prouvés (les 13
-property.lean retrouvées par l'oracle = critère de recevabilité de J1).
+What must be verified before J1 (model debt): does the executable semantics of
+`OpSem`/`GenericSem` cover *every* operation the generator emits (otherwise the
+oracle rejects valid programs), and does the model agree with the Go spec on
+the corners already proven (the 13 `property.lean` findings recovered by the
+oracle = the acceptance criterion of J1)?
 
-## 5. Pour aller plus loin
+## 5. Going further
 
-- Blog AWS Science : « How we built Cedar with automated reasoning and
-  differential testing » ; « Lean Into Verified Software Development ».
-- `Cedar.SymCC` (target présente dans build_lean_lib.sh) : piste de leur côté
-  vers l'analyse symbolique depuis la spec — à regarder si l'on veut un jour
-  des contre-exemples SMT plutôt que seulement l'évaluation.
+- AWS Science blog: "How we built Cedar with automated reasoning and
+  differential testing"; "Lean Into Verified Software Development".
+- `Cedar.SymCC` (a target present in build_lean_lib.sh): their track toward
+  symbolic analysis driven by the spec — worth a look if we ever want SMT
+  counterexamples rather than plain evaluation.
