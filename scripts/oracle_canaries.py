@@ -109,22 +109,22 @@ C82825 = BIN("add",
              {"k": "conv", "t": (64, False),
               "a": BIN("eq", VAR(64, False, "y"),
                        {"k": "lit", "t": (64, False), "v": 64, "raw": True})})
-# golang/go#82839 (amd64, master): prove carries a fact through an extension
-# with a constant too wide for the narrow type and truncates it, so a branch
-# that cannot be taken is taken.
-C82839 = {"k": "sel", "t": (64, True),
-          "c": BIN("lt",
-                   {"k": "conv", "t": (64, True),
-                    "a": BIN("sub",
-                             {"k": "conv", "t": (16, True),
-                              "a": {"k": "conv", "t": (64, True),
-                                    "a": {"k": "conv", "t": (8, False), "a": VAR(8, False, "x")}}},
-                             {"k": "lit", "t": (16, True), "v": -257, "raw": True})},
-                   {"k": "lit", "t": (64, True), "v": -131073, "raw": True}),
-          "a": {"k": "arr",
-                "i": BIN("and", {"k": "conv", "t": (64, True), "a": VAR(8, False, "x")},
-                         {"k": "lit", "t": (64, True), "v": 7, "raw": True})},
-          "b": {"k": "lit", "t": (64, True), "v": 123456789, "raw": True}}
+# golang/go#82839 (amd64, go1.26+): prove carries the (trivially true) wide
+# fact sext(s) >= w through a sign extension, truncates w to the narrow width
+# and derives a false narrow bound; a later branch on that bound is wrongly
+# eliminated. Numbers from the formalized model (ProveExtDelta.lean): delta
+# -513, w -536870911 (0xE0000001), derived bound s >= 514.
+_S16 = BIN("sub", {"k": "conv", "t": (16, True), "a": VAR(64, False, "x")},
+           {"k": "lit", "t": (16, True), "v": -513, "raw": True})
+C82839 = {"k": "sel", "t": (64, False),
+          "c": BIN("ge", {"k": "conv", "t": (32, True), "a": _S16},
+                   {"k": "lit", "t": (32, True), "v": -536870911, "raw": True}),
+          "a": {"k": "sel", "t": (64, False),
+                "c": BIN("lt", {"k": "conv", "t": (16, True), "a": VAR(64, False, "x")},
+                         {"k": "lit", "t": (16, True), "v": 514, "raw": True}),
+                "a": {"k": "lit", "t": (64, False), "v": 1, "raw": True},
+                "b": {"k": "lit", "t": (64, False), "v": 2, "raw": True}},
+          "b": {"k": "lit", "t": (64, False), "v": 3, "raw": True}}
 
 CANARIES = [
     {"id": "82763", "expect": ("go1.27.3:CAUGHT", "tip:CAUGHT"),
@@ -181,11 +181,18 @@ def run_canary(tree, inputs, gobin, out):
         decls += f"\tvar c{j} = {ob.GONAME[n['t']]}({ob.signed_repr(n['t'], n['v'])})\n"
     if tree["k"] == "sel":
         T = ob.GONAME[tree["t"]]
-        body = ("var r " + T + "\n"
-                "\tr = " + g.go(tree["b"], cn) + "\n"
-                "\tif " + g.go(tree["c"], cn) + " {\n"
-                "\t\tr = " + g.go(tree["a"], cn) + "\n"
-                "\t}\n"
+
+        def emit_sel(n, indent):
+            # r = <else>; if <c> { [nested sel | r = <then>] }
+            inner = (indent + "r = " + g.go(n["b"], cn) + "\n" +
+                     indent + "if " + g.go(n["c"], cn) + " {\n")
+            if n["a"]["k"] == "sel" and n["a"].get("t") == n["t"]:
+                inner += emit_sel(n["a"], indent + "\t") + "\n"
+            else:
+                inner += indent + "\tr = " + g.go(n["a"], cn) + "\n"
+            return inner + indent + "}"
+
+        body = ("var r " + T + "\n" + emit_sel(tree, "\t") + "\n"
                 "\tres = uint64(r)")
     else:
         body = g.go(tree, cn)
