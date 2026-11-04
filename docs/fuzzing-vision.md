@@ -113,9 +113,11 @@ together, invisible to the differential.
    reductions and remaining arithmetic: ReduceSum (the documented
    pairwise summation order, matched bit for bit on amd64),
    AddSaturated/SubSaturated, Average, RotateAllRight and OnesCount.
-   Next: cross-arch campaigns for the new ops, then the ProofKit
-   direction - proving divBits/addBits against the IEEE spec
-   (docs/prior-art.md, section 2.8).
+   The ProofKit direction has started: `GoInLean/Properties/FloatRounding.lean`
+   proves, kernel-only, that `shiftRound` is the unique nearest-even rounding
+   of `m / 2^k` - the single rounding step behind `encode`, `divPositive` and
+   `sqrtBits`. Next: exactSum, the add/mul pipeline against the IEEE spec,
+   then the binary32 mirror (docs/prior-art.md, section 2.8).
 4. **J4 (optional) — coverage guidance**: if class-targeted generation
    saturates, add compiler coverage feedback to the generators
    (Fuzzilli-style, but over our typed IRs).
