@@ -1,0 +1,28 @@
+cmd/compile: emit the shift count for masked immediate shifts in the amd64 SIMD backend
+
+simdV2kvResultInArg0, the code-generation helper of the
+...Masked{128,256,512}constMerging ops (the IfElse-of-a-constant-shift
+fusion), never emits the op's aux int. The assembler receives a
+three-operand VPSLLQ/VPSRAW/VPSRLQ with a mask register and no
+immediate, no entry in its operand tables matches, and the build fails:
+
+	main.f@simd512: invalid instruction: VPSLLQ Z0, K1, Z1
+
+x.ShiftAllLeft(c).IfElse(m, y) therefore fails to compile for every
+16/32/64-bit integer vector type at the 512-bit variant (128 and 256
+bits are fine), with GOEXPERIMENT=simd.
+
+Emit the aux int as a TYPE_CONST first operand when the op carries one,
+matching the {Yu8, Yzm, Yknot0, Yzr} operand order the assembler
+expects for the masked immediate-shift EVEX forms; the non-immediate
+(rotates) path is unchanged.
+
+Verified with a differential fuzzer over the portable simd API: the
+full {Int,Uint}{16,32,64}s x {ShiftAllLeft,ShiftAllRight} matrix now
+builds, and the generated programs agree across GODEBUG=simd=
+auto/0/128/256/512 on amd64 (the merge-masked result matches the
+emulated one, including masked-off lanes keeping the false operand).
+
+Fixes #NNNNN.
+
+Assisted-by: AI
