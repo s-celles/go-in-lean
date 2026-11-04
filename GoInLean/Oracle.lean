@@ -219,6 +219,7 @@ def step (st : Array V) (o : Op) : Except Panic (Array V) :=
               | "and" => .ok (st.push ⟨w, s, av &&& b'⟩)
               | "or"  => .ok (st.push ⟨w, s, av ||| b'⟩)
               | "xor" => .ok (st.push ⟨w, s, av ^^^ b'⟩)
+              | "andnot" => .ok (st.push ⟨w, s, av &&& ~~~b'⟩)
               | "min" => .ok (st.push ⟨w, s, if ltV s av b' then av else b'⟩)
               | "max" => .ok (st.push ⟨w, s, if ltV s b' av then av else b'⟩)
               | "div" =>

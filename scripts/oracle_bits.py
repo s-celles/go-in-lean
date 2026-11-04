@@ -74,15 +74,19 @@ class Gen:
         w, s = t
         k = r.random()
         if k < 0.40:
-            op = r.choice(["add", "sub", "mul", "and", "or", "xor", "min", "max"])
+            op = r.choice(["add", "sub", "mul", "and", "or", "xor", "min", "max", "andnot"])
             return {"k": "bin", "op": op, "a": self.build(t, d - 1), "b": self.build(t, d - 1)}
         if k < 0.50:
             return {"k": "bin", "op": r.choice(["div", "mod"]),
                     "a": self.build(t, d - 1), "b": self.build(t, d - 1)}
         if k < 0.66:
-            c = r.choice(COUNTS + [w - 1, w, w + 1, 2 * w + 1])
+            if r.random() < 0.25:
+                count = {"k": "var", "t": (64, False), "which": "y"}
+            else:
+                c = r.choice(COUNTS + [w - 1, w, w + 1, 2 * w + 1])
+                count = {"k": "lit", "t": (64, False), "v": c}
             return {"k": "bin", "op": r.choice(["shl", "shr"]), "a": self.build(t, d - 1),
-                    "b": {"k": "lit", "t": (64, False), "v": c}}
+                    "b": count}
         if k < 0.74:
             return {"k": "un", "op": r.choice(["neg", "com"]), "a": self.build(t, d - 1)}
         if k < 0.84:
@@ -151,7 +155,7 @@ class Gen:
             if op in ("min", "max"):
                 return f"{op}({a}, {b})"
             sym = {"add": "+", "sub": "-", "mul": "*", "and": "&", "or": "|",
-                   "xor": "^", "div": "/", "mod": "%"}[op]
+                   "xor": "^", "div": "/", "mod": "%", "andnot": "&^"}[op]
             return f"({a} {sym} {b})"
         if k == "conv":
             return f"{gt}({self.go(n['a'], cn)})"

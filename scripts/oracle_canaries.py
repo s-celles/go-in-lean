@@ -41,11 +41,44 @@ C82767 = BIN("shr",
              BIN("shr", VAR(32, True, "x"), LIT(32, True, 1)),
              LIT(64, False, 1 << 62))
 
+# golang/go#82772 (mips/mipsle): (x*k) >> s sign-extends from bit 15; spec -1, buggy -8.
+C82772 = BIN("shr", BIN("mul", VAR(8, True, "x"), LIT(8, True, -15)),
+            VAR(64, False, "y"))
+# golang/go#82776 (mips/mipsle): (x >> 7) >> (uint64(y) | 0xFFFFFFFF) == 1; spec 0.
+C82776 = BIN("shr", BIN("shr", VAR(8, True, "x"), LIT(8, True, 7)),
+            BIN("or", VAR(64, False, "y"), LIT(64, False, (1 << 32) - 1)))
+# golang/go#82775 (ppc64/ppc64le): int32(int16(x >> 1)) keeps 32 bits; spec 0.
+C82775 = {"k": "conv", "t": (32, True),
+          "a": {"k": "conv", "t": (16, True),
+                "a": BIN("shr", VAR(32, True, "x"), LIT(32, True, 1))}}
+# golang/go#82773 (riscv64): (x - (-x)) >> 8 compiles to 0; spec -1.
+C82773 = BIN("shr", BIN("sub", VAR(8, True, "x"),
+                         {"k": "un", "op": "neg", "a": VAR(8, True, "x")}),
+             LIT(64, False, 8))
+# golang/go#82786 (arm): TrailingZeros64(x &^ 16777217) with x==0 gives 32; spec 64.
+C82786 = {"k": "bits", "op": "tz", "w": 64,
+          "a": BIN("andnot",
+                   {"k": "conv", "t": (64, False),
+                    "a": {"k": "conv", "t": (16, False),
+                          "a": {"k": "bits", "op": "oc", "w": 16,
+                                "a": LIT(16, False, 16384)}}},
+                   LIT(64, False, 16777217))}
+
 CANARIES = [
     {"id": "82763", "expect": ("go1.27.3:CAUGHT", "tip:CAUGHT"),
      "tree": C82763, "inputs": [((1 << 64) - 1, 0), (7, 3)]},
     {"id": "82767", "expect": ("go1.27.3:CLEAN", "tip:CAUGHT"),
      "tree": C82767, "inputs": [(2, 0), ((1 << 64) - 5, 0)]},
+    {"id": "82772", "expect": ("mipsle:CAUGHT",), "arch": ("mipsle", "qemu-mipsel"),
+     "tree": C82772, "inputs": [(127, 8), (127, 3)]},
+    {"id": "82776", "expect": ("mipsle:CAUGHT",), "arch": ("mipsle", "qemu-mipsel"),
+     "tree": C82776, "inputs": [(127, (1 << 64) - 128)]},
+    {"id": "82775", "expect": ("ppc64le:CAUGHT",), "arch": ("ppc64le", "qemu-ppc64le"),
+     "tree": C82775, "inputs": [((1 << 64) - (1 << 31), 0)]},
+    {"id": "82773", "expect": ("riscv64:CAUGHT",), "arch": ("riscv64", "qemu-riscv64"),
+     "tree": C82773, "inputs": [((1 << 64) - 1, 0)]},
+    {"id": "82786", "expect": ("arm:CAUGHT",), "arch": ("arm", "qemu-arm", "GOARM=7"),
+     "tree": C82786, "inputs": [(0, 0)]},
 ]
 
 
@@ -93,6 +126,9 @@ def run_canary(tree, inputs, gobin, out):
                           capture_output=True, text=True, timeout=300)
     if lean.returncode != 0:
         return None, f"oracle failed: {lean.stderr[:200]}"
+    open(os.path.join(out, "expected.txt"), "w").write(lean.stdout)
+    if os.environ.get("ORACLE_EMIT_ONLY"):
+        return [], None
     diffs = [(a, b) for a, b in zip(go.stdout.splitlines(), lean.stdout.splitlines()) if a != b]
     return diffs, None
 
@@ -106,6 +142,15 @@ def main():
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     for c in CANARIES:
         print(f"canary #{c['id']}  (expected: {' '.join(c['expect'])})")
+        if "arch" in c:
+            arch, emu, *extra = c["arch"]
+            out = f"/tmp/oracle-canary-{c['id']}-{arch}"
+            os.environ["ORACLE_EMIT_ONLY"] = "1"
+            run_canary(c["tree"], c["inputs"], tips[0], out)
+            del os.environ["ORACLE_EMIT_ONLY"]
+            env = " ".join(extra) + " " if extra else ""
+            print(f"  emitted {out} -> remote: oracle_cross_remote.sh {out} {arch} {emu} {env}".rstrip())
+            continue
         for gobin in tips:
             name = "tip" if "go-tip" in gobin else subprocess.run(
                 [gobin, "version"], capture_output=True, text=True).stdout.split()[2]
