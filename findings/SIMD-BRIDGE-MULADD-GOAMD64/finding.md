@@ -11,6 +11,9 @@ CL's current patch).
 
 - Root cause: golang/go#80355 (open), fix in review as CL 799281 (NEW,
   touches only `src/simd/simd_emulated.go`).
+- Review comment published on CL 799281 (2026-11-04, patchset message +
+  inline comment at src/simd/simd_emulated.go:2661) - the draft in
+  `cl799281-comment.md` is the posted text.
 - This finding: two gaps of CL 799281, with reproduction and a validated
   complete fix (local branch `fix-80355-bridge`, commit 3b6ad8f97d on top of
   go master 7ad446c0ec).
