@@ -14,6 +14,11 @@
 
 ## Repository rules
 
+- All written artifacts are in English: documentation (`README.md`,
+  `docs/`, finding write-ups), commit messages, code comments, and
+  upstream artifacts (GitHub issues, Gerrit CLs). Interactive session
+  prose may be in another language, but everything committed or posted
+  upstream is English.
 - ToDo
 
 ## Layout
