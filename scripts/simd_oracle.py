@@ -19,8 +19,9 @@ implementations; this one sees classes where every implementation is wrong
 together (docs/fuzzing-vision.md, milestone J3).
 
 Usage: simd_oracle.py SEED N OUTDIR [--float]
-  --float roots every chain in Float64s and weights MulAdd up, targeting
-    the fused/unfused boundary of golang/go#80355 on the emulated paths.
+  --float roots every chain in Float64s or Float32s and weights MulAdd up,
+    targeting the fused/unfused boundary of golang/go#80355 on the emulated
+    paths (the binary32 model carries the same single-rounding spec).
 Environment: GO (toolchain under test, default "go"), ORACLE_SIMD (default
   the lake exe), GODEBUG_S (default "simd=128").
 """
@@ -29,11 +30,16 @@ import json, os, random, subprocess, sys
 # (width, signed) for the integer vector types; masks follow the width.
 # "f64" is the float64 vector type; its lanes are IEEE bit patterns.
 F64 = "f64"
-VT = [(w, s) for w in (8, 16, 32, 64) for s in (False, True)] + [F64]
+F32 = "f32"
+VT = [(w, s) for w in (8, 16, 32, 64) for s in (False, True)] + [F64, F32]
 
 import struct as _struct
 def fbits(v):
     return _struct.unpack("<Q", _struct.pack("<d", v))[0]
+def f32bits(v):
+    return _struct.unpack("<I", _struct.pack("<f", v))[0]
+def f32val(h):
+    return _struct.unpack("<f", _struct.pack("<I", h))[0]
 
 # finite values only: the amd64 Min/Max NaN deviation is documented, and the
 # MulAdd fusion (golang/go#80355) is the target of this step
@@ -44,8 +50,16 @@ FPOOL = [0.0, 0.1, -0.1, 0.5, 1.5, 2.5, -2.5, 1e300, -1e300, 1e-310,
          -(1e-310), 1.0 + 2.0 ** -52, -(1.0 + 2.0 ** -52), 2.0 ** 53,
          0.49999999999999994, 3.141592653589793, 4503599627370496.5,
          1.0 + 2.0 ** -51, 16777217.0, 1e10]
+# the same boundary classes as FPOOL, in binary32: the 1+2^-23 / 1+2^-22
+# pair makes the fused/unfused MulAdd boundary of #80355 visible in f32 too
+F32POOL = [f32val(f32bits(v)) for v in
+           [0.0, 0.1, -0.1, 0.5, 1.5, 2.5, -2.5, 1e30, -1e30, 1e-40,
+            -(1e-40), 1.0 + 2.0 ** -23, -(1.0 + 2.0 ** -23), 2.0 ** 24,
+            0.5 - 2.0 ** -24, 3.141592653589793, 8388609.0, 1.0 + 2.0 ** -22,
+            16777216.0, 1e10]]
 GONAME = {(w, sg): f"{'Uint' if not sg else 'Int'}{w}s" for w in (8, 16, 32, 64) for sg in (False, True)}
 GONAME[F64] = "Float64s"
+GONAME[F32] = "Float32s"
 
 def load_avail():
     """Method availability per vector type, parsed from simd_stubs.go so the
@@ -98,8 +112,9 @@ class Gen:
         # --float: every chain roots in Float64s and MulAdd is weighted up,
         # so the campaigns target the fused/unfused boundary of #80355
         self.float_mode = float_mode
-        self.tables = {t: table(t[0], t[1]) for t in VT if t != F64}
+        self.tables = {t: table(t[0], t[1]) for t in VT if t not in (F64, F32)}
         self.tables[F64] = FPOOL
+        self.tables[F32] = F32POOL
 
     def leaf(self, t):
         r = self.r
@@ -109,6 +124,9 @@ class Gen:
         if t == F64:
             v = fbits(r.choice(FPOOL))
             return {"k": "bcast", "t": t, "v": v}
+        if t == F32:
+            v = f32bits(r.choice(F32POOL))
+            return {"k": "bcast", "t": t, "v": v}
         v = lane_pool(t[0], t[1], r)
         return {"k": "bcast", "t": t, "v": v}
 
@@ -116,8 +134,8 @@ class Gen:
         r = self.r
         if d <= 0 or r.random() < 0.35:
             return self.leaf(t)
-        if t == F64:
-            return self.build_f64(d)
+        if t in (F64, F32):
+            return self.build_float(t, d)
         w, s = t
         av = AVAIL.get(GONAME[t], set())
         x = r.random()
@@ -145,11 +163,10 @@ class Gen:
             return {"k": "masked", "t": t, "m": m, "a": self.build_vec(t, d - 1)}
         return self.build_vec(t, d)
 
-    def build_f64(self, d):
-        """Float64 chains: Add/Sub/Mul/Min/Max/MulAdd/Abs/Neg/comparisons, plus
-        IfElse/Masked through the width-64 masks."""
+    def build_float(self, t, d):
+        """Float chains (Float64s / Float32s): Add/Sub/Mul/Min/Max/MulAdd/
+        Abs/Neg/comparisons, plus IfElse/Masked through the width masks."""
         r = self.r
-        t = F64
         if d <= 0 or r.random() < 0.35:
             return self.leaf(t)
         av = AVAIL.get(GONAME[t], set())
@@ -159,44 +176,45 @@ class Gen:
             if ops:
                 op = r.choice(ops)
                 return {"k": "fbin", "op": op, "t": t,
-                        "a": self.build_f64(d - 1), "b": self.build_f64(d - 1)}
+                        "a": self.build_float(t, d - 1), "b": self.build_float(t, d - 1)}
         if x < (0.80 if self.float_mode else 0.65) and "MulAdd" in av:
             return {"k": "fma", "t": t,
-                    "a": self.build_f64(d - 1), "b": self.build_f64(d - 1), "c": self.build_f64(d - 1)}
+                    "a": self.build_float(t, d - 1), "b": self.build_float(t, d - 1), "c": self.build_float(t, d - 1)}
         if x < 0.75:
             op = r.choice([o for o in ("Abs", "Neg") if o in av])
-            return {"k": "fun", "op": op, "t": t, "a": self.build_f64(d - 1)}
+            return {"k": "fun", "op": op, "t": t, "a": self.build_float(t, d - 1)}
         if x < 0.88 and "IfElse" in av:
-            m = self.build_fcmp(d)
+            m = self.build_fcmp(d, t)
             return {"k": "sel", "t": t, "m": m,
-                    "a": self.build_f64(d - 1), "b": self.build_f64(d - 1)}
+                    "a": self.build_float(t, d - 1), "b": self.build_float(t, d - 1)}
         if "Masked" in av:
-            m = self.build_fcmp(d)
-            return {"k": "masked", "t": t, "m": m, "a": self.build_f64(d - 1)}
-        return self.build_f64(d)
+            m = self.build_fcmp(d, t)
+            return {"k": "masked", "t": t, "m": m, "a": self.build_float(t, d - 1)}
+        return self.build_float(t, d)
 
-    def build_fcmp(self, d):
-        """A mask of width 64 from float comparisons (or mask algebra)."""
+    def build_fcmp(self, d, t=F64):
+        """A mask from float comparisons (or mask algebra); Float32s produce
+        width-32 masks."""
         r = self.r
-        t = F64
+        mw = 32 if t == F32 else 64
         if d <= 0 or r.random() < 0.6:
             av = AVAIL.get(GONAME[t], set())
             ops = [o for o in ("Equal", "NotEqual", "Less", "LessEqual", "Greater", "GreaterEqual") if o in av]
             op = r.choice(ops or ["Equal"])
-            return {"k": "fcmp", "op": op, "w": 64,
-                    "a": self.build_f64(d - 1), "b": self.build_f64(d - 1)}
+            return {"k": "fcmp", "op": op, "w": mw,
+                    "a": self.build_float(t, d - 1), "b": self.build_float(t, d - 1)}
         x = r.random()
         if x < 0.5:
             op = r.choice(["And", "Or", "Xor", "Equal"])
-            return {"k": "mbin", "op": op, "w": 64,
-                    "a": self.build_fcmp(d - 1), "b": self.build_fcmp(d - 1)}
+            return {"k": "mbin", "op": op, "w": mw,
+                    "a": self.build_fcmp(d - 1, t), "b": self.build_fcmp(d - 1, t)}
         if x < 0.75:
-            return {"k": "mun", "w": 64, "a": self.build_fcmp(d - 1)}
-        av = AVAIL.get(GONAME[F64], set())
+            return {"k": "mun", "w": mw, "a": self.build_fcmp(d - 1, t)}
+        av = AVAIL.get(GONAME[t], set())
         ops = [o for o in ("Equal", "NotEqual", "Less", "LessEqual", "Greater", "GreaterEqual") if o in av]
         op = r.choice(ops or ["Equal"])
-        return {"k": "fcmp", "op": op, "w": 64,
-                "a": self.build_f64(d - 1), "b": self.build_f64(d - 1)}
+        return {"k": "fcmp", "op": op, "w": mw,
+                "a": self.build_float(t, d - 1), "b": self.build_float(t, d - 1)}
 
     def build_cmp(self, t, d):
         """A mask-producing node of width t[0]: a comparison, or mask algebra."""
@@ -221,10 +239,12 @@ class Gen:
     def build_root(self):
         r = self.r
         if self.float_mode:
-            return self.build_f64(r.randint(1, 3))
+            return self.build_float(r.choice([F64, F32]), r.randint(1, 3))
         t = r.choice(VT)
         if t == F64:
-            return self.build_f64(r.randint(1, 3))
+            return self.build_float(F64, r.randint(1, 3))
+        if t == F32:
+            return self.build_float(F32, r.randint(1, 3))
         if r.random() < 0.15:
             # end on a mask converted back to integers
             w = t[0]
@@ -240,6 +260,9 @@ class Gen:
             if n["t"] == F64:
                 out.append({"k": "vpush", "w": 64, "s": True,
                             "v": [fbits(v) for v in self.tables[F64]]})
+            elif n["t"] == F32:
+                out.append({"k": "vpush", "w": 32, "s": True,
+                            "v": [f32bits(v) for v in self.tables[F32]]})
             else:
                 w, sg = n["t"]
                 out.append({"k": "vpush", "w": w, "s": sg,
@@ -247,6 +270,8 @@ class Gen:
         elif k == "bcast":
             if n["t"] == F64:
                 out.append({"k": "vbcast", "w": 64, "s": True, "v": n["v"] % (1 << 64)})
+            elif n["t"] == F32:
+                out.append({"k": "vbcast", "w": 32, "s": True, "v": n["v"] % (1 << 32)})
             else:
                 w, sg = n["t"]
                 out.append({"k": "vbcast", "w": w, "s": sg, "v": n["v"] % (1 << w)})
@@ -324,6 +349,8 @@ class Gen:
             t = n["t"]
             if t == F64:
                 return "simd.LoadFloat64s(g_float64)"
+            if t == F32:
+                return "simd.LoadFloat32s(g_float32)"
             return f"simd.Load{GONAME[t]}(g_{ELEM[t]})"
         if k == "fbin":
             return f"({self.go(n['a'])}.{n['op']}({self.go(n['b'])}))"
@@ -337,6 +364,8 @@ class Gen:
             t = n["t"]
             if t == F64:
                 return f"simd.BroadcastFloat64s(math.Float64frombits({n['v']}))"
+            if t == F32:
+                return f"simd.BroadcastFloat32s(math.Float32frombits({n['v']}))"
             v = n["v"]
             if t[1]:
                 sv = v - (1 << t[0]) if v >= (1 << (t[0] - 1)) else v
@@ -390,6 +419,7 @@ import (
 func hash(h uint64, v uint64) uint64 { return (h ^ v) * 1099511628211 }
 
 var _ = math.Float64bits
+var _ = math.Float32bits
 '''
 
 
@@ -404,17 +434,33 @@ def program(seed, n, float_mode=False):
     for t in g.tables.values():
         pass
     for t in VT:
-        if t == F64:
+        if t in (F64, F32):
             continue
         vals = g.tables[t]
         w, sg = t
         src += f"var g_{ELEM[(w, sg)]} = []{ELEM[(w, sg)]}{{" + ", ".join(str(v) for v in vals) + "}\n"
     src += "var g_float64 = []float64{" + ", ".join(repr(v) for v in g.tables[F64]) + "}\n"
+    src += "var g_float32 = []float32{" + ", ".join(repr(v) for v in g.tables[F32]) + "}\n"
     for i, tree in enumerate(trees):
         ops = []
         g.rpn(tree, ops)
         recs.append({"e": i, "ops": ops})
         rt = g.result_type(tree)
+        if rt == F32:
+            src += (f"\n//go:noinline\nfunc f{i}() uint64 {{\n"
+                    f"\tvar s [64]float32\n"
+                    f"\t{g.go(tree)}.Store(s[:])\n"
+                    f"\th := uint64(1469598103934665603)\n"
+                    f"\tfor j := 0; j < 4; j++ {{\n"
+                    f"\t\tv := uint64(math.Float32bits(s[j]))\n"
+                    f"\t\t// NaN payloads are unspecified: canonicalize like the oracle\n"
+                    f"\t\tif v&0x7F800000 == 0x7F800000 && v&0x7FFFFF != 0 {{\n"
+                    f"\t\t\tv = 0x7FC00001\n"
+                    f"\t\t}}\n"
+                    f"\t\th = hash(h, v)\n"
+                    f"\t}}\n"
+                    f"\treturn h\n}}\n")
+            continue
         if rt == F64:
             src += (f"\n//go:noinline\nfunc f{i}() uint64 {{\n"
                     f"\tvar s [64]float64\n"

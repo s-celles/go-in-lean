@@ -1,6 +1,7 @@
 import Lean.Data.Json
 import GoInLean.Semantics.Int
 import GoInLean.Semantics.Float64
+import GoInLean.Semantics.Float32
 
 /-!
 # The Lean oracle for SIMD expression chains (milestone J3, integers and masks)
@@ -53,30 +54,50 @@ def evalBin (op : String) (s : Bool) {w : Nat} (a b : BitVec w) : BitVec w :=
         let a' : BitVec 64 := by rw [← h]; exact a
         let b' : BitVec 64 := by rw [← h]; exact b
         (by rw [h]; exact Go.Float64.addBits a' b')
+      else if h : w = 32 then
+        let a' : BitVec 32 := by rw [← h]; exact a
+        let b' : BitVec 32 := by rw [← h]; exact b
+        (by rw [h]; exact Go.Float32.addBits a' b')
       else a
   | "fsub" =>
       if h : w = 64 then
         let a' : BitVec 64 := by rw [← h]; exact a
         let b' : BitVec 64 := by rw [← h]; exact b
         (by rw [h]; exact Go.Float64.subBits a' b')
+      else if h : w = 32 then
+        let a' : BitVec 32 := by rw [← h]; exact a
+        let b' : BitVec 32 := by rw [← h]; exact b
+        (by rw [h]; exact Go.Float32.subBits a' b')
       else a
   | "fmul" =>
       if h : w = 64 then
         let a' : BitVec 64 := by rw [← h]; exact a
         let b' : BitVec 64 := by rw [← h]; exact b
         (by rw [h]; exact Go.Float64.mulBits a' b')
+      else if h : w = 32 then
+        let a' : BitVec 32 := by rw [← h]; exact a
+        let b' : BitVec 32 := by rw [← h]; exact b
+        (by rw [h]; exact Go.Float32.mulBits a' b')
       else a
   | "fmin" =>
       if h : w = 64 then
         let a' : BitVec 64 := by rw [← h]; exact a
         let b' : BitVec 64 := by rw [← h]; exact b
         (by rw [h]; exact Go.Float64.minBits a' b')
+      else if h : w = 32 then
+        let a' : BitVec 32 := by rw [← h]; exact a
+        let b' : BitVec 32 := by rw [← h]; exact b
+        (by rw [h]; exact Go.Float32.minBits a' b')
       else a
   | "fmax" =>
       if h : w = 64 then
         let a' : BitVec 64 := by rw [← h]; exact a
         let b' : BitVec 64 := by rw [← h]; exact b
         (by rw [h]; exact Go.Float64.maxBits a' b')
+      else if h : w = 32 then
+        let a' : BitVec 32 := by rw [← h]; exact a
+        let b' : BitVec 32 := by rw [← h]; exact b
+        (by rw [h]; exact Go.Float32.maxBits a' b')
       else a
   | "add" => a + b
   | "sub" => a - b
@@ -96,36 +117,60 @@ def evalCmp (op : String) (s : Bool) {w : Nat} (a b : BitVec w) : Bool :=
         let x' : BitVec 64 := by rw [← h]; exact a
         let y' : BitVec 64 := by rw [← h]; exact b
         Go.Float64.eqBits x' y'
+      else if h : w = 32 then
+        let x' : BitVec 32 := by rw [← h]; exact a
+        let y' : BitVec 32 := by rw [← h]; exact b
+        Go.Float32.eqBits x' y'
       else false
   | "fne" =>
       if h : w = 64 then
         let x' : BitVec 64 := by rw [← h]; exact a
         let y' : BitVec 64 := by rw [← h]; exact b
         !Go.Float64.eqBits x' y'
+      else if h : w = 32 then
+        let x' : BitVec 32 := by rw [← h]; exact a
+        let y' : BitVec 32 := by rw [← h]; exact b
+        !Go.Float32.eqBits x' y'
       else false
   | "flt" =>
       if h : w = 64 then
         let x' : BitVec 64 := by rw [← h]; exact a
         let y' : BitVec 64 := by rw [← h]; exact b
         Go.Float64.ltBits x' y'
+      else if h : w = 32 then
+        let x' : BitVec 32 := by rw [← h]; exact a
+        let y' : BitVec 32 := by rw [← h]; exact b
+        Go.Float32.ltBits x' y'
       else false
   | "fle" =>
       if h : w = 64 then
         let x' : BitVec 64 := by rw [← h]; exact a
         let y' : BitVec 64 := by rw [← h]; exact b
         Go.Float64.leBits x' y'
+      else if h : w = 32 then
+        let x' : BitVec 32 := by rw [← h]; exact a
+        let y' : BitVec 32 := by rw [← h]; exact b
+        Go.Float32.leBits x' y'
       else false
   | "fgt" =>
       if h : w = 64 then
         let x' : BitVec 64 := by rw [← h]; exact b
         let y' : BitVec 64 := by rw [← h]; exact a
         Go.Float64.ltBits x' y'
+      else if h : w = 32 then
+        let x' : BitVec 32 := by rw [← h]; exact b
+        let y' : BitVec 32 := by rw [← h]; exact a
+        Go.Float32.ltBits x' y'
       else false
   | "fge" =>
       if h : w = 64 then
         let x' : BitVec 64 := by rw [← h]; exact b
         let y' : BitVec 64 := by rw [← h]; exact a
         Go.Float64.leBits x' y'
+      else if h : w = 32 then
+        let x' : BitVec 32 := by rw [← h]; exact b
+        let y' : BitVec 32 := by rw [← h]; exact a
+        Go.Float32.leBits x' y'
       else false
   | "eq" => a == b
   | "ne" => a != b
@@ -241,10 +286,14 @@ def stepS (st : Array VS) (j : Json) : Except String (Array VS) := do
       -- unary float ops on bit patterns: abs clears the sign, neg flips it
       let op ← j.getObjValAs? String "op"
       let (st, a) ← pop st
+      -- the sign bit sits at the lane width: bit 63 for float64 lanes,
+      -- bit 31 for float32 lanes stored zero-extended
+      let smask : BitVec 64 := if a.w == 64 then 0x7FFFFFFFFFFFFFFF else 0x7FFFFFFF
+      let sbit : BitVec 64 := if a.w == 64 then 0x8000000000000000 else 0x80000000
       let vals := a.vals.map (fun x =>
         match op with
-        | "fabs" => x &&& 0x7FFFFFFFFFFFFFFF
-        | "fneg" => x ^^^ 0x8000000000000000
+        | "fabs" => x &&& smask
+        | "fneg" => x ^^^ sbit
         | _ => x)
       return st.push ⟨a.w, a.s, vals⟩
   | "vfma" =>
@@ -253,9 +302,15 @@ def stepS (st : Array VS) (j : Json) : Except String (Array VS) := do
       let (st, y) ← pop st
       let (st, x) ← pop st
       if x.w != y.w || x.w != z.w then throw "vfma shape mismatch"
-      let vals := ((x.vals.zip (y.vals.zip z.vals))).map (fun (xv, (yv, zv)) =>
-        Go.Float64.fmaBits xv yv zv)
-      return st.push ⟨x.w, x.s, vals⟩
+      if x.w == 64 then
+        let vals := ((x.vals.zip (y.vals.zip z.vals))).map (fun (xv, (yv, zv)) =>
+          Go.Float64.fmaBits xv yv zv)
+        return st.push ⟨x.w, x.s, vals⟩
+      else if x.w == 32 then
+        let vals := ((x.vals.zip (y.vals.zip z.vals))).map (fun (xv, (yv, zv)) =>
+          pad (Go.Float32.fmaBits (lane 32 xv) (lane 32 yv) (lane 32 zv)))
+        return st.push ⟨x.w, x.s, vals⟩
+      else throw "vfma width"
   | k => throw s!"unknown vector op {k}"
 
 def evalOpsS (ops : Array Json) : Except String VS := do

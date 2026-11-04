@@ -102,8 +102,10 @@ together, invisible to the differential.
    `Float64s` chains over an executable IEEE 754 binary64 model with a fused
    single-rounding `fmaBits` - the model takes the specification side of
    golang/go#80355, so the oracle flags the emulated-unfused MulAdd where
-   every implementation-agreeing differential would stay silent. Next:
-   Float32 (via the exact f64 model), Div/Sqrt, Reshape.
+   every implementation-agreeing differential would stay silent. Step 3
+   adds the `Float32s` chains over a binary32 mirror of the same model
+   (the `--float` campaign diverges organically on 52/100 emulated seeds,
+   both widths). Next: Div/Sqrt, Reshape.
 4. **J4 (optional) — coverage guidance**: if class-targeted generation
    saturates, add compiler coverage feedback to the generators
    (Fuzzilli-style, but over our typed IRs).
