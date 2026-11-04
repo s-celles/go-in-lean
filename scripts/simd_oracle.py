@@ -24,9 +24,26 @@ Environment: GO (toolchain under test, default "go"), ORACLE_SIMD (default
 """
 import json, os, random, subprocess, sys
 
-# (width, signed) for the integer vector types; masks follow the width
-VT = [(w, s) for w in (8, 16, 32, 64) for s in (False, True)]
+# (width, signed) for the integer vector types; masks follow the width.
+# "f64" is the float64 vector type; its lanes are IEEE bit patterns.
+F64 = "f64"
+VT = [(w, s) for w in (8, 16, 32, 64) for s in (False, True)] + [F64]
+
+import struct as _struct
+def fbits(v):
+    return _struct.unpack("<Q", _struct.pack("<d", v))[0]
+
+# finite values only: the amd64 Min/Max NaN deviation is documented, and the
+# MulAdd fusion (golang/go#80355) is the target of this step
+# -0.0 is excluded: the amd64 Max/Min +-0 result deviates from the documented
+# semantics (the stubs table documents it), and the divergence is already
+# understood; the hunt targets the MulAdd fusion (golang/go#80355)
+FPOOL = [0.0, 0.1, -0.1, 0.5, 1.5, 2.5, -2.5, 1e300, -1e300, 1e-310,
+         -(1e-310), 1.0 + 2.0 ** -52, -(1.0 + 2.0 ** -52), 2.0 ** 53,
+         0.49999999999999994, 3.141592653589793, 4503599627370496.5,
+         1.0 + 2.0 ** -51, 16777217.0, 1e10]
 GONAME = {(w, sg): f"{'Uint' if not sg else 'Int'}{w}s" for w in (8, 16, 32, 64) for sg in (False, True)}
+GONAME[F64] = "Float64s"
 
 def load_avail():
     """Method availability per vector type, parsed from simd_stubs.go so the
@@ -76,13 +93,17 @@ class Gen:
 
     def __init__(self, r):
         self.r = r
-        self.tables = {t: table(*t) for t in VT}
+        self.tables = {t: table(t[0], t[1]) for t in VT if t != F64}
+        self.tables[F64] = FPOOL
 
     def leaf(self, t):
         r = self.r
         if r.random() < 0.5:
             # Load from the fixed table - the RPN carries the same lanes
             return {"k": "load", "t": t}
+        if t == F64:
+            v = fbits(r.choice(FPOOL))
+            return {"k": "bcast", "t": t, "v": v}
         v = lane_pool(t[0], t[1], r)
         return {"k": "bcast", "t": t, "v": v}
 
@@ -90,8 +111,9 @@ class Gen:
         r = self.r
         if d <= 0 or r.random() < 0.35:
             return self.leaf(t)
+        if t == F64:
+            return self.build_f64(d)
         w, s = t
-        x = r.random()
         av = AVAIL.get(GONAME[t], set())
         x = r.random()
         if x < 0.40:
@@ -118,6 +140,59 @@ class Gen:
             return {"k": "masked", "t": t, "m": m, "a": self.build_vec(t, d - 1)}
         return self.build_vec(t, d)
 
+    def build_f64(self, d):
+        """Float64 chains: Add/Sub/Mul/Min/Max/MulAdd/Abs/Neg/comparisons, plus
+        IfElse/Masked through the width-64 masks."""
+        r = self.r
+        t = F64
+        if d <= 0 or r.random() < 0.35:
+            return self.leaf(t)
+        av = AVAIL.get(GONAME[t], set())
+        x = r.random()
+        if x < 0.45:
+            ops = [o for o in ("Add", "Sub", "Mul", "Min", "Max") if o in av]
+            if ops:
+                op = r.choice(ops)
+                return {"k": "fbin", "op": op, "t": t,
+                        "a": self.build_f64(d - 1), "b": self.build_f64(d - 1)}
+        if x < 0.65 and "MulAdd" in av:
+            return {"k": "fma", "t": t,
+                    "a": self.build_f64(d - 1), "b": self.build_f64(d - 1), "c": self.build_f64(d - 1)}
+        if x < 0.75:
+            op = r.choice([o for o in ("Abs", "Neg") if o in av])
+            return {"k": "fun", "op": op, "t": t, "a": self.build_f64(d - 1)}
+        if x < 0.88 and "IfElse" in av:
+            m = self.build_fcmp(d)
+            return {"k": "sel", "t": t, "m": m,
+                    "a": self.build_f64(d - 1), "b": self.build_f64(d - 1)}
+        if "Masked" in av:
+            m = self.build_fcmp(d)
+            return {"k": "masked", "t": t, "m": m, "a": self.build_f64(d - 1)}
+        return self.build_f64(d)
+
+    def build_fcmp(self, d):
+        """A mask of width 64 from float comparisons (or mask algebra)."""
+        r = self.r
+        t = F64
+        if d <= 0 or r.random() < 0.6:
+            av = AVAIL.get(GONAME[t], set())
+            ops = [o for o in ("Equal", "NotEqual", "Less", "LessEqual", "Greater", "GreaterEqual") if o in av]
+            op = r.choice(ops or ["Equal"])
+            return {"k": "fcmp", "op": op, "w": 64,
+                    "a": self.build_f64(d - 1), "b": self.build_f64(d - 1)}
+        x = r.random()
+        if x < 0.5:
+            op = r.choice(["And", "Or", "Xor", "Equal"])
+            return {"k": "mbin", "op": op, "w": 64,
+                    "a": self.build_fcmp(d - 1), "b": self.build_fcmp(d - 1)}
+        if x < 0.75:
+            return {"k": "mun", "w": 64, "a": self.build_fcmp(d - 1)}
+        av = AVAIL.get(GONAME[F64], set())
+        ops = [o for o in ("Equal", "NotEqual", "Less", "LessEqual", "Greater", "GreaterEqual") if o in av]
+        op = r.choice(ops or ["Equal"])
+        return {"k": "fcmp", "op": op, "w": 64,
+                "a": self.build_f64(d - 1), "b": self.build_f64(d - 1)}
+
     def build_cmp(self, t, d):
         """A mask-producing node of width t[0]: a comparison, or mask algebra."""
         r = self.r
@@ -141,6 +216,8 @@ class Gen:
     def build_root(self):
         r = self.r
         t = r.choice(VT)
+        if t == F64:
+            return self.build_f64(r.randint(1, 3))
         if r.random() < 0.15:
             # end on a mask converted back to integers
             w = t[0]
@@ -153,12 +230,38 @@ class Gen:
     def rpn(self, n, out):
         k = n["k"]
         if k == "load":
-            w, s = n["t"]
-            out.append({"k": "vpush", "w": w, "s": s,
-                        "v": [v % (1 << w) for v in self.tables[n["t"]]]})
+            if n["t"] == F64:
+                out.append({"k": "vpush", "w": 64, "s": True,
+                            "v": [fbits(v) for v in self.tables[F64]]})
+            else:
+                w, sg = n["t"]
+                out.append({"k": "vpush", "w": w, "s": sg,
+                            "v": [v % (1 << w) for v in self.tables[n["t"]]]})
         elif k == "bcast":
-            w, s = n["t"]
-            out.append({"k": "vbcast", "w": w, "s": s, "v": n["v"] % (1 << w)})
+            if n["t"] == F64:
+                out.append({"k": "vbcast", "w": 64, "s": True, "v": n["v"] % (1 << 64)})
+            else:
+                w, sg = n["t"]
+                out.append({"k": "vbcast", "w": w, "s": sg, "v": n["v"] % (1 << w)})
+        elif k == "fbin":
+            op = {"Add": "fadd", "Sub": "fsub", "Mul": "fmul", "Min": "fmin", "Max": "fmax"}[n["op"]]
+            self.rpn(n["a"], out)
+            self.rpn(n["b"], out)
+            out.append({"k": "vbin", "op": op})
+        elif k == "fun":
+            self.rpn(n["a"], out)
+            out.append({"k": "vfun", "op": "fabs" if n["op"] == "Abs" else "fneg"})
+        elif k == "fma":
+            self.rpn(n["a"], out)
+            self.rpn(n["b"], out)
+            self.rpn(n["c"], out)
+            out.append({"k": "vfma"})
+        elif k == "fcmp":
+            op = {"Equal": "feq", "NotEqual": "fne", "Less": "flt",
+                  "LessEqual": "fle", "Greater": "fgt", "GreaterEqual": "fge"}[n["op"]]
+            self.rpn(n["a"], out)
+            self.rpn(n["b"], out)
+            out.append({"k": "vcmp", "op": op})
         elif k == "bin":
             self.rpn(n["a"], out)
             self.rpn(n["b"], out)
@@ -212,9 +315,21 @@ class Gen:
         T = lambda t: f"simd.{GONAME[t]}"
         if k == "load":
             t = n["t"]
+            if t == F64:
+                return "simd.LoadFloat64s(g_float64)"
             return f"simd.Load{GONAME[t]}(g_{ELEM[t]})"
+        if k == "fbin":
+            return f"({self.go(n['a'])}.{n['op']}({self.go(n['b'])}))"
+        if k == "fun":
+            return f"({self.go(n['a'])}.{n['op']}())"
+        if k == "fma":
+            return f"({self.go(n['a'])}.MulAdd({self.go(n['b'])}, {self.go(n['c'])}))"
+        if k == "fcmp":
+            return f"({self.go(n['a'])}.{n['op']}({self.go(n['b'])}))"
         if k == "bcast":
             t = n["t"]
+            if t == F64:
+                return f"simd.BroadcastFloat64s(math.Float64frombits({n['v']}))"
             v = n["v"]
             if t[1]:
                 sv = v - (1 << t[0]) if v >= (1 << (t[0] - 1)) else v
@@ -250,6 +365,8 @@ class Gen:
             return n["t"]
         if k in ("bin", "shift", "rot", "sel", "masked"):
             return n["t"]
+        if k in ("fbin", "fma", "fun"):
+            return n["t"]
         if k == "frommask":
             return (n["w"], True)
         raise ValueError(k)
@@ -259,10 +376,13 @@ GOHEADER = '''package main
 
 import (
 	"fmt"
+	"math"
 	"simd"
 )
 
 func hash(h uint64, v uint64) uint64 { return (h ^ v) * 1099511628211 }
+
+var _ = math.Float64bits
 '''
 
 
@@ -276,14 +396,29 @@ def program(seed, n):
     src = GOHEADER
     for t in g.tables.values():
         pass
-    for w, s in VT:
-        vals = g.tables[(w, s)]
-        src += f"var g_{ELEM[(w, s)]} = []{ELEM[(w, s)]}{{" + ", ".join(str(v) for v in vals) + "}\n"
+    for t in VT:
+        if t == F64:
+            continue
+        vals = g.tables[t]
+        w, sg = t
+        src += f"var g_{ELEM[(w, sg)]} = []{ELEM[(w, sg)]}{{" + ", ".join(str(v) for v in vals) + "}\n"
+    src += "var g_float64 = []float64{" + ", ".join(repr(v) for v in g.tables[F64]) + "}\n"
     for i, tree in enumerate(trees):
         ops = []
         g.rpn(tree, ops)
         recs.append({"e": i, "ops": ops})
-        w, sg = g.result_type(tree)
+        rt = g.result_type(tree)
+        if rt == F64:
+            src += (f"\n//go:noinline\nfunc f{i}() uint64 {{\n"
+                    f"\tvar s [64]float64\n"
+                    f"\t{g.go(tree)}.Store(s[:])\n"
+                    f"\th := uint64(1469598103934665603)\n"
+                    f"\tfor j := 0; j < 2; j++ {{\n"
+                    f"\t\th = hash(h, math.Float64bits(s[j]))\n"
+                    f"\t}}\n"
+                    f"\treturn h\n}}\n")
+            continue
+        w, sg = rt
         lanes = min(4, 128 // w)
         # the checksum mirrors the oracle: FNV-1a over the first lanes,
         # each lane reinterpreted as unsigned at its width

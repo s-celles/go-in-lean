@@ -1,5 +1,6 @@
 import Lean.Data.Json
 import GoInLean.Semantics.Int
+import GoInLean.Semantics.Float64
 
 /-!
 # The Lean oracle for SIMD expression chains (milestone J3, integers and masks)
@@ -47,6 +48,36 @@ def pad {w : Nat} (x : BitVec w) : BitVec 64 := x.setWidth 64
 
 def evalBin (op : String) (s : Bool) {w : Nat} (a b : BitVec w) : BitVec w :=
   match op with
+  | "fadd" =>
+      if h : w = 64 then
+        let a' : BitVec 64 := by rw [← h]; exact a
+        let b' : BitVec 64 := by rw [← h]; exact b
+        (by rw [h]; exact Go.Float64.addBits a' b')
+      else a
+  | "fsub" =>
+      if h : w = 64 then
+        let a' : BitVec 64 := by rw [← h]; exact a
+        let b' : BitVec 64 := by rw [← h]; exact b
+        (by rw [h]; exact Go.Float64.subBits a' b')
+      else a
+  | "fmul" =>
+      if h : w = 64 then
+        let a' : BitVec 64 := by rw [← h]; exact a
+        let b' : BitVec 64 := by rw [← h]; exact b
+        (by rw [h]; exact Go.Float64.mulBits a' b')
+      else a
+  | "fmin" =>
+      if h : w = 64 then
+        let a' : BitVec 64 := by rw [← h]; exact a
+        let b' : BitVec 64 := by rw [← h]; exact b
+        (by rw [h]; exact Go.Float64.minBits a' b')
+      else a
+  | "fmax" =>
+      if h : w = 64 then
+        let a' : BitVec 64 := by rw [← h]; exact a
+        let b' : BitVec 64 := by rw [← h]; exact b
+        (by rw [h]; exact Go.Float64.maxBits a' b')
+      else a
   | "add" => a + b
   | "sub" => a - b
   | "mul" => a * b
@@ -60,6 +91,42 @@ def evalBin (op : String) (s : Bool) {w : Nat} (a b : BitVec w) : BitVec w :=
 
 def evalCmp (op : String) (s : Bool) {w : Nat} (a b : BitVec w) : Bool :=
   match op with
+  | "feq" =>
+      if h : w = 64 then
+        let x' : BitVec 64 := by rw [← h]; exact a
+        let y' : BitVec 64 := by rw [← h]; exact b
+        Go.Float64.eqBits x' y'
+      else false
+  | "fne" =>
+      if h : w = 64 then
+        let x' : BitVec 64 := by rw [← h]; exact a
+        let y' : BitVec 64 := by rw [← h]; exact b
+        !Go.Float64.eqBits x' y'
+      else false
+  | "flt" =>
+      if h : w = 64 then
+        let x' : BitVec 64 := by rw [← h]; exact a
+        let y' : BitVec 64 := by rw [← h]; exact b
+        Go.Float64.ltBits x' y'
+      else false
+  | "fle" =>
+      if h : w = 64 then
+        let x' : BitVec 64 := by rw [← h]; exact a
+        let y' : BitVec 64 := by rw [← h]; exact b
+        Go.Float64.leBits x' y'
+      else false
+  | "fgt" =>
+      if h : w = 64 then
+        let x' : BitVec 64 := by rw [← h]; exact b
+        let y' : BitVec 64 := by rw [← h]; exact a
+        Go.Float64.ltBits x' y'
+      else false
+  | "fge" =>
+      if h : w = 64 then
+        let x' : BitVec 64 := by rw [← h]; exact b
+        let y' : BitVec 64 := by rw [← h]; exact a
+        Go.Float64.leBits x' y'
+      else false
   | "eq" => a == b
   | "ne" => a != b
   | "lt" => if s then a.slt b else a < b
@@ -170,6 +237,25 @@ def stepS (st : Array VS) (j : Json) : Except String (Array VS) := do
       let vals := m.vals.map (fun x =>
         if x.toNat == 1 then pad (~~~(0 : BitVec w)) else 0)
       return st.push ⟨w, true, vals⟩
+  | "vfun" =>
+      -- unary float ops on bit patterns: abs clears the sign, neg flips it
+      let op ← j.getObjValAs? String "op"
+      let (st, a) ← pop st
+      let vals := a.vals.map (fun x =>
+        match op with
+        | "fabs" => x &&& 0x7FFFFFFFFFFFFFFF
+        | "fneg" => x ^^^ 0x8000000000000000
+        | _ => x)
+      return st.push ⟨a.w, a.s, vals⟩
+  | "vfma" =>
+      -- MulAdd per the spec: fused, single rounding
+      let (st, z) ← pop st
+      let (st, y) ← pop st
+      let (st, x) ← pop st
+      if x.w != y.w || x.w != z.w then throw "vfma shape mismatch"
+      let vals := ((x.vals.zip (y.vals.zip z.vals))).map (fun (xv, (yv, zv)) =>
+        Go.Float64.fmaBits xv yv zv)
+      return st.push ⟨x.w, x.s, vals⟩
   | k => throw s!"unknown vector op {k}"
 
 def evalOpsS (ops : Array Json) : Except String VS := do
