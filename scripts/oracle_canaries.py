@@ -87,6 +87,20 @@ C82782 = {"k": "sel", "t": (16, True),
                       "a": {"k": "bits", "op": "rb", "w": 16,
                             "a": {"k": "conv", "t": (16, False), "a": VAR(16, False, "x")}}}}}
 
+# golang/go#82834 (arm): bits.Sub64's borrow extraction drops a term; f(-1,1)
+# answers 0 instead of 1. Also the GOARM=5 manifestation of #82786.
+C82834 = {"k": "conv", "t": (16, True),
+          "a": {"k": "sub64", "o": "borrow",
+                "a": {"k": "conv", "t": (64, False),
+                      "a": {"k": "bin", "op": "div",
+                            "a": {"k": "conv", "t": (8, True),
+                                  "a": {"k": "bits", "op": "rev", "w": 8,
+                                        "a": {"k": "lit", "t": (8, False), "v": 33, "raw": True}}},
+                            "b": {"k": "lit", "t": (8, True), "v": -7, "raw": True}}},
+                "b": {"k": "conv", "t": (64, False), "a": VAR(16, True, "x")},
+                "c": {"k": "conv", "t": (64, False),
+                      "a": {"k": "conv", "t": (8, False), "a": VAR(8, False, "y")}}}}
+
 CANARIES = [
     {"id": "82763", "expect": ("go1.27.3:CAUGHT", "tip:CAUGHT"),
      "tree": C82763, "inputs": [((1 << 64) - 1, 0), (7, 3)]},
@@ -109,6 +123,8 @@ CANARIES = [
     {"id": "82782", "expect": ("ppc64le-power10:CAUGHT",),
      "arch": ("ppc64le", "qemu-ppc64le", "GOPPC64=power10", "QEMU_CPU=power10"),
      "tree": C82782, "inputs": [(1024, 5)]},
+    {"id": "82834", "expect": ("arm5:CAUGHT",), "arch": ("arm", "qemu-arm", "GOARM=5"),
+     "tree": C82834, "inputs": [((1 << 64) - 1, 1)]},
 ]
 
 

@@ -42,6 +42,7 @@ inductive Op where
   | bits (op : String) (w : Nat)
   | rot (w : Nat)
   | sel
+  | addsub (op : String) (o : String)
 
 def perr (m : String) : Except Panic α := .error (Panic.message m)
 
@@ -67,6 +68,12 @@ def parseOp (j : Json) : Except String Op := do
     return .bits op w
   | "rot" => return .rot (← j.getObjValAs? Nat "w")
   | "sel" => return .sel
+  | "sub64" =>
+    let o ← j.getObjValAs? String "o"
+    return .addsub "sub" o
+  | "add64" =>
+    let o ← j.getObjValAs? String "o"
+    return .addsub "add" o
   | k => throw s!"unknown op kind {k}"
 
 structure Rec where
@@ -205,6 +212,36 @@ def step (st : Array V) (o : Op) : Except Panic (Array V) :=
           let st := st.pop
           if vc.w != 1 then perr "sel condition width"
           else if vc.val.toNat == 1 then .ok (st.push va) else .ok (st.push vb)
+  | .addsub op o =>
+    match st.back? with
+    | none => perr "stack underflow"
+    | some ⟨wc, _, cv⟩ =>
+      let st := st.pop
+      match st.back? with
+      | none => perr "stack underflow"
+      | some ⟨wb, _, bv⟩ =>
+        let st := st.pop
+        match st.back? with
+        | none => perr "stack underflow"
+        | some ⟨wa, _, av⟩ =>
+          let st := st.pop
+          if ha : wa = 64 then
+            let a64 : BitVec 64 := by rw [← ha]; exact av
+            if hb : wb = 64 then
+              let b64 : BitVec 64 := by rw [← hb]; exact bv
+              if hc : wc = 64 then
+                let c64 : BitVec 64 := by rw [← hc]; exact cv
+                if op == "sub" then
+                  let diff := a64 - b64 - c64
+                  let bor := if a64.toNat < b64.toNat + c64.toNat then (1 : BitVec 64) else 0
+                  if o == "diff" then .ok (st.push ⟨64, false, diff⟩) else .ok (st.push ⟨64, false, bor⟩)
+                else
+                  let sum := a64 + b64 + c64
+                  let car := if 2 ^ 64 ≤ a64.toNat + b64.toNat + c64.toNat then (1 : BitVec 64) else 0
+                  if o == "sum" then .ok (st.push ⟨64, false, sum⟩) else .ok (st.push ⟨64, false, car⟩)
+              else perr "addsub width"
+            else perr "addsub width"
+          else perr "addsub width"
   | .bin op =>
     match st.back? with
     | none => perr "stack underflow"

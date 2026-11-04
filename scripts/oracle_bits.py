@@ -110,7 +110,7 @@ class Gen:
         k = n["k"]
         if k == "lit":
             w, s = n["t"]
-            out.append({"k": "push", "w": w, "s": s, "v": n["v"]})
+            out.append({"k": "push", "w": w, "s": s, "v": n["v"] % (1 << w)})
         elif k == "var":
             w, s = n["t"]
             v = x if n["which"] == "x" else y
@@ -138,6 +138,11 @@ class Gen:
             self.rpn(n["a"], x, y, out)
             self.rpn(n["b"], x, y, out)
             out.append({"k": "sel"})
+        elif k in ("sub64", "add64"):
+            self.rpn(n["a"], x, y, out)
+            self.rpn(n["b"], x, y, out)
+            self.rpn(n["c"], x, y, out)
+            out.append({"k": k, "o": n["o"]})
         else:
             raise ValueError(k)
 
@@ -148,6 +153,15 @@ class Gen:
             if n.get("raw"):
                 return f"{gt}({signed_repr(n['t'], n['v'])})"
             return cn[id(n)]
+        if k in ("sub64", "add64"):
+            fn = "Sub64" if k == "sub64" else "Add64"
+            A = self.go(n["a"], cn)
+            B = self.go(n["b"], cn)
+            C = self.go(n["c"], cn)
+            idx = 0 if n["o"] in ("diff", "sum") else 1
+            first, second = ("d0", "_") if idx == 0 else ("_", "d1")
+            return (f"(func() uint64 {{ {first}, {second} := bits.{fn}({A}, {B}, {C}); "
+                    f"return d{idx} }}())")
         if k == "var":
             return f"{gt}({n['which']})"
         if k == "un":
