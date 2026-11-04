@@ -34,6 +34,7 @@ annotated verification of new code (see `docs/prior-art.md`).
 | **Architecture-specific miscompilations** | (3) mips/mipsle: `Rsh8x*` sign-extends from bit 15 (since go1.8; [golang/go#82772](https://github.com/golang/go/issues/82772)). (4) riscv64, go1.26 regression: `int8(x - (-x)) >> 8` compiles to 0 ([golang/go#82773](https://github.com/golang/go/issues/82773)). (5) s390x, since go1.26: `uint64(int8(-128)) < 0xFFFFFFFF` is true ([golang/go#82774](https://github.com/golang/go/issues/82774)). Fixes validated on master; reported after human review |
 | **Reported 2026-11-02 (second batch)** | (6) ppc64/ppc64le: `int32(int16(x >> 1))` keeps 32 bits, `Type.Size()` compared in bits ([golang/go#82775](https://github.com/golang/go/issues/82775)). (7) mips/mipsle: constant counts ≥ 2^32 truncated, `(x >> 7) >> (uint64(y) \| 0xFFFFFFFF)` is `x >> 6` ([golang/go#82776](https://github.com/golang/go/issues/82776)). (8) arm64 (native): a constant-condition select of `^y` returns `y ^ 1` ([golang/go#82777](https://github.com/golang/go/issues/82777)). (9) ppc64le/ppc64 `GOPPC64=power10`: `math/bits.ReverseBytes16` mistyped as 64-bit miscompiles a comparison ([golang/go#82782](https://github.com/golang/go/issues/82782)); canary+objdump confirm wrong-code, not out-of-bounds. (10) arm: `MVNshiftRA` constant fold drops the complement, `bits.TrailingZeros64(0)` can be 32 ([golang/go#82786](https://github.com/golang/go/issues/82786)). Fixes validated on master; reported after human review |
 | **Reported 2026-11-03 (third batch)** | (11) amd64/386: the SBB carry masks are not marked `clobberFlags`, so a comparison of a shift count against the width sharing the CMP flags reads them clobbered - `x << y` with `y == 64` miscompiles on go1.24.13..master ([golang/go#82825](https://github.com/golang/go/issues/82825), [CL 858262](https://go-review.googlesource.com/c/go/+/858262); all four widths and the `==`/`!=`/`>`/`<=` operators covered by the count-variable fuzzer mode). (12) arm: `bits.Sub64` inlined as its source formula drops the `^x_hi & y_hi` term of the borrow extraction during `lower` - a wrong `borrowOut` on go1.21.13..master ([golang/go#82834](https://github.com/golang/go/issues/82834)). (13) prove carries a fact through an extension with a constant too wide for the narrow type, truncating it: a branch that cannot be taken is taken on go1.26.6+ ([golang/go#82839](https://github.com/golang/go/issues/82839), [CL 858581](https://go-review.googlesource.com/c/go/+/858581)). All found or root-caused with the new `--countvar`/`--carry` fuzzer modes and the OpcodeTable flags lint |
+| **Reported 2026-11-03 (fourth batch)** | (14) amd64 AVX-512, `GOEXPERIMENT=simd`: `x.ShiftAllLeft(c).IfElse(m, y)` fails to build at the 512-bit variant - the IfElse-of-a-shift fusion drops the aux shift count and the assembler rejects `VPSLLQ Z0, K1, Z1`; all 16/32/64-bit integer vector types, both shift directions ([golang/go#82847](https://github.com/golang/go/issues/82847), [CL 858901](https://go-review.googlesource.com/c/go/+/858901)). Found by the new SIMD chain fuzzer (`scripts/simd_fuzz.py`, cross-configuration oracle) |
 | Other discrepancies | `strings`/`bytes` `Join` conservative overflow guard (`unsafe` only, negligible); two latent rules wrong for unreachable counts (AMD64 `CMPLconst (SHRLconst _ [32])`, generic rotate recognition with a count ≥ 2^63) |
 | Known issues reproduced | golang/go#54255, golang/go#15175 |
 | Mutation test | 8 mutants refuted in Lean and reproduced in Go |
@@ -56,10 +57,10 @@ flowchart LR
     subgraph Z["Metamorphic differential fuzzing"]
         Z1["cross campaigns: plain / branchy / index / late,<br/>go1.27.3 + master, rel vs tip"]
         Z2["--countvar mode"]
-        Z3["--carry mode"]
-        Z4["float / conversion fuzzer"]
+        Z3["--carry mode"]        Z4["float / conversion fuzzer"]
         Z5["BCE fuzzer + poison guards (private repo)"]
         Z6["rewrite-trace instrumentation<br/>(generated matchers, per function)"]
+        Z7["simd_fuzz.py: SIMD chains,<br/>cross-configuration oracle"]
     end
     subgraph T["Targets"]
         T1["amd64 v1 / v3 / v4, 386, arm v5 / v7, arm64"]
@@ -71,14 +72,13 @@ flowchart LR
         B2["#82825 SBB carry masks - CL 858262"]
         B3["#82834 arm bits.Sub64 borrow<br/>= 3rd manifestation of #82786"]
         B4["#82839 prove extension/constant - CL 858581"]
-        B0["clean: no OOB in BCE (4,800 poison seeds),<br/>wasm / wasip1 / v4 backends clean on rel"]
+        B5["#82847 SIMD masked shift has no<br/>immediate - CL 858901 (build failure)"]
+        B0["clean: no OOB in BCE (8,800 poison seeds),<br/>float late 2,800 seeds clean,<br/>flags-clobber class closed on all arches"]
     end
     subgraph U["Upcoming"]
-        U1["SIMD (GOEXPERIMENT=simd):<br/>~4,300 vector rules new on master"]
-        U2["float fuzzer x late / countvar-style modes"]
-        U3["BCE: loop-induction poison arrangements"]
-        U4["knownbits / ZeroUpper*Bits pass (LOONG64latelower)"]
-        U5["generator bug seed 997643"]
+        U1["SIMD (GOEXPERIMENT=simd):<br/>chain fuzzer campaigns arm64 / riscv64 / wasm,<br/>rotate Masked ops, --late-style constants"]
+        U2["spec-driven fuzzing (docs/fuzzing-vision.md):<br/>J1 Lean oracle in the fuzz loop (cedar-drt pattern)"]
+        U3["knownbits / ZeroUpper*Bits pass (LOONG64latelower)"]
     end
 
     T1 --> Z1
@@ -90,6 +90,7 @@ flowchart LR
     Z3 --> B3
     Z5 --> B0
     Z6 --> B3
+    Z7 --> B5
     F2 --> B0
     L3 -.-> B2
     L1 -.-> B1

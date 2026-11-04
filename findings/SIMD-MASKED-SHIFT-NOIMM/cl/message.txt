@@ -23,6 +23,6 @@ builds, and the generated programs agree across GODEBUG=simd=
 auto/0/128/256/512 on amd64 (the merge-masked result matches the
 emulated one, including masked-off lanes keeping the false operand).
 
-Fixes #NNNNN.
+Fixes #82847.
 
 Assisted-by: AI

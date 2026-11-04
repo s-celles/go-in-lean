@@ -1,6 +1,6 @@
 # SIMD-MASKED-SHIFT-NOIMM — IfElse(shift) on amd64/AVX-512 fails to build (missing immediate)
 
-**Status: to report** (repro fails on master 740d909bb5; the fix (fix.patch) builds the full 11-case matrix, 25/25 fuzzer seeds agree across GODEBUG=auto/0/128/256, and the directed IfElse semantics test passes: masked-off lanes keep the false operand)
+**Status: reported golang/go#82847, fix in CL 858901** (repro fails on master 740d909bb5; the fix (fix.patch) builds the full 11-case matrix, 25/25 fuzzer seeds agree across GODEBUG=auto/0/128/256, and the directed IfElse semantics test passes: masked-off lanes keep the false operand)
 
 ## Summary
 With GOEXPERIMENT=simd on amd64, `x.ShiftAllLeft(c).IfElse(mask, y)` (any constant
