@@ -109,22 +109,23 @@ C82825 = BIN("add",
              {"k": "conv", "t": (64, False),
               "a": BIN("eq", VAR(64, False, "y"),
                        {"k": "lit", "t": (64, False), "v": 64, "raw": True})})
-# golang/go#82839 (amd64, go1.26+): prove carries the (trivially true) wide
-# fact sext(s) >= w through a sign extension, truncates w to the narrow width
-# and derives a false narrow bound; a later branch on that bound is wrongly
-# eliminated. Numbers from the formalized model (ProveExtDelta.lean): delta
-# -513, w -536870911 (0xE0000001), derived bound s >= 514.
-_S16 = BIN("sub", {"k": "conv", "t": (16, True), "a": VAR(64, False, "x")},
-           {"k": "lit", "t": (16, True), "v": -513, "raw": True})
-C82839 = {"k": "sel", "t": (64, False),
-          "c": BIN("ge", {"k": "conv", "t": (32, True), "a": _S16},
-                   {"k": "lit", "t": (32, True), "v": -536870911, "raw": True}),
-          "a": {"k": "sel", "t": (64, False),
-                "c": BIN("lt", {"k": "conv", "t": (16, True), "a": VAR(64, False, "x")},
-                         {"k": "lit", "t": (16, True), "v": 514, "raw": True}),
-                "a": {"k": "lit", "t": (64, False), "v": 1, "raw": True},
-                "b": {"k": "lit", "t": (64, False), "v": 2, "raw": True}},
-          "b": {"k": "lit", "t": (64, False), "v": 3, "raw": True}}
+# golang/go#82839 (amd64, go1.26+): prove truncates the wide comparison
+# constant when carrying the fact through the sign extension, and the
+# always-false branch is folded to taken. Bisected to the minimal shape from
+# the bce3 seed 783785: int64(int16(int(uint8(y))) - 257) < -131073, whose
+# body sets the result; the spec keeps 0, the miscompiling toolchain sets it.
+C82839 = {"k": "sel", "t": (64, True),
+          "c": BIN("lt",
+                   {"k": "conv", "t": (64, True),
+                    "a": BIN("sub",
+                             {"k": "conv", "t": (16, True),
+                              "a": {"k": "conv", "t": (64, True),
+                                    "a": {"k": "conv", "t": (8, False),
+                                          "a": VAR(64, False, "y")}}},
+                             {"k": "lit", "t": (16, True), "v": 257, "raw": True, "untyped": True})},
+                   {"k": "lit", "t": (64, True), "v": -131073, "raw": True, "untyped": True}),
+          "a": {"k": "lit", "t": (64, True), "v": 12345, "raw": True},
+          "b": {"k": "lit", "t": (64, True), "v": 0, "raw": True}}
 
 CANARIES = [
     {"id": "82763", "expect": ("go1.27.3:CAUGHT", "tip:CAUGHT"),
@@ -153,7 +154,7 @@ CANARIES = [
     {"id": "82825", "expect": ("go1.24..master:CAUGHT",),
      "tree": C82825, "inputs": [(1, 65), (1, 64)]},
     {"id": "82839", "expect": ("go1.26+:CAUGHT",),
-     "tree": C82839, "inputs": [(255, 0)]},
+     "tree": C82839, "inputs": [(0, 0), (7, 255)]},
 ]
 
 
@@ -205,8 +206,23 @@ def run_canary(tree, inputs, gobin, out):
                          f"{tail}"
                          "\treturn\n}\n\nfunc main() {\n")
     src += "\tvar r uint64\n\tvar p string\n"
-    for (x, y) in inputs:
-        src += (f"\tr, p = v0({x}, {y})\n"
+    # inputs travel through a package-level var: literal arguments or a local
+    # literal array would be constant-propagated and the branch evaluated
+    # (correctly) at compile time
+    tail_idx = src.rindex("func main() {")
+    flat = ", ".join(str(v) for pair in inputs for v in pair)
+    src = (src[:tail_idx] +
+           "var gin = [" + str(2 * len(inputs)) + "]uint64{" + flat + "}\n\n" +
+           src[tail_idx:])
+    # the input array is FILLED AT RUNTIME: a composite literal (even a
+    # package-level one) stays constant-foldable, and a folded argument makes
+    # the branch evaluate (correctly) at compile time
+    src += ("\tvar gcan [" + str(len(inputs)) + "][2]uint64\n"
+            "\tk := 0\n"
+            "\tfor i := 0; i < " + str(2 * len(inputs)) + "; i += 2 {\n"
+            "\t\tgcan[k][0] = gin[i]\n\t\tgcan[k][1] = gin[i+1]\n\t\tk++\n\t}\n")
+    for i, (x, y) in enumerate(inputs):
+        src += (f"\tr, p = v0(gcan[{i}][0], gcan[{i}][1])\n"
                 f"\tif p == \"\" {{\n\t\tfmt.Printf(\"e=0 x={x} y={y} OK %d\\n\", r)\n"
                 f"\t}} else {{\n\t\tfmt.Printf(\"e=0 x={x} y={y} PANIC %s\\n\", p)\n\t}}\n")
     src += "}\n"

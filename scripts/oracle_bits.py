@@ -153,6 +153,12 @@ class Gen:
         k = n["k"]
         gt = GONAME[n["t"]] if "t" in n else None
         if k == "lit":
+            if n.get("untyped"):
+                # the bare value: in a binary expression the type comes from
+                # the other operand, which is the shape Go source uses (an
+                # explicitly typed constant changes the SSA and can hide
+                # compiler bugs that look at the untyped-form AuxInt)
+                return str(signed_repr(n["t"], n["v"]))
             if n.get("raw"):
                 return f"{gt}({signed_repr(n['t'], n['v'])})"
             return cn[id(n)]
