@@ -91,6 +91,15 @@ Lessons stated by the author: of 130 first-pass memory-safety "proofs", review f
 
 No confirmed wrong-result bug in pure-Go `math/bits` or `sort.Search` was found ([#34827](https://golang.org/issue/34827), [#37869](https://golang.org/issue/37869) were user errors).
 
+### 2.8 Morphism LeanExe / ProofKit: verified executables with proven IEEE floats
+
+[Morphism](https://www.morphism.com/projects) builds LeanExe, a compiler (itself written in Lean) from a restricted Lean subset to WASM, with proofs about the emitted artifacts via the Talos formal model of WASM ([repo](https://github.com/jsmorph/leanexe)). Two layers matter for this project:
+
+- [LeanExe/ProofKit](https://github.com/jsmorph/leanexe/tree/main/LeanExe/ProofKit) is their library of proven primitives: `F32Add`, `F32Div` (over `F32DivCore`), `F32Compare`, `F32Convert`, a full unpack/pack IEEE-754 formalization (`Float.Model`, `UnpackedFloat`), plus verified numerics (Bessel families, EulerGamma, exp error bounds) and verified allocation (`AlignedAllocate` and siblings). The pattern is exactly our oracle's pattern - executable `divBits`/`addBits` over raw bit patterns - but carried to a proof: `F32Div.div_eq` proves `LeanExe.Float32.divBits a b = Wasm.IEEE32.div a b` for all inputs, case-split over NaN/inf/zero. Their target semantics is `Wasm.IEEE32` (Talos), ours is the Go `simd` package; the decomposition and the special-case obligations coincide point for point with our `GoInLean/Semantics/Float{32,64}.lean`.
+- LTG ("lemmas, tactics, guidelines") knowledge bases: the compiler emits annotations that help identify which stored proof techniques prove properties of the emitted artifact. This is the infrastructure version of our J2 milestone (generate programs at theorem boundaries), and a natural direction for making the oracle certified: prove `divBits = spec IEEE` once, as ProofKit does, instead of validating by canaries and campaigns.
+
+Positioning: Morphism attacks compile-and-prove (Lean to verified WASM, including formally verified GPU code in their GPT-2 example); this project attacks executable-semantics-as-oracle differential fuzzing of an existing compiler. The two are complementary: their proofs are the certification step our tested models lack.
+
 ## 3. Answers to the Phase 0 questions
 
 1. **Which Go behaviours already have formal models?** Channel concurrency (Gomela, behavioural types), a core object calculus (Featherweight Go, on paper), a GooseLang translation of a heap-and-goroutine subset with 64-bit words (Goose/Perennial, Rocq and Lean 4), a K-framework semantics with no public artefact (K-Go), and Gobra's Viper encoding with unbounded integers. None provides an executable, kernel-checked, bit-precise model of Go standard-library code suitable for refutation by counterexample.

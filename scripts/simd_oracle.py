@@ -172,7 +172,7 @@ class Gen:
         av = AVAIL.get(GONAME[t], set())
         x = r.random()
         if x < 0.45:
-            ops = [o for o in ("Add", "Sub", "Mul", "Min", "Max") if o in av]
+            ops = [o for o in ("Add", "Sub", "Mul", "Div", "Min", "Max") if o in av]
             if ops:
                 op = r.choice(ops)
                 return {"k": "fbin", "op": op, "t": t,
@@ -181,7 +181,7 @@ class Gen:
             return {"k": "fma", "t": t,
                     "a": self.build_float(t, d - 1), "b": self.build_float(t, d - 1), "c": self.build_float(t, d - 1)}
         if x < 0.75:
-            op = r.choice([o for o in ("Abs", "Neg") if o in av])
+            op = r.choice([o for o in ("Abs", "Neg", "Sqrt") if o in av])
             return {"k": "fun", "op": op, "t": t, "a": self.build_float(t, d - 1)}
         if x < 0.88 and "IfElse" in av:
             m = self.build_fcmp(d, t)
@@ -276,13 +276,15 @@ class Gen:
                 w, sg = n["t"]
                 out.append({"k": "vbcast", "w": w, "s": sg, "v": n["v"] % (1 << w)})
         elif k == "fbin":
-            op = {"Add": "fadd", "Sub": "fsub", "Mul": "fmul", "Min": "fmin", "Max": "fmax"}[n["op"]]
+            op = {"Add": "fadd", "Sub": "fsub", "Mul": "fmul", "Div": "fdiv",
+                  "Min": "fmin", "Max": "fmax"}[n["op"]]
             self.rpn(n["a"], out)
             self.rpn(n["b"], out)
             out.append({"k": "vbin", "op": op})
         elif k == "fun":
             self.rpn(n["a"], out)
-            out.append({"k": "vfun", "op": "fabs" if n["op"] == "Abs" else "fneg"})
+            out.append({"k": "vfun",
+                        "op": {"Abs": "fabs", "Neg": "fneg", "Sqrt": "fsqrt"}[n["op"]]})
         elif k == "fma":
             self.rpn(n["a"], out)
             self.rpn(n["b"], out)

@@ -231,4 +231,88 @@ def maxBits (x y : BitVec 64) : BitVec 64 :=
   else if eqBits x y then (if !x.msb then x else y)
   else if ltBits y x then x else y
 
+/-!
+## Division and square root: single rounding at the final grid
+
+Both round *once*, at the grid the result lands on (normal `te - 52`,
+subnormal `-1074`), never through an intermediate precision - the exact
+quotient is scaled to integer units at the grid and rounded
+nearest-even there, with the remainder as the sticky term.
+-/
+
+/-- The exact quotient `(ma/mb) * 2^(ea-eb)` of two positive finite
+values, rounded once - the IEEE division. -/
+def divPositive (sign : Bool) (ma ea mb eb : Int) : BitVec 64 :=
+  let la : Int := (Int.toNat ma).log2 + 1
+  let lb : Int := (Int.toNat mb).log2 + 1
+  let s := ea - eb
+  -- the binary exponent of the quotient: ma/mb is in
+  -- (2^(la-lb-1), 2^(la-lb+1)), so the lead bit test picks the binade
+  let lead : Int := if ma * (2 : Int) ^ Int.toNat lb >= mb * (2 : Int) ^ Int.toNat la
+    then la - lb else la - lb - 1
+  let te := lead + s
+  if te > 1023 then infBits sign
+  else
+    let g : Int := if te >= -1022 then te - 52 else -1074
+    -- units = (ma/mb) * 2^(s-g), folded into an integer numerator/denominator
+    let K := s - g
+    let N := if K >= 0 then ma * (2 : Int) ^ Int.toNat K else ma
+    let D := if K >= 0 then mb else mb * (2 : Int) ^ Int.toNat (-K)
+    let q := N / D
+    let r := N % D
+    let u : Int := if 2 * r > D then q + 1
+      else if 2 * r == D then (if q % 2 == 1 then q + 1 else q)
+      else q
+    if te >= -1022 then
+      if u >= 2 ^ 53 then
+        -- carried into the next binade (te+1 = 1024 lands on the inf pattern)
+        assemble sign (Int.toNat (te + 1 + 1023)) 0
+      else assemble sign (Int.toNat (te + 1023)) (Int.toNat (u - 2 ^ 52))
+    else
+      if u >= 2 ^ 52 then assemble sign 1 (Int.toNat (u - 2 ^ 52))
+      else assemble sign 0 (Int.toNat u)
+
+/-- The IEEE division. -/
+def divBits (x y : BitVec 64) : BitVec 64 :=
+  match decode x, decode y with
+  | .nan, _ => nanBits
+  | _, .nan => nanBits
+  | .inf _, .inf _ => nanBits
+  | .inf s, .exact e => if e.mant == 0 then nanBits else infBits (s != e.sign)
+  | .exact e, .inf t => zeroBits (e.sign != t)
+  | .exact a, .exact b =>
+      if b.mant == 0 then
+        if a.mant == 0 then nanBits else infBits (a.sign != b.sign)
+      else if a.mant == 0 then zeroBits (a.sign != b.sign)
+      else divPositive (a.sign != b.sign) a.mant a.exp b.mant b.exp
+
+/-- The IEEE square root. sqrt(-0) is -0; sqrt of a negative is NaN; the
+result of a positive finite is always normal (>= 2^-537). -/
+def sqrtBits (x : BitVec 64) : BitVec 64 :=
+  match decode x with
+  | .nan => nanBits
+  | .inf s => if s then nanBits else infBits false
+  | .exact e =>
+      if e.mant == 0 then zeroBits e.sign
+      else if e.sign then nanBits
+      else
+        -- make the exponent even so the root scales by a power of four
+        let even := e.exp % 2 == 0
+        let m := if even then e.mant else e.mant * 2
+        let ex : Int := if even then e.exp else e.exp - 1
+        let lm : Int := (Int.toNat m).log2
+        let he : Int := lm + ex
+        let te : Int := if he >= 0 then he / 2 else -(((Int.toNat (-he)) + 1) / 2)
+        -- te >= -537 > -1022: the normal grid always
+        let g : Int := te - 52
+        -- A = v / 2^(2g) : the value scaled so that sqrt(A) is the mantissa
+        let A : Int := m * (2 : Int) ^ Int.toNat (ex - 2 * g)
+        let s0 := (Nat.sqrt (Int.toNat A) : Int)
+        -- (s0 + 1/2)^2 = ((2*s0+1)^2)/4 cannot equal A exactly (parity), so
+        -- only the magnitude comparison decides the carry
+        let u : Int := if (2 * s0 + 1) ^ 2 < 4 * A then s0 + 1 else s0
+        if u >= 2 ^ 53 then
+          assemble false (Int.toNat (te + 1 + 1023)) 0
+        else assemble false (Int.toNat (te + 1023)) (Int.toNat (u - 2 ^ 52))
+
 end Go.Float64

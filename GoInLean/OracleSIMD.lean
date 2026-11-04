@@ -79,6 +79,16 @@ def evalBin (op : String) (s : Bool) {w : Nat} (a b : BitVec w) : BitVec w :=
         let b' : BitVec 32 := by rw [← h]; exact b
         (by rw [h]; exact Go.Float32.mulBits a' b')
       else a
+  | "fdiv" =>
+      if h : w = 64 then
+        let a' : BitVec 64 := by rw [← h]; exact a
+        let b' : BitVec 64 := by rw [← h]; exact b
+        (by rw [h]; exact Go.Float64.divBits a' b')
+      else if h : w = 32 then
+        let a' : BitVec 32 := by rw [← h]; exact a
+        let b' : BitVec 32 := by rw [← h]; exact b
+        (by rw [h]; exact Go.Float32.divBits a' b')
+      else a
   | "fmin" =>
       if h : w = 64 then
         let a' : BitVec 64 := by rw [← h]; exact a
@@ -294,6 +304,9 @@ def stepS (st : Array VS) (j : Json) : Except String (Array VS) := do
         match op with
         | "fabs" => x &&& smask
         | "fneg" => x ^^^ sbit
+        | "fsqrt" =>
+            if a.w == 64 then Go.Float64.sqrtBits x
+            else pad (Go.Float32.sqrtBits (lane 32 x))
         | _ => x)
       return st.push ⟨a.w, a.s, vals⟩
   | "vfma" =>

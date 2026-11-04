@@ -103,9 +103,15 @@ together, invisible to the differential.
    single-rounding `fmaBits` - the model takes the specification side of
    golang/go#80355, so the oracle flags the emulated-unfused MulAdd where
    every implementation-agreeing differential would stay silent. Step 3
-   adds the `Float32s` chains over a binary32 mirror of the same model
-   (the `--float` campaign diverges organically on 52/100 emulated seeds,
-   both widths). Next: Div/Sqrt, Reshape.
+   adds the `Float32s` chains over a binary32 mirror of the same model,
+   and step 4 adds Div and Sqrt in both widths - the exact quotient and
+   the root are rounded once, at the grid the result lands on, and the
+   model caught two of its own bugs in the process (0/inf was NaN).
+   The `--float` campaign diverges organically on 53/100 emulated seeds
+   (#80355, both widths); amd64 hardware agrees everywhere except the
+   documented Min/Max NaN and +-0 deviations. Next: Reshape, reductions,
+   cross-arch float campaigns, then the ProofKit direction - proving
+   divBits/addBits against the IEEE spec (docs/prior-art.md, section 2.8).
 4. **J4 (optional) — coverage guidance**: if class-targeted generation
    saturates, add compiler coverage feedback to the generators
    (Fuzzilli-style, but over our typed IRs).
