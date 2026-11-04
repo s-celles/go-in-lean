@@ -142,7 +142,8 @@ class Gen:
         av = AVAIL.get(GONAME[t], set())
         x = r.random()
         if x < 0.40:
-            ops = [o for o in ("Add", "Sub", "Mul", "And", "Or", "Xor", "AndNot", "Min", "Max") if o in av]
+            ops = [o for o in ("Add", "Sub", "Mul", "And", "Or", "Xor", "AndNot",
+                               "AddSaturated", "SubSaturated", "Average", "Min", "Max") if o in av]
             if ops:
                 op = r.choice(ops)
                 return {"k": "bin", "op": op, "t": t,
@@ -153,9 +154,12 @@ class Gen:
                 op = r.choice(ops)
                 c = r.choice([0, 1, 2, 3, 7, 8, w - 1, w, w + 1, 2 * w + 1])
                 return {"k": "shift", "op": op, "t": t, "c": c, "a": self.build_vec(t, d - 1)}
-        if x < 0.62 and "RotateAllLeft" in av:
+        if x < 0.62 and ("RotateAllLeft" in av or "RotateAllRight" in av):
+            op = r.choice([o for o in ("RotateAllLeft", "RotateAllRight") if o in av])
             c = r.choice([0, 1, 2, 3, 7, w - 1, w, w + 1, 2 * w + 1, 2 ** 32])
-            return {"k": "rot", "t": t, "c": c, "a": self.build_vec(t, d - 1)}
+            return {"k": "rot", "op": op, "t": t, "c": c, "a": self.build_vec(t, d - 1)}
+        if x < 0.66 and "OnesCount" in av:
+            return {"k": "ones", "t": t, "a": self.build_vec(t, d - 1)}
         if x < 0.78 and "IfElse" in av:
             m = self.build_cmp(t, d)
             return {"k": "sel", "t": t, "m": m,
@@ -243,6 +247,9 @@ class Gen:
         if self.float_mode:
             return self.build_float(r.choice([F64, F32]), r.randint(1, 3))
         t = r.choice(VT)
+        if r.random() < 0.10 and "ReduceSum" in AVAIL.get(GONAME[t], set()):
+            # end on the lane reduction - the floats pin a pairwise order
+            return {"k": "reduce", "t": t, "a": self.build_vec(t, r.randint(1, 2))}
         if t == F64:
             return self.build_float(F64, r.randint(1, 3))
         if t == F32:
@@ -302,15 +309,25 @@ class Gen:
             self.rpn(n["a"], out)
             self.rpn(n["b"], out)
             op = {"Sub": "sub", "And": "and", "Or": "or", "Xor": "xor",
-                  "AndNot": "andnot", "Min": "min", "Max": "max"}.get(n["op"], n["op"].lower())
+                  "AndNot": "andnot", "Min": "min", "Max": "max",
+                  "AddSaturated": "addsat", "SubSaturated": "subsat",
+                  "Average": "avg"}.get(n["op"], n["op"].lower())
             out.append({"k": "vbin", "op": op})
+        elif k == "ones":
+            self.rpn(n["a"], out)
+            out.append({"k": "vfun", "op": "onescount"})
+        elif k == "reduce":
+            self.rpn(n["a"], out)
+            out.append({"k": "vreduce",
+                        "op": "f" if n["t"] in (F64, F32) else "i"})
         elif k == "shift":
             self.rpn(n["a"], out)
             out.append({"k": "vshift", "op": "shl" if n["op"] == "ShiftAllLeft" else "shr",
                         "c": n["c"]})
         elif k == "rot":
             self.rpn(n["a"], out)
-            out.append({"k": "vrot", "c": n["c"] % (1 << 64)})
+            out.append({"k": "vrot", "op": "rotl" if n["op"] == "RotateAllLeft" else "rotr",
+                        "c": n["c"] % (1 << 64)})
         elif k == "cmp":
             self.rpn(n["a"], out)
             self.rpn(n["b"], out)
@@ -381,7 +398,11 @@ class Gen:
         if k == "shift":
             return f"({self.go(n['a'])}.{n['op']}({n['c']}))"
         if k == "rot":
-            return f"({self.go(n['a'])}.RotateAllLeft({n['c']}))"
+            return f"({self.go(n['a'])}.{n['op']}({n['c']}))"
+        if k == "ones":
+            return f"({self.go(n['a'])}.OnesCount())"
+        if k == "reduce":
+            return f"({self.go(n['a'])}.ReduceSum())"
         if k == "cmp":
             return f"({self.go(n['a'])}.{n['op']}({self.go(n['b'])}))"
         if k == "mbin":
@@ -403,12 +424,14 @@ class Gen:
         k = n["k"]
         if k in ("load", "bcast"):
             return n["t"]
-        if k in ("bin", "shift", "rot", "sel", "masked"):
+        if k in ("bin", "shift", "rot", "sel", "masked", "ones"):
             return n["t"]
         if k in ("fbin", "fma", "fun"):
             return n["t"]
         if k == "frommask":
             return (n["w"], True)
+        if k == "reduce":
+            return ("reduce", n["t"])
         raise ValueError(k)
 
 
@@ -450,6 +473,27 @@ def program(seed, n, float_mode=False):
         g.rpn(tree, ops)
         recs.append({"e": i, "ops": ops})
         rt = g.result_type(tree)
+        if isinstance(rt, tuple) and rt[0] == "reduce":
+            t = rt[1]
+            if t in (F64, F32):
+                w = 64 if t == F64 else 32
+                fbits = "math.Float64bits" if t == F64 else "math.Float32bits"
+                canexp = "0x7FF8000000000000" if t == F64 else "0x7FC00001"
+                nanmask = "0x7FF0000000000000" if t == F64 else "0x7F800000"
+                mant = "0xFFFFFFFFFFFFF" if t == F64 else "0x7FFFFF"
+                src += (f"\n//go:noinline\nfunc f{i}() uint64 {{\n"
+                        f"\tx := {g.go(tree)}\n"
+                        f"\tv := uint64({fbits}(x))\n"
+                        f"\tif v&{nanmask} == {nanmask} && v&{mant} != 0 {{\n"
+                        f"\t\tv = {canexp}\n"
+                        f"\t}}\n"
+                        f"\treturn hash(uint64(1469598103934665603), v)\n}}\n")
+            else:
+                w = t[0]
+                src += (f"\n//go:noinline\nfunc f{i}() uint64 {{\n"
+                        f"\tx := {g.go(tree)}\n"
+                        f"\treturn hash(uint64(1469598103934665603), uint64(uint{w}(x)))\n}}\n")
+            continue
         if rt == F32:
             src += (f"\n//go:noinline\nfunc f{i}() uint64 {{\n"
                     f"\tvar s [64]float32\n"

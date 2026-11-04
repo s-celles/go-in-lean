@@ -109,9 +109,13 @@ together, invisible to the differential.
    model caught two of its own bugs in the process (0/inf was NaN).
    The `--float` campaign diverges organically on 53/100 emulated seeds
    (#80355, both widths); amd64 hardware agrees everywhere except the
-   documented Min/Max NaN and +-0 deviations. Next: Reshape, reductions,
-   cross-arch float campaigns, then the ProofKit direction - proving
-   divBits/addBits against the IEEE spec (docs/prior-art.md, section 2.8).
+   documented Min/Max NaN and +-0 deviations. Step 5 adds the lane
+   reductions and remaining arithmetic: ReduceSum (the documented
+   pairwise summation order, matched bit for bit on amd64),
+   AddSaturated/SubSaturated, Average, RotateAllRight and OnesCount.
+   Next: cross-arch campaigns for the new ops, then the ProofKit
+   direction - proving divBits/addBits against the IEEE spec
+   (docs/prior-art.md, section 2.8).
 4. **J4 (optional) — coverage guidance**: if class-targeted generation
    saturates, add compiler coverage feedback to the generators
    (Fuzzilli-style, but over our typed IRs).

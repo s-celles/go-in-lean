@@ -109,6 +109,30 @@ def evalBin (op : String) (s : Bool) {w : Nat} (a b : BitVec w) : BitVec w :=
         let b' : BitVec 32 := by rw [← h]; exact b
         (by rw [h]; exact Go.Float32.maxBits a' b')
       else a
+  | "addsat" =>
+      -- AddSaturated: clamp to the (un)signed range of the width.
+      -- BitVec.toInt is the two's-complement value; toNat is unsigned.
+      if s then
+        let r := a.toInt + b.toInt
+        let lo : Int := -(2 ^ (w - 1))
+        let hi : Int := 2 ^ (w - 1) - 1
+        BitVec.ofInt w (if r < lo then lo else if r > hi then hi else r)
+      else
+        let r := a.toNat + b.toNat
+        BitVec.ofNat w (if r > 2 ^ w - 1 then 2 ^ w - 1 else r)
+  | "subsat" =>
+      -- SubSaturated: clamp to the (un)signed range of the width
+      if s then
+        let r := a.toInt - b.toInt
+        let lo : Int := -(2 ^ (w - 1))
+        let hi : Int := 2 ^ (w - 1) - 1
+        BitVec.ofInt w (if r < lo then lo else if r > hi then hi else r)
+      else
+        let r := a.toNat - b.toNat
+        BitVec.ofNat w (if r < 0 then 0 else r)
+  | "avg" =>
+      -- Average: (x + y + 1) / 2, rounded toward +Inf (unsigned only)
+      BitVec.ofNat w ((a.toNat + b.toNat + 1) / 2)
   | "add" => a + b
   | "sub" => a - b
   | "mul" => a * b
@@ -230,12 +254,17 @@ def stepS (st : Array VS) (j : Json) : Except String (Array VS) := do
       return st.push ⟨a.w, a.s, vals⟩
   | "vrot" =>
       let c ← j.getObjValAs? Nat "c"
+      let dir := match j.getObjValAs? String "op" with
+        | .ok d => d
+        | .error _ => "rotl"
       let (st, a) ← pop st
-      -- bits.RotateLeftN: rotate left by c mod w (negative counts rotate right)
+      -- bits.RotateLeftN/RotateRightN: rotate by c mod w
       let n := c % a.w
       let vals := a.vals.map (fun x =>
         let v := lane a.w x
-        pad ((v <<< n) ||| (v >>> (a.w - n))))
+        pad (if dir == "rotr"
+             then (v >>> n) ||| (v <<< (a.w - n))
+             else (v <<< n) ||| (v >>> (a.w - n))))
       return st.push ⟨a.w, a.s, vals⟩
   | "vcmp" =>
       let op ← j.getObjValAs? String "op"
@@ -307,8 +336,36 @@ def stepS (st : Array VS) (j : Json) : Except String (Array VS) := do
         | "fsqrt" =>
             if a.w == 64 then Go.Float64.sqrtBits x
             else pad (Go.Float32.sqrtBits (lane 32 x))
+        | "onescount" => pad (lane a.w x).cpop
         | _ => x)
       return st.push ⟨a.w, a.s, vals⟩
+  | "vreduce" =>
+      -- ReduceSum. The floats use repeated pairwise summation, exactly as
+      -- documented: ((x[0]+x[1]) + (x[2]+x[3])) + ...; the ints wrap at the
+      -- lane width. Only the real 128/w lanes take part (a table push
+      -- carries more lanes; the Go side reduces the loaded vector).
+      let op ← j.getObjValAs? String "op"
+      let (st, a) ← pop st
+      if op == "f" then
+        if a.w == 32 then
+          let ls := ((a.vals.take 4).map (fun x => lane 32 x))
+          match ls with
+          | [x0, x1, x2, x3] =>
+              let r := Go.Float32.addBits (Go.Float32.addBits x0 x1) (Go.Float32.addBits x2 x3)
+              return st.push ⟨32, true, [pad r]⟩
+          | _ => throw "vreduce f32 lane count"
+        else if a.w == 64 then
+          match (a.vals.take 2).map (fun x => lane 64 x) with
+          | [x0, x1] =>
+              let r := Go.Float64.addBits x0 x1
+              return st.push ⟨64, true, [pad r]⟩
+          | _ => throw "vreduce f64 lane count"
+        else throw "vreduce float width"
+      else
+        let nl := 128 / a.w
+        let total := ((a.vals.take nl).map (fun x => lane a.w x)).foldl
+          (fun acc x => acc + x) (BitVec.ofNat a.w 0)
+        return st.push ⟨a.w, a.s, [pad total]⟩
   | "vfma" =>
       -- MulAdd per the spec: fused, single rounding
       let (st, z) ← pop st
