@@ -97,6 +97,13 @@ together, invisible to the differential.
 3. **J3 — extend the model** to the uncovered zones: the semantics of SIMD
    masks (SIMD-MASKED-SHIFT-NOIMM showed how young the domain is), then
    floats. Every model extension is a new domain for (a) and (b).
+   Status: step 1 covers the integer and mask chains of the `simd` package
+   (`GoInLean/OracleSIMD.lean`, `scripts/simd_oracle.py`); step 2 adds the
+   `Float64s` chains over an executable IEEE 754 binary64 model with a fused
+   single-rounding `fmaBits` - the model takes the specification side of
+   golang/go#80355, so the oracle flags the emulated-unfused MulAdd where
+   every implementation-agreeing differential would stay silent. Next:
+   Float32 (via the exact f64 model), Div/Sqrt, Reshape.
 4. **J4 (optional) — coverage guidance**: if class-targeted generation
    saturates, add compiler coverage feedback to the generators
    (Fuzzilli-style, but over our typed IRs).
