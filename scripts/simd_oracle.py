@@ -23,7 +23,9 @@ Usage: simd_oracle.py SEED N OUTDIR [--float]
     targeting the fused/unfused boundary of golang/go#80355 on the emulated
     paths (the binary32 model carries the same single-rounding spec).
 Environment: GO (toolchain under test, default "go"), ORACLE_SIMD (default
-  the lake exe), GODEBUG_S (default "simd=128").
+  the lake exe), GODEBUG_S (default "simd=128"), GOARCH + GOEXEC (run the
+  generated program for a foreign architecture through an emulator, e.g.
+  GOARCH=arm64 GOEXEC=qemu-aarch64 - the oracle side is unchanged).
 """
 import json, os, random, subprocess, sys
 
@@ -509,10 +511,30 @@ def run(seed, n, out, float_mode=False):
     gobin = os.environ.get("GO", "go")
     env = dict(os.environ, GOEXPERIMENT="simd", GOTOOLCHAIN="local",
                GODEBUG=os.environ.get("GODEBUG_S", "simd=128"))
-    gout = subprocess.run([gobin, "run", "."], cwd=gomod, capture_output=True,
-                          text=True, env=env, timeout=600)
-    if gout.returncode != 0:
-        return f"seed {seed}: go run failed: {gout.stderr[:400]}"
+    # GO_FROM_FILE: compare against a Go output captured elsewhere (the
+    # cross-arch campaigns run the Go side on a machine with qemu and bring
+    # the output back - the generator is deterministic, so the same seed
+    # regenerates the identical exprs.json here)
+    gofile = os.environ.get("GO_FROM_FILE")
+    if gofile:
+        gl = open(gofile).read().splitlines()
+    else:
+        cmd = [gobin, "run"]
+        # GOEXEC: an emulator for a foreign GOARCH (qemu-user); the Lean
+        # oracle is architecture-independent so cross-arch campaigns need
+        # nothing else
+        if os.environ.get("GOEXEC"):
+            cmd += ["-exec", os.environ["GOEXEC"]]
+        cmd += ["."]
+        gout = subprocess.run(cmd, cwd=gomod, capture_output=True,
+                              text=True, env=env, timeout=1200)
+        if gout.returncode != 0:
+            return f"seed {seed}: go run failed: {gout.stderr[:400]}"
+        gl = gout.stdout.splitlines()
+        # GO_ONLY: just capture the Go output (e.g. the remote qemu run)
+        if os.environ.get("GO_ONLY"):
+            open(os.path.join(out, "go.txt"), "w").write(gout.stdout)
+            return f"seed {seed}: go-only, {len(gl)} lines"
     obin = os.environ.get("ORACLE_SIMD", "lake exe oracle-simd")
     import shlex
     cmd = shlex.split(obin) + [os.path.abspath(os.path.join(out, "exprs.json"))]
@@ -520,7 +542,7 @@ def run(seed, n, out, float_mode=False):
                          cwd=os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     if lout.returncode != 0:
         return f"seed {seed}: oracle failed: {lout.stdout[:200]} {lout.stderr[:300]}"
-    gl, ll = gout.stdout.splitlines(), lout.stdout.splitlines()
+    ll = lout.stdout.splitlines()
     if len(gl) != len(ll):
         return f"seed {seed}: LINE COUNT {len(gl)} vs {len(ll)}"
     diffs = [(a, b) for a, b in zip(gl, ll) if a != b]
