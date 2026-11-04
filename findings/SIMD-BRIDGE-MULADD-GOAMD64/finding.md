@@ -14,6 +14,10 @@ CL's current patch).
 - Review comment published on CL 799281 (2026-11-04, patchset message +
   inline comment at src/simd/simd_emulated.go:2661) - the draft in
   `cl799281-comment.md` is the posted text.
+- Complete fix mailed as [CL 858921](https://go-review.googlesource.com/c/go/+/858921)
+  (branch fix-80355-bridge, commit 8b21d1bde4, rebased on master 672197524b,
+  regenerated bridge, `go test ./src/simd/` and the differential campaign
+  re-validated on the rebased tree).
 - This finding: two gaps of CL 799281, with reproduction and a validated
   complete fix (local branch `fix-80355-bridge`, commit 3b6ad8f97d on top of
   go master 7ad446c0ec).
