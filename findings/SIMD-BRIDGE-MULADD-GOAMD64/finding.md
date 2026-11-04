@@ -36,7 +36,7 @@ except on wasm"), canary `MulAdd((1+2^-w), (1+2^-w), -(1+2^(1-w)))`:
 | **386 / arm / mipsle emulated (generic `simd_emulated.go`)** | **double-rounded** | **violates the documented semantics - golang/go#80355; identical 28/50 divergent seeds across all three, both GODEBUG configurations** |
 | **amd64 GODEBUG=simd=0, GOAMD64=v1/v2 (the midway bridge `internal/bridge/simd_emulated.go`)** | **double-rounded** | **violates the documented semantics; NOT in #80355's stated scope ("architectures other than amd64, arm64, and wasm")** |
 | amd64 GODEBUG=simd=0, GOAMD64=v3 | fused | conform by accident (the gc compiler contracts at GOAMD64>=v3) |
-| wasm | double-rounded | documented exception, conform |
+| wasm (wasip1, wasmtime, native midway path) | double-rounded | documented exception, conform - the cross-arch campaign confirms it: the same 28/50 fma-divergent seed set as the 32-bit emulations, with bit-identical checksums, and no other divergence |
 
 The amd64 line is the sharpest repro: the same binary on the same machine
 computes different `MulAdd` results depending on `GOAMD64`:
