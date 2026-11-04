@@ -194,8 +194,15 @@ def finiteLt (a b : Exact) : Bool :=
 
 def ltBits (x y : BitVec 64) : Bool :=
   match decode x, decode y with
+  | .nan, _ => false
+  | _, .nan => false
+  | .inf true, .inf true => false
+  | .inf true, .inf false => true
+  | .inf true, .exact _ => true
+  | .inf false, _ => false
+  | .exact _, .inf true => false
+  | .exact _, .inf false => true
   | .exact a, .exact b => finiteLt a b
-  | _, _ => false
 
 def eqBits (x y : BitVec 64) : Bool :=
   match decode x, decode y with
@@ -203,7 +210,9 @@ def eqBits (x y : BitVec 64) : Bool :=
   | _, .nan => false
   | .exact a, .exact b =>
       (a.mant == 0 && b.mant == 0) || (a.sign == b.sign && a.mant == b.mant && a.exp == b.exp)
-  | _, _ => true
+  | .inf s1, .inf s2 => s1 == s2
+  | .inf _, .exact _ => false
+  | .exact _, .inf _ => false
 
 def leBits (x y : BitVec 64) : Bool := ltBits x y || eqBits x y
 

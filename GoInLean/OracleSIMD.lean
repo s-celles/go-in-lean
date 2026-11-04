@@ -268,6 +268,11 @@ def evalOpsS (ops : Array Json) : Except String VS := do
 
 def fnv (h : Nat) (n : Nat) : Nat := (h ^^^ n) * 1099511628211 % (2 ^ 64)
 
+-- NaN payloads are unspecified (IEEE and the package docs): the model only
+-- ever produces the canonical nanBits, and the Go program canonicalizes its
+-- NaN lanes to the same pattern before checksumming, so payload noise from
+-- the hardware never reaches the comparison.
+
 def checksum (v : VS) : String :=
   -- FNV-1a over the first min(4, 128/w) lanes, zero-extended, exactly the
   -- checksum the Go program prints

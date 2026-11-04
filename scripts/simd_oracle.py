@@ -18,7 +18,9 @@ scripts/simd_fuzz.py stays the other half: it sees divergences between
 implementations; this one sees classes where every implementation is wrong
 together (docs/fuzzing-vision.md, milestone J3).
 
-Usage: simd_oracle.py SEED N OUTDIR
+Usage: simd_oracle.py SEED N OUTDIR [--float]
+  --float roots every chain in Float64s and weights MulAdd up, targeting
+    the fused/unfused boundary of golang/go#80355 on the emulated paths.
 Environment: GO (toolchain under test, default "go"), ORACLE_SIMD (default
   the lake exe), GODEBUG_S (default "simd=128").
 """
@@ -91,8 +93,11 @@ class Gen:
     """Typed chain IR; the pool carries (node, kind) where kind is
     ("vec", (w, s)) or ("mask", w)."""
 
-    def __init__(self, r):
+    def __init__(self, r, float_mode=False):
         self.r = r
+        # --float: every chain roots in Float64s and MulAdd is weighted up,
+        # so the campaigns target the fused/unfused boundary of #80355
+        self.float_mode = float_mode
         self.tables = {t: table(t[0], t[1]) for t in VT if t != F64}
         self.tables[F64] = FPOOL
 
@@ -155,7 +160,7 @@ class Gen:
                 op = r.choice(ops)
                 return {"k": "fbin", "op": op, "t": t,
                         "a": self.build_f64(d - 1), "b": self.build_f64(d - 1)}
-        if x < 0.65 and "MulAdd" in av:
+        if x < (0.80 if self.float_mode else 0.65) and "MulAdd" in av:
             return {"k": "fma", "t": t,
                     "a": self.build_f64(d - 1), "b": self.build_f64(d - 1), "c": self.build_f64(d - 1)}
         if x < 0.75:
@@ -215,6 +220,8 @@ class Gen:
 
     def build_root(self):
         r = self.r
+        if self.float_mode:
+            return self.build_f64(r.randint(1, 3))
         t = r.choice(VT)
         if t == F64:
             return self.build_f64(r.randint(1, 3))
@@ -386,11 +393,11 @@ var _ = math.Float64bits
 '''
 
 
-def program(seed, n):
+def program(seed, n, float_mode=False):
     global AVAIL
     AVAIL = load_avail()
     r = random.Random(seed)
-    g = Gen(r)
+    g = Gen(r, float_mode)
     trees = [g.build_root() for _ in range(n)]
     recs = []
     src = GOHEADER
@@ -414,7 +421,12 @@ def program(seed, n):
                     f"\t{g.go(tree)}.Store(s[:])\n"
                     f"\th := uint64(1469598103934665603)\n"
                     f"\tfor j := 0; j < 2; j++ {{\n"
-                    f"\t\th = hash(h, math.Float64bits(s[j]))\n"
+                    f"\t\tv := math.Float64bits(s[j])\n"
+                    f"\t\t// NaN payloads are unspecified: canonicalize like the oracle\n"
+                    f"\t\tif v&0x7FF0000000000000 == 0x7FF0000000000000 && v&0xFFFFFFFFFFFFF != 0 {{\n"
+                    f"\t\t\tv = 0x7FF8000000000001\n"
+                    f"\t\t}}\n"
+                    f"\t\th = hash(h, v)\n"
                     f"\t}}\n"
                     f"\treturn h\n}}\n")
             continue
@@ -438,11 +450,11 @@ def program(seed, n):
     return recs, src
 
 
-def run(seed, n, out):
+def run(seed, n, out, float_mode=False):
     os.makedirs(out, exist_ok=True)
     gomod = os.path.join(out, "gomain")
     os.makedirs(gomod, exist_ok=True)
-    recs, src = program(seed, n)
+    recs, src = program(seed, n, float_mode)
     open(os.path.join(out, "exprs.json"), "w").write(json.dumps(recs))
     open(os.path.join(gomod, "main.go"), "w").write(src)
     open(os.path.join(gomod, "go.mod"), "w").write("module sorc\ngo 1.28\n")
@@ -471,10 +483,12 @@ def run(seed, n, out):
 
 
 def main():
-    if len(sys.argv) != 4:
+    args = [a for a in sys.argv[1:] if a == "--float"]
+    rest = [a for a in sys.argv[1:] if a != "--float"]
+    if len(rest) != 3:
         print(__doc__)
         raise SystemExit(2)
-    print(run(int(sys.argv[1]), int(sys.argv[2]), sys.argv[3]))
+    print(run(int(rest[0]), int(rest[1]), rest[2], bool(args)))
 
 
 if __name__ == "__main__":
