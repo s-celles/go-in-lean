@@ -24,3 +24,7 @@ root = "GoInLean.CheckSlices"
 [[lean_exe]]
 name = "oracle"
 root = "GoInLean.Oracle"
+
+[[lean_exe]]
+name = "oracle-simd"
+root = "GoInLean.OracleSIMD"
