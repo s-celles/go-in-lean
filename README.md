@@ -30,6 +30,7 @@ annotated verification of new code (see `docs/prior-art.md`).
 | Proved in model | 2,241 audited theorems (623 kernel-only, 1,618 `bv_decide`): `math/bits` in full, slices/sort/strings guards, 896 generated `generic.rules` instances (incl. bounds-check and rotate rules), 644 magic-division instances, ARM64/AMD64 shift and rotate lowering, the new `knownbits` pass and the interval arithmetic of `prove` on Go master, and the MIPS, riscv64, s390x, ppc64 and arm64 rules behind seven findings |
 | Checked exhaustively, not proved | `slices.Insert/Delete/Replace` with aliasing: 531,531 configurations vs spec, 16,128 replayed through real Go |
 | Metamorphic fuzzing | `scripts/metamorphic_fuzz.py`: constant vs run-time vs inlined versions of random integer expressions; 400 seeds (go1.27.3, master, amd64) and 2,160 seeds on nine other architectures under qemu (`scripts/cross_campaigns.sh`) |
+| **Lean oracle in the fuzz loop (J1/J2)** | `lake exe oracle` evaluates generated integer expressions against the executable model (`Oracle.lean`: arithmetic, logic, shifts incl. the >= 2^63 class, conversions, min/max, and-not, math/bits intrinsics, rotate, comparisons, select, `bits.Add64`/`Sub64`, indexed array reads, and the divide/negative-shift/index panics); `scripts/oracle_bits.py` emits the same trees as a Go program and diffs. 300-seed hunt on go1.27.3 and tip: zero false positives. `scripts/oracle_canaries.py` runs the known-bug shapes as a directed suite: **13/13 caught** (the #82767 control stays clean on go1.27.3), across amd64/386, mipsle, ppc64le, riscv64, s390x, arm64, arm and power10 under qemu - each canary maps to its upstream CL, making the suite a merge monitor for every fix in review (`docs/fuzzing-vision.md`, `docs/cedar-notes.md`) |
 | **Compiler bugs found** | (1) `((x >> c) & d) << e` rules compare constant counts as signed: wrong code in go1.25–1.27 and master; reported as [golang/go#82763](https://github.com/golang/go/issues/82763). (2) Master-only regression: shift-composition rules type the combined count with the shifted value's type and master's `prove` now trusts it: `(int32(2) >> 1) >> (1<<62)` is 1 (spec 0); fix validated; reported as [golang/go#82767](https://github.com/golang/go/issues/82767), `findings/SSA-COMPOSE-CONST64-TYPE` |
 | **Architecture-specific miscompilations** | (3) mips/mipsle: `Rsh8x*` sign-extends from bit 15 (since go1.8; [golang/go#82772](https://github.com/golang/go/issues/82772)). (4) riscv64, go1.26 regression: `int8(x - (-x)) >> 8` compiles to 0 ([golang/go#82773](https://github.com/golang/go/issues/82773)). (5) s390x, since go1.26: `uint64(int8(-128)) < 0xFFFFFFFF` is true ([golang/go#82774](https://github.com/golang/go/issues/82774)). Fixes validated on master; reported after human review |
 | **Reported 2026-11-02 (second batch)** | (6) ppc64/ppc64le: `int32(int16(x >> 1))` keeps 32 bits, `Type.Size()` compared in bits ([golang/go#82775](https://github.com/golang/go/issues/82775)). (7) mips/mipsle: constant counts ≥ 2^32 truncated, `(x >> 7) >> (uint64(y) \| 0xFFFFFFFF)` is `x >> 6` ([golang/go#82776](https://github.com/golang/go/issues/82776)). (8) arm64 (native): a constant-condition select of `^y` returns `y ^ 1` ([golang/go#82777](https://github.com/golang/go/issues/82777)). (9) ppc64le/ppc64 `GOPPC64=power10`: `math/bits.ReverseBytes16` mistyped as 64-bit miscompiles a comparison ([golang/go#82782](https://github.com/golang/go/issues/82782)); canary+objdump confirm wrong-code, not out-of-bounds. (10) arm: `MVNshiftRA` constant fold drops the complement, `bits.TrailingZeros64(0)` can be 32 ([golang/go#82786](https://github.com/golang/go/issues/82786)). Fixes validated on master; reported after human review |
@@ -48,6 +49,7 @@ flowchart LR
     subgraph F["Formal (Lean 4, kernel + bv_decide)"]
         F1["2,241 theorems: math/bits, slices guards,<br/>generic.rules instances, shift &amp; rotate lowering,<br/>magic division, prove interval arithmetic"]
         F2["check_new_rules: 95 rules new on master,<br/>87 proved, 7 SAT timeouts (benign)"]
+        F3["Oracle.lean: the model as an in-loop oracle<br/>for the expression fuzzers (J1)"]
     end
     subgraph L["Rule &amp; op lints"]
         L1["rules_sibling_lint<br/>(flags the shapes of #82786, #82776, #82775)"]
@@ -73,11 +75,12 @@ flowchart LR
         B3["#82834 arm bits.Sub64 borrow<br/>= 3rd manifestation of #82786"]
         B4["#82839 prove extension/constant - CL 858581"]
         B5["#82847 SIMD masked shift has no<br/>immediate - CL 858901 (build failure)"]
+        B6["oracle_canaries.py: 13/13 known bugs caught,<br/>a merge monitor for every CL in review (J2)"]
         B0["clean: no OOB in BCE (8,800 poison seeds),<br/>float late 2,800 seeds clean,<br/>flags-clobber class closed on all arches"]
     end
     subgraph U["Upcoming"]
         U1["SIMD (GOEXPERIMENT=simd):<br/>chain fuzzer campaigns arm64 / riscv64 / wasm,<br/>rotate Masked ops, --late-style constants"]
-        U2["spec-driven fuzzing (docs/fuzzing-vision.md):<br/>J1 Lean oracle in the fuzz loop (cedar-drt pattern)"]
+        U2["J1/J2 done (oracle + 13/13 canaries);<br/>J3: SIMD masks in the model,<br/>then J2-synthesis from bv_decide counterexamples"]
         U3["knownbits / ZeroUpper*Bits pass (LOONG64latelower)"]
     end
 
@@ -91,6 +94,7 @@ flowchart LR
     Z5 --> B0
     Z6 --> B3
     Z7 --> B5
+    F3 --> B6
     F2 --> B0
     L3 -.-> B2
     L1 -.-> B1
