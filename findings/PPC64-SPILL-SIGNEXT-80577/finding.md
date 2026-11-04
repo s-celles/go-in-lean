@@ -4,8 +4,9 @@
 ("regalloc uses unreliable type data (like `v.Type.IsSigned()`) to choose the restore of spills"),
 which was opened for riscv64. The riscv64-specific fix (CL 806340) does not cover ppc64.
 **Impact:** silent wrong results (a signed comparison evaluated on a zero-extended value).
-**Affected:** `GOARCH=ppc64le` (power8, power9) and `ppc64`, go1.27.3 and master `babb75be`.
-amd64, arm64, riscv64 and s390x run the same program correctly.
+**Affected:** `GOARCH=arm64`, `ppc64le` and `ppc64`, from at least go1.21.13 through
+go1.27.3 and master `ede4e4ff00`. amd64, 386, arm, mipsle, mips64le, riscv64, s390x
+and loong64 run the minimal program correctly.
 **Human review status:** approved 2026-11-02; posted as a comment on golang/go#80577 (https://github.com/golang/go/issues/80577#issuecomment-6588709343).
 
 ## What happens
@@ -33,6 +34,68 @@ with its register contents is unsound across a spill.
 single line: the same function split across lines is scheduled differently (the scheduler breaks
 ties by source position), the value is not spilled, and the result is correct. Whether a program
 hits the defect depends on scheduling and register pressure, as #81928 also notes.
+
+## Addendum (2026-11-04): minimal repro, arm64, and a second width
+
+`minimal_reproducer.go` removes the closure, `defer`, table, intrinsics, source-position
+sensitivity and artificial register pressure:
+
+```go
+//go:noinline
+func id(x int64) int64 { return x }
+
+//go:noinline
+func f(y int8) int64 {
+	v := int16(uint16(y))
+	z := id(int64(v))
+	if v >= 9 { return z + 1000 }
+	return z - 1000
+}
+```
+
+`f(-1)` must return `-1001`, but returns `999` on arm64, ppc64le and ppc64. On
+arm64 the decisive sequence is `SXTB`, a 2-byte `MOVH` spill, `CALL`, then the
+zero-extending `MOVHU` restore before the signed `CMPW`. PPC64 uses the analogous
+`EXTSB`, `MOVH`, `MOVHZ` sequence. The call alone makes the value live across a
+spill; no extra pressure is required.
+
+`scripts/spill_restore_fuzz.py` varies the source width, value width, and 0–20
+additional live call arguments. On current tip:
+
+| Target | Mismatches | Extents |
+|---|---:|---|
+| ppc64le / ppc64 | 42/84 each | every pressure for 8→16 and 16→32 |
+| riscv64 | 0/84 | clean control |
+| arm64 | 1/4 at pressure 0 | 8→16 |
+| 386, arm, mipsle, mips64le, s390x, loong64 | 0/4 each | clean controls |
+
+The 16→32 ppc64 form is `int32(uint32(int16(-1)))`; after the call it is restored
+as 4294967295 instead of -1. Both minimal widths fail on ppc64le with every tested
+toolchain from go1.21.13 through go1.27.3 and current tip. The arm64 8→16 case has
+the same version range. This is a broader manifestation of #80577, not a new root
+cause; the follow-up upstream comment remains in `comment-followup-draft.md` pending
+human review.
+
+### ARM64 rule and experimental guard
+
+Before late lowering the signed comparison has `MOVHreg <int32> v8`, where
+`v8 = MOVBreg <uint16> y`. `ARM64latelower.rules` folds
+`MOVHreg x:(MOVBreg _)` to `MOVDreg x` unconditionally. That is valid while `x`
+stays in a register, but not after a spill: `x`'s `uint16` type selects `MOVHU`
+for its restore.
+
+`arm64-experiment.patch` guards all six signed-over-signed double-extension
+folds with `x.Type.Size() == 8 || x.Type.IsSigned()`. On `ede4e4ff00` it changes
+the minimal arm64 result from `999` to `-1001`, makes all 84 width/pressure cases
+clean, and passes:
+
+```text
+go test cmd/compile/internal/ssa cmd/compile/internal/ssacompile cmd/compile/internal/test
+```
+
+This is a local validation of the missing restore condition, not proposed as the
+final upstream design: #80577 already tracks expressing the spill/restore contract
+centrally, which can supersede architecture-local guards.
 
 ## Versions (2026-11-02, qemu-ppc64le/qemu-ppc64 11.1.2)
 

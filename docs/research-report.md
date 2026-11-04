@@ -341,6 +341,33 @@ a parsed error, and every generated file is also built by `lake build` in CI.
   unchanged since go1.24; go1.26.6's "fix time traveling proofs" backport made the reproducer reach it.
   Fix: carry the fact only when the constant fits (prove, loopbce, checkbce, codegen and fixedbugs pass).
 
+### 3.14 Iteration 9: prove-limit boundaries and differential SROA testing
+
+* **`prove`/`Limit` boundary synthesis** (`scripts/prove_limit_fuzz.py`): 330 isolated
+  two- and three-stage shift compositions around the sign bit and modulus of `int8`, `int16`
+  and `int32`. A pristine `672197524bb0` produces 60 ICEs, all the already identified #82767
+  mistyped-count root reaching `flowLimit`; the same commit with CL 857342 patchset 1 is
+  330/330 clean. Current master `ede4e4ff00` still has the original rules and the same 60/330
+  ICE result. Left shifts and unsigned right shifts are clean controls. The audit found no
+  distinct panic edge in the other host shifts/divisions in `prove.go`.
+* **`decomposeAddr` differential harness** (`scripts/decompose_addr_fuzz.py`,
+  `scripts/decompose_addr_campaign.py`): aggregate-heavy programs are compiled and executed
+  with the new SROA pass enabled and with `-d=ssa/decompose_addr/off`. The generator covers
+  nested structs and arrays, partial zero/move operations, strings, slices, interfaces,
+  complex values, pointer-containing aggregates live across `runtime.GC`, and deterministic
+  differently-shaped moves through `unsafe.Pointer`. On tip `672197524bb0`, 1,200 seeds
+  (about 88,000 generated functions) are clean across amd64/v3, arm64, arm, ppc64,
+  ppc64le, s390x and riscv64; the six non-native targets run under QEMU. A first unsafe
+  probe that read padding produced a reproducible harness-only divergence and was discarded;
+  the retained oracle initializes and observes only specified bytes.
+* **Spill/restore boundary synthesis** (`scripts/spill_restore_fuzz.py`): a stable two-function
+  reproducer replaces the earlier schedule-sensitive ppc64 #80577 case. Merely keeping
+  `int16(uint16(int8(-1)))` live across a call is sufficient: arm64, ppc64le and ppc64 restore
+  it unsigned before a signed comparison and return `999` instead of `-1001`. PPC64 also fails
+  for the 16→32 analogue. The defect is present from at least go1.21.13 through go1.27.3 and
+  current master; 386, arm, mipsle, mips64le, riscv64, s390x and loong64 are clean controls.
+  This broadens the known #80577 architecture/width extent without introducing a new root cause.
+
 ## 4. Success criteria check
 
 | # | Criterion | Status |

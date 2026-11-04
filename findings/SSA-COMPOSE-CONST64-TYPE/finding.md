@@ -34,7 +34,7 @@ seeds, all of them fixed by `fix.patch` (e.g. `(x >> 256) >> 256` on int8).
 
 ## Addendum (2026-11-04): the same defect can crash the compiler
 
-Current tip `672197524bb0` panics in `ssacompile.(*factsTable).flowLimit` at
+Tip at discovery `672197524bb0` panics in `ssacompile.(*factsTable).flowLimit` at
 `prove.go:1518` while compiling this smaller boundary case (`ice_reproducer.go`):
 
 ```go
@@ -45,7 +45,8 @@ func f(y int32) int32 {
 
 The first shift is necessary: without it there is no shift-composition rewrite and no ICE.
 An unknown `uint32` parameter also stays clean; a local or direct constant triggers the crash.
-An unsigned `y` stays clean because it takes the unsigned-right-shift path.
+An unsigned `y` stays clean because the generic large-shift rule folds it to zero before the
+composition rule can manufacture the mistyped count.
 
 With `prove` disabled, the post-`opt` SSA is:
 
@@ -64,6 +65,25 @@ This is another consequence of #82767, not a separate root cause. Patchset 1 of 
 applied unchanged on top of `672197524bb0`, makes the reproducer compile and passes
 `cmd/compile/internal/ssa` and `cmd/compile/internal/test`. A separate defensive
 `!b.Unsat()` check would prevent the panic, but would not repair the mistyped SSA value.
+
+### Boundary matrix
+
+`scripts/prove_limit_fuzz.py` compiles each case separately so one ICE cannot hide later
+boundaries. On the same commit `672197524bb0`, its 330 two- and three-shift cases give:
+
+| Toolchain | ICE | Clean | Other errors |
+|---|---:|---:|---:|
+| pristine tip | 60 | 270 | 0 |
+| tip + CL 857342 patchset 1 | 0 | 330 | 0 |
+| current master `ede4e4ff00` (2026-11-04) | 60 | 270 | 0 |
+
+All 60 crashes are signed arithmetic right shifts of `int8`, `int16`, or `int32` whose
+combined count falls in a negative signed residue window for the value width. The left-shift
+and unsigned-right-shift controls remain clean. Three-stage compositions double the number
+of reproducers but reach the same `flowLimit` panic and the same mistyped-`Const64` root; no
+second defect was found. An audit of the host-language shifts and divisions in `prove.go`
+also found no other directly panicable operation beyond the two right-shift cases at the
+incomplete `b.Min >= 0` guard.
 
 ## Root cause (two cooperating defects)
 

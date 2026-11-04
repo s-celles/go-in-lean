@@ -1,0 +1,29 @@
+diff --git a/src/cmd/compile/internal/ssa/_gen/ARM64latelower.rules b/src/cmd/compile/internal/ssa/_gen/ARM64latelower.rules
+index 70fb4c477c..f9e301895f 100644
+--- a/src/cmd/compile/internal/ssa/_gen/ARM64latelower.rules
++++ b/src/cmd/compile/internal/ssa/_gen/ARM64latelower.rules
+@@ -75,15 +75,18 @@
+ // fold double extensions
+-(MOVBreg  x:(MOVBreg  _)) => (MOVDreg x)
++// A signed inner extension may be elided only when spilling and restoring x
++// preserves that extension. Narrow signed types restore signed; full-width
++// values preserve every bit. A narrow unsigned x would restore zero-extended.
++(MOVBreg  x:(MOVBreg  _)) && (x.Type.Size() == 8 || x.Type.IsSigned()) => (MOVDreg x)
+ (MOVBUreg x:(MOVBUreg _)) => (MOVDreg x)
+-(MOVHreg  x:(MOVBreg  _)) => (MOVDreg x)
++(MOVHreg  x:(MOVBreg  _)) && (x.Type.Size() == 8 || x.Type.IsSigned()) => (MOVDreg x)
+ (MOVHreg  x:(MOVBUreg _)) => (MOVDreg x)
+-(MOVHreg  x:(MOVHreg  _)) => (MOVDreg x)
++(MOVHreg  x:(MOVHreg  _)) && (x.Type.Size() == 8 || x.Type.IsSigned()) => (MOVDreg x)
+ (MOVHUreg x:(MOVBUreg _)) => (MOVDreg x)
+ (MOVHUreg x:(MOVHUreg _)) => (MOVDreg x)
+-(MOVWreg  x:(MOVBreg  _)) => (MOVDreg x)
++(MOVWreg  x:(MOVBreg  _)) && (x.Type.Size() == 8 || x.Type.IsSigned()) => (MOVDreg x)
+ (MOVWreg  x:(MOVBUreg _)) => (MOVDreg x)
+-(MOVWreg  x:(MOVHreg  _)) => (MOVDreg x)
+-(MOVWreg  x:(MOVWreg  _)) => (MOVDreg x)
++(MOVWreg  x:(MOVHreg  _)) && (x.Type.Size() == 8 || x.Type.IsSigned()) => (MOVDreg x)
++(MOVWreg  x:(MOVWreg  _)) && (x.Type.Size() == 8 || x.Type.IsSigned()) => (MOVDreg x)
+ (MOVWUreg x:(MOVBUreg _)) => (MOVDreg x)
+ (MOVWUreg x:(MOVHUreg _)) => (MOVDreg x)
+ (MOVWUreg x:(MOVWUreg _)) => (MOVDreg x)
