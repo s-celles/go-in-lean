@@ -101,6 +101,29 @@ C82834 = {"k": "conv", "t": (16, True),
                 "c": {"k": "conv", "t": (64, False),
                       "a": {"k": "conv", "t": (8, False), "a": VAR(8, False, "y")}}}}
 
+# golang/go#82825 (amd64/386): the comparison of the shift count against the
+# width shares the CMP flags with the SBB carry mask; y == 64 reads them
+# clobbered. f(1, 65): spec 0, buggy 1.
+C82825 = BIN("add",
+             BIN("shl", VAR(64, False, "x"), VAR(64, False, "y")),
+             {"k": "conv", "t": (64, False),
+              "a": BIN("eq", VAR(64, False, "y"),
+                       {"k": "lit", "t": (64, False), "v": 64, "raw": True})})
+# golang/go#82839 (amd64, master): prove carries a fact through an extension
+# with a constant too wide for the narrow type and truncates it, so a branch
+# that cannot be taken is taken.
+C82839 = {"k": "sel", "t": (64, False),
+          "c": BIN("lt",
+                   {"k": "conv", "t": (64, True),
+                    "a": BIN("sub",
+                             {"k": "conv", "t": (16, True),
+                              "a": {"k": "conv", "t": (64, True),
+                                    "a": {"k": "conv", "t": (8, False), "a": VAR(8, False, "x")}}},
+                             {"k": "lit", "t": (16, True), "v": -257, "raw": True})},
+                   {"k": "lit", "t": (64, True), "v": -131073, "raw": True}),
+          "a": {"k": "lit", "t": (64, False), "v": 1, "raw": True},
+          "b": {"k": "lit", "t": (64, False), "v": 2, "raw": True}}
+
 CANARIES = [
     {"id": "82763", "expect": ("go1.27.3:CAUGHT", "tip:CAUGHT"),
      "tree": C82763, "inputs": [((1 << 64) - 1, 0), (7, 3)]},
@@ -125,6 +148,10 @@ CANARIES = [
      "tree": C82782, "inputs": [(1024, 5)]},
     {"id": "82834", "expect": ("arm5:CAUGHT",), "arch": ("arm", "qemu-arm", "GOARM=5"),
      "tree": C82834, "inputs": [((1 << 64) - 1, 1)]},
+    {"id": "82825", "expect": ("go1.24..master:CAUGHT",),
+     "tree": C82825, "inputs": [(1, 65), (1, 64)]},
+    {"id": "82839", "expect": ("go1.26+:CAUGHT",),
+     "tree": C82839, "inputs": [(255, 0)]},
 ]
 
 

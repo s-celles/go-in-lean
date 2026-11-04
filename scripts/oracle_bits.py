@@ -182,7 +182,10 @@ class Gen:
                    "xor": "^", "div": "/", "mod": "%", "andnot": "&^"}[op]
             return f"({a} {sym} {b})"
         if k == "conv":
-            return f"{gt}({self.go(n['a'], cn)})"
+            inner = self.go(n["a"], cn)
+            if n["a"]["k"] == "bin" and n["a"]["op"] in ("lt", "le", "gt", "ge", "eq", "ne"):
+                return f"{gt}(b2i({inner}))"
+            return f"{gt}({inner})"
         if k == "bits":
             fn = {"oc": "OnesCount", "lz": "LeadingZeros", "tz": "TrailingZeros",
                   "len": "Len", "rev": "Reverse", "rb": "ReverseBytes"}[n["op"]] + str(n["w"])
