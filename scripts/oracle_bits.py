@@ -145,9 +145,9 @@ class Gen:
         if k == "bin":
             a, b = self.go(n["a"], cn), self.go(n["b"], cn)
             op = n["op"]
-            if op in ("shl", "shr") and n["b"]["k"] == "lit" and n["b"]["t"] == (64, False):
+            if op in ("shl", "shr"):
                 sym = "<<" if op == "shl" else ">>"
-                return f"({a} {sym} {cn[id(n['b'])]})"
+                return f"({a} {sym} {b})"
             if op in ("min", "max"):
                 return f"{op}({a}, {b})"
             sym = {"add": "+", "sub": "-", "mul": "*", "and": "&", "or": "|",

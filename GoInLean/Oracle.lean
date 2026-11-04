@@ -202,9 +202,11 @@ def step (st : Array V) (o : Op) : Except Panic (Array V) :=
           match va, vb with
           | ⟨w, s, av⟩, ⟨_, s', bv⟩ =>
             if s' && bv.msb then .error Panic.negativeShift
-            else if op == "shl" then .ok (st.push ⟨w, s, av <<< bv.toNat⟩)
-            else if s then .ok (st.push ⟨w, s, av.sshiftRight bv.toNat⟩)
-            else .ok (st.push ⟨w, s, av >>> bv.toNat⟩)
+            -- clamp: a count >= w gives 0 / the sign fill, same as a count of w
+            else let n := min bv.toNat w
+              if op == "shl" then .ok (st.push ⟨w, s, av <<< n⟩)
+              else if s then .ok (st.push ⟨w, s, av.sshiftRight n⟩)
+              else .ok (st.push ⟨w, s, av >>> n⟩)
         else
           match va, vb with
           | ⟨w, s, av⟩, ⟨w', _, bv⟩ =>
