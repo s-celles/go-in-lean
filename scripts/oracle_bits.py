@@ -140,6 +140,8 @@ class Gen:
         k = n["k"]
         gt = GONAME[n["t"]] if "t" in n else None
         if k == "lit":
+            if n.get("raw"):
+                return f"{gt}({signed_repr(n['t'], n['v'])})"
             return cn[id(n)]
         if k == "var":
             return f"{gt}({n['which']})"
@@ -154,6 +156,9 @@ class Gen:
                 return f"({a} {sym} {b})"
             if op in ("min", "max"):
                 return f"{op}({a}, {b})"
+            if op in ("lt", "le", "gt", "ge", "eq", "ne"):
+                sym = {"lt": "<", "le": "<=", "gt": ">", "ge": ">=", "eq": "==", "ne": "!="}[op]
+                return f"({a} {sym} {b})"
             sym = {"add": "+", "sub": "-", "mul": "*", "and": "&", "or": "|",
                    "xor": "^", "div": "/", "mod": "%", "andnot": "&^"}[op]
             return f"({a} {sym} {b})"
@@ -190,13 +195,28 @@ func panicName(e any) string {
 }
 
 var _ = bits.OnesCount
+
+func b2i(b bool) uint64 {
+	if b {
+		return 1
+	}
+	return 0
+}
 '''
 
 
 def program(seed, n, npair):
     r = random.Random(seed)
     g = Gen(r)
-    trees = [g.build(r.choice(TYPES), r.randint(1, 3)) for _ in range(n)]
+    trees = []
+    for _ in range(n):
+        if r.random() < 0.15:
+            t = r.choice(TYPES)
+            op = r.choice(["lt", "le", "gt", "ge", "eq", "ne"])
+            trees.append({"k": "bin", "op": op, "a": g.build(t, r.randint(1, 2)),
+                          "b": g.build(t, r.randint(1, 2))})
+        else:
+            trees.append(g.build(r.choice(TYPES), r.randint(1, 3)))
     pairs = [(r.choice(XPOOL), r.choice(XPOOL)) for _ in range(npair)]
     recs = []
     for i, tree in enumerate(trees):
@@ -221,10 +241,13 @@ def program(seed, n, npair):
         for j, n in enumerate(lits):
             cn[id(n)] = f"c{j}"
             decls += f"\tvar c{j} = {GONAME[n['t']]}({signed_repr(n['t'], n['v'])})\n"
+        body = g.go(tree, cn)
+        if tree["k"] == "bin" and tree["op"] in ("lt", "le", "gt", "ge", "eq", "ne"):
+            body = f"b2i({body})"
         src += (f"\n//go:noinline\nfunc v{i}(x, y uint64) (res uint64, pn string) {{\n"
                 f"\tdefer func() {{ if e := recover(); e != nil {{ pn = panicName(e) }} }}()\n"
                 f"{decls}"
-                f"\tres = uint64({g.go(tree, cn)})\n\treturn\n}}\n")
+                f"\tres = uint64({body})\n\treturn\n}}\n")
     src += "\nfunc main() {\n\tvar r uint64\n\tvar p string\n"
     for i in range(len(trees)):
         for (x, y) in pairs:

@@ -64,6 +64,12 @@ C82786 = {"k": "bits", "op": "tz", "w": 64,
                                 "a": LIT(16, False, 16384)}}},
                    LIT(64, False, 16777217))}
 
+# golang/go#82774 (s390x): uint64(int8(-128)) < 0xFFFFFFFF is true; spec false.
+C82774 = BIN("lt",
+             {"k": "conv", "t": (64, False),
+              "a": {"k": "conv", "t": (8, True), "a": VAR(8, True, "x")}},
+             {"k": "lit", "t": (64, False), "v": 0xFFFFFFFF, "raw": True})
+
 CANARIES = [
     {"id": "82763", "expect": ("go1.27.3:CAUGHT", "tip:CAUGHT"),
      "tree": C82763, "inputs": [((1 << 64) - 1, 0), (7, 3)]},
@@ -79,6 +85,8 @@ CANARIES = [
      "tree": C82773, "inputs": [((1 << 64) - 1, 0)]},
     {"id": "82786", "expect": ("arm:CAUGHT",), "arch": ("arm", "qemu-arm", "GOARM=7"),
      "tree": C82786, "inputs": [(0, 0)]},
+    {"id": "82774", "expect": ("s390x:CAUGHT",), "arch": ("s390x", "qemu-s390x"),
+     "tree": C82774, "inputs": [(128, 0)]},
 ]
 
 
@@ -94,7 +102,7 @@ def run_canary(tree, inputs, gobin, out):
     lits = []
 
     def collect(n):
-        if n["k"] == "lit":
+        if n["k"] == "lit" and not n.get("raw"):
             lits.append(n)
         for k in ("a", "b"):
             if k in n:
@@ -104,10 +112,13 @@ def run_canary(tree, inputs, gobin, out):
     for j, n in enumerate(lits):
         cn[id(n)] = f"c{j}"
         decls += f"\tvar c{j} = {ob.GONAME[n['t']]}({ob.signed_repr(n['t'], n['v'])})\n"
+    body = g.go(tree, cn)
+    if tree["k"] == "bin" and tree["op"] in ("lt", "le", "gt", "ge", "eq", "ne"):
+        body = f"b2i({body})"
     src = ob.GOHEADER + ("\n//go:noinline\nfunc v0(x, y uint64) (res uint64, pn string) {\n"
                          "\tdefer func() { if e := recover(); e != nil { pn = panicName(e) } }()\n"
                          f"{decls}"
-                         f"\tres = uint64({g.go(tree, cn)})\n\treturn\n}}\n\nfunc main() {{\n")
+                         f"\tres = uint64({body})\n\treturn\n}}\n\nfunc main() {{\n")
     src += "\tvar r uint64\n\tvar p string\n"
     for (x, y) in inputs:
         src += (f"\tr, p = v0({x}, {y})\n"

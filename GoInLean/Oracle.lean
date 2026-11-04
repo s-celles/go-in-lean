@@ -220,6 +220,12 @@ def step (st : Array V) (o : Op) : Except Panic (Array V) :=
               | "or"  => .ok (st.push ⟨w, s, av ||| b'⟩)
               | "xor" => .ok (st.push ⟨w, s, av ^^^ b'⟩)
               | "andnot" => .ok (st.push ⟨w, s, av &&& ~~~b'⟩)
+              | "lt" => .ok (st.push ⟨1, false, BitVec.ofNat 1 (if ltV s av b' then 1 else 0)⟩)
+              | "le" => .ok (st.push ⟨1, false, BitVec.ofNat 1 (if (if s then av.sle b' else av ≤ b') then 1 else 0)⟩)
+              | "gt" => .ok (st.push ⟨1, false, BitVec.ofNat 1 (if ltV s b' av then 1 else 0)⟩)
+              | "ge" => .ok (st.push ⟨1, false, BitVec.ofNat 1 (if (if s then b'.sle av else b' ≤ av) then 1 else 0)⟩)
+              | "eq" => .ok (st.push ⟨1, false, BitVec.ofNat 1 (if av == b' then 1 else 0)⟩)
+              | "ne" => .ok (st.push ⟨1, false, BitVec.ofNat 1 (if av != b' then 1 else 0)⟩)
               | "min" => .ok (st.push ⟨w, s, if ltV s av b' then av else b'⟩)
               | "max" => .ok (st.push ⟨w, s, if ltV s b' av then av else b'⟩)
               | "div" =>
