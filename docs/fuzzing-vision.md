@@ -76,11 +76,14 @@ toutes les implémentations se trompent ensemble, invisibles au différentiel.
 
 ## 4. Jalons
 
-1. **J1 — Patron cedar-drt sur notre sous-ensemble** : compiler `OpSem`/`GenericSem`
-   en bibliothèque exécutable (export Lean → C, comme `build_lean_lib.sh`), et
-   brancher un oracle Lean sur `metamorphic_fuzz.py --bits` (entiers, `math/bits`,
-   le sous-ensemble déjà modélisé). Critère de succès : le fuzzer signale les
-   contre-exemples connus (les 13 property.lean doivent être retrouvées par les
+1. **J1 — Patron cedar-drt sur notre sous-ensemble** : brancher un oracle Lean
+   sur `metamorphic_fuzz.py --bits` (entiers, `math/bits`, le sous-ensemble déjà
+   modélisé), en **sous-processus** dans un premier temps : un exécutable Lean
+   évalue une expression sérialisée émise par le générateur (notre coût dominant
+   est le build Go, pas l'évaluation, donc pas besoin de l'FFI in-process de
+   cedar-lean-ffi ; voir `docs/cedar-notes.md` pour le patron exact et la
+   variante FFI). Critère de succès : le fuzzer signale les contre-exemples
+   connus (les 13 property.lean doivent être retrouvées par les
    graines) et rien de faux.
 2. **J2 — Synthèse dirigée** : `synthesize_tests` à la cedar-drt : générer des
    programmes aux frontières des théorèmes (points où une hypothèse de
