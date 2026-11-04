@@ -41,6 +41,7 @@ inductive Op where
   | conv (w : Nat) (s : Bool)
   | bits (op : String) (w : Nat)
   | rot (w : Nat)
+  | sel
 
 def perr (m : String) : Except Panic α := .error (Panic.message m)
 
@@ -65,6 +66,7 @@ def parseOp (j : Json) : Except String Op := do
     let w ← j.getObjValAs? Nat "w"
     return .bits op w
   | "rot" => return .rot (← j.getObjValAs? Nat "w")
+  | "sel" => return .sel
   | k => throw s!"unknown op kind {k}"
 
 structure Rec where
@@ -188,6 +190,21 @@ def step (st : Array V) (o : Op) : Except Panic (Array V) :=
             st.push <$> evalRot w x kk
           else perr "rotate width mismatch"
         else perr "rotate count width"
+  | .sel =>
+    match st.back? with
+    | none => perr "stack underflow"
+    | some vb =>
+      let st := st.pop
+      match st.back? with
+      | none => perr "stack underflow"
+      | some va =>
+        let st := st.pop
+        match st.back? with
+        | none => perr "stack underflow"
+        | some vc =>
+          let st := st.pop
+          if vc.w != 1 then perr "sel condition width"
+          else if vc.val.toNat == 1 then .ok (st.push va) else .ok (st.push vb)
   | .bin op =>
     match st.back? with
     | none => perr "stack underflow"

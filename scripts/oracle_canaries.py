@@ -70,6 +70,23 @@ C82774 = BIN("lt",
               "a": {"k": "conv", "t": (8, True), "a": VAR(8, True, "x")}},
              {"k": "lit", "t": (64, False), "v": 0xFFFFFFFF, "raw": True})
 
+# golang/go#82777 (arm64): a constant-condition select of ^y returns y^1.
+C82777 = {"k": "sel", "t": (64, True),
+          "c": BIN("gt", {"k": "bits", "op": "oc", "w": 8,
+                          "a": {"k": "lit", "t": (8, False), "v": 128, "raw": True}},
+                   {"k": "lit", "t": (64, True), "v": 0, "raw": True}),
+          "a": {"k": "un", "op": "com", "a": VAR(64, True, "y")},
+          "b": BIN("shr", VAR(64, True, "x"), LIT(64, False, 33))}
+# golang/go#82782 (ppc64le power10): the select picks the taken-arm value
+# although y <= z is false; ^ReverseBytes16(k) should survive.
+C82782 = {"k": "sel", "t": (16, True),
+          "c": BIN("le", VAR(16, True, "y"), {"k": "lit", "t": (16, True), "v": 1, "raw": True}),
+          "a": {"k": "lit", "t": (16, True), "v": 7, "raw": True},
+          "b": {"k": "un", "op": "com",
+                "a": {"k": "conv", "t": (16, True),
+                      "a": {"k": "bits", "op": "rb", "w": 16,
+                            "a": {"k": "conv", "t": (16, False), "a": VAR(16, False, "x")}}}}}
+
 CANARIES = [
     {"id": "82763", "expect": ("go1.27.3:CAUGHT", "tip:CAUGHT"),
      "tree": C82763, "inputs": [((1 << 64) - 1, 0), (7, 3)]},
@@ -87,6 +104,11 @@ CANARIES = [
      "tree": C82786, "inputs": [(0, 0)]},
     {"id": "82774", "expect": ("s390x:CAUGHT",), "arch": ("s390x", "qemu-s390x"),
      "tree": C82774, "inputs": [(128, 0)]},
+    {"id": "82777", "expect": ("arm64:CAUGHT",), "arch": ("arm64", "qemu-aarch64"),
+     "tree": C82777, "inputs": [(0, 2)]},
+    {"id": "82782", "expect": ("ppc64le-power10:CAUGHT",),
+     "arch": ("ppc64le", "qemu-ppc64le", "GOPPC64=power10", "QEMU_CPU=power10"),
+     "tree": C82782, "inputs": [(1024, 5)]},
 ]
 
 
@@ -104,7 +126,7 @@ def run_canary(tree, inputs, gobin, out):
     def collect(n):
         if n["k"] == "lit" and not n.get("raw"):
             lits.append(n)
-        for k in ("a", "b"):
+        for k in ("a", "b", "c"):
             if k in n:
                 collect(n[k])
     collect(tree)
@@ -112,13 +134,24 @@ def run_canary(tree, inputs, gobin, out):
     for j, n in enumerate(lits):
         cn[id(n)] = f"c{j}"
         decls += f"\tvar c{j} = {ob.GONAME[n['t']]}({ob.signed_repr(n['t'], n['v'])})\n"
-    body = g.go(tree, cn)
-    if tree["k"] == "bin" and tree["op"] in ("lt", "le", "gt", "ge", "eq", "ne"):
-        body = f"b2i({body})"
+    if tree["k"] == "sel":
+        T = ob.GONAME[tree["t"]]
+        body = ("var r " + T + "\n"
+                "\tr = " + g.go(tree["b"], cn) + "\n"
+                "\tif " + g.go(tree["c"], cn) + " {\n"
+                "\t\tr = " + g.go(tree["a"], cn) + "\n"
+                "\t}\n"
+                "\tres = uint64(r)")
+    else:
+        body = g.go(tree, cn)
+        if tree["k"] == "bin" and tree["op"] in ("lt", "le", "gt", "ge", "eq", "ne"):
+            body = f"b2i({body})"
+    tail = body + "\n" if tree["k"] == "sel" else f"\tres = uint64({body})\n"
     src = ob.GOHEADER + ("\n//go:noinline\nfunc v0(x, y uint64) (res uint64, pn string) {\n"
                          "\tdefer func() { if e := recover(); e != nil { pn = panicName(e) } }()\n"
                          f"{decls}"
-                         f"\tres = uint64({body})\n\treturn\n}}\n\nfunc main() {{\n")
+                         f"{tail}"
+                         "\treturn\n}\n\nfunc main() {\n")
     src += "\tvar r uint64\n\tvar p string\n"
     for (x, y) in inputs:
         src += (f"\tr, p = v0({x}, {y})\n"

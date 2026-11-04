@@ -133,6 +133,11 @@ class Gen:
             self.rpn(n["a"], x, y, out)
             self.rpn(n["c"], x, y, out)
             out.append({"k": "rot", "w": n["w"]})
+        elif k == "sel":
+            self.rpn(n["c"], x, y, out)
+            self.rpn(n["a"], x, y, out)
+            self.rpn(n["b"], x, y, out)
+            out.append({"k": "sel"})
         else:
             raise ValueError(k)
 
