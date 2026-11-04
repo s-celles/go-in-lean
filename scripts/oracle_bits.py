@@ -138,6 +138,9 @@ class Gen:
             self.rpn(n["a"], x, y, out)
             self.rpn(n["b"], x, y, out)
             out.append({"k": "sel"})
+        elif k == "arr":
+            self.rpn(n["i"], x, y, out)
+            out.append({"k": "arr"})
         elif k in ("sub64", "add64"):
             self.rpn(n["a"], x, y, out)
             self.rpn(n["b"], x, y, out)
@@ -153,6 +156,8 @@ class Gen:
             if n.get("raw"):
                 return f"{gt}({signed_repr(n['t'], n['v'])})"
             return cn[id(n)]
+        if k == "arr":
+            return f"ga[{self.go(n['i'], cn)}]"
         if k in ("sub64", "add64"):
             fn = "Sub64" if k == "sub64" else "Add64"
             A = self.go(n["a"], cn)
@@ -215,6 +220,8 @@ func panicName(e any) string {
 	}
 	return "other"
 }
+
+var ga = [8]int64{1, 2, 3, 7, 15, 255, -1, -128}
 
 var _ = bits.OnesCount
 
@@ -294,9 +301,14 @@ def run(seed, n, out):
                           text=True, env=env, timeout=300)
     if gout.returncode != 0:
         return f"seed {seed}: go run failed: {gout.stderr[:300]}"
-    lake = os.environ.get("LAKE", "lake")
-    lout = subprocess.run([lake, "exe", "oracle", os.path.abspath(os.path.join(out, "exprs.json"))],
-                          capture_output=True, text=True, timeout=300)
+    obin = os.environ.get("ORACLE_BIN")
+    exprs = os.path.abspath(os.path.join(out, "exprs.json"))
+    if obin:
+        lout = subprocess.run([obin, exprs], capture_output=True, text=True, timeout=300)
+    else:
+        lake = os.environ.get("LAKE", "lake")
+        lout = subprocess.run([lake, "exe", "oracle", exprs],
+                              capture_output=True, text=True, timeout=300)
     if lout.returncode != 0:
         return f"seed {seed}: oracle failed: {lout.stdout[:200]} {lout.stderr[:300]}"
     gl, ll = gout.stdout.splitlines(), lout.stdout.splitlines()

@@ -112,7 +112,7 @@ C82825 = BIN("add",
 # golang/go#82839 (amd64, master): prove carries a fact through an extension
 # with a constant too wide for the narrow type and truncates it, so a branch
 # that cannot be taken is taken.
-C82839 = {"k": "sel", "t": (64, False),
+C82839 = {"k": "sel", "t": (64, True),
           "c": BIN("lt",
                    {"k": "conv", "t": (64, True),
                     "a": BIN("sub",
@@ -121,8 +121,10 @@ C82839 = {"k": "sel", "t": (64, False),
                                     "a": {"k": "conv", "t": (8, False), "a": VAR(8, False, "x")}}},
                              {"k": "lit", "t": (16, True), "v": -257, "raw": True})},
                    {"k": "lit", "t": (64, True), "v": -131073, "raw": True}),
-          "a": {"k": "lit", "t": (64, False), "v": 1, "raw": True},
-          "b": {"k": "lit", "t": (64, False), "v": 2, "raw": True}}
+          "a": {"k": "arr",
+                "i": BIN("and", {"k": "conv", "t": (64, True), "a": VAR(8, False, "x")},
+                         {"k": "lit", "t": (64, True), "v": 7, "raw": True})},
+          "b": {"k": "lit", "t": (64, True), "v": 123456789, "raw": True}}
 
 CANARIES = [
     {"id": "82763", "expect": ("go1.27.3:CAUGHT", "tip:CAUGHT"),
@@ -208,9 +210,14 @@ def run_canary(tree, inputs, gobin, out):
                         capture_output=True, text=True, env=env, timeout=300)
     if go.returncode != 0:
         return None, f"build failed: {go.stderr[:200]}"
-    lake = os.environ.get("LAKE", "lake")
-    lean = subprocess.run([lake, "exe", "oracle", os.path.abspath(os.path.join(out, "exprs.json"))],
-                          capture_output=True, text=True, timeout=300)
+    obin = os.environ.get("ORACLE_BIN")
+    exprs = os.path.abspath(os.path.join(out, "exprs.json"))
+    if obin:
+        lean = subprocess.run([obin, exprs], capture_output=True, text=True, timeout=300)
+    else:
+        lake = os.environ.get("LAKE", "lake")
+        lean = subprocess.run([lake, "exe", "oracle", exprs],
+                              capture_output=True, text=True, timeout=300)
     if lean.returncode != 0:
         return None, f"oracle failed: {lean.stderr[:200]}"
     open(os.path.join(out, "expected.txt"), "w").write(lean.stdout)

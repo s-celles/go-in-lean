@@ -43,6 +43,7 @@ inductive Op where
   | rot (w : Nat)
   | sel
   | addsub (op : String) (o : String)
+  | arr
 
 def perr (m : String) : Except Panic α := .error (Panic.message m)
 
@@ -68,6 +69,7 @@ def parseOp (j : Json) : Except String Op := do
     return .bits op w
   | "rot" => return .rot (← j.getObjValAs? Nat "w")
   | "sel" => return .sel
+  | "arr" => return .arr
   | "sub64" =>
     let o ← j.getObjValAs? String "o"
     return .addsub "sub" o
@@ -242,6 +244,20 @@ def step (st : Array V) (o : Op) : Except Panic (Array V) :=
               else perr "addsub width"
             else perr "addsub width"
           else perr "addsub width"
+  | .arr =>
+    -- ga[i]: the fixed 8-element int64 array of the generator, i any integer type
+    match st.back? with
+    | none => perr "stack underflow"
+    | some vi =>
+      let st := st.pop
+      if vi.s && vi.val.msb then .error Panic.indexOutOfRange
+      else
+        let i := vi.val.toNat
+        if i ≥ 8 then .error Panic.indexOutOfRange
+        else
+          let elems : List Nat := [1, 2, 3, 7, 15, 255, (2 ^ 64 - 1), (2 ^ 64 - 128)]
+          let v := (elems.getD i 0)
+          .ok (st.push ⟨64, true, BitVec.ofNat 64 v⟩)
   | .bin op =>
     match st.back? with
     | none => perr "stack underflow"
