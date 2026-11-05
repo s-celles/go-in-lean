@@ -19,6 +19,10 @@
   upstream artifacts (GitHub issues, Gerrit CLs). Interactive session
   prose may be in another language, but everything committed or posted
   upstream is English.
+- Record every notable change in `CHANGELOG.md`
+  ([Keep a Changelog](https://keepachangelog.com/en/1.1.0/)), under
+  `[Unreleased]` until a version is tagged, in the same commit as the change.
+  Versions follow [Semantic Versioning](https://semver.org/).
 - ToDo
 
 ## Layout
