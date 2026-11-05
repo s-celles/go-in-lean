@@ -66,7 +66,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import oracle_bits as ob  # noqa: E402  (IR helpers and RPN emission)
 import oracle_canaries as oc  # noqa: E402  (directed canary trees)
 
-HARNESS_VERSION = "1.0.0"
+HARNESS_VERSION = "1.1.0"
 REPO_ROOT = Path(__file__).resolve().parent.parent
 STATUSES = ("clean", "unsupported", "build_error", "run_error", "timeout",
             "output_mismatch", "skipped")
@@ -449,12 +449,16 @@ class Program:
     source: str
     records: list  # RPN records for the Lean oracle (e= lines only)
     meta: dict = field(default_factory=dict)
+    trees: list = field(default_factory=list)  # IR of the oracle-checked functions
 
 
-def emit_program(funcs, loops, pairs, input_mode, rng, bind_prob, sel_style, panics=False):
+def emit_program(funcs, loops, pairs, input_mode, rng, bind_prob, sel_style, panics=False,
+                 func_pairs=None):
     """funcs: IR trees (oracle-checked); loops: (tree, type) pairs (gc-checked).
     With panics, each function recovers and reports the panic kind as the
-    oracle does (`... PANIC divideError`)."""
+    oracle does (`... PANIC divideError`). func_pairs: optional inputs per
+    function (SMT-guided); loops always use pairs."""
+    fpairs = func_pairs if func_pairs is not None else [pairs] * len(funcs)
     chunks = []
     uses_bits = False
     g = ob.Gen(None)
@@ -472,7 +476,7 @@ def emit_program(funcs, loops, pairs, input_mode, rng, bind_prob, sel_style, pan
         else:
             chunks.append(f"//go:noinline\nfunc v{i}(x, y uint64) uint64 {{\n"
                           f"{body}\treturn {res}\n}}\n")
-        for (x, y) in pairs:
+        for (x, y) in fpairs[i]:
             ops = []
             g.rpn(tree, x, y, ops)
             records.append({"e": i, "x": x, "y": y, "ops": ops})
@@ -499,16 +503,21 @@ def emit_program(funcs, loops, pairs, input_mode, rng, bind_prob, sel_style, pan
     if input_mode == "runtime":
         # inputs filled at run time: a literal argument could be propagated
         # into the noinline callee by an interprocedural optimizer
-        flat = ", ".join(str(v) for p in pairs for v in p)
-        chunks.append(f"var gin = [{2 * len(pairs)}]uint64{{{flat}}}\n")
-        main += [f"\tvar in [{len(pairs)}][2]uint64",
-                 f"\tfor i := 0; i < {2 * len(pairs)}; i += 2 {{",
+        allp = list(pairs)
+        if func_pairs is not None:
+            for fp in func_pairs:
+                allp += [p for p in fp if p not in allp]
+        index = {p: j for j, p in reversed(list(enumerate(allp)))}
+        flat = ", ".join(str(v) for p in allp for v in p)
+        chunks.append(f"var gin = [{2 * len(allp)}]uint64{{{flat}}}\n")
+        main += [f"\tvar in [{len(allp)}][2]uint64",
+                 f"\tfor i := 0; i < {2 * len(allp)}; i += 2 {{",
                  "\t\tin[i/2][0] = gin[i]", "\t\tin[i/2][1] = gin[i+1]", "\t}"]
-        arg = lambda j, x, y: f"in[{j}][0], in[{j}][1]"  # noqa: E731
+        arg = lambda j, x, y: f"in[{index[(x, y)]}][0], in[{index[(x, y)]}][1]"  # noqa: E731
     else:
         arg = lambda j, x, y: f"{x}, {y}"  # noqa: E731
     for i in range(len(funcs)):
-        for j, (x, y) in enumerate(pairs):
+        for j, (x, y) in enumerate(fpairs[i]):
             if panics:
                 main += [f"\tr, p = v{i}({arg(j, x, y)})",
                          f'\tif p == "" {{\n\t\tfmt.Printf("e={i} x={x} y={y} OK %d\\n", r)\n'
@@ -525,7 +534,11 @@ def emit_program(funcs, loops, pairs, input_mode, rng, bind_prob, sel_style, pan
 
 
 def random_program(suite, seed, index, nfuncs=10, nloops=2, npairs=6, depth=3,
-                   word_bits=64):
+                   word_bits=64, inputs="pool"):
+    """inputs: "pool" draws npairs (x, y) from oracle_bits.XPOOL, shared by all
+    functions; "smt" gives each function npairs inputs chosen by z3 on its
+    semantic boundaries (smt_inputs.py), completed from the pool. The trees
+    and the loop inputs are the same in both modes."""
     rng = random.Random(f"{suite}:{seed}:{index}")
     panics = suite == "panics"
     if panics:
@@ -549,10 +562,23 @@ def random_program(suite, seed, index, nfuncs=10, nloops=2, npairs=6, depth=3,
     pairs = [(rng.choice(ob.XPOOL), rng.choice(ob.XPOOL)) for _ in range(npairs)]
     input_mode = rng.choice(("literal", "runtime"))
     bind_prob = rng.choice((0.0, 0.4))
+    func_pairs = None
+    meta = {"input_mode": input_mode, "bind_prob": bind_prob,
+            "funcs": nfuncs, "loops": nloops, "pairs": npairs}
+    if inputs == "smt":
+        import smt_inputs  # needs z3; imported only in this mode
+        func_pairs, meta["smt_targets"] = [], []
+        for i, tree in enumerate(funcs):
+            srng = random.Random(f"smt:{suite}:{seed}:{index}:{i}")
+            got, labels = smt_inputs.smt_pairs(tree, npairs, srng)
+            func_pairs.append(smt_inputs.fill(got, npairs, ob.XPOOL, srng))
+            meta["smt_targets"].append(labels)
+        meta["inputs"] = "smt"
+    elif inputs != "pool":
+        raise ValueError(f"unknown input selection {inputs!r}")
     src, records = emit_program(funcs, loops, pairs, input_mode, rng, bind_prob, "mixed",
-                                panics=panics)
-    return Program(src, records, {"input_mode": input_mode, "bind_prob": bind_prob,
-                                  "funcs": nfuncs, "loops": nloops, "pairs": npairs})
+                                panics=panics, func_pairs=func_pairs)
+    return Program(src, records, meta, trees=funcs)
 
 
 # --------------------------------------------------------------------------
@@ -939,7 +965,7 @@ def cmd_run(args):
     else:
         cases = [(f"{args.suite}-{args.seed}-{i:05d}",
                   random_program(args.suite, args.seed, i, args.funcs, args.loops,
-                                 args.pairs, args.depth, args.word_bits), "reference")
+                                 args.pairs, args.depth, args.word_bits, args.inputs), "reference")
                  for i in range(args.start, args.start + args.count)]
     t0 = time.monotonic()
     started = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
@@ -967,7 +993,8 @@ def cmd_run(args):
         "target": args.target,
         "count": len(cases), "reference": args.reference,
         "generator": {"funcs": args.funcs, "loops": args.loops, "pairs": args.pairs,
-                      "depth": args.depth, "word_bits": args.word_bits},
+                      "depth": args.depth, "word_bits": args.word_bits,
+                      "inputs": args.inputs},
         "timeouts": {"build": args.build_timeout, "run": args.run_timeout},
         "jobs": args.jobs,
         "oracle": args.oracle,
@@ -1091,7 +1118,7 @@ def cmd_gen(args):
                 print(f"// case {name} ({mode})\n{prog.source}")
         return 0
     prog = random_program(args.suite, args.seed, args.index, args.funcs, args.loops,
-                          args.pairs, args.depth, args.word_bits)
+                          args.pairs, args.depth, args.word_bits, args.inputs)
     sys.stdout.write(prog.source)
     if args.records:
         Path(args.records).write_text(json.dumps(prog.records))
@@ -1123,6 +1150,9 @@ def add_gen(p):
     p.add_argument("--depth", type=int, default=3, help="maximum expression depth")
     p.add_argument("--word-bits", type=int, choices=(32, 64), default=64,
                    help="size of uint on the target (32 for arm, mipsle, 386...)")
+    p.add_argument("--inputs", choices=("pool", "smt"), default="pool",
+                   help="input selection: a shared random pool (default) or per-function "
+                        "inputs chosen by z3 on semantic boundaries (needs the z3 module)")
 
 
 def main(argv=None):

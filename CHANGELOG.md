@@ -12,6 +12,13 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- `--inputs smt` in `scripts/alt_compiler_diff.py` (harness 1.1.0) and
+  `scripts/smt_inputs.py`: per-function inputs chosen by z3 on the semantic boundaries
+  of each generated expression (shift counts, `MinInt / -1`, comparison edges, select
+  arms, truncations, wraparound); the trees are those of the default `pool` mode, which
+  is unchanged. Tests in `scripts/test_smt_inputs.py` (skipped without z3), including a
+  cross-check of the encoding against gc. README: table of symbolic and concolic
+  approaches, implemented or not yet tested.
 - **Long cross-architecture campaign, first round** (2026-11-05, seed 20261110, 12,600
   programs on amd64 and 11 qemu targets): every divergence maps to a known issue. New
   manifestation of golang/go#82873: on go1.26 arm64/loong64 the `int`-typed `BitRev8`

@@ -120,6 +120,25 @@ organically, the formal layer proves the fixes sound, and the rewrite-trace
 instrumentation isolates root causes (it resolved #82834 as a third face of
 #82786).
 
+### Symbolic and concolic input selection
+
+The random campaigns check each generated function on a handful of inputs, so a
+miscompilation that only shows on particular values can be missed. Go has no mature
+concolic tester (the native fuzzer is coverage-guided; `-gcflags=-d=libfuzzer` only adds
+comparison tracing, without a solver), but the generated functions are small, loop-free
+fixed-width integer expressions, which is the case where symbolic methods are cheap and,
+for equivalence, exhaustive. Approaches, with their status:
+
+| Approach | Idea | Status |
+| --- | --- | --- |
+| SMT boundary inputs (`--inputs smt`) | `scripts/smt_inputs.py` encodes the IR in z3 bit-vectors (Go semantics of shifts, division, conversions, `math/bits`) and solves, per function, for inputs on its semantic boundaries: shift counts at `w-1`/`w`/0, `MinInt / -1`, divisors of +-1, equal or adjacent comparison operands, both arms of each select (with the path condition), narrowing conversions that drop set bits, wrapping arithmetic. The Lean oracle stays the arbiter, so an encoding error costs coverage, not a false report. | Implemented, cross-checked against gc on 3,331 evaluations; A/B evaluation in `docs/research-report.md` |
+| Per-function symbolic equivalence | Lift each compiled `vN` from the binary (angr/pyvex supports amd64, arm64, ppc64, mips, riscv64, s390x), and ask an SMT solver whether some `(x, y)` makes it differ from the IR. SAT gives a counterexample to confirm with the oracle and qemu; UNSAT proves that function correct for all inputs on that target. | Not tested |
+| Concolic execution of gc binaries | SymQEMU (with AFL++ or LibAFL) or angr in concolic mode on whole programs. The Go runtime (stack growth, register ABI, scheduler) makes whole-program exploration hard; restricting it to the leaf `vN` functions avoids most of it. | Not tested |
+| Compiler-level concolic testing of TinyGo / LLGo / gollvm | These emit LLVM IR, so SymCC (concolic, compiled in) or KLEE (symbolic) apply in principle. The runtime (GC, goroutines, syscalls) needs a reduced model; TinyGo's is the smallest. | Not tested |
+| Translation validation of SSA rewrite rules | Alive2-style checking of each `.rules` rewrite, with the operand types and widths it is applied at. `check_new_rules` (Lean, `bv_decide`) already does this for rules new on master; extending it to all rules per architecture is the systematic version. | Partly done (new rules only) |
+| Counterexample-guided synthesis | Turn `bv_decide` counterexamples for a suspicious rule into Go programs that exercise it (J2-synthesis in the research map). | Planned |
+| Concolic exploration of the compiler itself | Explore the rewrite functions of `cmd/compile/internal/ssa` concolically to reach rarely matched rules. Large state space; a research project rather than a campaign. | Idea only |
+
 ## Quick start
 
 Prerequisites: [elan](https://github.com/leanprover/elan) (installs Lean
