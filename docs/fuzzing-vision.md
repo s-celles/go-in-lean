@@ -78,6 +78,16 @@ not formalize yet), the Lean oracle compares against the *documented
 semantics* — it catches the classes where every implementation is wrong
 together, invisible to the differential.
 
+A third, cross-*implementation* differential (`scripts/alt_compiler_diff.py`,
+2026-11-05) runs the same integer programs through gccgo, TinyGo, LLGo and
+Yaegi next to gc, with the Lean oracle as arbiter. It is a control rather
+than a hunter: independent back ends confirm a gc divergence on the shared
+subset (the amd64 canaries #82763, #82825 and #82839 are reproduced 5-to-1
+against gc), but they never see gc's architecture-specific lowering, and
+TinyGo/LLGo share gc's front end and standard library. Its organic findings
+so far are a rediscovery of #82767 on tip and a Yaegi shift-count bug
+(`docs/research-report.md` section 3.15).
+
 ## 4. Milestones
 
 1. **J1 — the cedar-drt pattern on our subset**: plug a Lean oracle into

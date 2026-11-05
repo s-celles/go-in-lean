@@ -377,6 +377,134 @@ a parsed error, and every generated file is also built by `lake build` in CI.
   on arm64 and ppc64le (and 45/45 at pressure zero on big-endian ppc64). CL 825904 PS6 defines
   central restore predicates but does not yet apply them to these double/repeated-extension rules.
 
+### 3.15 Iteration 10: alternative Go implementations as a differential control
+
+`scripts/alt_compiler_diff.py` (2026-11-05) runs the same deterministic programs through
+independent Go implementations and compares exit code, stdout and stderr with gc, and the
+expression lines with the Lean oracle (`lake exe oracle`). gc is the *practical* reference
+only: a toolchain that disagrees with gc is classified, not convicted, and the majority
+never decides - a gc result that contradicts the oracle is a lead even when every other
+implementation agrees with gc. Hike (`kanryu/hike-lang`) is a Go-inspired language, not a
+Go implementation, and is not used as an oracle.
+
+**Toolchains (GEEKR9, NixOS 26.05, x86-64, 16 cores).**
+
+| Name | Implementation | Version | Build / run |
+|---|---|---|---|
+| `gc` (reference) | gc | go1.27.3 (nixpkgs `go_1_27`) | `go build -o prog main.go`, `GO111MODULE=off GOTOOLCHAIN=local CGO_ENABLED=0` |
+| `gc-noopt` | gc | go1.27.3 | `go build -gcflags='all=-N -l'` |
+| `gc-1.26` | gc | go1.26.10 (nixpkgs `go`) | as `gc` |
+| `gc-tip` | gc | go1.28-devel_56ae71df05 (2026-11-03) | as `gc` |
+| `gccgo-O0`, `gccgo-O2` | GCC Go frontend | gccgo (GCC) 16.2.0 | `gccgo -O0`/`-O2 -o prog main.go` |
+| `tinygo` | TinyGo (LLVM) | 0.43.0, using go1.27.3 and LLVM 22.1.8 | `tinygo build -o prog main.go` (default `-opt=z`) |
+| `llgo` | LLGo (LLVM) | `xgo-dev/llgo` commit `d4b248e8c779` (v1.0.9-144), go1.27.3, LLVM/Clang/LLD 22.1.8 | `llgo build -o prog main.go` |
+| `yaegi` | Yaegi (interpreter) | 0.16.1 | `yaegi run main.go` |
+
+**Compatibility matrix** (the portable subset as generated; ✓ = builds and agrees with the
+oracle on every expression line of the smoke and campaign runs).
+
+| Feature | gc | gccgo -O0/-O2 | TinyGo | LLGo | Yaegi |
+|---|---|---|---|---|---|
+| int/uint 8-64 arithmetic, bitwise, `&^`, comparisons | ✓ | ✓ | ✓ | ✓ | ✓ |
+| conversions and truncations | ✓ | ✓ | ✓ | ✓ | ✓ |
+| constant, variable, signed (masked) and >= 2^63 shift counts | ✓ (tip: #82767) | ✓ | ✓ | ✓ | ✗ in assignments with a compound count (below) |
+| if/else Phi, bounded loops, `//go:noinline` | ✓ | ✓ | ✓ | ✓ | ✓ (pragma ignored) |
+| `math/bits` (separate `bits` suite) | ✓ | ✓ | ✓ | ✓ | ✓ apart from the same shift bug |
+| guarded `/`, `%`, including `MinInt / -1` | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+**Results.** Generated programs carry 10 oracle-checked functions and 2 bounded-loop
+functions over 6 input pairs (72 expression lines checked against the Lean oracle, 12 loop
+lines against gc only); inputs are passed either as literals or through a run-time-filled
+array, and selects are lowered either to if/else or to the canary's default-then-override
+shape.
+
+| Run | Programs | Wall time (16 jobs) | Non-clean results |
+|---|---|---|---|
+| smoke, `core` + `bits`, seed 1 | 16 + 16 | 38 s + 25 s | none (288 executions, all agree with the oracle) |
+| `core`, seed 20261105 | 1,500 | 41.6 min | yaegi: 8 `output_mismatch`, 1 `run_error`; gc-tip: 1 `output_mismatch` |
+| `bits`, seed 20261105 | 500 | 9.7 min | yaegi: 6 `output_mismatch` |
+| `core` rerun, same seed, first 300 | 300 | 5.8 min | identical sources and statuses on all 300 cases (`--compare-with`) |
+| `directed` | 27 | 39 s | the known gc bugs only (below) |
+
+Across the 2,000 campaign programs (18,000 builds and runs), gc go1.27.3, gc `-N -l`,
+go1.26.10, gccgo -O0/-O2, TinyGo and LLGo are clean and agree with the oracle on every
+expression line; there are no `build_error`, `timeout` or `unsupported` results, and no
+gc reference failure (the generator emitted no invalid program).
+
+The `directed` suite reproduces the tracked amd64-relevant gc bugs and shows the
+alternatives as an independent majority that agrees with the specification: on the
+#82763, #82825 and #82839 canaries gc go1.27.3 disagrees with the oracle and gccgo
+(both levels), TinyGo, LLGo and Yaegi all agree with it; the self-checking regression tests
+`findings/*/cl/issue82763.go`, `issue82825.go` and `issue82839.go` fail under gc and pass
+under all five alternatives. The version profile matches `docs/upstream-status.md`:
+#82825 is fixed on tip, #82839 is present from go1.26 through tip, #82763 on every gc,
+and the tip-only #82767 shows up on tip as a canary mismatch, a failing self-check and an
+ICE on the `package main` form of `ice_reproducer.go`. The canaries for other
+architectures (mips, ppc64, riscv64, s390x, arm, arm64, power10) are clean on amd64 for
+every implementation, as expected, and so is the #80577 spill reproducer (an arm64/ppc64
+defect).
+
+**Triage of the divergences.**
+
+| Divergence | Classification | Evidence |
+|---|---|---|
+| gc-tip, `core-20261105-00565`: `(int16(x) >> 1) >> 2^32` gives `x >> 1` (`1924` instead of `-3` after `^t1 +`) | likely gc bug, **already known**: golang/go#82767 (tip-only shift-composition count typed with the shifted value's type) | spec and oracle give 0; go1.27.3, go1.26.10 and the five alternatives agree; reduced to `func f(x int16) int16 { return (x >> 1) >> uint64(1<<32) }`, which gives 1927 on tip (int8: 42, int32: 1927, also with count 2^62) and 0 on go1.27.3. CL 857342 is still unmerged on this tip (`56ae71df05`). An organic rediscovery, not a new finding |
+| yaegi, 14 `output_mismatch` (8 `core` + 6 `bits`) | bug of the alternative toolchain (Yaegi 0.16.1) | an assignment `v = x >> (count expr)` converts the count to the operand type (`uint32(2^32+1) = 1`); all 14 cases become correct when every such assignment is rewritten as `{ tmp := expr; v = tmp }` (`triage_yaegi.py`); reduced reproducer in `upstream-bugs.md` |
+| yaegi, 1 `run_error` (`core-20261105-00481`) | bug of the alternative toolchain, same family | valid Go `r = s >> ((k - k) ^ k)` is rejected while loading ("mismatched types int16 and uint64"); gc and gccgo accept it |
+
+No divergence is attributed to a library or runtime difference, to a program outside the
+common subset, to unspecified behaviour, or to the harness. During development, the harness
+problems found were fixed before the campaign: a loop variable left unused when the loop
+body did not reference `x` (a gc build error in 29/40 smoke programs), and resolving
+`/snap/bin/go` through its symlink, which broke the snap's argv[0] dispatch. The Yaegi
+defect reproduces on 0.16.3 (released the same day, equal to master) and was reported as
+[traefik/yaegi#1750](https://github.com/traefik/yaegi/issues/1750) after a duplicate search
+(`upstream-bugs.md`). gccgo, TinyGo and LLGo produced no divergence, so nothing was
+reported to them.
+
+**Limits of the multi-implementation oracle.** (1) The alternative implementations share
+front ends with gc: TinyGo and LLGo type-check with `go/types` and compile the gc standard
+library (from go1.27.3), so a front-end or library defect common to them is invisible; gccgo
+and Yaegi are the only fully independent front ends, and Yaegi is the weakest
+implementation of the set. (2) The common subset is small by construction (no panics, no
+scheduler, no GC, no maps, no formatting beyond `%d`): an alternative toolchain cannot
+corroborate a gc bug outside it. (3) The SSA-rule bugs that go-in-lean finds are mostly
+architecture-specific lowering; on amd64 the alternatives only see the generic class
+(#82763, #82825, #82839 here), so for the other architectures the Lean oracle and the
+cross-architecture runs remain the only arbiters. (4) Agreement of five implementations is
+not a specification: the oracle is what turns a 1-vs-5 vote into a lead, and the directed
+suite shows gc can be the minority *and* wrong. (5) LLGo is a moving target (built from a
+daily commit, about 7 s per program), and its result must be pinned to the commit recorded
+in `report.json`.
+
+**Reproduction.** Heavy artifacts stay on GEEKR9 under
+`~/go-in-lean-runs/alt-compiler/2026-11-05/`: `tools/` (nix GC roots for go, go_1_27,
+gccgo, tinygo, yaegi, python3, glibc and gcc runtime libraries; the LLGo checkout, binary
+and `llgo-shell` flake; the Lean oracle wrapper; `env.sh`), `runs/` (one directory per
+campaign with `report.json` and the kept divergent cases), `campaign.sh`,
+`triage_yaegi.py`, and `yaegi-shift/` (the reduced reproducer).
+
+```sh
+. ~/go-in-lean-runs/alt-compiler/2026-11-05/tools/env.sh
+$ACD list $ACD_TOOLS                               # detection and versions
+$ACD run --suite directed --out runs/directed --oracle $ORACLE --jobs 16 $ACD_TOOLS
+$ACD run --suite core --seed 20261105 --count 1500 --out runs/core-20261105 \
+    --oracle $ORACLE --jobs 16 $ACD_TOOLS
+$ACD run --suite bits --seed 20261105 --count 500 --out runs/bits-20261105 \
+    --oracle $ORACLE --jobs 16 $ACD_TOOLS
+$ACD run --suite core --seed 20261105 --count 300 --out runs/core-20261105-rerun \
+    --oracle $ORACLE --compare-with runs/core-20261105/report.json $ACD_TOOLS
+python3 -m unittest scripts/test_alt_compiler_diff.py   # harness tests
+```
+
+LLGo is built from source in a user directory with
+`nix develop tools/llgo-shell` (LLVM 22 stdenv, boehmgc, libffi, openssl, libuv, cjson,
+zlib) and `go build ./cmd/llgo`; the `tools/llgo` wrapper sources a cached
+`nix print-dev-env` and sets `LLGO_ROOT`, and LLGo binaries run with
+`LD_LIBRARY_PATH` pointing at the gcc runtime (`libatomic`, `libstdc++`), which the link
+does not record as an rpath. The Lean oracle binary built on the Ubuntu workstation runs on
+NixOS through the nix glibc loader.
+
 ## 4. Success criteria check
 
 | # | Criterion | Status |
