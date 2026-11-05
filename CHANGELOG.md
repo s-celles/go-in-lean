@@ -12,6 +12,11 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- `panics` suite in `scripts/alt_compiler_diff.py`: one unguarded division or signed
+  shift count per function (never under a select, since the order of two panics is
+  unspecified), recovered and reported as the oracle does (`PANIC divideError` /
+  `negativeShift`). Its smoke run found that Yaegi does not panic on a negative shift
+  count (`upstream-bugs.md`).
 - **Cross-architecture alternative-compiler campaigns** (2026-11-05):
   `scripts/alt_compiler_diff.py` gained `--run-prefix`, `--extra-flags`, `--target` and
   `--word-bits`; the same seed ran under qemu on arm64, arm, mipsle, ppc64le, riscv64 and

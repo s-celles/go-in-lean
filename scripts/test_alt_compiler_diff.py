@@ -123,6 +123,45 @@ class GeneratorTests(unittest.TestCase):
         self.assertEqual(acd.random_program("core", 7, 0).source,
                          acd.random_program("core", 7, 0, word_bits=64).source)
 
+    def test_panics_suite_sites(self):
+        """At most one unguarded panic site per tree, never under a select (the
+        oracle evaluates both arms of a select, Go only the taken one)."""
+        sites_seen = 0
+        for s in range(80):
+            r = random.Random(f"p:{s}")
+            g = acd.SubsetGen(r, with_bits=False, panics=True)
+            for _ in range(10):
+                g.start_tree()
+                t = g.build(r.choice(acd.TYPES), r.randint(1, 4))
+                g.assign_literal_modes(t)
+                sites = []
+
+                def visit(n, under_sel):
+                    if n.get("panic_site"):
+                        sites.append(n)
+                        self.assertFalse(under_sel, n)
+                    if n.get("guard"):  # divisor guard: cond holds a copy of b
+                        visit(n["b"], under_sel)
+                        return
+                    for k in ("a", "b", "c"):
+                        if k in n:
+                            visit(n[k], under_sel or n["k"] == "sel")
+                visit(t, False)
+                self.assertLessEqual(len({id(x) for x in sites}), 1)
+                sites_seen += len(sites)
+                for n in walk(t):  # a constant zero divisor or negative count is a compile error
+                    if n.get("panic_site") and n["k"] == "bin" and n["b"]["k"] == "lit":
+                        self.assertFalse(n["b"].get("raw") or n["b"].get("untyped"), n)
+        self.assertGreater(sites_seen, 100)
+
+    def test_panics_program_shape(self):
+        p = acd.random_program("panics", 4, 0)
+        self.assertIn("recover()", p.source)
+        self.assertIn("PANIC %s", p.source)
+        self.assertEqual(p.meta["loops"], 0)
+        # other suites are unchanged by the panics machinery
+        self.assertNotIn("recover()", acd.random_program("core", 4, 0).source)
+
     def test_records_cover_functions(self):
         p = acd.random_program("core", 1, 0, nfuncs=4, nloops=1, npairs=3)
         self.assertEqual(len(p.records), 4 * 3)

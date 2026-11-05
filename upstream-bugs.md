@@ -90,3 +90,41 @@ every `v = <expr with a shift>`
 assignment is rewritten as `{ tmp := <expr>; v = tmp }` (`triage_yaegi.py`
 in the GEEKR9 run directory); 1 program is rejected as above.
 
+
+## Yaegi: a negative shift count does not panic
+
+- **Project**: [traefik/yaegi](https://github.com/traefik/yaegi), Go interpreter.
+- **Version**: 0.16.1 and 0.16.3 (`e622b4e3a12c`, master on 2026-11-05).
+- **Found by**: the `panics` suite of `scripts/alt_compiler_diff.py` (smoke run,
+  seed 1): Yaegi diverged on 10 of 24 programs, every time printing a value
+  where the Lean oracle, gc, gccgo, TinyGo and LLGo report a `negativeShift`
+  panic.
+- **Status**: reduced and reproduced; not reported yet (no duplicate found in
+  the tracker on 2026-11-05).
+
+The Go specification requires a run-time panic when the right operand of a
+shift is negative. Yaegi computes a result instead (0 for a left shift, the
+sign fill for a right shift), both with a recovered panic and at top level.
+
+```go
+package main
+
+import "fmt"
+
+func shl(x uint64, n int8) (r uint64, err any) {
+	defer func() { err = recover() }()
+	return x << n, nil
+}
+
+func shr(x int32, n int) (r int32, err any) {
+	defer func() { err = recover() }()
+	return x >> n, nil
+}
+
+func main() {
+	fmt.Println(shl(1, -1))  // gc, gccgo: 0 runtime error: negative shift amount; yaegi: 0 <nil>
+	fmt.Println(shr(-8, -3)) // gc, gccgo: 0 runtime error: negative shift amount; yaegi: -1 <nil>
+	n := -1
+	fmt.Println(1 << n) // gc, gccgo: panic: runtime error: negative shift amount; yaegi: 0
+}
+```

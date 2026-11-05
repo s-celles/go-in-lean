@@ -70,7 +70,7 @@ HARNESS_VERSION = "1.0.0"
 REPO_ROOT = Path(__file__).resolve().parent.parent
 STATUSES = ("clean", "unsupported", "build_error", "run_error", "timeout",
             "output_mismatch", "skipped")
-SUITES = ("core", "bits", "directed")
+SUITES = ("core", "bits", "panics", "directed")
 
 TYPES = ob.TYPES
 GONAME = ob.GONAME
@@ -120,12 +120,27 @@ def node_type(n):
 class SubsetGen:
     """Random typed trees restricted to the portable, panic-free subset."""
 
-    def __init__(self, r: random.Random, with_bits: bool, word_bits: int = 64):
+    def __init__(self, r: random.Random, with_bits: bool, word_bits: int = 64,
+                 panics: bool = False):
         self.r = r
         self.with_bits = with_bits
+        # panics suite: one unguarded division or signed count per tree, never
+        # under a select (the oracle evaluates both arms, Go only the taken one)
+        self.panics = panics
+        self.panic_budget = 0
+        self.sel_depth = 0
         # an untyped constant shift count must be representable as a uint:
         # on 32-bit targets, larger untyped counts are spelled as typed constants
         self.word_bits = word_bits
+
+    def start_tree(self):
+        self.panic_budget = 1 if self.panics else 0
+
+    def may_panic(self, p):
+        if self.panics and self.panic_budget > 0 and self.sel_depth == 0 and self.r.random() < p:
+            self.panic_budget -= 1
+            return True
+        return False
 
     def leaf(self, t):
         if self.r.random() < 0.45:
@@ -135,6 +150,11 @@ class SubsetGen:
     def count(self, w, d):
         """A shift count that can never be negative."""
         r = self.r
+        if self.may_panic(0.3):
+            # signed count, not masked: negative when y's low bits say so
+            cw = r.choice((8, 16, 32, 64))
+            return {"k": "conv", "t": (cw, True), "a": var((64, False), "y"),
+                    "panic_site": True}
         k = r.random()
         if k < 0.45:
             c = r.choice(ob.COUNTS + [w - 1, w, w + 1, 2 * w + 1])
@@ -158,7 +178,9 @@ class SubsetGen:
             if b["v"] == 0:
                 b["v"] = 3
             return b
-        return {"k": "sel", "t": t,
+        # "guard": the condition evaluates a copy of b first, so a panic inside
+        # b happens in the condition, identically in Go and in the oracle
+        return {"k": "sel", "t": t, "guard": True,
                 "c": {"k": "bin", "op": "eq", "a": copy.deepcopy(b), "b": lit(t, 0)},
                 "a": lit(t, 1), "b": b}
 
@@ -177,8 +199,12 @@ class SubsetGen:
             op = r.choice(["add", "sub", "mul", "and", "or", "xor", "andnot"])
             return {"k": "bin", "op": op, "a": self.build(t, d - 1), "b": self.build(t, d - 1)}
         if k < 0.42:
-            return {"k": "bin", "op": r.choice(["div", "mod"]),
-                    "a": self.build(t, d - 1), "b": self.nonzero(self.build(t, d - 1), t)}
+            op = r.choice(["div", "mod"])
+            a = self.build(t, d - 1)
+            b = self.build(t, d - 1)
+            if self.may_panic(0.6):
+                return {"k": "bin", "op": op, "a": a, "b": b, "panic_site": True}
+            return {"k": "bin", "op": op, "a": a, "b": self.nonzero(b, t)}
         if k < 0.58:
             return {"k": "bin", "op": r.choice(["shl", "shr"]),
                     "a": self.build(t, d - 1), "b": self.count(w, d)}
@@ -191,8 +217,12 @@ class SubsetGen:
                 return {"k": "conv", "t": t, "a": self.cmp(d - 1)}
             return {"k": "conv", "t": t, "a": self.build(src, d - 1)}
         if k < 0.90:
-            return {"k": "sel", "t": t, "c": self.cmp(d - 1),
-                    "a": self.build(t, d - 1), "b": self.build(t, d - 1)}
+            self.sel_depth += 1
+            c = self.cmp(d - 1)
+            a = self.build(t, d - 1)
+            b = self.build(t, d - 1)
+            self.sel_depth -= 1
+            return {"k": "sel", "t": t, "c": c, "a": a, "b": b}
         if self.with_bits:
             if t == (64, True):
                 iw = r.choice([8, 16, 32, 64])
@@ -226,6 +256,8 @@ class SubsetGen:
                 if (mode == "untyped" and n["op"] in ("shl", "shr") and pick == "b"
                         and n["b"]["v"] >= 1 << self.word_bits):
                     mode = "raw"  # no extra random draw: other programs are unchanged
+                if n.get("panic_site") and pick == "b":
+                    mode = "var"  # a constant zero divisor is a compile error
                 if mode != "var":
                     n[pick][mode] = True
             for c in (a, b):
@@ -385,6 +417,19 @@ def result_expr(n, e: Emitter):
     return f"uint64({body})"
 
 
+PANIC_HELPERS = '''
+func panicName(e any) string {
+	s := fmt.Sprint(e)
+	switch {
+	case strings.Contains(s, "divide by zero"):
+		return "divideError"
+	case strings.Contains(s, "negative shift"):
+		return "negativeShift"
+	}
+	return "other"
+}
+'''
+
 GO_HELPERS = '''
 var ga = [8]int64{1, 2, 3, 7, 15, 255, -1, -128}
 
@@ -406,8 +451,10 @@ class Program:
     meta: dict = field(default_factory=dict)
 
 
-def emit_program(funcs, loops, pairs, input_mode, rng, bind_prob, sel_style):
-    """funcs: IR trees (oracle-checked); loops: (tree, type) pairs (gc-checked)."""
+def emit_program(funcs, loops, pairs, input_mode, rng, bind_prob, sel_style, panics=False):
+    """funcs: IR trees (oracle-checked); loops: (tree, type) pairs (gc-checked).
+    With panics, each function recovers and reports the panic kind as the
+    oracle does (`... PANIC divideError`)."""
     chunks = []
     uses_bits = False
     g = ob.Gen(None)
@@ -417,8 +464,14 @@ def emit_program(funcs, loops, pairs, input_mode, rng, bind_prob, sel_style):
         res = result_expr(tree, e)
         uses_bits |= e.uses_bits
         body = "".join(line + "\n" for line in e.decls + e.lines)
-        chunks.append(f"//go:noinline\nfunc v{i}(x, y uint64) uint64 {{\n"
-                      f"{body}\treturn {res}\n}}\n")
+        if panics:
+            chunks.append(f"//go:noinline\nfunc v{i}(x, y uint64) (res uint64, pn string) {{\n"
+                          "\tdefer func() {\n\t\tif e := recover(); e != nil {\n"
+                          "\t\t\tpn = panicName(e)\n\t\t}\n\t}()\n"
+                          f"{body}\tres = {res}\n\treturn\n}}\n")
+        else:
+            chunks.append(f"//go:noinline\nfunc v{i}(x, y uint64) uint64 {{\n"
+                          f"{body}\treturn {res}\n}}\n")
         for (x, y) in pairs:
             ops = []
             g.rpn(tree, x, y, ops)
@@ -437,8 +490,12 @@ def emit_program(funcs, loops, pairs, input_mode, rng, bind_prob, sel_style):
             f"\t\txx := x + j*0x9E3779B97F4A7C15\n\t\t_ = xx\n"
             + "\n".join(e.lines) + ("\n" if e.lines else "")
             + f"\t\tacc = acc*3 ^ {inner}\n\t}}\n\treturn uint64(acc)\n}}\n")
-    imports = 'import (\n\t"fmt"\n\t"math/bits"\n)\n' if uses_bits else 'import "fmt"\n'
+    pkgs = ["fmt"] + (["math/bits"] if uses_bits else []) + (["strings"] if panics else [])
+    imports = ("import (\n" + "".join(f'\t"{p}"\n' for p in pkgs) + ")\n"
+               if len(pkgs) > 1 else 'import "fmt"\n')
     main = ["func main() {"]
+    if panics:
+        main += ["\tvar r uint64", "\tvar p string"]
     if input_mode == "runtime":
         # inputs filled at run time: a literal argument could be propagated
         # into the noinline callee by an interprocedural optimizer
@@ -452,12 +509,17 @@ def emit_program(funcs, loops, pairs, input_mode, rng, bind_prob, sel_style):
         arg = lambda j, x, y: f"{x}, {y}"  # noqa: E731
     for i in range(len(funcs)):
         for j, (x, y) in enumerate(pairs):
-            main.append(f'\tfmt.Printf("e={i} x={x} y={y} OK %d\\n", v{i}({arg(j, x, y)}))')
+            if panics:
+                main += [f"\tr, p = v{i}({arg(j, x, y)})",
+                         f'\tif p == "" {{\n\t\tfmt.Printf("e={i} x={x} y={y} OK %d\\n", r)\n'
+                         f'\t}} else {{\n\t\tfmt.Printf("e={i} x={x} y={y} PANIC %s\\n", p)\n\t}}']
+            else:
+                main.append(f'\tfmt.Printf("e={i} x={x} y={y} OK %d\\n", v{i}({arg(j, x, y)}))')
     for i in range(len(loops)):
         for j, (x, y) in enumerate(pairs):
             main.append(f'\tfmt.Printf("l={i} x={x} y={y} OK %d\\n", l{i}({arg(j, x, y)}))')
     main.append("}")
-    src = ("package main\n\n" + imports + GO_HELPERS + "\n"
+    src = ("package main\n\n" + imports + (PANIC_HELPERS if panics else "") + GO_HELPERS + "\n"
            + "\n".join(chunks) + "\n" + "\n".join(main) + "\n")
     return src, records
 
@@ -465,9 +527,13 @@ def emit_program(funcs, loops, pairs, input_mode, rng, bind_prob, sel_style):
 def random_program(suite, seed, index, nfuncs=10, nloops=2, npairs=6, depth=3,
                    word_bits=64):
     rng = random.Random(f"{suite}:{seed}:{index}")
-    gen = SubsetGen(rng, with_bits=(suite == "bits"), word_bits=word_bits)
+    panics = suite == "panics"
+    if panics:
+        nloops = 0  # loop bodies are not checked by the oracle
+    gen = SubsetGen(rng, with_bits=(suite == "bits"), word_bits=word_bits, panics=panics)
     funcs = []
     for _ in range(nfuncs):
+        gen.start_tree()
         if rng.random() < 0.15:
             tree = gen.cmp(rng.randint(1, 2))
         else:
@@ -483,7 +549,8 @@ def random_program(suite, seed, index, nfuncs=10, nloops=2, npairs=6, depth=3,
     pairs = [(rng.choice(ob.XPOOL), rng.choice(ob.XPOOL)) for _ in range(npairs)]
     input_mode = rng.choice(("literal", "runtime"))
     bind_prob = rng.choice((0.0, 0.4))
-    src, records = emit_program(funcs, loops, pairs, input_mode, rng, bind_prob, "mixed")
+    src, records = emit_program(funcs, loops, pairs, input_mode, rng, bind_prob, "mixed",
+                                panics=panics)
     return Program(src, records, {"input_mode": input_mode, "bind_prob": bind_prob,
                                   "funcs": nfuncs, "loops": nloops, "pairs": npairs})
 
