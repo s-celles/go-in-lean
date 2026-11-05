@@ -120,9 +120,12 @@ def node_type(n):
 class SubsetGen:
     """Random typed trees restricted to the portable, panic-free subset."""
 
-    def __init__(self, r: random.Random, with_bits: bool):
+    def __init__(self, r: random.Random, with_bits: bool, word_bits: int = 64):
         self.r = r
         self.with_bits = with_bits
+        # an untyped constant shift count must be representable as a uint:
+        # on 32-bit targets, larger untyped counts are spelled as typed constants
+        self.word_bits = word_bits
 
     def leaf(self, t):
         if self.r.random() < 0.45:
@@ -220,6 +223,9 @@ class SubsetGen:
                 mode = self.r.choices(["var", "raw", "untyped"], [0.5, 0.3, 0.2])[0]
                 if mode == "untyped" and n["op"] in ("shl", "shr") and pick == "a":
                     mode = "raw"
+                if (mode == "untyped" and n["op"] in ("shl", "shr") and pick == "b"
+                        and n["b"]["v"] >= 1 << self.word_bits):
+                    mode = "raw"  # no extra random draw: other programs are unchanged
                 if mode != "var":
                     n[pick][mode] = True
             for c in (a, b):
@@ -456,9 +462,10 @@ def emit_program(funcs, loops, pairs, input_mode, rng, bind_prob, sel_style):
     return src, records
 
 
-def random_program(suite, seed, index, nfuncs=10, nloops=2, npairs=6, depth=3):
+def random_program(suite, seed, index, nfuncs=10, nloops=2, npairs=6, depth=3,
+                   word_bits=64):
     rng = random.Random(f"{suite}:{seed}:{index}")
-    gen = SubsetGen(rng, with_bits=(suite == "bits"))
+    gen = SubsetGen(rng, with_bits=(suite == "bits"), word_bits=word_bits)
     funcs = []
     for _ in range(nfuncs):
         if rng.random() < 0.15:
@@ -539,24 +546,29 @@ class Adapter:
     extra_env: dict = field(default_factory=dict)
     # build diagnostics that mean "feature not implemented by this toolchain"
     unsupported: tuple = ()
+    # cross-target runs: a command prepended to compiled binaries (qemu-user)
+    # and flags appended to the build (e.g. -static for a cross gccgo)
+    run_prefix: tuple = ()
+    extra_flags: tuple = ()
     exe: str | None = None
     version: str | None = None
     available: bool = False
     reason: str = ""
 
     def build_argv(self, src: str, out: str):
+        flags = (*self.build_flags, *self.extra_flags)
         if self.family == "gc":
-            return [self.exe, "build", *self.build_flags, "-o", out, src]
+            return [self.exe, "build", *flags, "-o", out, src]
         if self.family == "gccgo":
-            return [self.exe, *self.build_flags, "-o", out, src]
+            return [self.exe, *flags, "-o", out, src]
         if self.family in ("tinygo", "llgo"):
-            return [self.exe, "build", *self.build_flags, "-o", out, src]
+            return [self.exe, "build", *flags, "-o", out, src]
         raise ValueError(self.family)
 
     def run_argv(self, src: str, binary: str):
         if self.interpreted:
             return [self.exe, "run", src]
-        return [binary]
+        return [*self.run_prefix, binary]
 
     def describe(self):
         return {"family": self.family, "exe": self.exe, "available": self.available,
@@ -564,6 +576,7 @@ class Adapter:
                 "build": None if self.interpreted else
                 shlex.join(self.build_argv("main.go", "prog")),
                 "run": shlex.join(self.run_argv("main.go", "./prog")),
+                "extra_flags": list(self.extra_flags),
                 "env": self.extra_env}
 
 
@@ -585,6 +598,19 @@ def default_adapters():
         Adapter("yaegi", "yaegi", "YAEGI", "yaegi", interpreted=True,
                 unsupported=UNSUPPORTED_COMMON),
     ]
+
+
+def apply_cross_options(adapters, prefixes, extra):
+    """Set run prefixes and extra build flags from NAME=VALUE maps, where NAME
+    is an adapter name or a family; the adapter name wins over its family."""
+    for a in adapters:
+        p = prefixes.get(a.name, prefixes.get(a.family))
+        if p is not None and not a.interpreted:
+            a.run_prefix = tuple(shlex.split(os.path.expanduser(p)))
+        f = extra.get(a.name, extra.get(a.family))
+        if f is not None:
+            a.extra_flags = tuple(shlex.split(f))
+    return adapters
 
 
 def resolve_exe(candidate):
@@ -846,7 +872,7 @@ def cmd_run(args):
     else:
         cases = [(f"{args.suite}-{args.seed}-{i:05d}",
                   random_program(args.suite, args.seed, i, args.funcs, args.loops,
-                                 args.pairs, args.depth), "reference")
+                                 args.pairs, args.depth, args.word_bits), "reference")
                  for i in range(args.start, args.start + args.count)]
     t0 = time.monotonic()
     started = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
@@ -871,9 +897,10 @@ def cmd_run(args):
         "started": started,
         "seconds": round(time.monotonic() - t0, 1),
         "suite": args.suite, "seed": args.seed, "start": args.start,
+        "target": args.target,
         "count": len(cases), "reference": args.reference,
         "generator": {"funcs": args.funcs, "loops": args.loops, "pairs": args.pairs,
-                      "depth": args.depth},
+                      "depth": args.depth, "word_bits": args.word_bits},
         "timeouts": {"build": args.build_timeout, "run": args.run_timeout},
         "jobs": args.jobs,
         "oracle": args.oracle,
@@ -913,7 +940,8 @@ def compare_reports(old, new):
 def print_summary(report):
     names = list(report["summary"])
     cols = [s for s in STATUSES if any(report["summary"][n][s] for n in names)]
-    print(f"suite={report['suite']} seed={report['seed']} cases={report['count']} "
+    print(f"suite={report['suite']} target={report.get('target')} seed={report['seed']} "
+          f"cases={report['count']} "
           f"seconds={report['seconds']}")
     print("toolchain".ljust(12) + "".join(c.rjust(17) for c in cols)
           + ("   oracle agree/disagree" if report["oracle_summary"] else ""))
@@ -957,6 +985,8 @@ def select_adapters(args):
     for label, exe in parse_kv(args.extra_gc, "--extra-gc").items():
         adapters.append(Adapter(label, "gc", "", exe, extra_env=dict(GC_ENV)))
         paths[label] = exe
+    apply_cross_options(adapters, parse_kv(args.run_prefix, "--run-prefix"),
+                        parse_kv(args.extra_flags, "--extra-flags"))
     detect(adapters, paths, tool_env)
     if args.toolchains:
         wanted = [t for t in args.toolchains.split(",") if t]
@@ -994,7 +1024,7 @@ def cmd_gen(args):
                 print(f"// case {name} ({mode})\n{prog.source}")
         return 0
     prog = random_program(args.suite, args.seed, args.index, args.funcs, args.loops,
-                          args.pairs, args.depth)
+                          args.pairs, args.depth, args.word_bits)
     sys.stdout.write(prog.source)
     if args.records:
         Path(args.records).write_text(json.dumps(prog.records))
@@ -1008,6 +1038,13 @@ def add_common(p):
                    help="extra environment for one toolchain or family (build and run)")
     p.add_argument("--extra-gc", action="append", default=[], metavar="LABEL=EXE",
                    help="additional gc toolchain, e.g. gc-tip=~/go-tip/bin/go")
+    p.add_argument("--run-prefix", action="append", default=[], metavar="NAME=CMD",
+                   help="command prepended to compiled binaries of a toolchain or family, "
+                        "e.g. gc=qemu-aarch64 (cross-target runs)")
+    p.add_argument("--extra-flags", action="append", default=[], metavar="NAME=FLAGS",
+                   help="flags appended to the build of a toolchain or family, e.g. gccgo=-static")
+    p.add_argument("--target", default="native",
+                   help="label of the target recorded in report.json, e.g. linux/arm64")
 
 
 def add_gen(p):
@@ -1017,6 +1054,8 @@ def add_gen(p):
     p.add_argument("--loops", type=int, default=2, help="loop functions per program")
     p.add_argument("--pairs", type=int, default=6, help="input pairs per function")
     p.add_argument("--depth", type=int, default=3, help="maximum expression depth")
+    p.add_argument("--word-bits", type=int, choices=(32, 64), default=64,
+                   help="size of uint on the target (32 for arm, mipsle, 386...)")
 
 
 def main(argv=None):

@@ -96,6 +96,33 @@ class GeneratorTests(unittest.TestCase):
                         w = ty[0]
                         self.assertEqual(c["b"]["v"], (1 << (w - 1)) - 1)
 
+    def test_word_bits_32_untyped_counts(self):
+        """On 32-bit targets an untyped shift count must fit in uint32."""
+        seen_big = False
+        for s in range(60):
+            for wb in (64, 32):
+                r = random.Random(f"wb:{s}")
+                g = acd.SubsetGen(r, with_bits=False, word_bits=wb)
+                for _ in range(12):
+                    t = g.build(r.choice(acd.TYPES), r.randint(1, 4))
+                    g.assign_literal_modes(t)
+                    for n in walk(t):
+                        if n["k"] == "bin" and n["op"] in ("shl", "shr") and n["b"].get("untyped"):
+                            if n["b"]["v"] >= 1 << 32:
+                                seen_big |= wb == 64
+                                self.assertEqual(wb, 64, n)
+        self.assertTrue(seen_big)  # the 64-bit generator does produce them
+
+    def test_word_bits_keeps_64_bit_programs(self):
+        # same seed, same RNG stream: only the spelling of huge counts changes
+        for i in range(30):
+            a = acd.random_program("core", 7, i).source
+            b = acd.random_program("core", 7, i, word_bits=32).source
+            if a != b:
+                self.assertRegex(a, r"(<<|>>) \d{10,}")
+        self.assertEqual(acd.random_program("core", 7, 0).source,
+                         acd.random_program("core", 7, 0, word_bits=64).source)
+
     def test_records_cover_functions(self):
         p = acd.random_program("core", 1, 0, nfuncs=4, nloops=1, npairs=3)
         self.assertEqual(len(p.records), 4 * 3)
@@ -173,6 +200,31 @@ class AdapterTests(unittest.TestCase):
         self.assertEqual(by["llgo"].build_argv("m.go", "p")[:2], ["/x/llgo", "build"])
         self.assertEqual(by["yaegi"].run_argv("main.go", "p"), ["/x/yaegi", "run", "main.go"])
         self.assertEqual(by["gc"].run_argv("main.go", "/d/p"), ["/d/p"])
+
+    def test_run_prefix_and_extra_flags(self):
+        by = {a.name: a for a in acd.default_adapters()}
+        for a in by.values():
+            a.exe = f"/x/{a.family}"
+        acd.apply_cross_options(list(by.values()),
+                                prefixes={"gccgo": "qemu-aarch64 -L /sys", "gc": "qemu-aarch64"},
+                                extra={"gccgo-O2": "-static", "tinygo": "-opt=2 -no-debug"})
+        self.assertEqual(by["gccgo-O2"].run_argv("main.go", "/d/p"),
+                         ["qemu-aarch64", "-L", "/sys", "/d/p"])
+        self.assertEqual(by["gc-noopt"].run_argv("main.go", "/d/p"), ["qemu-aarch64", "/d/p"])
+        self.assertEqual(by["gccgo-O2"].build_argv("m.go", "p"),
+                         ["/x/gccgo", "-O2", "-static", "-o", "p", "m.go"])
+        self.assertEqual(by["tinygo"].build_argv("m.go", "p"),
+                         ["/x/tinygo", "build", "-opt=2", "-no-debug", "-o", "p", "m.go"])
+        # interpreters never get a run prefix
+        self.assertEqual(by["yaegi"].run_argv("main.go", "p"), ["/x/yaegi", "run", "main.go"])
+        self.assertEqual(by["gccgo-O2"].describe()["run"], "qemu-aarch64 -L /sys ./prog")
+
+    def test_name_beats_family_for_prefix(self):
+        by = {a.name: a for a in acd.default_adapters()}
+        acd.apply_cross_options(list(by.values()),
+                                prefixes={"gc": "qemu-a", "gc-noopt": "qemu-b"}, extra={})
+        self.assertEqual(by["gc"].run_prefix, ("qemu-a",))
+        self.assertEqual(by["gc-noopt"].run_prefix, ("qemu-b",))
 
     def test_detect_missing(self):
         a = acd.Adapter("tinygo", "tinygo", "NO_SUCH_VAR_X", "no-such-tinygo-binary")

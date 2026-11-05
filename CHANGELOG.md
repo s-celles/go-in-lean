@@ -12,6 +12,14 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- **Cross-architecture alternative-compiler campaigns** (2026-11-05):
+  `scripts/alt_compiler_diff.py` gained `--run-prefix`, `--extra-flags`, `--target` and
+  `--word-bits`; the same seed ran under qemu on arm64, arm, mipsle, ppc64le, riscv64 and
+  s390x with cross gccgo 16.2 and TinyGo. Every architecture-specific canary is
+  corroborated by the alternatives; new: golang/go#82873 (go1.26 arm64/loong64 spurious
+  `negative shift amount` panic, `findings/BITREV-INT-SHIFT-COUNT-126`), and a backport
+  suggestion on golang/go#81842 (ppc64 CR0 clobber, fixed on master only, bisected to
+  `6200ca7253`).
 - **Alternative Go implementations as a differential control** (2026-11-05):
   `scripts/alt_compiler_diff.py` runs deterministic integer programs through gc,
   gccgo, TinyGo, LLGo and Yaegi, with the Lean oracle as arbiter (`core`, `bits` and
