@@ -1,0 +1,58 @@
+# Changelog
+
+All notable changes to this project are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+No version has been released yet; everything below is unreleased work since the
+first commit (2026-11-01). Upstream issue and CL states are tracked in
+`docs/upstream-status.md`.
+
+## [Unreleased]
+
+### Added
+
+- **Alternative Go implementations as a differential control** (2026-11-05):
+  `scripts/alt_compiler_diff.py` runs deterministic integer programs through gc,
+  gccgo, TinyGo, LLGo and Yaegi, with the Lean oracle as arbiter (`core`, `bits` and
+  `directed` suites, per-toolchain statuses, reproducible `report.json`), plus its
+  unit tests. A 2,000-program campaign rediscovered golang/go#82767 on tip and found
+  a Yaegi shift-count bug, reported as traefik/yaegi#1750 (`upstream-bugs.md`).
+- Compiler boundary campaigns: `prove`/`Limit` shift-composition synthesis
+  (`scripts/prove_limit_fuzz.py`), `decomposeAddr` SROA differential testing, and a
+  spill/restore producer audit across widths, extension directions and register
+  pressure (`scripts/spill_restore_fuzz.py`).
+- **SIMD specification oracle** (`lake exe oracle-simd`, `scripts/simd_oracle.py`):
+  integer and mask chains, then `Float64s`/`Float32s` over executable IEEE 754
+  binary64/binary32 models with a fused `fmaBits`, Div/Sqrt, lane reductions,
+  saturating and average operations; a SIMD chain fuzzer for `GOEXPERIMENT=simd`.
+- A kernel-checked proof that `shiftRound`, the rounding step of the float models,
+  is the unique round-to-nearest-even of `m / 2^k`.
+- **Lean oracle in the fuzz loop** (`lake exe oracle`, `scripts/oracle_bits.py`) and
+  the directed canary suite `scripts/oracle_canaries.py` (13/13 known bugs caught,
+  including cross-architecture canaries run under qemu).
+- Metamorphic fuzzers: integer (`--bits`, `--late`, `--countvar`, `--carry`,
+  branchy and architecture-variant modes) and floating-point/conversion
+  (`scripts/float_fuzz.py`); lints for rule type consistency, sibling consistency and
+  opcode flag clobbers; master-vs-release rule diff and new-rule checker.
+- Lean 4 models and proofs: all of `math/bits`, selected `slices`/`sort`/`strings`
+  guards, generated `generic.rules` instances, magic division, ARM64/AMD64 shift and
+  rotate lowering, the `knownbits` pass and `prove` interval arithmetic; property
+  manifest, axiom audit, differential vectors and mutation testing.
+- Findings and Gerrit CL packages for the compiler bugs reported upstream
+  (golang/go#82763, #82767, #82772-#82777, #82782, #82786, #82825, #82834, #82839,
+  #82847, and the CL 799281 MulAdd gaps), each with a reproducer and a Lean property.
+- Visual identity (logo, lockups, brand guide), research map and fuzzing vision.
+
+### Changed
+
+- All written artifacts are in English (2026-11-04).
+- The README states the scope of upstream contributions: reports with a reproducer and
+  an analysis, no pull request offered by default, and a courteous request to flag any
+  mistaken or debatable report.
+
+### Fixed
+
+- The metamorphic fuzzer silently skipped programs that did not compile.
+- The `--carry` mode now masks the borrow input to 0 or 1.
+- Hand-written `bv_decide` calls have an explicit 120 s SAT timeout.
