@@ -367,6 +367,15 @@ a parsed error, and every generated file is also built by `lake build` in CI.
   for the 16→32 analogue. The defect is present from at least go1.21.13 through go1.27.3 and
   current master; 386, arm, mipsle, mips64le, riscv64, s390x and loong64 are clean controls.
   This broadens the known #80577 architecture/width extent without introducing a new root cause.
+* **Spill/restore producer audit** (2026-11-05): the harness now crosses every widening pair with
+  sign/zero extension directions, argument/load/call/shift/multiply/Phi/rotate/reverse-byte
+  producers and pressure 0–20. Pristine tip has 105/945 signed-chain mismatches on arm64 and
+  441/945 on ppc64le; every failing producer/width group fails at all 21 pressures. Seven other
+  architectures are clean at pressure zero, as is the symmetric zero-extension direction on
+  arm64 and both PPC64 endiannesses. The same spill/restore contract explains every mismatch,
+  including the new `ReverseBytes16` route. Local ARM64 and PPC64 guards make all 945 cases clean
+  on arm64 and ppc64le (and 45/45 at pressure zero on big-endian ppc64). CL 825904 PS6 defines
+  central restore predicates but does not yet apply them to these double/repeated-extension rules.
 
 ## 4. Success criteria check
 

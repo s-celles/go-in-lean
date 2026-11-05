@@ -1329,20 +1329,21 @@ properties:
     function: "ppc64 restore of a spilled uint16-typed but sign-extended value uses MOVHZ"
     go_source: "ppc64 lowering elides MOVHreg on EXTSB; regalloc restores by the (unsigned) type"
     doc: "spill stores t.Size() bytes; restore re-extends by t alone (golang/go#80577 contract)"
-    preconditions: "int16(uint16(int8 y)) live across a call, then compared signed"
+    preconditions: "a signed extension over an unsigned-typed, already sign-extended 8/16-bit value is live across a call, then observed signed"
     postcondition: "the comparison sees -1  -- violated: sees 65535"
     lean_statement: "not modelled (register allocation)"
     lean_theorem: []
-    oracle: "metamorphic fuzzing (--bits index, GOPPC64=power9) under qemu; objdump; amd64/arm64/riscv64/s390x controls"
+    oracle: "scripts/spill_restore_fuzz.py: all 8/16/32/64 widening pairs, sign/zero directions, 8 producer families, pressure 0..20; amd64 semantic control; 9 GOARCHes under qemu/native"
     ambiguity_risk: low
     complexity: medium
     trust: kernel
     status: known_issue
-    evidence: "findings/PPC64-SPILL-SIGNEXT-80577: v174(0,-1,...) prints 1 (spec -6) on ppc64le power8/power9 and ppc64, go1.27.3 and master babb75be; MOVH spill + MOVHZ restore before a signed CMPW. Instance of the open golang/go#80577 (riscv64 fix CL 806340 does not cover ppc64). Layout-dependent (scheduling ties by source position). Commented on golang/go#80577 after human review (2026-11-02)."
+    evidence: "findings/PPC64-SPILL-SIGNEXT-80577: stable minimal call repro on arm64/ppc64le/ppc64; pristine 672197524b audit gives arm64 105/945 and ppc64le 441/945 signed-chain mismatches, with every failing group wrong at pressure 0..20; seven control architectures and symmetric zero-extension cases are clean. Local ARM64/PPC64 rule guards make all 945 signed cases clean on arm64/ppc64le and 45/45 clean on ppc64 at pressure zero. Instance of open golang/go#80577; CL 825904 PS6 defines central predicates but does not apply them to these rules."
     go_tests: []
     history:
       - {date: 2026-11-02, status: known_issue, note: "--bits index seed 61164 (power9); reduced; classified as a ppc64 instance of golang/go#80577"}
       - {date: 2026-11-02, status: known_issue, note: "ppc64 reproducer posted on golang/go#80577"}
+      - {date: 2026-11-05, status: known_issue, note: "producer/width audit: arm64 105/945, ppc64le 441/945; local guards make both 945/945 clean; CL 825904 PS6 does not yet cover these rules"}
   - id: PROVE-EXT-CONST-TRUNC
     package: cmd/compile/internal/ssacompile (prove), all GOARCH
     function: "factsTable.update: look-through of value-preserving extensions + x+delta>w constant step"

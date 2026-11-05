@@ -1,5 +1,9 @@
 # CL verification (2026-11-02)
 
+Current review and merge states are kept in
+[`upstream-status.md`](upstream-status.md); this file records the validation
+performed for each change.
+
 Each fix was verified on a pristine Go master (`babb75be`) on an amd64 Linux host, rebuilding
 `cmd/compile` and running the finding's `test/fixedbugs` regression test for the affected GOARCH
 (foreign arches under qemu-user 11.1.2). "before" is the unpatched compiler, "after" is with the

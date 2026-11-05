@@ -99,6 +99,48 @@ This is a local validation of the missing restore condition, not proposed as the
 final upstream design: #80577 already tracks expressing the spill/restore contract
 centrally, which can supersede architecture-local guards.
 
+## Addendum (2026-11-05): producer audit and PPC64 rule guards
+
+The audit mode of `scripts/spill_restore_fuzz.py` now covers all widening pairs
+among 8, 16, 32 and 64 bits, both extension directions, eight producer families
+(argument, load, noinline call, signed shift, multiplication, Phi, rotate and
+reverse-bytes), and pressure 0–20. The semantic control is the same program
+compiled for amd64.
+
+On pristine tip `672197524bb0`, every failing shape is stable at all 21 pressure
+levels:
+
+| Target | Signed-chain mismatches | Failing shapes |
+|---|---:|---|
+| arm64 | 105/945 | 8→16 from arg, load, call, multiply and Phi |
+| ppc64le | 441/945 | 8→16 and 8/16→32 across 21 producer/width groups |
+| ppc64 | 21/45 at pressure 0 | same groups as ppc64le |
+| 386, arm, mipsle, mips64le, riscv64, s390x, loong64 | 0/45 each at pressure 0 | clean controls |
+
+The symmetric zero-extension direction is 0/45 on arm64, ppc64le and ppc64.
+The new PPC64 failures include `RotateLeft8/16` and `ReverseBytes16`; disassembly
+still shows the same contract violation (`EXTSB`/`EXTSH`, narrow spill, then
+`MOVHZ`/`MOVWZ` restore), not a second root cause.
+
+The responsible PPC64 folds are the unguarded repeated-extension rules around
+`PPC64.rules:669`, `:691` and `:697`. `ppc64-experiment.patch` guards the signed
+folds when the inner value's type would not reproduce its sign bits after a
+restore. Together with `arm64-experiment.patch`, it makes all 945 signed-chain
+cases clean on arm64 and ppc64le and all 45 pressure-zero cases clean on ppc64.
+
+[CL 825904 patchset 6](https://go-review.googlesource.com/c/go/+/825904)
+introduces the central `SpillKeepsZeroBits` and `SpillKeepsSignBits` predicates
+and remains in review. Source inspection shows that patchset 6 does not apply
+them to the ARM64 double-extension or PPC64 repeated-extension rules above, so
+it does not yet cover these manifestations. The local guards validate the
+missing condition; a final upstream change should use those central predicates
+rather than retain architecture-local spellings. The guarded compiler also
+passes the targeted SSA compiler test suites:
+
+```text
+go test cmd/compile/internal/ssa cmd/compile/internal/ssacompile cmd/compile/internal/test
+```
+
 ## Versions (2026-11-02, qemu-ppc64le/qemu-ppc64 11.1.2)
 
 | Toolchain | power8 | power9 | ppc64 (BE) |
