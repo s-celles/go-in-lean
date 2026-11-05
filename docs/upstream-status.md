@@ -23,7 +23,7 @@ distinguish a complete fix from a partial or related CL.
 | [#80577](https://github.com/golang/go/issues/80577) | OPEN | [825904](https://go-review.googlesource.com/c/go/+/825904) | NEW | Central spill/restore contract, patchset 6. It does not yet guard the ARM64/PPC64 double-extension rules exercised by `spill_restore_fuzz.py`. |
 | [#80577](https://github.com/golang/go/issues/80577) | OPEN | [827284](https://go-review.googlesource.com/c/go/+/827284) | ABANDONED | Earlier contract change, folded into CL 825904. |
 | [#82763](https://github.com/golang/go/issues/82763) | OPEN | [857741](https://go-review.googlesource.com/c/go/+/857741) | NEW | Signed comparison of huge constant shift counts. |
-| [#82767](https://github.com/golang/go/issues/82767) | OPEN | [857342](https://go-review.googlesource.com/c/go/+/857342) | NEW | Correct type for combined shift counts; also fixes the `prove/Limit` ICE family. |
+| [#82767](https://github.com/golang/go/issues/82767) | OPEN | [857342](https://go-review.googlesource.com/c/go/+/857342) | NEW | Correct type for combined shift counts; also fixes the `prove/Limit` ICE family. Rediscovered on tip by the alternative-compiler campaign (2026-11-05); comment posted that go1.27.3/go1.26.10 show no wrong code for the backports #82810/#82811. |
 | [#82772](https://github.com/golang/go/issues/82772) | CLOSED | [857442](https://go-review.googlesource.com/c/go/+/857442) | MERGED | MIPS `Rsh8` sign-extension bit; merged 2026-11-05 as `ff3d7c172b6b` after showing the mipsle/mips64le crypto tryjob failures were pre-existing (identical `.text` with and without the fix; #82681). |
 | [#82773](https://github.com/golang/go/issues/82773) | OPEN (REOPENED) | [857143](https://go-review.googlesource.com/c/go/+/857143) | MERGED | RISC-V fix. The issue was reopened on 2026-11-05 because the bug also affects Loong64. |
 | [#82773](https://github.com/golang/go/issues/82773) | OPEN (REOPENED) | [859601](https://go-review.googlesource.com/c/go/+/859601), [859721](https://go-review.googlesource.com/c/go/+/859721) | NEW | Two Loong64 fixes currently in review. |
@@ -41,17 +41,20 @@ distinguish a complete fix from a partial or related CL.
 | [#82834](https://github.com/golang/go/issues/82834) | OPEN | [857821](https://go-review.googlesource.com/c/go/+/857821) | NEW | `bits.Sub64` is another manifestation of #82786; no separate fix. |
 | [#82839](https://github.com/golang/go/issues/82839) | OPEN | [858581](https://go-review.googlesource.com/c/go/+/858581) | NEW | `prove` fact carried through a narrowing extension. |
 | [#82847](https://github.com/golang/go/issues/82847) | OPEN | [858901](https://go-review.googlesource.com/c/go/+/858901) | NEW | Missing immediate on masked SIMD shifts. |
+| [#82873](https://github.com/golang/go/issues/82873) | OPEN | none (fixed on master by [731300](https://go-review.googlesource.com/c/go/+/731300)) | MERGED (master only) | go1.26 arm64/loong64: `bits.Reverse*` intrinsics typed `int`, so a shift by their result raises a spurious `negative shift amount` panic; filed 2026-11-05 from `s-celles-bot` asking whether a 1.26 backport is warranted (`findings/BITREV-INT-SHIFT-COUNT-126`). |
 
 ## Other upstream blockers exercised by campaigns
 
 | Issue | State | CL tracked here | Note |
 |---|---|---|---|
 | [#82745](https://github.com/golang/go/issues/82745) | OPEN | none | Existing SIMD assembler failure; not a go-in-lean finding. |
+| [#81842](https://github.com/golang/go/issues/81842) | CLOSED | [841125](https://go-review.googlesource.com/c/go/+/841125) (master only) | ppc64x `DIVD`/`DIVW` clobber CR0: 6 spurious `integer divide by zero` panics in the ppc64le cross campaign on go1.26.10/go1.27.3; fix bisected to `6200ca7253`; backport suggestion posted 2026-11-05 from `s-celles-bot`. Not a go-in-lean finding. |
 
 ## Related external PRs
 
 | Project | PR | State | Note |
 |---|---|---|---|
+| Yaegi | [traefik/yaegi#1750](https://github.com/traefik/yaegi/issues/1750) (issue) | OPEN | Shift count converted to the operand type in assignments; see `upstream-bugs.md`. |
 | Gobra | [#960](https://github.com/viperproject/gobra/pull/960) | CLOSED, draft, not merged | Earlier overflow-checking implementation. |
 | Gobra | [#1015](https://github.com/viperproject/gobra/pull/1015) | OPEN, draft, not merged | Replacement bounded-integer encoding referenced by the prior-art review. |
 

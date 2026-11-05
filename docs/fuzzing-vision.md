@@ -83,10 +83,13 @@ A third, cross-*implementation* differential (`scripts/alt_compiler_diff.py`,
 Yaegi next to gc, with the Lean oracle as arbiter. It is a control rather
 than a hunter: independent back ends confirm a gc divergence on the shared
 subset (the amd64 canaries #82763, #82825 and #82839 are reproduced 5-to-1
-against gc), but they never see gc's architecture-specific lowering, and
-TinyGo/LLGo share gc's front end and standard library. Its organic findings
-so far are a rediscovery of #82767 on tip and a Yaegi shift-count bug
-(`docs/research-report.md` section 3.15).
+against gc), and, run under qemu with cross gccgo and TinyGo, they also corroborate
+gc's architecture-specific lowering bugs on arm64, arm, mipsle, ppc64le,
+riscv64 and s390x (TinyGo and LLGo still share gc's front end and standard
+library). Its organic findings so far are a rediscovery of #82767 on tip, a
+go1.26 arm64/loong64 spurious panic (#82873), the unbackported ppc64 fix of
+#81842, and a Yaegi shift-count bug (`docs/research-report.md` sections
+3.15-3.16).
 
 ## 4. Milestones
 

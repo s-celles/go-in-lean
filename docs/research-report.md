@@ -471,7 +471,8 @@ scheduler, no GC, no maps, no formatting beyond `%d`): an alternative toolchain 
 corroborate a gc bug outside it. (3) The SSA-rule bugs that go-in-lean finds are mostly
 architecture-specific lowering; on amd64 the alternatives only see the generic class
 (#82763, #82825, #82839 here), so for the other architectures the Lean oracle and the
-cross-architecture runs remain the only arbiters. (4) Agreement of five implementations is
+cross-architecture runs remain the only arbiters (lifted in section 3.16 by running the
+alternatives under qemu). (4) Agreement of five implementations is
 not a specification: the oracle is what turns a 1-vs-5 vote into a lead, and the directed
 suite shows gc can be the minority *and* wrong. (5) LLGo is a moving target (built from a
 daily commit, about 7 s per program), and its result must be pinned to the commit recorded
@@ -504,6 +505,70 @@ zlib) and `go build ./cmd/llgo`; the `tools/llgo` wrapper sources a cached
 `LD_LIBRARY_PATH` pointing at the gcc runtime (`libatomic`, `libstdc++`), which the link
 does not record as an rpath. The Lean oracle binary built on the Ubuntu workstation runs on
 NixOS through the nix glibc loader.
+
+### 3.16 Iteration 11: alternative implementations on the other architectures
+
+The amd64 campaign could not corroborate architecture-specific lowering bugs, where most
+go-in-lean findings live (section 3.15, limit 3). The same seed (20261105) was therefore
+run on six more targets under qemu-user 11.1.2, with the Lean oracle on the host. The
+harness gained `--run-prefix NAME=CMD` (qemu), `--extra-flags NAME=FLAGS`, `--target` and
+`--word-bits 32` (on 32-bit targets an untyped shift count must fit a `uint`; huge counts
+are spelled as typed constants instead, without consuming randomness, so 64-bit programs
+stay byte-identical to the amd64 campaign).
+
+Alternative toolchains per target: cross gccgo 16.2 (nixpkgs `pkgsCross.*.buildPackages.gccgo`,
+built on GEEKR9, dynamic binaries run directly under qemu thanks to absolute store paths)
+and TinyGo 0.43 where it has a Linux port (arm64, arm, mipsle). LLGo does not
+cross-compile out of the box (it assembles `cpu_arm64.s` with the host assembler; riscv64
+is not supported by its runtime) and Yaegi is target-independent. Each target ran
+`directed` (27 cases), `core` (500) and `bits` (200).
+
+| Target | Toolchains besides gc 1.27.3 | Random suites (700 programs) | Directed suite: gc bugs corroborated by the alternatives |
+|---|---|---|---|
+| linux/arm64 | gc `-N -l`, 1.26.10, tip, TinyGo, gccgo -O0/-O2 | clean except 1 go1.26.10 `run_error` (#82873, new) | #82777, #80577 spill reproducer, #82763, #82839 |
+| linux/arm | same | clean | #82786, #82834, #82763, #82839 |
+| linux/mipsle | same | gc disagrees with the oracle on 13 + 3 programs: #82772 and #82776 | #82772, #82776, #82763, #82839 |
+| linux/ppc64le | gc variants, gccgo | 6 spurious `integer divide by zero` panics on go1.26.10/1.27.3: #81842 | #82775, #82763, #82839 |
+| linux/riscv64 | gc variants, gccgo | clean | #82773, #82763, #82839 |
+| linux/s390x | gc variants, gccgo | clean | #82774, #82763, #82839 |
+
+On every target, the alternatives agree with the Lean oracle on every expression line of
+the 700 random programs; every disagreement involves gc only.
+
+**Triage.**
+
+* **mipsle (16 oracle disagreements, 22 + 4 divergent programs):** tip `56ae71df05` with
+  the two local MIPS fixes (`findings/MIPS-RSH8-SIGNEXT16/fix.patch` for #82772, merged the
+  same day, and `findings/MIPS-CONST64-COUNT-UINT32/fix.patch` for #82776) agrees with the
+  oracle on all 700 programs and its output is byte-identical to TinyGo's and gccgo's on
+  every divergent case, loop lines included. Four programs where gc `-N -l` diverges
+  differently from gc are also correct with the fixed tip under `-N -l` (the lowering rules
+  apply without optimization). Known bugs only.
+* **ppc64le (6 programs):** a spurious `integer divide by zero` on go1.26.10 and go1.27.3,
+  correct on tip, gc `-N -l` and gccgo. Reduced to two identical divisor guards followed by
+  `x % d` with `d == -1`. `git bisect` between the go1.27 branch point and master gives
+  `6200ca7253` (CL 841125, "mark ppc64x signed division ops as clobbering flags", the fix
+  for **#81842**, the CR0 analogue of #82825); that commit alone fixes all 6 programs
+  (its parent does not). The fix is on master only, with no backport issue; a comment with
+  the reproducer and the bisect was posted on #81842 suggesting a backport.
+* **arm64 (1 program):** go1.26.10 alone raises `negative shift amount` for a `uint64`
+  count `bits.Reverse64(...)`. Root cause: on go1.26 the `bits.Reverse*` intrinsics of
+  arm64 and loong64 are typed `int`, so `ssagen` inserts the signed-count check; fixed on
+  master and go1.27 by `819c53c25f` (CL 731300, whose message did not expect a triggerable
+  bug), not backported. Reported as **golang/go#82873**
+  (`findings/BITREV-INT-SHIFT-COUNT-126`).
+
+**Reproduction.** On GEEKR9 (`~/go-in-lean-runs/alt-compiler/2026-11-05/`):
+`tools/cross/build-cross.sh` builds the cross gccgo toolchains, and
+`cross-campaign.sh GOARCH QEMU TOOLCHAINS TAG [SUITES]` runs one target, e.g.
+
+```sh
+./cross-campaign.sh ppc64le ppc64le gc,gc-noopt,gc-1.26,gc-tip,gccgo-O0,gccgo-O2 ""
+```
+
+which expands to `alt_compiler_diff.py run --target linux/ppc64le --word-bits 64
+--tool-env gc:GOARCH=ppc64le --run-prefix gc=qemu-ppc64le --run-prefix gccgo=qemu-ppc64le
+--path gccgo=<cross gccgo> ...`. Reports are in `runs/cross-<arch>[-gccgo|-mipsfix]-<suite>/`.
 
 ## 4. Success criteria check
 
