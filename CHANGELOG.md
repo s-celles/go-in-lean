@@ -12,6 +12,13 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- **Long cross-architecture campaign, first round** (2026-11-05, seed 20261110, 12,600
+  programs on amd64 and 11 qemu targets): every divergence maps to a known issue. New
+  manifestation of golang/go#82873: on go1.26 arm64/loong64 the `int`-typed `BitRev8`
+  gives `prove` an empty range and a guarded modulo compiles to an unconditional
+  `panicdivide` (`findings/BITREV-INT-SHIFT-COUNT-126/reproducer-prove.go`); confirmed by a
+  go1.26 toolchain rebuilt with only the intrinsic result types fixed. Rediscoveries:
+  golang/go#82775 (ppc64 16-bit extension elision) and golang/go#82773 (riscv64/loong64).
 - `panics` suite in `scripts/alt_compiler_diff.py`: one unguarded division or signed
   shift count per function (never under a select, since the order of two panics is
   unspecified), recovered and reported as the oracle does (`PANIC divideError` /

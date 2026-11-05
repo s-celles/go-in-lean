@@ -41,3 +41,38 @@ case `bits-20261105-00090`, linux/arm64 under qemu): gc go1.26.10 was the only t
 to fail (`run_error`); go1.27.3, tip, gc go1.27.3 with `-N -l` and TinyGo agreed with the
 Lean oracle. The generated count was
 `bits.Reverse64(bits.RotateLeft64(7, 63))`, i.e. `0xC000000000000001`.
+
+## Second manifestation: `prove` turns a reachable modulo into an unconditional divide panic
+
+Found on 2026-11-05 by the long cross-architecture campaign (`bits` suite, seed 20261110,
+case `bits-20261110-00182`, linux/arm64 and linux/loong64): gc go1.26.10 was the only
+toolchain to fail, with `runtime error: integer divide by zero` although the divisor was
+guarded to be non-zero.
+
+`reproducer-prove.go`:
+
+```
+GOOS=linux GOARCH=arm64 go1.26.10 build reproducer-prove.go && qemu-aarch64 ./reproducer-prove
+panic: runtime error: integer divide by zero        # want: 85
+```
+
+The divisor is 85; the function body compiles to a lone `CALL runtime.panicdivide`. Same
+result on loong64; amd64 prints 85 (no `Reverse8` intrinsic). go1.27.3 and master print 85.
+
+**Mechanism.** `BitRev8` is created with type `int`, so `prove` starts it with the full
+64-bit range. `Com8` of it goes through `limit.com(8)`, which truncates the bounds
+`[MinInt64, MaxInt64]` to `int8` and complements them, giving the empty signed range
+`[0, -1]`. `prove` treats the empty range as a contradiction, i.e. the block as
+unreachable, and with `-d=ssa/prove/debug=2` reports `Disproved Neq8` for the
+divide-by-zero check `y != 0`: the non-panicking branch is removed. (The same debug flag
+also makes go1.26.10 crash with a nil dereference in `removeBranch`.) The trigger is
+shape-sensitive: replacing `bits.RotateLeft8(x, 7)` by `x`, `x>>1` or `x+1` hides it, and
+no silent wrong-value variant was found in a short search.
+
+**Confirmation.** A go1.26.10 toolchain rebuilt with only the five `BitRev*` result types
+in `ssagen/intrinsics.go` changed from `TINT` to `TUINT64/32/16/8`/`TUINT` (the part of
+CL 731300 that matters here) prints 85 on arm64 and loong64, and the original campaign
+program then agrees with the Lean oracle.
+
+This strengthens the case for a go1.26 backport: besides the spurious shift panic, the
+mistyped intrinsic lets `prove` delete reachable code.
