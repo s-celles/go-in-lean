@@ -1,0 +1,29 @@
+diff --git a/src/cmd/compile/internal/ssa/_gen/PPC64.rules b/src/cmd/compile/internal/ssa/_gen/PPC64.rules
+--- a/src/cmd/compile/internal/ssa/_gen/PPC64.rules
++++ b/src/cmd/compile/internal/ssa/_gen/PPC64.rules
+@@ -666,7 +666,7 @@
+ // Various redundant zero/sign extension combinations.
+ 
+ (MOVBZreg y:(MOVBZreg _)) => y  // repeat
+-(MOVBreg y:(MOVBreg _)) => y // repeat
++(MOVBreg y:(MOVBreg _)) && (y.Type.Size() == 8 || y.Type.IsSigned()) => y // repeat
+ (MOVBreg (MOVBZreg x)) => (MOVBreg x)
+ (MOVBZreg (MOVBreg x)) => (MOVBZreg x)
+ 
+@@ -688,13 +688,14 @@
+ (MOVHZreg y:(MOV(H|B)Zreg _)) => y // repeat
+ (MOVHZreg y:(MOVHBRload _ _)) => y
+ 
+-(MOVHreg y:(MOV(H|B)reg _)) => y // repeat
++(MOVHreg y:(MOV(H|B)reg _)) && (y.Type.Size() == 8 || y.Type.IsSigned()) => y // repeat
+ 
+ (MOV(H|HZ)reg y:(MOV(HZ|H)reg x)) => (MOV(H|HZ)reg x)
+ 
+ // W - there are more combinations than these
+ 
+-(MOV(WZ|WZ|WZ|W|W|W)reg y:(MOV(WZ|HZ|BZ|W|H|B)reg _)) => y // repeat
++(MOV(WZ|WZ|WZ|W)reg y:(MOV(WZ|HZ|BZ|W)reg _)) => y // repeat
++(MOVWreg y:(MOV(H|B)reg _)) && (y.Type.Size() == 8 || y.Type.IsSigned()) => y // repeat
+ (MOVWZreg y:(MOV(H|W)BRload _ _)) => y
+ 
+ (MOV(W|WZ)reg y:(MOV(WZ|W)reg x)) => (MOV(W|WZ)reg x)
