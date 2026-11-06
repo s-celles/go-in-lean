@@ -417,5 +417,88 @@ class AgainstGcTests(unittest.TestCase):
             self.assertGreater(rep["checked"], 0, fn)
 
 
+PPC_SRC = GO_SRC.replace("func main() {", """//go:noinline
+func f6(x, y uint64) uint64 { return uint64(int32(int16(int32(x) >> 1))) }
+
+//go:noinline
+func f7(x, y uint64) uint64 { return uint64(int32(x)/int32(y|1)) ^ uint64(uint32(x)>>(y&31)) }
+
+//go:noinline
+func f8(x, y uint64) uint64 { return uint64(int64(x)%int64(y|2)) + uint64(uint32(x)%uint32(y|1)) }
+
+//go:noinline
+func f9(x, y uint64) uint64 {
+	return uint64(bits.TrailingZeros64(x)) ^ bits.ReverseBytes64(y) ^ uint64(bits.ReverseBytes32(uint32(x)))
+}
+
+//go:noinline
+func f10(x, y uint64) uint64 { return uint64(int32(x) % int32(y|1)) + uint64(int64(y) % int64(x|1)) }
+
+func main() {""").replace("f0, f1, f2, f3, f4, f5}", "f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10}")
+
+
+@unittest.skipUnless(HAVE_Z3 and GO, "z3 module or go not available")
+class LoweredPPC64Tests(unittest.TestCase):
+    """Lowered ppc64 passes: machine semantics against the native (amd64) program."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = Path(tempfile.mkdtemp(prefix="ssa_tv_ppc_"))
+        (cls.tmp / "main.go").write_text(PPC_SRC)
+        (cls.tmp / "go.mod").write_text("module m\n\ngo 1.22\n")
+        subprocess.run([GO, "build", "-o", "prog", "."], cwd=cls.tmp, check=True)
+        names = [f"f{i}" for i in range(11)]
+        cls.dumps = {}
+        for cpu in ("power8", "power9", "power10"):
+            os.environ["GOPPC64"] = cpu
+            try:
+                cls.dumps[cpu] = tv.dump_passes(GO, cls.tmp, names, "ppc64le", lowered=True)
+            finally:
+                del os.environ["GOPPC64"]
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.tmp, ignore_errors=True)
+
+    def test_lowered_passes_are_included(self):
+        names = [p for p, _ in self.dumps["power8"]["f0"]]
+        self.assertIn("lower", names)
+        self.assertEqual(names[-1], "flagalloc")
+
+    def test_lowered_evaluation_matches_gc(self):
+        rng = random.Random(5)
+        pts = [(1, 0), (M64, M64), (1 << 31, 0), (0x80000000, 1), (0xFFFF8000, 31), (65536, 7),
+               (1 << 63, M64), (0x80000000, 0xFFFFFFFF)]  # MinInt % -1 for f10
+        pts += [(rng.getrandbits(64), rng.getrandbits(64)) for _ in range(5)]
+        for x, y in pts:
+            out = subprocess.run([str(self.tmp / "prog"), str(x), str(y)], capture_output=True,
+                                 text=True, check=True).stdout.split()
+            for cpu, dumps in self.dumps.items():
+                for i in range(11):
+                    if i == 6:
+                        continue  # f6 is miscompiled on ppc64 (golang/go#82775)
+                    for name in ("lower", "flagalloc"):
+                        f = tv.parse_dump(dict(dumps[f"f{i}"])[name])
+                        f.arch = "ppc64le"
+                        self.assertEqual(tv.evaluate(f, {"x": x, "y": y}), ("ret", int(out[i])),
+                                         (cpu, f"f{i}", name, x, y))
+
+    def test_finds_82775_at_lower(self):
+        rep = tv.validate(self.dumps["power8"]["f6"], arch="ppc64le")
+        eq = [fl for fl in rep["failures"] if fl["kind"] == "equivalence"]
+        self.assertEqual([fl["pass"] for fl in eq], ["lower"])
+        x = eq[0]["inputs"]["x"]
+        want = (((x & 0xFFFFFFFF) >> 1) & 0xFFFF)
+        want = (want - 0x10000 if want >> 15 else want) & M64
+        self.assertEqual(eq[0]["before_out"], ("ret", want))
+        self.assertNotEqual(eq[0]["after_out"], ("ret", want))
+
+    def test_no_report_on_correct_functions(self):
+        for cpu, dumps in self.dumps.items():
+            for i in (0, 1, 2, 3, 4, 5, 7, 8, 9, 10):
+                rep = tv.validate(dumps[f"f{i}"], arch="ppc64le")
+                self.assertEqual((rep["failures"], rep["unsupported"]), ([], None), (cpu, f"f{i}"))
+
+
 if __name__ == "__main__":
     unittest.main()

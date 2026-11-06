@@ -12,6 +12,17 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- `scripts/ssa_tv.py --lowered`: the translation validation continues through the ppc64
+  lowered passes (`lower` to `flagalloc`), with about 80 PPC64 ops modelled from
+  `PPC64Ops.go` and the ISA (CR fields, `ISEL`, rotate-and-mask, `CC` tuples, divisions with
+  the `-1` fix-up, ISA-undefined bits as free variables). It finds golang/go#82775 at `lower`;
+  the counterexamples, run under qemu-ppc64le, give exactly the predicted values. Option
+  `--timeout-ms`; solver timeouts are counted per pass pair instead of abandoning the function.
+- **Long campaign, final totals** (2026-11-05 23:00 to 2026-11-06 16:21): 101,800 programs on
+  amd64 and eleven qemu targets, no unexplained case (`docs/research-report.md` 3.17). The
+  last step found a concrete trigger for golang/go#36897 (open since 2020): with `-N`, gc on
+  amd64 drops the zero extension of `uint64(uint32(x) &^ (uint32(x) ^ uint32(x)))`
+  (`findings/AMD64-ANDL-MINUS1-ZEXT-NOOPT/`).
 - `scripts/ssa_tv.py`: per-pass translation validation of gc's generic SSA with z3. For
   each function it reads the SSA after every pass from `build` up to `lower`
   (`-d=ssa/all/dump`) and checks, for all inputs, that consecutive passes agree on the

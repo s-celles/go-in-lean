@@ -630,6 +630,30 @@ and the go1.26 rebuilt with the intrinsic types fixed are all correct). The issu
 closed without a backport because the bug "results in a panic, not any corruption"; the new
 form was posted as a comment, without asking to reopen.
 
+**Final totals** (2026-11-05 23:00 to 2026-11-06 16:21, GEEKR9): eight full rounds (seeds
+20261110 to 20261117) and the first step of a ninth, 101,800 programs, each run through gc
+(go1.27.3 with and without `-N -l`, go1.26.10, tip), gccgo `-O0`/`-O2`, TinyGo and LLGo
+(native) and checked against the Lean oracle, on amd64 and eleven qemu targets.
+
+| Classification (`digest.py`) | Cases |
+| --- | ---: |
+| #82772/#82776, mips (fixed toolchain agrees) | 544 |
+| #81842, ppc64 CR0 (panic, recovered panic, wrong value) | 146 |
+| #82767, tip `prove` ICE on combined shift counts | 26 |
+| #82873, go1.26 `BitRev*` typed `int` (three forms) | 12 |
+| #82773, riscv64/loong64 `SRAI(MOVBreg)` | 8 |
+| #82775, ppc64 extension elision | 2 |
+| #36897, amd64 `-N` zero extension dropped (new trigger) | 2 |
+| Unexplained | 0 |
+
+The last step brought the only new defect of the campaign: with `-N`, gc on amd64 returns
+`x` for `uint64(uint32(x) &^ (uint32(x) ^ uint32(x)))`. Without CSE the `Xor32 x x` reaches
+the lowering, where `(MOVLQZX (ANDLconst [c] x)) => (ANDLconst [c] x)` and
+`(ANDLconst [-1] x) => x` together drop the zero extension. This is the latent issue
+golang/go#36897, open since 2020 for lack of a trigger
+(`findings/AMD64-ANDL-MINUS1-ZEXT-NOOPT/`); go1.26.10, go1.27.3 and tip are affected,
+the other architectures are not.
+
 ### 3.18 Iteration 13: per-pass translation validation of the generic SSA
 
 **Why.** The A/B of 3.17 showed that choosing inputs, even with a solver, adds little: the
@@ -678,7 +702,29 @@ the tool, each now covered by a test: the entry block is not always listed first
 `early_fuse`), a `First` block can still name a deleted successor, a phi can keep an
 argument from a deleted block, and `int` is 32 bits on 32-bit targets.
 
-**Limits.** Generic passes only; functions with memory operations (the `panics` suite, with
+**Lowered passes on ppc64.** `--lowered` extends the check from `lower` up to `flagalloc`
+(before register allocation) on ppc64/ppc64le. Every value is then a 64-bit register;
+about 80 PPC64 ops are modelled from `PPC64Ops.go` and the ISA: CR fields as
+(lt, gt, eq) triples feeding `ISEL`/`ISELZ`/`SETBC` and the `EQ`/`NE`/`LT`/... blocks,
+rotate-and-mask ops decoded as `DecodePPC64RotateMask` does, `CLRLSLDI`, the `CC` forms
+as (value, flags) tuples, and the divisions with the backend's `-1` fix-up. Bits the ISA
+leaves undefined (the upper word of `divw`/`divwu`/`modsw`/`moduw`, any quotient by zero)
+are free variables, so a result that depends on them is reported. One assumption is
+explicit: `modsd`/`modsw` leave `MinInt % -1` undefined and gc emits no fix-up for them
+(POWER9+), so the model follows the hardware (and qemu), which return 0.
+
+The extension finds #82775 at `lower` on go1.27.3 with a counterexample per function; the
+counterexamples were run under qemu-ppc64le and the binary printed exactly the values the
+model predicted (32768, 2147418112 and 1 where Go requires `0xFFFF...8000`, 0 and 0).
+On 120 generated programs (`core`, `bits`, `directed`), checked with go1.27.3 and tip at
+`GOPPC64` power8 and power10 (4,800 function checks, 36,291 pass pairs), it reported nothing
+beyond #82782, with no false report; under 1 % of the pairs exceeded the 5 s solver budget,
+almost all magic-number divisions (64x64-bit products), and are counted separately. That
+sweep left 5 to 15 % of the power10 functions unsupported (`MODSW`, `MODUD`, `BRD`, `BRH`,
+`CNTTZD`); with those ops added, 240 power10 functions are all supported except the two
+that contain #82782.
+
+**Limits.** Generic passes only, except for ppc64; functions with memory operations (the `panics` suite, with
 `defer`/`recover`), loops, tuples or 32-bit decomposition (`Int64Make` on 386, arm, mips)
 are skipped. The build cache must be defeated without rebuilding the standard library: a
 fixed `GOSSADIR` per process and a nonce file in the package make each build recompile only
