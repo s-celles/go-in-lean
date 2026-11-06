@@ -12,6 +12,9 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- `scripts/ssa_tv.py --lowered` on riscv64 (about 75 ops: no flags, sign-extending `W`
+  ops and loads, ISA-defined division): it finds golang/go#82773 at `lower` on go1.27.3
+  (optimized and `-N -l`) and tip.
 - `ext` suite in `scripts/alt_compiler_diff.py` (`ExtGen`): identity detours that only
   `-N` builds keep until the lowering (`e &^ (f ^ f)`, `e & ^(f - f)`, `e | (f - f)`, ...),
   nested conversions of mixed width and signedness, and `narrow(wide(e) >> c)`; the other

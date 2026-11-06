@@ -579,5 +579,71 @@ class LoweredAMD64Tests(unittest.TestCase):
                 self.assertEqual((rep["failures"], rep["unsupported"]), ([], None), (fl, f"f{i}"))
 
 
+RV_SRC = AMD_SRC.replace("func main() {", """//go:noinline
+func f13(x, y uint64) uint64 { a := int8(x); return uint64((a - (-a)) >> 8) }
+
+func main() {""").replace("f11, f12}", "f11, f12, f13}")
+RV_N = 14
+RV_TABLES = (3, 9)  # bits.Len64/TrailingZeros64 read a global table without Zbb (unsupported)
+
+
+@unittest.skipUnless(HAVE_Z3 and GO, "z3 module or go not available")
+class LoweredRISCV64Tests(unittest.TestCase):
+    """Lowered riscv64 passes, optimized and -N, against the native program."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = Path(tempfile.mkdtemp(prefix="ssa_tv_rv_"))
+        (cls.tmp / "main.go").write_text(RV_SRC)
+        (cls.tmp / "go.mod").write_text("module m\n\ngo 1.22\n")
+        subprocess.run([GO, "build", "-o", "prog", "."], cwd=cls.tmp, check=True)
+        names = [f"f{i}" for i in range(RV_N)]
+        cls.dumps = {fl: tv.dump_passes(GO, cls.tmp, names, "riscv64", lowered=True, gcflags=fl)
+                     for fl in ("", "-N -l")}
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.tmp, ignore_errors=True)
+
+    def test_lowered_evaluation_matches_gc(self):
+        rng = random.Random(11)
+        pts = [(1, 0), (M64, M64), (1 << 31, 0), (0x80000000, 1), (0xFFFF8000, 31), (65536, 7),
+               (1 << 63, M64), (0x80000000, 0xFFFFFFFF), (1 << 63 | 5, 3), (3, 2)]
+        pts += [(rng.getrandbits(64), rng.getrandbits(64)) for _ in range(4)]
+        for x, y in pts:
+            out = subprocess.run([str(self.tmp / "prog"), str(x), str(y)], capture_output=True,
+                                 text=True, check=True).stdout.split()
+            for fl, dumps in self.dumps.items():
+                for i in range(RV_N - 1):  # f13 is miscompiled on riscv64 (golang/go#82773)
+                    if i in RV_TABLES:
+                        continue
+                    for name in ("lower", "flagalloc"):
+                        f = tv.parse_dump(dict(dumps[f"f{i}"])[name])
+                        f.arch = "riscv64"
+                        self.assertEqual(tv.evaluate(f, {"x": x, "y": y}), ("ret", int(out[i])),
+                                         (fl, f"f{i}", name, x, y))
+
+    def test_finds_82773(self):
+        for fl, dumps in self.dumps.items():
+            rep = tv.validate(dumps["f13"], arch="riscv64")
+            eq = [r for r in rep["failures"] if r["kind"] == "equivalence"]
+            self.assertEqual([r["pass"] for r in eq], ["lower"], fl)
+            x = eq[0]["inputs"]["x"] & 0xFF
+            a = x - 256 if x >> 7 else x
+            r = ((a + a + 128) % 256) - 128  # int8(a - (-a))
+            self.assertEqual(eq[0]["before_out"], ("ret", (r >> 8) & M64))
+            self.assertNotEqual(eq[0]["after_out"], eq[0]["before_out"])
+
+    def test_no_report_on_correct_functions(self):
+        for fl, dumps in self.dumps.items():
+            for i in range(RV_N - 1):
+                rep = tv.validate(dumps[f"f{i}"], arch="riscv64")
+                if i in RV_TABLES:  # reported as unsupported, never as a failure
+                    self.assertEqual(rep["failures"], [], (fl, f"f{i}"))
+                    self.assertIsNotNone(rep["unsupported"], (fl, f"f{i}"))
+                    continue
+                self.assertEqual((rep["failures"], rep["unsupported"]), ([], None), (fl, f"f{i}"))
+
+
 if __name__ == "__main__":
     unittest.main()

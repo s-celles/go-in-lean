@@ -743,7 +743,16 @@ function without `-N`. On 120 generated programs with go1.27.3 and tip, optimize
 pairs over the 5 s solver budget. Random programs did not rediscover #36897: the `x ^ x`
 operand it needs is rare in the generator's output.
 
-**Limits.** Generic passes only, except for ppc64 and amd64; functions with memory operations (the `panics` suite, with
+**Lowered passes on riscv64.** About 75 RV64 ops: no flags (comparisons produce 0/1 and
+the `BEQ`/`BLT`/`BEQZ`... blocks compare registers), `W` ops computing on 32 bits and
+sign-extending, sign-extending `MOVB/H/Wload` against zero-extending `U` loads, and
+divisions fully defined by the ISA (`x/0 = -1`, `x%0 = x`, `MinInt/-1 = MinInt`), which is
+why gc emits no fix-up there. It finds #82773 at `lower` on the three reproducers of the
+finding, with go1.27.3 optimized, `-N -l` and tip: the lowered dump of `(a - (-a)) >> 8` is
+literally `MOVDconst [0]`. `bits.Len64` and `bits.TrailingZeros64` read a global table on
+the default `GORISCV64` (no Zbb) and are reported as unsupported.
+
+**Limits.** Generic passes only, except for ppc64, amd64 and riscv64; functions with memory operations (the `panics` suite, with
 `defer`/`recover`), loops, tuples or 32-bit decomposition (`Int64Make` on 386, arm, mips)
 are skipped. The build cache must be defeated without rebuilding the standard library: a
 fixed `GOSSADIR` per process and a nonce file in the package make each build recompile only
