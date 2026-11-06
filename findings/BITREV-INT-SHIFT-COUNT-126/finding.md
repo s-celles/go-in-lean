@@ -84,3 +84,23 @@ program then agrees with the Lean oracle.
 
 This strengthens the case for a go1.26 backport: besides the spurious shift panic, the
 mistyped intrinsic lets `prove` delete reachable code.
+
+## Third manifestation: a silently wrong value
+
+Found by the long campaign on 2026-11-06 (`bits-20261116-00177`, arm64 and loong64,
+go1.26 only). `reproducer-wrong-value.go` reduces it to
+
+```go
+if bits.Reverse8(y|128) != 255 { return 1 }
+return 0
+```
+
+which returns 1 for `y = 255` on go1.26.10 arm64 (0 on amd64, on go1.27.3, and on the
+go1.26.10 rebuilt with only the `BitRev*` result types fixed). `-d=ssa/prove/debug=1`
+reports `Proved Neq8` at the comparison, and `-d=ssa/prove/off` restores the right
+result. Unlike the first two forms, nothing panics: the program continues with a wrong
+value. This weakens the "panic, not corruption" reason given for not backporting.
+Posted as a [comment](https://github.com/golang/go/issues/82873#issuecomment-6684808890)
+on 2026-11-06, without asking to reopen.
+`scripts/ssa_tv.py` flags the function at the `build` pass (`BitRev8` typed `int`, used by
+an 8-bit comparison).
