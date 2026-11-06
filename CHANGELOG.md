@@ -20,8 +20,9 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
   cross-check of the encoding against gc. README: table of symbolic and concolic
   approaches, implemented or not yet tested.
 - `--inputs mixed` (half SMT, half pool inputs per function) and the long-campaign /
-  SMT A/B results (`docs/research-report.md` 3.17): the SMT selection found 42 failing
-  cases, the pool 48, the two together 58, on the same programs.
+  SMT A/B results (`docs/research-report.md` 3.17): on the same programs the SMT selection
+  found 42 failing cases and the pool 48 (mixed 37 vs pool 41 on ppc64le/mipsle), a
+  difference within noise; the pool remains the default.
 - **Long cross-architecture campaign, first round** (2026-11-05, seed 20261110, 12,600
   programs on amd64 and 11 qemu targets): every divergence maps to a known issue. New
   manifestation of golang/go#82873: on go1.26 arm64/loong64 the `int`-typed `BitRev8`

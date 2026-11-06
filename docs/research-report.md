@@ -599,14 +599,28 @@ cases where at least one gc toolchain contradicts the oracle or fails.
 | arm64 | 2 | 2 | 2 | 2 |
 | loong64 | 2 | 2 | 2 | 2 |
 | mipsle | 31 | 25 | 16 | 40 |
-| **Total** | **48** | **42** | **29** | **58** (+21 % over pool) |
+| **Total** | **48** | **42** | **29** | **58** |
 
-No new bug: every case is one of the issues above. The two selections are complementary
-rather than ordered. Boundary inputs help where the bug needs a specific value
-(ppc64le: more #81842 hits, and a #82775 hit in the `panics` suite that the pool missed).
-The pool does better on mipsle, where #82772 needs large or "dense" operands that boundary
-solving, which tends to return sparse models, rarely produces. Hence the `mixed` selection
-(half SMT, half pool), the recommended setting for future campaigns.
+No new bug: every case is one of the issues above. A follow-up with `--inputs mixed`
+(three SMT and three pool inputs per function) on ppc64le and mipsle found 37 cases,
+against 41 for the pool and 38 for SMT on the same programs.
+
+**Reading.** The per-mode differences are a few cases out of about 40 and within noise;
+the larger union (58) mostly reflects twice as many inputs per function (12 instead of 6),
+not the way they were chosen, and a pool run with 12 pairs would be the fair comparison.
+So boundary-directed inputs give no measurable gain here. The likely reason is that the
+known bugs are triggered by the expression shape (which the generator controls) far more
+than by the input values: once the shape is present, most inputs expose it. Boundary
+inputs did reach cases the pool missed (a #82775 hit in the `panics` suite on ppc64le),
+and the pool did better on mipsle, where #82772 needs dense operands that solver models,
+which tend to be sparse, rarely provide. The long campaign keeps the pool selection;
+`--inputs smt|mixed` stays available for value-sensitive targets.
+
+The second round (seed 20261111, 25,200 programs in total) was again fully explained. One
+ppc64le case is a wrong value rather than a panic from #81842: in
+`b2i((int32(x) >> y) / t2 != c0 << y)`, the `CMPU R4, $32` of the shift sets CR0, the
+`CMPW R6, $-1` of the division fix-up overwrites it, and the later `ISEL $0` of the second
+shift reads the clobbered bit (go1.26 and go1.27; master is correct).
 
 ## 4. Success criteria check
 
