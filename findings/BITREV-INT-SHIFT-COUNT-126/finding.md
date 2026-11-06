@@ -11,6 +11,9 @@ intrinsic there).
 **Human review status:** reviewed and filed as
 [golang/go#82873](https://github.com/golang/go/issues/82873) on 2026-11-05
 (from the `s-celles-bot` account), asking whether a 1.26 backport is warranted.
+Closed on 2026-11-06 without a backport (fixed on master; judged unlikely to be hit,
+and a panic rather than corruption). The prove variant below was posted as a comment
+just after the closure; it is also a panic, so it does not change that reasoning.
 
 ## Reproducer
 
