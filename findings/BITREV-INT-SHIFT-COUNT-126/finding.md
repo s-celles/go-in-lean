@@ -14,6 +14,11 @@ intrinsic there).
 Closed on 2026-11-06 without a backport (fixed on master; judged unlikely to be hit,
 and a panic rather than corruption). The prove variant below was posted as a comment
 just after the closure; it is also a panic, so it does not change that reasoning.
+A follow-up [comment](https://github.com/golang/go/issues/82873#issuecomment-6677369374)
+records the consequence for 1.26 users and the workarounds checked on go1.26.10 arm64
+with `reproducer-prove.go`: `-gcflags=-N` avoids the bug (prints 85); converting the
+result (`uint(bits.Reverse8(y))`) does not (still `integer divide by zero`), because the
+intrinsic keeps its `int` type.
 
 ## Reproducer
 
