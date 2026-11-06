@@ -622,6 +622,71 @@ ppc64le case is a wrong value rather than a panic from #81842: in
 `CMPW R6, $-1` of the division fix-up overwrites it, and the later `ISEL $0` of the second
 shift reads the clobbered bit (go1.26 and go1.27; master is correct).
 
+Round 7 (seed 20261116) added a third form of #82873 on arm64 and loong64: a silently
+wrong value. `prove` reports `Proved Neq8` for `bits.Reverse8(y|128) != 255`, which is false
+for `y = 255`, so the function takes the wrong branch without any panic
+(`findings/BITREV-INT-SHIFT-COUNT-126/reproducer-wrong-value.go`; `-d=ssa/prove/off`, go1.27.3
+and the go1.26 rebuilt with the intrinsic types fixed are all correct). The issue had been
+closed without a backport because the bug "results in a panic, not any corruption"; the new
+form was posted as a comment, without asking to reopen.
+
+### 3.18 Iteration 13: per-pass translation validation of the generic SSA
+
+**Why.** The A/B of 3.17 showed that choosing inputs, even with a solver, adds little: the
+bugs depend on expression shape. Concolic.jl (a sibling project that runs a concolic
+interpreter over Julia's typed IR) reached the same conclusion from the other side: concolic
+search pays off on input-dependent library bugs, not on miscompilations. So instead of
+sampling inputs better, check equivalence for all inputs at once, pass by pass.
+
+**What.** `scripts/ssa_tv.py` builds a program once with `-d=ssa/all/dump=f1,...`, reads each
+function's SSA after every generic pass (`build` up to, not including, `lower`), and encodes
+each dump in z3 bit-vectors: block reachability from the branch conditions, phis as
+if-then-else over incoming edges, `Exit` blocks through `runtime.panicdivide`/`panicshift`
+as panic outcomes, and Go semantics for the generic ops (shifts with counts at or above the
+width, truncating signed division, conversions, `Hmul`/`Avg`, `math/bits` intrinsics). Three
+checks:
+
+1. **Equivalence of consecutive passes** (outcome and returned value). A counterexample
+   names the pass that changed the function.
+2. **Claimed facts.** A shift with `[true]` needs its count below the width; a signed
+   division or modulo with `[true]` must avoid `MinInt / -1`; every division needs a
+   nonzero divisor where it is reached; `Avg` needs `arg0 >= arg1`. The lowering trusts
+   these, so a false claim is a miscompilation even before any value changes.
+3. **Types against op widths.** The encoding follows the op (a `Const64` is 64 bits), so an
+   ill-typed value would pass the first check while the lowering, which reads the type,
+   miscompiles it. gc's rules do give wide ops narrow types on purpose (`divmod.rules`
+   types the 32-bit shifts of an `int8` division by a constant as `int8`); such a value is
+   accepted when z3 proves it always fits its type, and reported otherwise.
+
+**Validation on known bugs.**
+
+| Bug | Toolchain | Reported at | Fixed toolchain |
+| --- | --- | --- | --- |
+| #82767 (combined shift counts) | tip `56ae71df05` | `opt`: `Const64 <int32> [4611686018427387905]`; `prove`: shift claimed bounded | nothing on go1.27.3 |
+| #82873 (`BitRev*` typed `int`) | go1.26.10 arm64 | `build`: `BitRev8 <int>`; `prove`: non-equivalence with a counterexample | nothing on go1.27.3 |
+| #82782 (Power10 `Bswap16` typed `uint`) | go1.27.3 ppc64le, `GOPPC64=power10` | `build`; `prove`: non-equivalence | nothing with `GOPPC64=power9` |
+
+The architecture-specific bugs of the campaigns (#82772/#82776 mips, #82773 riscv64/loong64,
+#82775 and #81842 ppc64) live in the lowered passes and are out of reach of this prototype.
+
+**Sweep.** 1,440 generated programs (suites `core`, `bits`, `directed`, seed 20261106) with
+go1.27.3 and tip, for amd64, arm64, ppc64le (Power10), riscv64, loong64 and s390x: 14,400
+functions, 71,576 pass pairs checked by the solver, 178 functions (1.2 %) unsupported, about
+0.15 s per function. The only reports are #82782, in 7 `bits` functions on ppc64le with
+both toolchains; no false report. The first sweep produced false reports that were fixed in
+the tool, each now covered by a test: the entry block is not always listed first (after
+`early_fuse`), a `First` block can still name a deleted successor, a phi can keep an
+argument from a deleted block, and `int` is 32 bits on 32-bit targets.
+
+**Limits.** Generic passes only; functions with memory operations (the `panics` suite, with
+`defer`/`recover`), loops, tuples or 32-bit decomposition (`Int64Make` on 386, arm, mips)
+are skipped. The build cache must be defeated without rebuilding the standard library: a
+fixed `GOSSADIR` per process and a nonce file in the package make each build recompile only
+`main` (0.25 s instead of 5 s). Extending the encoding to the lowered ops of one
+architecture (ppc64 first, where #81842 and #82775 live) is the natural next step, and the
+same approach applies to each rule set (`check_new_rules` already checks new rules with
+`bv_decide`).
+
 ## 4. Success criteria check
 
 | # | Criterion | Status |

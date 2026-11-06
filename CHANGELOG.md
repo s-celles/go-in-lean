@@ -12,6 +12,21 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- `scripts/ssa_tv.py`: per-pass translation validation of gc's generic SSA with z3. For
+  each function it reads the SSA after every pass from `build` up to `lower`
+  (`-d=ssa/all/dump`) and checks, for all inputs, that consecutive passes agree on the
+  outcome and value, that the facts the IR claims hold (bounded shifts, `[true]` divisions,
+  nonzero divisors) and that types match op widths (a narrower type is accepted when z3
+  proves the value fits). It finds golang/go#82767, #82873 and #82782 on the affected
+  toolchains and nothing on the fixed ones; a sweep of 14,400 generated functions on six
+  64-bit targets with go1.27.3 and tip found only #82782, with no false report
+  (`docs/research-report.md` 3.18). Tests in `scripts/test_ssa_tv.py` (skipped without
+  z3; the cross-check against compiled code needs `go`). README: the approaches table
+  gains this tool, constant/opaque twin programs and concolic testing of the standard
+  library (both not tested).
+- A third form of golang/go#82873 (go1.26 arm64/loong64): `prove` folds
+  `bits.Reverse8(y|128) != 255` to true, a silently wrong value
+  (`findings/BITREV-INT-SHIFT-COUNT-126/reproducer-wrong-value.go`), posted as a comment.
 - Upstream reports: traefik/yaegi#1751 (a negative shift count does not panic) and a
   comment on golang/go#82873 with its `prove` empty-range manifestation (the issue was
   closed shortly before: fixed on master, 1.26 backport declined).
