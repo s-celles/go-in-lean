@@ -752,6 +752,29 @@ architecture (ppc64 first, where #81842 and #82775 live) is the natural next ste
 same approach applies to each rule set (`check_new_rules` already checks new rules with
 `bv_decide`).
 
+### 3.19 Iteration 14: a suite aimed at extension elision
+
+The two defects of the lowered rules found so far (#82775 on ppc64, #36897 on amd64) are
+extension-elision mistakes, and both need a shape the general suites rarely produce: the
+#36897 trigger appeared twice in 101,800 programs. The `ext` suite (`ExtGen` in
+`scripts/alt_compiler_diff.py`) raises the odds without new node kinds, so the Lean oracle
+and the emitter are unchanged and the other suites' programs stay byte-identical. In 40 % of
+the internal nodes it plants one of:
+
+* an identity detour around a zero, `e &^ (f ^ f)`, `e & ^(f - f)`, `e | (f - f)`,
+  `e + (f ^ f)`, ..., with `f` an arbitrary subtree duplicated. Generic optimization folds
+  it, but `-N` builds have no CSE, so it reaches the lowering as `ANDconst [-1]`, `ORconst
+  [0]` and the like, next to a zero or sign extension;
+* two nested conversions of random width and signedness;
+* `T(narrow(wide(e) >> c))`, the #82775 shape.
+
+**First runs.** 300 programs on amd64 with go1.27.3 (with and without `-N -l`) and tip:
+5 programs where `gc -N -l` alone disagrees, all the #36897 rule interaction in four
+spellings (`&^ (x ^ x)`, `& ^(x ^ x)`, `& ^(x - x)`, on `x` or `y`, inline or through a
+temporary): about 1.7 % of programs, against 0.002 % in the general suites.
+`ssa_tv.py --lowered --gcflags "-N -l"` on the same programs reports exactly the cases of
+its range at `lower` and nothing else, so the differential and the symbolic checks agree.
+
 ## 4. Success criteria check
 
 | # | Criterion | Status |

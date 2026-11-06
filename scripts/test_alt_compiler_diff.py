@@ -32,7 +32,8 @@ def is_const(n):
 def trees(suite, seeds=range(40), per=12):
     for s in seeds:
         r = random.Random(f"t:{suite}:{s}")
-        g = acd.SubsetGen(r, with_bits=(suite == "bits"))
+        g = (acd.ExtGen(r, with_bits=True) if suite == "ext"
+             else acd.SubsetGen(r, with_bits=(suite == "bits")))
         for _ in range(per):
             t = g.build(r.choice(acd.TYPES), r.randint(1, 4))
             g.assign_literal_modes(t)
@@ -65,8 +66,30 @@ class GeneratorTests(unittest.TestCase):
             seen_bits |= uses
         self.assertTrue(seen_bits)
 
+    def test_ext_suite_shapes(self):
+        """The ext suite plants identity detours and conversion chains."""
+        found = {"selfxor": 0, "selfsub": 0, "convchain": 0, "narrowshift": 0}
+        for t in trees("ext", seeds=range(40), per=12):
+            for n in walk(t):
+                if n["k"] == "bin" and n["op"] in ("xor", "sub") and n["a"] == n["b"]:
+                    found["selfxor" if n["op"] == "xor" else "selfsub"] += 1
+                if n["k"] == "conv" and n["a"]["k"] == "conv":
+                    found["convchain"] += 1
+                if (n["k"] == "conv" and n["a"]["k"] == "bin" and n["a"]["op"] == "shr"
+                        and n["a"]["a"]["k"] == "conv"):
+                    found["narrowshift"] += 1
+        for k, v in found.items():
+            self.assertGreater(v, 5, k)
+
+    def test_ext_suite_is_separate(self):
+        """Adding the ext suite leaves the other suites' programs unchanged."""
+        self.assertIn("ext", acd.SUITES)
+        a = acd.random_program("core", 5, 3).source
+        self.assertNotEqual(a, acd.random_program("ext", 5, 3).source)
+        self.assertEqual(a, acd.random_program("core", 5, 3).source)
+
     def test_no_constant_binary_operands(self):
-        for t in trees("core"):
+        for t in list(trees("core")) + list(trees("ext")):
             for n in walk(t):
                 if n["k"] == "bin":
                     self.assertFalse(is_const(n["a"]) and is_const(n["b"]), n)
@@ -74,7 +97,7 @@ class GeneratorTests(unittest.TestCase):
                     self.assertFalse(is_const(n["a"]), n)
 
     def test_divisors_guarded(self):
-        for t in trees("core"):
+        for t in list(trees("core")) + list(trees("ext")):
             for n in walk(t):
                 if n["k"] == "bin" and n["op"] in ("div", "mod"):
                     b = n["b"]
@@ -86,7 +109,7 @@ class GeneratorTests(unittest.TestCase):
                         self.assertEqual(b["a"]["v"], 1)
 
     def test_shift_counts_non_negative(self):
-        for t in trees("core"):
+        for t in list(trees("core")) + list(trees("ext")):
             for n in walk(t):
                 if n["k"] == "bin" and n["op"] in ("shl", "shr"):
                     c = n["b"]
@@ -317,6 +340,18 @@ class EndToEndTests(unittest.TestCase):
             self.assertFalse((d / "abs/core-3-00000").exists())  # clean removed
         finally:
             os.chdir(cwd)
+            shutil.rmtree(d)
+
+    def test_ext_suite_builds_and_runs(self):
+        d = Path(tempfile.mkdtemp())
+        try:
+            rc = acd.main(["run", "--suite", "ext", "--seed", "1", "--count", "4",
+                           "--out", str(d / "out"), "--toolchains", "gc",
+                           "--path", f"gc={GO}", "--jobs", "4"])
+            report = json.loads((d / "out/report.json").read_text())
+            self.assertEqual(report["summary"]["gc"].get("clean"), 4, report["summary"])
+            self.assertEqual(rc, 0)
+        finally:
             shutil.rmtree(d)
 
     def test_divergence_is_kept(self):

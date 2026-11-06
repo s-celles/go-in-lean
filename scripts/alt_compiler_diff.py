@@ -70,7 +70,7 @@ HARNESS_VERSION = "1.1.0"
 REPO_ROOT = Path(__file__).resolve().parent.parent
 STATUSES = ("clean", "unsupported", "build_error", "run_error", "timeout",
             "output_mismatch", "skipped")
-SUITES = ("core", "bits", "panics", "directed")
+SUITES = ("core", "bits", "panics", "directed", "ext")
 
 TYPES = ob.TYPES
 GONAME = ob.GONAME
@@ -278,6 +278,54 @@ class SubsetGen:
         for c in ("a", "b", "c"):
             if c in n and n[c]["k"] != "lit":
                 self.assign_literal_modes(n[c], n)
+
+
+class ExtGen(SubsetGen):
+    """The ext suite: shapes aimed at extension elision in the lowering.
+
+    Identity detours (f ^ f, f - f) that generic optimization folds away but
+    that reach the lowered rules intact in -N builds (no CSE), where they
+    become `& -1`, `| 0` or `+ 0` next to a zero or sign extension
+    (golang/go#36897); nested conversions of mixed width and signedness; and
+    narrow(wide(e) >> c), the shape of golang/go#82775. Everything stays in
+    the node kinds of the other suites, so the oracle and the emitter are
+    unchanged.
+    """
+
+    def __init__(self, r: random.Random, with_bits: bool = True, word_bits: int = 64):
+        super().__init__(r, with_bits=with_bits, word_bits=word_bits)
+
+    def zero(self, t, d):
+        """An expression that is always 0: f ^ f or f - f on a copy of f."""
+        f = super().build(t, max(d - 1, 0))
+        return {"k": "bin", "op": self.r.choice(["xor", "sub"]), "a": f, "b": copy.deepcopy(f)}
+
+    def build(self, t, d):
+        r = self.r
+        if d <= 0 or r.random() < 0.6:
+            return super().build(t, d)
+        w, s = t
+        k = r.random()
+        if k < 0.3:  # e &^ 0, e & ^0: an ANDconst [-1] after lowering
+            e = self.build(t, d - 1)
+            z = self.zero(t, d - 1)
+            if r.random() < 0.5:
+                return {"k": "bin", "op": "andnot", "a": e, "b": z}
+            return {"k": "bin", "op": "and", "a": e, "b": {"k": "un", "op": "com", "a": z}}
+        if k < 0.45:  # e | 0, e + 0, e - 0, e ^ 0
+            return {"k": "bin", "op": r.choice(["or", "add", "sub", "xor"]),
+                    "a": self.build(t, d - 1), "b": self.zero(t, d - 1)}
+        if k < 0.75:  # nested conversions
+            m1, m2 = r.choice(TYPES), r.choice(TYPES)
+            inner = {"k": "conv", "t": m2, "a": self.build(r.choice(TYPES), d - 1)}
+            return {"k": "conv", "t": t, "a": {"k": "conv", "t": m1, "a": inner}}
+        # narrow(wide(e) >> c), with the result converted back to t
+        wide = r.choice([(32, True), (32, False), (64, True), (64, False)])
+        narrow = r.choice([(8, True), (8, False), (16, True), (16, False)])
+        c = lit((64, False), r.choice([1, 3, 7, 8, 15, 16, 17, 24, 31]))
+        sh = {"k": "bin", "op": "shr", "a": {"k": "conv", "t": wide, "a": self.build(r.choice(TYPES), d - 1)},
+              "b": c}
+        return {"k": "conv", "t": t, "a": {"k": "conv", "t": narrow, "a": sh}}
 
 
 # --------------------------------------------------------------------------
@@ -545,7 +593,10 @@ def random_program(suite, seed, index, nfuncs=10, nloops=2, npairs=6, depth=3,
     panics = suite == "panics"
     if panics:
         nloops = 0  # loop bodies are not checked by the oracle
-    gen = SubsetGen(rng, with_bits=(suite == "bits"), word_bits=word_bits, panics=panics)
+    if suite == "ext":
+        gen = ExtGen(rng, word_bits=word_bits)
+    else:
+        gen = SubsetGen(rng, with_bits=(suite == "bits"), word_bits=word_bits, panics=panics)
     funcs = []
     for _ in range(nfuncs):
         gen.start_tree()

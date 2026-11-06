@@ -12,6 +12,12 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- `ext` suite in `scripts/alt_compiler_diff.py` (`ExtGen`): identity detours that only
+  `-N` builds keep until the lowering (`e &^ (f ^ f)`, `e & ^(f - f)`, `e | (f - f)`, ...),
+  nested conversions of mixed width and signedness, and `narrow(wide(e) >> c)`; the other
+  suites' programs are unchanged. On 300 programs it found 5 instances of the golang/go#36897
+  trigger (gc `-N` on amd64), all confirmed independently by `ssa_tv.py --lowered --gcflags
+  "-N -l"` at `lower` (`docs/research-report.md` 3.19).
 - `scripts/ssa_tv.py --lowered` on amd64 (about 150 ops with the x86-64 rules on upper
   bits, flags, masked shift counts and the division `-1` fix-up) and `--gcflags` for `-N -l`
   debug builds, with a byte-level model of stack slots and of the non-inlined `b2i`
