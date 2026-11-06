@@ -12,6 +12,9 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- Upstream reports: traefik/yaegi#1751 (a negative shift count does not panic) and a
+  comment on golang/go#82873 with its `prove` empty-range manifestation.
+
 - `--inputs smt` in `scripts/alt_compiler_diff.py` (harness 1.1.0) and
   `scripts/smt_inputs.py`: per-function inputs chosen by z3 on the semantic boundaries
   of each generated expression (shift counts, `MinInt / -1`, comparison edges, select

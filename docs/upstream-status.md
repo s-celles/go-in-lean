@@ -41,7 +41,7 @@ distinguish a complete fix from a partial or related CL.
 | [#82834](https://github.com/golang/go/issues/82834) | OPEN | [857821](https://go-review.googlesource.com/c/go/+/857821) | NEW | `bits.Sub64` is another manifestation of #82786; no separate fix. |
 | [#82839](https://github.com/golang/go/issues/82839) | OPEN | [858581](https://go-review.googlesource.com/c/go/+/858581) | NEW | `prove` fact carried through a narrowing extension. |
 | [#82847](https://github.com/golang/go/issues/82847) | OPEN | [858901](https://go-review.googlesource.com/c/go/+/858901) | NEW | Missing immediate on masked SIMD shifts. |
-| [#82873](https://github.com/golang/go/issues/82873) | OPEN | none (fixed on master by [731300](https://go-review.googlesource.com/c/go/+/731300)) | MERGED (master only) | go1.26 arm64/loong64: `bits.Reverse*` intrinsics typed `int`, so a shift by their result raises a spurious `negative shift amount` panic; filed 2026-11-05 from `s-celles-bot` asking whether a 1.26 backport is warranted (`findings/BITREV-INT-SHIFT-COUNT-126`). Second manifestation found the same day: `prove` derives an empty range from `Com8(BitRev8 <int>)` and turns a guarded modulo into an unconditional divide panic (`reproducer-prove.go`; not yet posted). |
+| [#82873](https://github.com/golang/go/issues/82873) | OPEN | none (fixed on master by [731300](https://go-review.googlesource.com/c/go/+/731300)) | MERGED (master only) | go1.26 arm64/loong64: `bits.Reverse*` intrinsics typed `int`, so a shift by their result raises a spurious `negative shift amount` panic; filed 2026-11-05 from `s-celles-bot` asking whether a 1.26 backport is warranted (`findings/BITREV-INT-SHIFT-COUNT-126`). Second manifestation found the same day: `prove` derives an empty range from `Com8(BitRev8 <int>)` and turns a guarded modulo into an unconditional divide panic (`reproducer-prove.go`; posted as a [comment](https://github.com/golang/go/issues/82873#issuecomment-6677261173) on 2026-11-06). |
 
 ## Other upstream blockers exercised by campaigns
 
@@ -55,6 +55,7 @@ distinguish a complete fix from a partial or related CL.
 | Project | PR | State | Note |
 |---|---|---|---|
 | Yaegi | [traefik/yaegi#1750](https://github.com/traefik/yaegi/issues/1750) (issue) | OPEN | Shift count converted to the operand type in assignments; see `upstream-bugs.md`. |
+| Yaegi | [traefik/yaegi#1751](https://github.com/traefik/yaegi/issues/1751) (issue) | OPEN | A negative shift count does not panic; filed 2026-11-06 from `s-celles-bot`; see `upstream-bugs.md`. |
 | Gobra | [#960](https://github.com/viperproject/gobra/pull/960) | CLOSED, draft, not merged | Earlier overflow-checking implementation. |
 | Gobra | [#1015](https://github.com/viperproject/gobra/pull/1015) | OPEN, draft, not merged | Replacement bounded-integer encoding referenced by the prior-art review. |
 

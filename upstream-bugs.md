@@ -99,8 +99,8 @@ in the GEEKR9 run directory); 1 program is rejected as above.
   seed 1): Yaegi diverged on 10 of 24 programs, every time printing a value
   where the Lean oracle, gc, gccgo, TinyGo and LLGo report a `negativeShift`
   panic.
-- **Status**: reduced and reproduced; not reported yet (no duplicate found in
-  the tracker on 2026-11-05).
+- **Status**: reported as [traefik/yaegi#1751](https://github.com/traefik/yaegi/issues/1751)
+  on 2026-11-06 (no duplicate found in the tracker).
 
 The Go specification requires a run-time panic when the right operand of a
 shift is negative. Yaegi computes a result instead (0 for a left shift, the
