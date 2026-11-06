@@ -780,8 +780,8 @@ amd64 native (1,000 programs, every compiler) then arm64, ppc64le, mipsle and ar
 qemu (500 each); the round was stopped at riscv64 to free the machine. 3,000 cases, none
 unexplained: 22 #36897 (amd64 `-N`, including an `int32` spelling and a zero built as
 `(x & x) - (x & x)`, both confirmed by `ssa_tv.py` at `lower`, where the function is reduced
-to returning the argument register), 14 #82775 (ppc64le; the `narrow(wide(e) >> c)` shape
-reaches it about 30 times more often than the general suites), 13 #82772/#82776 (mips), 5
+to returning the argument register), 14 #82775 (ppc64le: 14 of 500 programs, against 1 in
+about 8,000 ppc64le programs of the long campaign), 13 #82772/#82776 (mips), 5
 #81842 (ppc64) and 1 #82767 (tip). No new defect on arm64 or arm.
 
 ## 4. Success criteria check
