@@ -149,6 +149,20 @@ class PairTests(unittest.TestCase):
         for r in smt.records:
             self.assertIn(f'e={r["e"]} x={r["x"]} y={r["y"]} OK', smt.source)
 
+    def test_mixed_mode_half_pool(self):
+        import oracle_bits as ob
+        prog = acd.random_program("core", 7, 3, inputs="mixed", npairs=8)
+        self.assertEqual(prog.meta["inputs"], "mixed")
+        per_func = {}
+        for r in prog.records:
+            per_func.setdefault(r["e"], []).append((r["x"], r["y"]))
+        for e, ps in per_func.items():
+            self.assertEqual(len(ps), 8)
+            self.assertEqual(len(set(ps)), 8)
+            self.assertLessEqual(len(prog.meta["smt_targets"][e]), 4)
+            pool = [p for p in ps if p[0] in ob.XPOOL and p[1] in ob.XPOOL]
+            self.assertGreaterEqual(len(pool), 4)
+
     def test_pool_mode_unchanged(self):
         a = acd.random_program("bits", 11, 4)
         b = acd.random_program("bits", 11, 4, inputs="pool")

@@ -537,8 +537,10 @@ def random_program(suite, seed, index, nfuncs=10, nloops=2, npairs=6, depth=3,
                    word_bits=64, inputs="pool"):
     """inputs: "pool" draws npairs (x, y) from oracle_bits.XPOOL, shared by all
     functions; "smt" gives each function npairs inputs chosen by z3 on its
-    semantic boundaries (smt_inputs.py), completed from the pool. The trees
-    and the loop inputs are the same in both modes."""
+    semantic boundaries (smt_inputs.py), completed from the pool; "mixed"
+    takes half of them from z3 and half from the pool (the two selections
+    find different bugs). The trees and the loop inputs are the same in
+    every mode."""
     rng = random.Random(f"{suite}:{seed}:{index}")
     panics = suite == "panics"
     if panics:
@@ -565,15 +567,16 @@ def random_program(suite, seed, index, nfuncs=10, nloops=2, npairs=6, depth=3,
     func_pairs = None
     meta = {"input_mode": input_mode, "bind_prob": bind_prob,
             "funcs": nfuncs, "loops": nloops, "pairs": npairs}
-    if inputs == "smt":
+    if inputs in ("smt", "mixed"):
         import smt_inputs  # needs z3; imported only in this mode
         func_pairs, meta["smt_targets"] = [], []
         for i, tree in enumerate(funcs):
             srng = random.Random(f"smt:{suite}:{seed}:{index}:{i}")
-            got, labels = smt_inputs.smt_pairs(tree, npairs, srng)
+            k = npairs if inputs == "smt" else npairs // 2
+            got, labels = smt_inputs.smt_pairs(tree, k, srng)
             func_pairs.append(smt_inputs.fill(got, npairs, ob.XPOOL, srng))
             meta["smt_targets"].append(labels)
-        meta["inputs"] = "smt"
+        meta["inputs"] = inputs
     elif inputs != "pool":
         raise ValueError(f"unknown input selection {inputs!r}")
     src, records = emit_program(funcs, loops, pairs, input_mode, rng, bind_prob, "mixed",
@@ -1150,9 +1153,10 @@ def add_gen(p):
     p.add_argument("--depth", type=int, default=3, help="maximum expression depth")
     p.add_argument("--word-bits", type=int, choices=(32, 64), default=64,
                    help="size of uint on the target (32 for arm, mipsle, 386...)")
-    p.add_argument("--inputs", choices=("pool", "smt"), default="pool",
-                   help="input selection: a shared random pool (default) or per-function "
-                        "inputs chosen by z3 on semantic boundaries (needs the z3 module)")
+    p.add_argument("--inputs", choices=("pool", "smt", "mixed"), default="pool",
+                   help="input selection: a shared random pool (default), per-function "
+                        "inputs chosen by z3 on semantic boundaries, or half of each "
+                        "(smt and mixed need the z3 module)")
 
 
 def main(argv=None):

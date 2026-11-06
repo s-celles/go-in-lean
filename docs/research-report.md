@@ -570,6 +570,44 @@ which expands to `alt_compiler_diff.py run --target linux/ppc64le --word-bits 64
 --tool-env gc:GOARCH=ppc64le --run-prefix gc=qemu-ppc64le --run-prefix gccgo=qemu-ppc64le
 --path gccgo=<cross gccgo> ...`. Reports are in `runs/cross-<arch>[-gccgo|-mipsfix]-<suite>/`.
 
+### 3.17 Iteration 12: long campaign and SMT-guided inputs
+
+**Long campaign, first round** (2026-11-05, seed 20261110, 12,600 programs: amd64 plus
+arm64, arm, mipsle, mips64le, ppc64, ppc64le, riscv64, s390x, loong64 and 386 under qemu,
+suites `core`, `bits` and `panics`). Every divergence maps to a known issue:
+#82772/#82776 (mips), #81842 (ppc64 CR0), #82775 (ppc64 16-bit extension elision, a
+rediscovery: `uint64(uint16(c >> 3))` keeps 29 bits), #82773 (riscv64/loong64, seen in a
+loop body) and #82873. The last one showed a second, more serious face: on go1.26
+arm64/loong64 the `int`-typed `BitRev8` gives `prove` an empty range through `Com8`, and
+`^bits.Reverse8(y) | bits.RotateLeft8(x, 7)%y` compiles to an unconditional
+`panicdivide` for every `y`. A go1.26.10 rebuilt with only the intrinsic result types fixed
+is correct (`findings/BITREV-INT-SHIFT-COUNT-126/`).
+
+**SMT-guided inputs.** The random suites evaluate each function on six inputs drawn from a
+shared pool. `--inputs smt` (`scripts/smt_inputs.py`) keeps the same trees and lets z3
+choose each function's inputs on its semantic boundaries, each conjoined with the path
+condition of the selects above it. The encoding agreed with gc on 3,331 evaluations
+(42 programs); generation costs about 0.4 s per program.
+
+A/B on the first-round programs (same seed and trees, gc toolchains only, oracle-checked):
+cases where at least one gc toolchain contradicts the oracle or fails.
+
+| Target | pool | smt | both | union |
+| --- | ---: | ---: | ---: | ---: |
+| ppc64le (core/bits/panics) | 10 | 13 | 9 | 14 |
+| riscv64 | 0 | 0 | 0 | 0 |
+| arm64 | 2 | 2 | 2 | 2 |
+| loong64 | 2 | 2 | 2 | 2 |
+| mipsle | 31 | 25 | 16 | 40 |
+| **Total** | **48** | **42** | **29** | **58** (+21 % over pool) |
+
+No new bug: every case is one of the issues above. The two selections are complementary
+rather than ordered. Boundary inputs help where the bug needs a specific value
+(ppc64le: more #81842 hits, and a #82775 hit in the `panics` suite that the pool missed).
+The pool does better on mipsle, where #82772 needs large or "dense" operands that boundary
+solving, which tends to return sparse models, rarely produces. Hence the `mixed` selection
+(half SMT, half pool), the recommended setting for future campaigns.
+
 ## 4. Success criteria check
 
 | # | Criterion | Status |
