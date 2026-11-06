@@ -13,7 +13,7 @@ distinguish a complete fix from a partial or related CL.
 
 | Upstream item | Item state | CL | CL state | Scope / note |
 |---|---|---|---|---|
-| [#36897](https://github.com/golang/go/issues/36897) | OPEN (unplanned, 2020) | none | — | Latent amd64 rule interaction (`MOVLQZX (ANDLconst)` then `ANDLconst [-1] x => x`) that drops a zero extension. The long campaign found a concrete trigger on 2026-11-06 with `-N` builds (`findings/AMD64-ANDL-MINUS1-ZEXT-NOOPT/`); comment drafted, not yet posted. |
+| [#36897](https://github.com/golang/go/issues/36897) | OPEN (unplanned, 2020) | none | — | Latent amd64 rule interaction (`MOVLQZX (ANDLconst)` then `ANDLconst [-1] x => x`) that drops a zero extension. The long campaign found a concrete trigger on 2026-11-06 with `-N` builds (`findings/AMD64-ANDL-MINUS1-ZEXT-NOOPT/`); trigger posted as a [comment](https://github.com/golang/go/issues/36897#issuecomment-6689152845) from `s-celles-bot` on 2026-11-06. |
 | [#54255](https://github.com/golang/go/issues/54255) | CLOSED | none | — | `math/bits.Add64` without its carry precondition; closed as working as intended, not a compiler bug. |
 | [PR #80355](https://github.com/golang/go/pull/80355) | OPEN, not merged | [799281](https://go-review.googlesource.com/c/go/+/799281) | NEW | Original emulated `MulAdd` fix. |
 | [PR #80355](https://github.com/golang/go/pull/80355) | OPEN, not merged | [858921](https://go-review.googlesource.com/c/go/+/858921) | NEW | Complete correctly-rounded fix, including the midway bridge and float32 case found here. |

@@ -5,7 +5,7 @@ riscv64, ppc64le, s390x and 386 are correct). A concrete trigger for the latent 
 golang/go#36897 (open since 2020, "not sure whether it is possible to trigger this bug
 right now").
 
-**Human review status:** not yet reported; a comment on #36897 is drafted.
+**Human review status:** reviewed; posted as a [comment on #36897](https://github.com/golang/go/issues/36897#issuecomment-6689152845) on 2026-11-06.
 
 ## Reproducer
 
