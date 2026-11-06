@@ -12,6 +12,11 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- `scripts/ssa_tv.py --lowered` on amd64 (about 150 ops with the x86-64 rules on upper
+  bits, flags, masked shift counts and the division `-1` fix-up) and `--gcflags` for `-N -l`
+  debug builds, with a byte-level model of stack slots and of the non-inlined `b2i`
+  helper. It finds the golang/go#36897 trigger at `lower` under `-N`; 4,800 function
+  checks of generated programs (go1.27.3 and tip, optimized and `-N -l`) gave no report.
 - `scripts/ssa_tv.py --lowered`: the translation validation continues through the ppc64
   lowered passes (`lower` to `flagalloc`), with about 80 PPC64 ops modelled from
   `PPC64Ops.go` and the ISA (CR fields, `ISEL`, rotate-and-mask, `CC` tuples, divisions with

@@ -500,5 +500,84 @@ class LoweredPPC64Tests(unittest.TestCase):
                 self.assertEqual((rep["failures"], rep["unsupported"]), ([], None), (cpu, f"f{i}"))
 
 
+AMD_SRC = PPC_SRC.replace("func main() {", """//go:noinline
+func f11(x, y uint64) uint64 { return uint64(uint32(x) &^ (uint32(x) ^ uint32(x))) }
+
+//go:noinline
+func b2i(b bool) uint64 {
+	if b {
+		return 1
+	}
+	return 0
+}
+
+//go:noinline
+func f12(x, y uint64) uint64 {
+	t := int8(x) >> (y & 7)
+	if uint16(y) > uint16(x) {
+		t ^= int8(b2i(int32(x) < int32(y)))
+	}
+	return uint64(t) + uint64(uint16(x)>>(y&15))
+}
+
+func main() {""").replace("f8, f9, f10}", "f8, f9, f10, f11, f12}")
+AMD_N = 13
+
+
+@unittest.skipUnless(HAVE_Z3 and GO, "z3 module or go not available")
+class LoweredAMD64Tests(unittest.TestCase):
+    """Lowered amd64 passes, optimized and -N, against the native program."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = Path(tempfile.mkdtemp(prefix="ssa_tv_amd_"))
+        (cls.tmp / "main.go").write_text(AMD_SRC)
+        (cls.tmp / "go.mod").write_text("module m\n\ngo 1.22\n")
+        subprocess.run([GO, "build", "-o", "prog", "."], cwd=cls.tmp, check=True)
+        names = [f"f{i}" for i in range(AMD_N)]
+        cls.dumps = {fl: tv.dump_passes(GO, cls.tmp, names, "amd64", lowered=True, gcflags=fl)
+                     for fl in ("", "-N -l")}
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.tmp, ignore_errors=True)
+
+    def test_lowered_evaluation_matches_gc(self):
+        rng = random.Random(9)
+        pts = [(1, 0), (M64, M64), (1 << 31, 0), (0x80000000, 1), (0xFFFF8000, 31), (65536, 7),
+               (1 << 63, M64), (0x80000000, 0xFFFFFFFF), (1 << 63 | 5, 3)]
+        pts += [(rng.getrandbits(64), rng.getrandbits(64)) for _ in range(4)]
+        for x, y in pts:
+            out = subprocess.run([str(self.tmp / "prog"), str(x), str(y)], capture_output=True,
+                                 text=True, check=True).stdout.split()
+            for fl, dumps in self.dumps.items():
+                for i in range(AMD_N):
+                    if i == 11 and fl:
+                        continue  # f11 is miscompiled with -N (golang/go#36897)
+                    for name in ("writebarrier", "lower", "flagalloc"):
+                        f = tv.parse_dump(dict(dumps[f"f{i}"])[name])
+                        if name != "writebarrier":
+                            f.arch = "amd64"
+                        self.assertEqual(tv.evaluate(f, {"x": x, "y": y}), ("ret", int(out[i])),
+                                         (fl, f"f{i}", name, x, y))
+
+    def test_finds_36897_with_N(self):
+        rep = tv.validate(self.dumps["-N -l"]["f11"], arch="amd64")
+        eq = [fl for fl in rep["failures"] if fl["kind"] == "equivalence"]
+        self.assertEqual([fl["pass"] for fl in eq], ["lower"])
+        x = eq[0]["inputs"]["x"]
+        self.assertEqual(eq[0]["before_out"], ("ret", x & 0xFFFFFFFF))
+        self.assertEqual(eq[0]["after_out"], ("ret", x))
+        self.assertEqual(tv.validate(self.dumps[""]["f11"], arch="amd64")["failures"], [])
+
+    def test_no_report_on_correct_functions(self):
+        for fl, dumps in self.dumps.items():
+            for i in range(AMD_N):
+                if i == 11 and fl:
+                    continue
+                rep = tv.validate(dumps[f"f{i}"], arch="amd64")
+                self.assertEqual((rep["failures"], rep["unsupported"]), ([], None), (fl, f"f{i}"))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -724,7 +724,26 @@ sweep left 5 to 15 % of the power10 functions unsupported (`MODSW`, `MODUD`, `BR
 `CNTTZD`); with those ops added, 240 power10 functions are all supported except the two
 that contain #82782.
 
-**Limits.** Generic passes only, except for ppc64; functions with memory operations (the `panics` suite, with
+**Lowered passes on amd64, and `-N` builds.** The same extension for amd64 models about
+150 ops with the x86-64 register rules that the elision rules reason about: a 32-bit
+result zero-extends, an 8- or 16-bit result keeps the destination's upper bits, `SETcc`
+writes one byte (the rest is undefined), `CMOVL` zero-extends even when the condition is
+false, shift and rotate counts are masked to 5 or 6 bits, flags are (signed-less,
+unsigned-less, equal) triples, and the signed divisions carry the backend's `-1` fix-up
+(`NEG` for the quotient, `XORL DX, DX` for the remainder). `--gcflags "-N -l"` checks
+debug builds; their variables live on the stack, so the encoding gained a byte-level model
+of stack slots (`Store`/`Load`/`Dereference` on `LocalAddr`/`OffPtr`, and the
+`MOV*store`/`MOV*load`/`CMP*load`/`*load` forms on `SP`) and the non-inlined `b2i` helper.
+
+It finds #36897 under `-N` at `lower` (`x` returned for `uint64(uint32(x) &^ (uint32(x) ^
+uint32(x)))`, the input being any `x` with upper bits set) and nothing on the same
+function without `-N`. On 120 generated programs with go1.27.3 and tip, optimized and
+`-N -l` (4,800 function checks, 32,041 pass pairs) it reported nothing: no false report,
+1.25 % unsupported (mostly `math/bits` helpers that `-l` leaves as calls), 0.25 % of the
+pairs over the 5 s solver budget. Random programs did not rediscover #36897: the `x ^ x`
+operand it needs is rare in the generator's output.
+
+**Limits.** Generic passes only, except for ppc64 and amd64; functions with memory operations (the `panics` suite, with
 `defer`/`recover`), loops, tuples or 32-bit decomposition (`Int64Make` on 386, arm, mips)
 are skipped. The build cache must be defeated without rebuilding the standard library: a
 fixed `GOSSADIR` per process and a nonce file in the package make each build recompile only
