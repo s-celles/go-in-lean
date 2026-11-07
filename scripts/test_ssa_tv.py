@@ -385,7 +385,7 @@ class AgainstGcTests(unittest.TestCase):
         cls.tmp = Path(tempfile.mkdtemp(prefix="ssa_tv_"))
         (cls.tmp / "main.go").write_text(GO_SRC)
         (cls.tmp / "go.mod").write_text("module m\n\ngo 1.22\n")
-        subprocess.run([GO, "build", "-o", "prog", "."], cwd=cls.tmp, check=True)
+        subprocess.run([GO, "build", "-buildvcs=false", "-o", "prog", "."], cwd=cls.tmp, check=True)
         cls.passes = {f"f{i}": tv.dump_passes(GO, cls.tmp, f"f{i}") for i in range(6)}
 
     @classmethod
@@ -449,7 +449,7 @@ class LoweredPPC64Tests(unittest.TestCase):
         cls.tmp = Path(tempfile.mkdtemp(prefix="ssa_tv_ppc_"))
         (cls.tmp / "main.go").write_text(PPC_SRC)
         (cls.tmp / "go.mod").write_text("module m\n\ngo 1.22\n")
-        subprocess.run([GO, "build", "-o", "prog", "."], cwd=cls.tmp, check=True)
+        subprocess.run([GO, "build", "-buildvcs=false", "-o", "prog", "."], cwd=cls.tmp, check=True)
         names = [f"f{i}" for i in range(11)]
         cls.dumps = {}
         for cpu, fl in (("power8", ""), ("power9", ""), ("power10", ""), ("power8", "-N -l")):
@@ -544,7 +544,7 @@ class LoweredAMD64Tests(unittest.TestCase):
         cls.tmp = Path(tempfile.mkdtemp(prefix="ssa_tv_amd_"))
         (cls.tmp / "main.go").write_text(AMD_SRC)
         (cls.tmp / "go.mod").write_text("module m\n\ngo 1.22\n")
-        subprocess.run([GO, "build", "-o", "prog", "."], cwd=cls.tmp, check=True)
+        subprocess.run([GO, "build", "-buildvcs=false", "-o", "prog", "."], cwd=cls.tmp, check=True)
         names = [f"f{i}" for i in range(AMD_N)]
         cls.dumps = {fl: tv.dump_passes(GO, cls.tmp, names, "amd64", lowered=True, gcflags=fl)
                      for fl in ("", "-N -l")}
@@ -607,7 +607,7 @@ class LoweredRISCV64Tests(unittest.TestCase):
         cls.tmp = Path(tempfile.mkdtemp(prefix="ssa_tv_rv_"))
         (cls.tmp / "main.go").write_text(RV_SRC)
         (cls.tmp / "go.mod").write_text("module m\n\ngo 1.22\n")
-        subprocess.run([GO, "build", "-o", "prog", "."], cwd=cls.tmp, check=True)
+        subprocess.run([GO, "build", "-buildvcs=false", "-o", "prog", "."], cwd=cls.tmp, check=True)
         names = [f"f{i}" for i in range(RV_N)]
         cls.dumps = {fl: tv.dump_passes(GO, cls.tmp, names, "riscv64", lowered=True, gcflags=fl)
                      for fl in ("", "-N -l")}
@@ -654,6 +654,60 @@ class LoweredRISCV64Tests(unittest.TestCase):
                     self.assertIsNotNone(rep["unsupported"], (fl, f"f{i}"))
                     continue
                 self.assertEqual((rep["failures"], rep["unsupported"]), ([], None), (fl, f"f{i}"))
+
+
+@unittest.skipUnless(HAVE_Z3 and GO, "z3 module or go not available")
+class LoweredLOONG64Tests(unittest.TestCase):
+    """Lowered loong64 passes, optimized and -N, against the native program."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = Path(tempfile.mkdtemp(prefix="ssa_tv_la_"))
+        (cls.tmp / "main.go").write_text(RV_SRC)
+        (cls.tmp / "go.mod").write_text("module m\n\ngo 1.22\n")
+        subprocess.run([GO, "build", "-buildvcs=false", "-o", "prog", "."], cwd=cls.tmp, check=True)
+        names = [f"f{i}" for i in range(RV_N)]
+        cls.dumps = {fl: tv.dump_passes(GO, cls.tmp, names, "loong64", lowered=True, gcflags=fl)
+                     for fl in ("", "-N -l")}
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.tmp, ignore_errors=True)
+
+    def test_lowered_evaluation_matches_gc(self):
+        rng = random.Random(13)
+        pts = [(1, 0), (M64, M64), (1 << 31, 0), (0x80000000, 1), (0xFFFF8000, 31), (65536, 7),
+               (1 << 63, M64), (0x80000000, 0xFFFFFFFF), (1 << 63 | 5, 3), (3, 2)]
+        pts += [(rng.getrandbits(64), rng.getrandbits(64)) for _ in range(4)]
+        for x, y in pts:
+            out = subprocess.run([str(self.tmp / "prog"), str(x), str(y)], capture_output=True,
+                                 text=True, check=True).stdout.split()
+            for fl, dumps in self.dumps.items():
+                for i in range(RV_N - 1):  # f13: golang/go#82773, still open on loong64
+                    for name in ("lower", "flagalloc"):
+                        f = tv.parse_dump(dict(dumps[f"f{i}"])[name])
+                        f.arch = "loong64"
+                        try:
+                            got = tv.evaluate(f, {"x": x, "y": y})
+                        except tv.Unsupported:
+                            if fl and i in (3, 9):
+                                continue  # a math/bits helper left as a call by -l
+                            raise
+                        self.assertEqual(got, ("ret", int(out[i])), (fl, f"f{i}", name, x, y))
+
+    def test_finds_82773(self):
+        for fl, dumps in self.dumps.items():
+            rep = tv.validate(dumps["f13"], arch="loong64")
+            eq = [r for r in rep["failures"] if r["kind"] == "equivalence"]
+            self.assertEqual([r["pass"] for r in eq], ["lower"], fl)
+
+    def test_no_report_on_correct_functions(self):
+        for fl, dumps in self.dumps.items():
+            for i in range(RV_N - 1):
+                rep = tv.validate(dumps[f"f{i}"], arch="loong64")
+                self.assertEqual(rep["failures"], [], (fl, f"f{i}"))
+                if not (fl and i in (3, 9)):
+                    self.assertIsNone(rep["unsupported"], (fl, f"f{i}"))
 
 
 if __name__ == "__main__":

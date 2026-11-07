@@ -162,7 +162,7 @@ def parse_dump(text):
     return f
 
 
-LOWERED_ARCHES = ("ppc64", "ppc64le", "amd64", "riscv64")
+LOWERED_ARCHES = ("ppc64", "ppc64le", "amd64", "riscv64", "loong64")
 
 
 class Mem:
@@ -216,6 +216,20 @@ RISCV64_OPS = RISCV64_MEM_OPS | {f"MOV{w}{u}load" for w in "BHWD" for u in ("", 
     "MULW", "DIV", "DIVU", "DIVW", "DIVUW", "REM", "REMU", "REMW", "REMUW", "CPOP", "CPOPW", "CLZ",
     "CLZW", "CTZ", "CTZW", "REV8", "ROL", "ROR", "RORI", "ROLW", "RORW", "RORIW", "MAX", "MIN", "MAXU",
     "MINU", "SEXTB", "SEXTH", "ZEXTH"}
+
+
+LA_BRANCHES = {"EQZ": "BEQZ", "NEZ": "BNEZ", "LTZ": "BLTZ", "GEZ": "BGEZ", "LEZ": "BLEZ", "GTZ": "BGTZ",
+               "BEQ": "BEQ", "BNE": "BNE", "BLT": "BLT", "BGE": "BGE", "BLTU": "BLTU", "BGEU": "BGEU"}
+LOONG64_MEM_OPS = {f"MOV{w}store{z}" for w in "BHWV" for z in ("", "zero")}
+LOONG64_OPS = LOONG64_MEM_OPS | {f"MOV{w}load" for w in ("B", "BU", "H", "HU", "W", "WU", "V")} | {
+    "MOVVconst", "MOVBreg", "MOVBUreg", "MOVHreg", "MOVHUreg", "MOVWreg", "MOVWUreg", "MOVVreg", "MOVVnop",
+    "ZERO", "MOVVgpfp", "MOVVfpgp", "ADDV", "SUBV", "MULV", "MULHV", "MULHVU", "AND", "OR", "XOR", "NOR",
+    "ANDN", "ORN", "NEGV", "ADDVconst", "SUBVconst", "ANDconst", "ORconst", "XORconst", "NORconst",
+    "ADDV16const", "SLLV", "SRLV", "SRAV", "SLL", "SRL", "SRA", "SLLVconst", "SRLVconst", "SRAVconst",
+    "SLLconst", "SRLconst", "SRAconst", "ROTR", "ROTRV", "ROTRconst", "ROTRVconst", "SGT", "SGTU",
+    "SGTconst", "SGTUconst", "MASKEQZ", "MASKNEZ", "ADDshiftLLV", "BSTRPICKV", "BSTRPICKW", "VPCNT64",
+    "VPCNT32", "CTZV", "CLZV", "CTZW", "CLZW", "BITREVV", "BITREVW", "BITREV4B", "REVB2W", "REVB2H",
+    "REVBV", "DIVV", "DIVVU", "REMV", "REMVU"}
 
 
 def _rv_branch(kind, ctl, ctx):
@@ -338,8 +352,9 @@ class _Enc:
         if b.kind == "If":
             c = self.enc(b.controls[0])
             outs = [z3.And(r, c), z3.And(r, z3.Not(c))]
-        elif self.arch == "riscv64" and b.kind in RV_BRANCHES:
-            c = _rv_branch(b.kind, [self.enc(x) for x in b.controls], self.ctx)
+        elif self.arch in ("riscv64", "loong64") and b.kind in RV_BRANCHES | set(LA_BRANCHES):
+            c = _rv_branch(LA_BRANCHES.get(b.kind, b.kind) if self.arch == "loong64" else b.kind,
+                           [self.enc(x) for x in b.controls], self.ctx)
             outs = [z3.And(r, c), z3.And(r, z3.Not(c))]
         elif self.arch == "amd64" and b.kind in X86_CONDS:
             c = _xcond(b.kind, self.enc(b.controls[0]))
@@ -394,7 +409,8 @@ class _Enc:
             return self._generic_mem(v, a)
         if v.type == "mem" and op not in ("Copy", "Phi") and not (
                 self.arch == "amd64" and op in AMD64_MEM_OPS or self.arch == "riscv64" and op in RISCV64_MEM_OPS
-                or self.arch in ("ppc64", "ppc64le") and op in PPC64_MEM_OPS):
+                or self.arch in ("ppc64", "ppc64le") and op in PPC64_MEM_OPS
+                or self.arch == "loong64" and op in LOONG64_MEM_OPS):
             raise Unsupported(f"memory op {op}")
         if op == "HasCPUFeature":
             return z3.Bool(f"cpu_{v.aux}", self.ctx)
@@ -402,6 +418,8 @@ class _Enc:
             return self._amd64(v, a)
         if self.arch == "riscv64" and op in RISCV64_OPS:
             return self._riscv64(v, a)
+        if self.arch == "loong64" and op in LOONG64_OPS:
+            return self._loong64(v, a)
         if self.arch in ("ppc64", "ppc64le") and op in PPC64_OPS:
             return self._ppc64(v, a)
         if op in ("Arg", "ArgIntReg"):
@@ -906,6 +924,108 @@ class _Enc:
             return r if w == 64 else z3.SignExt(32, r)  # DIVUW/REMUW also sign-extend
         raise Unsupported(f"riscv64 op {op}")
 
+    # ---- loong64 (lowered passes): 64-bit registers, 32-bit ops sign-extend their result
+    def _loong64(self, v, a):
+        op, aux, bv = v.op, v.auxint, self.bv
+        c = (int(aux) & M64) if aux not in (None, "true", "false") else 0
+        x = a[0] if a else None
+        y = a[1] if len(a) > 1 and not isinstance(a[1], Mem) else None
+        lo = lambda val: z3.Extract(31, 0, val)  # noqa: E731
+        sx = lambda r: z3.SignExt(32, r)  # noqa: E731
+        b01 = lambda t: z3.If(t, bv(1, 64), bv(0, 64))  # noqa: E731
+        ext = {"MOVBreg": (8, True), "MOVBUreg": (8, False), "MOVHreg": (16, True), "MOVHUreg": (16, False),
+               "MOVWreg": (32, True), "MOVWUreg": (32, False)}
+        if op in ext:
+            w, sg = ext[op]
+            return (z3.SignExt if sg else z3.ZeroExt)(64 - w, z3.Extract(w - 1, 0, x))
+        if op in ("MOVVreg", "MOVVnop", "MOVVgpfp", "MOVVfpgp"):
+            return x
+        if op == "ZERO":
+            return bv(0, 64)
+        if op == "MOVVconst":
+            return bv(c, 64)
+        m = re.fullmatch(r"MOV(B|H|W|V)(U?)(store|storezero|load)", op)
+        if m:
+            w = {"B": 8, "H": 16, "W": 32, "V": 64}[m.group(1)]
+            sym, off = self._x86_addr(v, a[0])
+            if m.group(3) == "store":
+                return self._write(a[2], sym, off, z3.Extract(w - 1, 0, a[1]), w // 8)
+            if m.group(3) == "storezero":
+                return self._write(a[1], sym, off, bv(0, w), w // 8)
+            r = self._read(a[1], sym, off, w // 8)
+            if w == 64:
+                return r
+            return (z3.ZeroExt if m.group(2) else z3.SignExt)(64 - w, r)
+        simple = {"ADDV": lambda: x + y, "SUBV": lambda: x - y, "MULV": lambda: x * y,
+                  "MULHV": lambda: z3.Extract(127, 64, z3.SignExt(64, x) * z3.SignExt(64, y)),
+                  "MULHVU": lambda: z3.Extract(127, 64, z3.ZeroExt(64, x) * z3.ZeroExt(64, y)),
+                  "AND": lambda: x & y, "OR": lambda: x | y, "XOR": lambda: x ^ y, "NOR": lambda: ~(x | y),
+                  "ANDN": lambda: x & ~y, "ORN": lambda: x | ~y, "NEGV": lambda: -x,
+                  "ADDVconst": lambda: x + bv(c, 64), "SUBVconst": lambda: x - bv(c, 64),
+                  "ADDV16const": lambda: x + bv(c, 64), "ANDconst": lambda: x & bv(c, 64),
+                  "ORconst": lambda: x | bv(c, 64), "XORconst": lambda: x ^ bv(c, 64),
+                  "NORconst": lambda: ~(x | bv(c, 64)),
+                  "SLLV": lambda: x << (y & bv(63, 64)), "SRLV": lambda: z3.LShR(x, y & bv(63, 64)),
+                  "SRAV": lambda: x >> (y & bv(63, 64)),
+                  "SLL": lambda: sx(lo(x) << (lo(y) & bv(31, 32))),
+                  "SRL": lambda: sx(z3.LShR(lo(x), lo(y) & bv(31, 32))),
+                  "SRA": lambda: sx(lo(x) >> (lo(y) & bv(31, 32))),
+                  "SLLVconst": lambda: x << bv(c & 63, 64), "SRLVconst": lambda: z3.LShR(x, bv(c & 63, 64)),
+                  "SRAVconst": lambda: x >> bv(c & 63, 64),
+                  "SLLconst": lambda: sx(lo(x) << bv(c & 31, 32)), "SRLconst": lambda: sx(z3.LShR(lo(x), bv(c & 31, 32))),
+                  "SRAconst": lambda: sx(lo(x) >> bv(c & 31, 32)),
+                  "ROTR": lambda: sx(z3.RotateRight(lo(x), lo(y) & bv(31, 32))),
+                  "ROTRV": lambda: z3.RotateRight(x, y & bv(63, 64)),
+                  "ROTRconst": lambda: sx(z3.RotateRight(lo(x), bv(c & 31, 32))),
+                  "ROTRVconst": lambda: z3.RotateRight(x, bv(c & 63, 64)),
+                  "SGT": lambda: b01(x > y), "SGTU": lambda: b01(z3.UGT(x, y)),
+                  "SGTconst": lambda: b01(bv(c, 64) > x), "SGTUconst": lambda: b01(z3.UGT(bv(c, 64), x)),
+                  "MASKEQZ": lambda: z3.If(y == bv(0, 64), bv(0, 64), x),
+                  "MASKNEZ": lambda: z3.If(y != bv(0, 64), bv(0, 64), x),
+                  "ADDshiftLLV": lambda: x + (y << bv(c & 63, 64)),
+                  "VPCNT64": lambda: sum((z3.ZeroExt(63, z3.Extract(i, i, x)) for i in range(64)), bv(0, 64)),
+                  "VPCNT32": lambda: sum((z3.ZeroExt(63, z3.Extract(i, i, x)) for i in range(32)), bv(0, 64)),
+                  "BITREVV": lambda: z3.Concat(*[z3.Extract(i, i, x) for i in range(64)]),
+                  "BITREVW": lambda: sx(z3.Concat(*[z3.Extract(i, i, x) for i in range(32)])),
+                  "BITREV4B": lambda: sx(z3.Concat(*[z3.Concat(*[z3.Extract(8 * k + i, 8 * k + i, x) for i in range(8)])
+                                                     for k in reversed(range(4))])),
+                  "REVBV": lambda: z3.Concat(*[z3.Extract(8 * i + 7, 8 * i, x) for i in range(8)]),
+                  "REVB2W": lambda: z3.Concat(*[z3.Extract(8 * i + 7, 8 * i, x) for i in (4, 5, 6, 7)],
+                                              *[z3.Extract(8 * i + 7, 8 * i, x) for i in (0, 1, 2, 3)]),
+                  "REVB2H": lambda: sx(z3.Concat(z3.Extract(23, 16, x), z3.Extract(31, 24, x),
+                                                 z3.Extract(7, 0, x), z3.Extract(15, 8, x)))}
+        if op in simple:
+            return simple[op]()
+        if op in ("BSTRPICKV", "BSTRPICKW"):
+            shift = 6 if op == "BSTRPICKV" else 5
+            msb, lsb = int(aux) >> shift, int(aux) & ((1 << shift) - 1)
+            field = z3.Extract(msb, lsb, x)
+            if op == "BSTRPICKV":
+                return z3.ZeroExt(64 - (msb - lsb + 1), field)
+            return sx(z3.ZeroExt(32 - (msb - lsb + 1), field)) if msb - lsb + 1 < 32 else sx(field)
+        if op in ("CTZV", "CLZV", "CTZW", "CLZW"):
+            w = 32 if op.endswith("W") else 64
+            val = z3.Extract(w - 1, 0, x)
+            r = bv(w, 64)
+            idx = reversed(range(w)) if op.startswith("CTZ") else range(w)
+            for i in idx:
+                r = z3.If(z3.Extract(i, i, val) == 1, bv(i if op.startswith("CTZ") else w - 1 - i, 64), r)
+            return r
+        if op in ("DIVV", "DIVVU", "REMV", "REMVU"):
+            # A zero divisor is guarded by the IR (left undefined). gc emits no fix-up for MinInt / -1:
+            # like modsd on POWER, it relies on the hardware, modelled here with the Go result.
+            zero, ones = bv(0, 64), bv(M64, 64)
+            und = self._undef(v, 64)
+            if op == "DIVVU":
+                return z3.If(y == zero, und, z3.UDiv(x, y))
+            if op == "REMVU":
+                return z3.If(y == zero, und, z3.URem(x, y))
+            ovf = z3.And(x == bv(1 << 63, 64), y == ones)
+            if op == "DIVV":
+                return z3.If(y == zero, und, z3.If(ovf, x, x / y))
+            return z3.If(y == zero, und, z3.If(ovf, zero, z3.SRem(x, y)))
+        raise Unsupported(f"loong64 op {op}")
+
     # ---- ppc64 (lowered passes): every value is a 64-bit register
     def _undef(self, v, w):
         """Bits the ISA leaves undefined: free, so any dependence on them shows."""
@@ -1337,7 +1457,7 @@ def dump_passes(go, pkgdir, funcs, goarch=None, extra_env=None, lowered=False, g
     if goarch:
         env["GOARCH"] = goarch
     flags = ",".join(f"ssa/all/dump={fn}" for fn in names)
-    r = subprocess.run([go, "build", f"-gcflags={gcflags} -d={flags}".strip(), "-o", os.devnull, "."],
+    r = subprocess.run([go, "build", "-buildvcs=false", f"-gcflags={gcflags} -d={flags}".strip(), "-o", os.devnull, "."],
                        cwd=pkgdir, env=env, capture_output=True, text=True)
     res = {}
     for fn in names:
@@ -1391,7 +1511,7 @@ def main(argv=None):
         p.add_argument("--timeout-ms", type=int, default=20000, help="per solver query")
         p.add_argument("--gcflags", default="", help='extra compiler flags, e.g. "-N -l"')
         p.add_argument("--lowered", action="store_true",
-                       help="also check the lowered passes up to regalloc (amd64, ppc64, ppc64le, riscv64)")
+                       help="also check the lowered passes up to regalloc (amd64, loong64, ppc64, ppc64le, riscv64)")
         if name == "check":
             p.add_argument("file")
             p.add_argument("--funcs")

@@ -752,7 +752,16 @@ finding, with go1.27.3 optimized, `-N -l` and tip: the lowered dump of `(a - (-a
 literally `MOVDconst [0]`. `bits.Len64` and `bits.TrailingZeros64` read a global table on
 the default `GORISCV64` (no Zbb) and are reported as unsupported.
 
-**Limits.** Generic passes only, except for ppc64, amd64 and riscv64; functions with memory operations (the `panics` suite, with
+**Lowered passes on loong64.** About 80 LoongArch ops, close to riscv64: no flags (`SGT`,
+`SGTU` and their `const` forms produce 0/1, `MASKEQZ`/`MASKNEZ` select, the `EQZ`/`NEZ`/`BEQ`/...
+blocks compare registers), 32-bit shifts and rotates (`SLL`, `SRA`, `ROTR` and their `const`
+forms) taking the count modulo 32 and sign-extending, `BSTRPICKV [msb<<6|lsb]` zero-extending
+a bit field, `ADDshiftLLV`, and the `ZERO` register. One assumption is explicit: gc lowers
+`Div64` and `Mod64` straight to `DIVV`/`REMV` with no `-1` fix-up, so, as for `modsd` on POWER,
+`MinInt / -1` relies on the hardware and is modelled with the Go result. It finds #82773,
+still open on loong64, at `lower` on the three reproducers with go1.27.3, optimized and `-N -l`.
+
+**Limits.** Generic passes only, except for ppc64, amd64, riscv64 and loong64; functions with memory operations (the `panics` suite, with
 `defer`/`recover`), loops, tuples or 32-bit decomposition (`Int64Make` on 386, arm, mips)
 are skipped. The build cache must be defeated without rebuilding the standard library: a
 fixed `GOSSADIR` per process and a nonce file in the package make each build recompile only

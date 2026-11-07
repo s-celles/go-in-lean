@@ -12,6 +12,8 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- `scripts/ssa_tv.py --lowered` on loong64 (about 80 ops; `DIVV`/`REMV` without a `-1` fix-up
+  modelled with the Go result): it finds golang/go#82773, still open on loong64, at `lower`.
 - `scripts/ssa_tv.py`: stack slots on ppc64/ppc64le, so `--lowered --gcflags "-N -l"` covers
   ppc64 debug builds too (232 of 240 generated functions supported, no report).
 - Symbolic sweep with `ssa_tv.py --lowered` on OPTIPLEX7010 (21,600 function checks: `ext`,
