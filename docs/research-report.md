@@ -817,6 +817,30 @@ loads), and 232 of 240 `-N -l` functions are supported, the rest calling `math/b
 helpers that `-l` leaves out of line; amd64 and riscv64 `-N`
 were covered and clean (the random programs did not contain the #36897 or #82773 shapes).
 
+**Follow-up symbolic sweep.** On OPTIPLEX7010 (2026-11-07, 13:01–13:09 CET, seed
+20261123), 60 `ext` programs were checked with `--lowered --gcflags "-N -l"` on amd64,
+ppc64le (`GOPPC64=power8` and `power10`), loong64 and riscv64, using go1.27.3 and tip.
+That is 600 program/toolchain executions and 6,000 function checks, with 34,120 pass pairs,
+197 unsupported functions and 61 solver timeouts. It produced only known findings:
+
+* **#36897**, once on amd64 with each toolchain: at `lower`, the function returns
+  `0xFF00000000000000` instead of 0 for `x = 0xFF00000000000000`, `y = 0`. The generated
+  source returns 0 in a native amd64 run.
+* **#82775**, three functions on each PPC64 CPU level with each toolchain, at `lower`.
+  The counterexamples include `(x, y) = (1, 65536)`, where the lowered result is 32768
+  instead of 4294934528; two further generated functions return `33554300` or
+  `33554333` instead of `65404` or `65437`, and 0 instead of 255. Native amd64 runs of the
+  same generated sources return the specified values.
+* **#82782**, four Power10 `Bswap16` result-type reports per toolchain at `build` (none on
+  power8). Each exact function was rerun with `ssa_tv.py check --funcs`; the reports persist.
+  The generated programs also ran natively on amd64 without runtime errors; the report is a
+  Power10-specific SSA type finding.
+
+Exact-function checks reproduced all reported cases on go1.27.3 and tip. Loong64 and
+riscv64 had no reports. The driver did not freeze; no `nixbld` process was observed, and
+sampled host loads remained below 12. All cases match already-tracked compiler issues; this
+sweep found no new defect.
+
 ## 4. Success criteria check
 
 | # | Criterion | Status |

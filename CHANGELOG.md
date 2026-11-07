@@ -12,6 +12,11 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- Follow-up `ext` symbolic sweep on OPTIPLEX7010 (seed 20261123): 60 programs across
+  amd64, ppc64le power8/power10, loong64 and riscv64, with go1.27.3 and tip, under
+  `-N -l` (6,000 function checks, 34,120 pass pairs). It reproduced only tracked issues
+  #36897, #82775 and #82782; exact-function checks and native amd64 runs confirmed the
+  counterexamples (`docs/research-report.md` 3.19).
 - `scripts/ssa_tv.py --lowered` on loong64 (about 80 ops; `DIVV`/`REMV` without a `-1` fix-up
   modelled with the Go result): it finds golang/go#82773, still open on loong64, at `lower`.
 - `scripts/ssa_tv.py`: stack slots on ppc64/ppc64le, so `--lowered --gcflags "-N -l"` covers
