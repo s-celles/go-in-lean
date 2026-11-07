@@ -793,6 +793,18 @@ to returning the argument register), 14 #82775 (ppc64le: 14 of 500 programs, aga
 about 8,000 ppc64le programs of the long campaign), 13 #82772/#82776 (mips), 5
 #81842 (ppc64) and 1 #82767 (tip). No new defect on arm64 or arm.
 
+**Symbolic sweep on OPTIPLEX7010** (2026-11-06, 22:55 to 23:30, seed 20261121, with
+Constructix's agreement: user scope with `MemoryMax=8G`, `nice -n 19`, `ionice -c3`, 8 jobs,
+frozen while Nix builds run or the load stays above 12; one 40 s freeze, no Nix build seen).
+`ssa_tv.py --lowered` on the `ext`, `core` and `bits` suites (60 programs each) for amd64,
+riscv64 and ppc64le, optimized and `-N -l`, with go1.27.3 and tip: 21,600 function checks,
+about 130,000 pass pairs, no false report. The only reports are two ppc64le `ext` functions,
+on both toolchains, at `lower`: `int32(int16(int32(x) >> 7))` and `int64(uint16(uint32(x) >> 7))`
+return 32768 and 33488896 where Go requires `0xFFFF...8000` and 0, two more spellings of
+#82775 (confirmed against the native amd64 run). The ppc64le `-N -l` lots were all
+unsupported, since the ppc64 extension has no stack-slot model yet; amd64 and riscv64 `-N`
+were covered and clean (the random programs did not contain the #36897 or #82773 shapes).
+
 ## 4. Success criteria check
 
 | # | Criterion | Status |

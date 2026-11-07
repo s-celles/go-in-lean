@@ -12,6 +12,9 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- Symbolic sweep with `ssa_tv.py --lowered` on OPTIPLEX7010 (21,600 function checks: `ext`,
+  `core`, `bits`; amd64, riscv64, ppc64le; optimized and `-N -l`; go1.27.3 and tip): no false
+  report; two more spellings of golang/go#82775 on ppc64le (`docs/research-report.md` 3.19).
 - `scripts/ssa_tv.py --lowered` on riscv64 (about 75 ops: no flags, sign-extending `W`
   ops and loads, ISA-defined division): it finds golang/go#82773 at `lower` on go1.27.3
   (optimized and `-N -l`) and tip.
