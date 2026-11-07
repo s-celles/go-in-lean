@@ -802,7 +802,10 @@ about 130,000 pass pairs, no false report. The only reports are two ppc64le `ext
 on both toolchains, at `lower`: `int32(int16(int32(x) >> 7))` and `int64(uint16(uint32(x) >> 7))`
 return 32768 and 33488896 where Go requires `0xFFFF...8000` and 0, two more spellings of
 #82775 (confirmed against the native amd64 run). The ppc64le `-N -l` lots were all
-unsupported, since the ppc64 extension has no stack-slot model yet; amd64 and riscv64 `-N`
+unsupported, since the ppc64 extension had no stack-slot model then; it has one now
+(`MOV{B,H,W,D}store`/`storezero`, sign-extending `MOVWload`/`MOVHload`, zero-extending `Z`
+loads), and 232 of 240 `-N -l` functions are supported, the rest calling `math/bits`
+helpers that `-l` leaves out of line; amd64 and riscv64 `-N`
 were covered and clean (the random programs did not contain the #36897 or #82773 shapes).
 
 ## 4. Success criteria check

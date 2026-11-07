@@ -12,6 +12,8 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- `scripts/ssa_tv.py`: stack slots on ppc64/ppc64le, so `--lowered --gcflags "-N -l"` covers
+  ppc64 debug builds too (232 of 240 generated functions supported, no report).
 - Symbolic sweep with `ssa_tv.py --lowered` on OPTIPLEX7010 (21,600 function checks: `ext`,
   `core`, `bits`; amd64, riscv64, ppc64le; optimized and `-N -l`; go1.27.3 and tip): no false
   report; two more spellings of golang/go#82775 on ppc64le (`docs/research-report.md` 3.19).

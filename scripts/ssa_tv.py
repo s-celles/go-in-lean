@@ -248,6 +248,8 @@ PPC64_OPS = {
     "CMPWconst", "CMPWUconst", "ADDCC", "ANDCC", "ORCC", "XORCC", "NORCC", "ANDNCC", "SUBCC", "ANDCCconst",
     "Select0", "Select1", "ISEL", "ISELZ", "SETBC", "SETBCR", "MODSD", "MODUD", "MODSW", "MODUW", "CNTTZD",
     "CNTTZW", "CNTLZW", "BRD", "BRW", "BRH"}
+PPC64_MEM_OPS = {f"MOV{w}store{z}" for w in "BHWD" for z in ("", "zero")}
+PPC64_OPS |= PPC64_MEM_OPS | {"MOVDload", "MOVWload", "MOVWZload", "MOVHload", "MOVHZload", "MOVBZload"}
 
 
 def _flags(l, r, signed):
@@ -391,7 +393,8 @@ class _Enc:
         if op in ("SP", "LocalAddr", "OffPtr", "Store", "Load", "Dereference") and not self.lowered or op == "SP":
             return self._generic_mem(v, a)
         if v.type == "mem" and op not in ("Copy", "Phi") and not (
-                self.arch == "amd64" and op in AMD64_MEM_OPS or self.arch == "riscv64" and op in RISCV64_MEM_OPS):
+                self.arch == "amd64" and op in AMD64_MEM_OPS or self.arch == "riscv64" and op in RISCV64_MEM_OPS
+                or self.arch in ("ppc64", "ppc64le") and op in PPC64_MEM_OPS):
             raise Unsupported(f"memory op {op}")
         if op == "HasCPUFeature":
             return z3.Bool(f"cpu_{v.aux}", self.ctx)
@@ -910,6 +913,18 @@ class _Enc:
 
     def _ppc64(self, v, a):
         op, aux = v.op, v.auxint
+        m = re.fullmatch(r"MOV(B|H|W|D)(store|storezero|load|Zload)", op)
+        if m:  # stack slots of -N code; loads: lwa/lha sign-extend, the Z forms zero-extend
+            w = {"B": 8, "H": 16, "W": 32, "D": 64}[m.group(1)]
+            sym, off = self._x86_addr(v, a[0])
+            if m.group(2) == "store":
+                return self._write(a[2], sym, off, z3.Extract(w - 1, 0, a[1]), w // 8)
+            if m.group(2) == "storezero":
+                return self._write(a[1], sym, off, self.bv(0, w), w // 8)
+            r = self._read(a[1], sym, off, w // 8)
+            if w == 64:
+                return r
+            return (z3.ZeroExt if m.group(2) == "Zload" else z3.SignExt)(64 - w, r)
         c = (int(aux) & M64) if aux not in (None, "true", "false") else 0
         bv, lo = self.bv, (lambda x: z3.Extract(31, 0, x))
         sx32, zx32 = (lambda x: z3.SignExt(32, x)), (lambda x: z3.ZeroExt(32, x))

@@ -437,6 +437,9 @@ func f10(x, y uint64) uint64 { return uint64(int32(x) % int32(y|1)) + uint64(int
 func main() {""").replace("f0, f1, f2, f3, f4, f5}", "f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10}")
 
 
+PPC_CALLS_N = (3, 9)  # math/bits helpers stay calls with -l
+
+
 @unittest.skipUnless(HAVE_Z3 and GO, "z3 module or go not available")
 class LoweredPPC64Tests(unittest.TestCase):
     """Lowered ppc64 passes: machine semantics against the native (amd64) program."""
@@ -449,10 +452,10 @@ class LoweredPPC64Tests(unittest.TestCase):
         subprocess.run([GO, "build", "-o", "prog", "."], cwd=cls.tmp, check=True)
         names = [f"f{i}" for i in range(11)]
         cls.dumps = {}
-        for cpu in ("power8", "power9", "power10"):
+        for cpu, fl in (("power8", ""), ("power9", ""), ("power10", ""), ("power8", "-N -l")):
             os.environ["GOPPC64"] = cpu
             try:
-                cls.dumps[cpu] = tv.dump_passes(GO, cls.tmp, names, "ppc64le", lowered=True)
+                cls.dumps[cpu + fl] = tv.dump_passes(GO, cls.tmp, names, "ppc64le", lowered=True, gcflags=fl)
             finally:
                 del os.environ["GOPPC64"]
 
@@ -480,8 +483,13 @@ class LoweredPPC64Tests(unittest.TestCase):
                     for name in ("lower", "flagalloc"):
                         f = tv.parse_dump(dict(dumps[f"f{i}"])[name])
                         f.arch = "ppc64le"
-                        self.assertEqual(tv.evaluate(f, {"x": x, "y": y}), ("ret", int(out[i])),
-                                         (cpu, f"f{i}", name, x, y))
+                        try:
+                            got = tv.evaluate(f, {"x": x, "y": y})
+                        except tv.Unsupported:
+                            if cpu.endswith("-l") and i in PPC_CALLS_N:
+                                continue  # a math/bits helper left as a call by -l
+                            raise
+                        self.assertEqual(got, ("ret", int(out[i])), (cpu, f"f{i}", name, x, y))
 
     def test_finds_82775_at_lower(self):
         rep = tv.validate(self.dumps["power8"]["f6"], arch="ppc64le")
@@ -497,6 +505,9 @@ class LoweredPPC64Tests(unittest.TestCase):
         for cpu, dumps in self.dumps.items():
             for i in (0, 1, 2, 3, 4, 5, 7, 8, 9, 10):
                 rep = tv.validate(dumps[f"f{i}"], arch="ppc64le")
+                if cpu.endswith("-l") and i in PPC_CALLS_N:  # may be a call: unsupported, never a failure
+                    self.assertEqual(rep["failures"], [], (cpu, f"f{i}"))
+                    continue
                 self.assertEqual((rep["failures"], rep["unsupported"]), ([], None), (cpu, f"f{i}"))
 
 
