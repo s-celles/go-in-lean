@@ -19,9 +19,9 @@ Two checks, for all inputs at once rather than on sampled ones:
   lowering trusts it).
 
 Functions with heap memory, loops, calls other than b2i or unmodelled ops are reported
-as unsupported and skipped. With --lowered on amd64, ppc64 or ppc64le, the check
-goes on through the lowered passes up to regalloc, with the machine semantics of
-the target's ops (bits the ISA leaves undefined are free variables). --gcflags
+as unsupported and skipped. With --lowered on amd64, arm64, loong64, ppc64/ppc64le,
+riscv64 or s390x, the check goes on through the lowered passes up to regalloc, with the machine
+semantics of the target's ops (bits the ISA leaves undefined are free variables). --gcflags
 "-N -l" checks debug builds, whose stack slots are modelled byte by byte. The
 lowered passes of other architectures are out of scope.
 
@@ -70,6 +70,7 @@ class Block:
     def __init__(self, name, preds):
         self.name, self.preds = name, preds
         self.values, self.kind, self.controls, self.succs = [], None, [], []
+        self.aux, self.auxint = None, None
 
 
 class Func:
@@ -155,6 +156,11 @@ def parse_dump(text):
             blk.kind = m.group(1)
             rest = re.sub(r"\(\w+\)\s*$", "", m.group(2))  # (likely)/(unlikely)
             head, _, tail = rest.partition("->")
+            for pattern, attr in ((r"\{([^}]*)\}", "aux"), (r"\[([^]]*)\]", "auxint")):
+                aux = re.search(pattern, head)
+                if aux:
+                    setattr(blk, attr, aux.group(1))
+                    head = head[:aux.start()] + head[aux.end():]
             blk.controls = re.findall(r"v\d+", head)
             blk.succs = re.findall(r"b\d+", tail)
             continue
@@ -162,7 +168,7 @@ def parse_dump(text):
     return f
 
 
-LOWERED_ARCHES = ("ppc64", "ppc64le", "amd64", "riscv64", "loong64")
+LOWERED_ARCHES = ("ppc64", "ppc64le", "amd64", "riscv64", "loong64", "s390x", "arm64")
 
 
 class Mem:
@@ -265,6 +271,112 @@ PPC64_OPS = {
 PPC64_MEM_OPS = {f"MOV{w}store{z}" for w in "BHWD" for z in ("", "zero")}
 PPC64_OPS |= PPC64_MEM_OPS | {"MOVDload", "MOVWload", "MOVWZload", "MOVHload", "MOVHZload", "MOVBZload"}
 
+S390X_OPS = {
+    "MOVBreg", "MOVBZreg", "MOVHreg", "MOVHZreg", "MOVWreg", "MOVWZreg", "MOVDreg", "MOVDconst",
+    "ADD", "ADDW", "ADDconst", "ADDWconst", "SUB", "SUBW", "SUBconst", "SUBWconst", "MULLD",
+    "MULLW", "MULLDconst", "MULLWconst", "AND", "ANDW", "ANDconst", "ANDWconst", "OR", "ORW",
+    "ORconst", "ORWconst", "XOR", "XORW", "XORconst", "XORWconst", "NEG", "NEGW", "NOT", "NOTW",
+    "MULLDconst", "MULLWconst",
+    "SLD", "SLW", "SLDconst", "SLWconst", "SRD", "SRW", "SRDconst", "SRWconst", "SRAD", "SRAW",
+    "SRADconst", "SRAWconst", "CMP", "CMPW", "CMPU", "CMPWU", "CMPconst", "CMPWconst", "CMPUconst",
+    "CMPWUconst", "FlagEQ", "FlagLT", "FlagGT", "FlagOV", "InvertFlags", "LOCGR",
+}
+S390X_BRANCHES = {"BRC", "CRJ", "CGRJ", "CLRJ", "CLGRJ", "CIJ", "CGIJ", "CLIJ", "CLGIJ"}
+S390X_CONDITIONS = {"Equal": 8, "Less": 4, "Greater": 2, "Unordered": 1, "LessOrEqual": 12,
+                    "GreaterOrEqual": 10, "NotEqual": 6, "Always": 15, "Never": 0}
+ARM64_OPS = {
+    "ZERO", "MOVDconst", "MOVDreg", "MOVDnop", "MOVBreg", "MOVBUreg", "MOVHreg", "MOVHUreg", "MOVWreg", "MOVWUreg",
+    "ADD", "ADDconst", "ADDshiftLL", "ADDshiftRL", "ADDshiftRA", "SUB", "SUBconst", "SUBshiftLL",
+    "SUBshiftRL", "SUBshiftRA", "MUL", "MULW", "MNEG", "MNEGW", "MADD", "MSUB", "MADDW", "MSUBW", "DIV", "UDIV", "DIVW", "UDIVW",
+    "MOD", "UMOD", "MODW", "UMODW", "NEGshiftLL", "NEGshiftRL", "NEGshiftRA", "AND", "ANDconst", "OR", "ORconst",
+    "XOR", "XORconst", "BIC", "EON", "ORN", "MVN", "NEG", "SLL", "SLLconst", "SRL", "SRLconst",
+    "SRA", "SRAconst", "RORWconst", "RBIT", "RBITW", "SBFX", "UBFX", "UBFIZ", "CMP", "CMPconst",
+    "CMPW", "CMPWconst", "CMPshiftLL", "CMPshiftRL", "CMPshiftRA", "CMN", "CMNconst", "CMNW", "CMNWconst",
+    "TST", "TSTconst", "TSTWconst",
+    "FlagConstant", "CSEL", "CSEL0", "CSINV", "CSINC", "CSNEG", "CSETM", "Equal", "NotEqual",
+    "LessThan", "LessEqual", "GreaterThan", "GreaterEqual", "LessThanU", "LessEqualU", "GreaterThanU",
+    "GreaterEqualU", "LessThanNoov", "LessEqualNoov", "GreaterThanNoov", "GreaterEqualNoov",
+}
+ARM64_CONDITIONS = {
+    "Equal": "eq", "NotEqual": "ne", "LessThan": "lt", "LessEqual": "le", "GreaterThan": "gt",
+    "GreaterEqual": "ge", "LessThanU": "ult", "LessEqualU": "ule", "GreaterThanU": "ugt",
+    "GreaterEqualU": "uge", "LessThanNoov": "ltnoov", "LessEqualNoov": "lenoov",
+    "GreaterThanNoov": "gtnoov", "GreaterEqualNoov": "genoov",
+}
+ARM64_BLOCK_CONDITIONS = {"EQ": "Equal", "NE": "NotEqual", "LT": "LessThan", "LE": "LessEqual",
+                          "GT": "GreaterThan", "GE": "GreaterEqual", "ULT": "LessThanU", "ULE": "LessEqualU",
+                          "UGT": "GreaterThanU", "UGE": "GreaterEqualU", "LTnoov": "LessThanNoov",
+                          "LEnoov": "LessEqualNoov", "GTnoov": "GreaterThanNoov", "GEnoov": "GreaterEqualNoov"}
+
+
+def _arm64_condition(condition, flags):
+    """Evaluate an ARM64 condition code against symbolic NZCV flags."""
+    if not (isinstance(flags, tuple) and flags[0] == "arm64flags"):
+        raise Unsupported("condition on a non-ARM64 flags value")
+    cond = str(condition).removeprefix("OpARM64").removeprefix("arm64.")
+    cond = ARM64_CONDITIONS.get(cond, cond.lower())
+    _, n, z, c, v = flags
+    lt = n != v
+    le = z | lt
+    ge = n == v
+    gt = z3.And(z3.Not(z), ge)
+    predicates = {"eq": z, "ne": z3.Not(z), "lt": lt, "le": le, "gt": gt, "ge": ge,
+                  "ult": z3.Not(c), "ule": z3.Or(z, z3.Not(c)), "ugt": z3.And(z3.Not(z), c), "uge": c,
+                  "ltnoov": z3.And(lt, z3.Not(v)), "lenoov": z3.And(le, z3.Not(v)),
+                  "gtnoov": z3.And(gt, z3.Not(v)), "genoov": z3.And(ge, z3.Not(v))}
+    if cond not in predicates:
+        raise Unsupported(f"unknown ARM64 condition {condition}")
+    return predicates[cond]
+
+
+def _arm64_subflags(lhs, rhs):
+    """NZCV bits for a 32- or 64-bit ARM subtract/compare."""
+    width = lhs.size()
+    result = lhs - rhs
+    n = z3.Extract(width - 1, width - 1, result) == 1
+    z = result == z3.BitVecVal(0, width, lhs.ctx)
+    c = z3.UGE(lhs, rhs)  # ARM C is set when subtraction does not borrow.
+    sx, sy = z3.Extract(width - 1, width - 1, lhs), z3.Extract(width - 1, width - 1, rhs)
+    sr = z3.Extract(width - 1, width - 1, result)
+    v = z3.And(sx != sy, sr != sx)
+    return ("arm64flags", n, z, c, v)
+
+
+def _arm64_addflags(lhs, rhs):
+    """NZCV bits for a 32- or 64-bit ARM add/compare-negative."""
+    width = lhs.size()
+    result = lhs + rhs
+    n = z3.Extract(width - 1, width - 1, result) == 1
+    z = result == z3.BitVecVal(0, width, lhs.ctx)
+    c = z3.ULT(result, lhs)
+    sx, sy = z3.Extract(width - 1, width - 1, lhs), z3.Extract(width - 1, width - 1, rhs)
+    sr = z3.Extract(width - 1, width - 1, result)
+    v = z3.And(sx == sy, sr != sx)
+    return ("arm64flags", n, z, c, v)
+
+
+def _s390x_condition(condition, flags):
+    """Evaluate an S390X condition mask against (lt, eq, gt, unordered) flags."""
+    if not (isinstance(flags, tuple) and flags[0] == "s390flags"):
+        raise Unsupported("condition on a non-S390X flags value")
+    if condition is None:
+        raise Unsupported("S390X branch or conditional select has no condition mask")
+    cond = str(condition).removeprefix("s390x.")
+    mask = int(cond) if cond.isdigit() else S390X_CONDITIONS.get(cond)
+    if mask is None:
+        raise Unsupported(f"unknown S390X condition {condition}")
+    _, lt, eq, gt, unordered = flags
+    terms = []
+    if mask & 8:
+        terms.append(eq)
+    if mask & 4:
+        terms.append(lt)
+    if mask & 2:
+        terms.append(gt)
+    if mask & 1:
+        terms.append(unordered)
+    return z3.Or(*terms) if terms else z3.BoolVal(False, eq.ctx)
+
 
 def _flags(l, r, signed):
     """A ppc64 condition-register field: (lt, gt, eq)."""
@@ -359,6 +471,23 @@ class _Enc:
         elif self.arch == "amd64" and b.kind in X86_CONDS:
             c = _xcond(b.kind, self.enc(b.controls[0]))
             outs = [z3.And(r, c), z3.And(r, z3.Not(c))]
+        elif self.arch == "s390x" and b.kind in S390X_BRANCHES:
+            c = self._s390x_branch(b, [self.enc(x) for x in b.controls])
+            outs = [z3.And(r, c), z3.And(r, z3.Not(c))]
+        elif self.arch == "arm64" and b.kind in ARM64_BLOCK_CONDITIONS:
+            c = _arm64_condition(ARM64_BLOCK_CONDITIONS[b.kind], self.enc(b.controls[0]))
+            outs = [z3.And(r, c), z3.And(r, z3.Not(c))]
+        elif self.arch == "arm64" and b.kind in ("Z", "NZ", "ZW", "NZW"):
+            x = self.enc(b.controls[0])
+            x = z3.Extract(31, 0, x) if b.kind in ("ZW", "NZW") else x
+            c = x == self.bv(0, x.size())
+            if b.kind in ("NZ", "NZW"):
+                c = z3.Not(c)
+            outs = [z3.And(r, c), z3.And(r, z3.Not(c))]
+        elif self.arch == "arm64" and b.kind in ("TBZ", "TBNZ"):
+            bit = z3.Extract(int(b.auxint), int(b.auxint), self.enc(b.controls[0])) == 1
+            c = z3.Not(bit) if b.kind == "TBZ" else bit
+            outs = [z3.And(r, c), z3.And(r, z3.Not(c))]
         elif b.kind in FLAG_BLOCKS and self.lowered:
             c = _cond(FLAG_BLOCKS[b.kind], self.enc(b.controls[0]))
             outs = [z3.And(r, c), z3.And(r, z3.Not(c))]
@@ -373,6 +502,30 @@ class _Enc:
             k = seen.get(s, 0)
             seen[s] = k + 1
             self.edges[(b.name, s, k)] = cond
+
+    def _s390x_branch(self, block, ctl):
+        if block.kind == "BRC":
+            return _s390x_condition(block.aux, ctl[0])
+        widths = {"CRJ": (32, True), "CGRJ": (64, True), "CLRJ": (32, False), "CLGRJ": (64, False),
+                  "CIJ": (32, True), "CGIJ": (64, True), "CLIJ": (32, False), "CLGIJ": (64, False)}
+        width, signed = widths[block.kind]
+        lhs = ctl[0]
+        if block.kind in ("CRJ", "CGRJ", "CLRJ", "CLGRJ"):
+            rhs = ctl[1]
+        else:
+            imm = int(block.auxint)
+            imm_width = 8
+            imm = imm & ((1 << imm_width) - 1)
+            if signed and imm & (1 << (imm_width - 1)):
+                imm -= 1 << imm_width
+            rhs = self.bv(imm & ((1 << width) - 1), 64)
+        lhs, rhs = z3.Extract(width - 1, 0, lhs), z3.Extract(width - 1, 0, rhs)
+        if signed:
+            lhs, rhs = z3.SignExt(64 - width, lhs), z3.SignExt(64 - width, rhs)
+            lt, gt = lhs < rhs, lhs > rhs
+        else:
+            lt, gt = z3.ULT(lhs, rhs), z3.UGT(lhs, rhs)
+        return _s390x_condition(block.aux, ("s390flags", lt, lhs == rhs, gt, z3.BoolVal(False, self.ctx)))
 
     def oblige(self, v, what, ok):
         self.obl.append((v, what, z3.And(self.reach[v.block], z3.Not(ok))))
@@ -416,6 +569,10 @@ class _Enc:
             return z3.Bool(f"cpu_{v.aux}", self.ctx)
         if self.arch == "amd64" and op in AMD64_OPS:
             return self._amd64(v, a)
+        if self.arch == "arm64" and op in ARM64_OPS:
+            return self._arm64(v, a)
+        if self.arch == "s390x" and op in S390X_OPS:
+            return self._s390x(v, a)
         if self.arch == "riscv64" and op in RISCV64_OPS:
             return self._riscv64(v, a)
         if self.arch == "loong64" and op in LOONG64_OPS:
@@ -423,7 +580,7 @@ class _Enc:
         if self.arch in ("ppc64", "ppc64le") and op in PPC64_OPS:
             return self._ppc64(v, a)
         if op in ("Arg", "ArgIntReg"):
-            if self._width(v) != 64:
+            if self._width(v) != 64 and op != "ArgIntReg":
                 raise Unsupported("non-64-bit parameter")
             return self.param(v.aux.split("+")[0])
         if op == "Copy":
@@ -830,6 +987,241 @@ class _Enc:
             r = z3.If(z3.Extract(i, i, val) == 1, self.bv(i, 64), r)
         return r
 
+    # ---- s390x (lowered passes): 64-bit registers, condition-code flags
+    def _s390x(self, v, a):
+        op, aux, bv = v.op, v.auxint, self.bv
+        x = a[0] if a else None
+        y = a[1] if len(a) > 1 else None
+        lo = lambda w, val: z3.Extract(w - 1, 0, val)  # noqa: E731
+
+        if op == "MOVDconst":
+            return bv(int(aux) & M64, 64)
+        ext = {"MOVBreg": (8, True), "MOVBZreg": (8, False), "MOVHreg": (16, True), "MOVHZreg": (16, False),
+               "MOVWreg": (32, True), "MOVWZreg": (32, False)}
+        if op in ext:
+            w, signed = ext[op]
+            part = lo(w, x)
+            return (z3.SignExt if signed else z3.ZeroExt)(64 - w, part)
+        if op in ("MOVDreg", "MOVDnop"):
+            return x
+        if op in ("FlagEQ", "FlagLT", "FlagGT", "FlagOV"):
+            eq = z3.BoolVal(op == "FlagEQ", self.ctx)
+            lt = z3.BoolVal(op == "FlagLT", self.ctx)
+            gt = z3.BoolVal(op == "FlagGT", self.ctx)
+            ov = z3.BoolVal(op == "FlagOV", self.ctx)
+            return ("s390flags", lt, eq, gt, ov)
+        if op == "InvertFlags":
+            if not (isinstance(x, tuple) and x[0] == "s390flags"):
+                raise Unsupported("InvertFlags of a non-S390X flags value")
+            _, lt, eq, gt, ov = x
+            return ("s390flags", gt, eq, lt, ov)
+        if op in ("CMP", "CMPW", "CMPU", "CMPWU", "CMPconst", "CMPWconst", "CMPUconst", "CMPWUconst"):
+            width = 32 if op in ("CMPW", "CMPWU", "CMPWconst", "CMPWUconst") else 64
+            signed = op in ("CMP", "CMPW", "CMPconst", "CMPWconst")
+            lhs = lo(width, x)
+            if op.endswith("const"):
+                immediate = int(aux)
+                if op in ("CMPUconst", "CMPWUconst"):
+                    immediate &= 0xFFFFFFFF
+                else:
+                    immediate &= (1 << width) - 1
+                rhs = bv(immediate, width)
+            else:
+                rhs = lo(width, y)
+            if signed:
+                lt, gt = lhs < rhs, lhs > rhs
+            else:
+                lt, gt = z3.ULT(lhs, rhs), z3.UGT(lhs, rhs)
+            return ("s390flags", lt, lhs == rhs, gt, z3.BoolVal(False, self.ctx))
+        if op == "LOCGR":
+            cond = _s390x_condition(v.aux, a[2])
+            return z3.If(cond, y, x)
+
+        binary = {"ADD": lambda: x + y, "SUB": lambda: x - y, "AND": lambda: x & y, "OR": lambda: x | y,
+                  "XOR": lambda: x ^ y, "MULLD": lambda: x * y, "ADDconst": lambda: x + bv(int(aux), 64),
+                  "SUBconst": lambda: x - bv(int(aux), 64), "ANDconst": lambda: x & bv(int(aux), 64),
+                  "ORconst": lambda: x | bv(int(aux), 64), "XORconst": lambda: x ^ bv(int(aux), 64),
+                  "MULLDconst": lambda: x * bv(int(aux), 64)}
+        if op in binary:
+            return binary[op]()
+        if op in ("NEG", "NOT"):
+            return -x if op == "NEG" else ~x
+        word_binary = {"ADDW": lambda: lo(32, x) + lo(32, y), "SUBW": lambda: lo(32, x) - lo(32, y),
+                       "ANDW": lambda: lo(32, x) & lo(32, y), "ORW": lambda: lo(32, x) | lo(32, y),
+                       "XORW": lambda: lo(32, x) ^ lo(32, y), "MULLW": lambda: lo(32, x) * lo(32, y),
+                       "ADDWconst": lambda: lo(32, x) + bv(int(aux) & 0xFFFFFFFF, 32),
+                       "SUBWconst": lambda: lo(32, x) - bv(int(aux) & 0xFFFFFFFF, 32),
+                       "ANDWconst": lambda: lo(32, x) & bv(int(aux) & 0xFFFFFFFF, 32),
+                       "ORWconst": lambda: lo(32, x) | bv(int(aux) & 0xFFFFFFFF, 32),
+                       "XORWconst": lambda: lo(32, x) ^ bv(int(aux) & 0xFFFFFFFF, 32),
+                       "MULLWconst": lambda: lo(32, x) * bv(int(aux) & 0xFFFFFFFF, 32)}
+        if op in word_binary:
+            return z3.ZeroExt(32, word_binary[op]())
+        if op in ("NEGW", "NOTW"):
+            return z3.ZeroExt(32, -lo(32, x) if op == "NEGW" else ~lo(32, x))
+        raise Unsupported(f"s390x op {op}")
+
+    # ---- arm64 (lowered passes): 64-bit general-purpose registers
+    def _arm64(self, v, a):
+        op, aux, bv = v.op, v.auxint, self.bv
+        x = a[0] if a else None
+        y = a[1] if len(a) > 1 else None
+        if op == "ZERO":
+            return bv(0, 64)
+        if op == "MOVDconst":
+            return bv(int(aux) & M64, 64)
+        if op == "MOVDreg":
+            return x
+        if op == "MOVDnop":
+            return x
+        extensions = {"MOVBreg": (8, True), "MOVBUreg": (8, False), "MOVHreg": (16, True),
+                      "MOVHUreg": (16, False), "MOVWreg": (32, True), "MOVWUreg": (32, False)}
+        if op in extensions:
+            if z3.is_bool(x):
+                return z3.If(x, bv(1, 64), bv(0, 64))
+            width, signed = extensions[op]
+            part = z3.Extract(width - 1, 0, x)
+            return (z3.SignExt if signed else z3.ZeroExt)(64 - width, part)
+        if op in ("ADD", "SUB", "MUL", "AND", "OR", "XOR", "BIC", "EON", "ORN"):
+            return {"ADD": lambda: x + y, "SUB": lambda: x - y, "MUL": lambda: x * y,
+                    "AND": lambda: x & y, "OR": lambda: x | y, "XOR": lambda: x ^ y,
+                    "BIC": lambda: x & ~y, "EON": lambda: x ^ ~y, "ORN": lambda: x | ~y}[op]()
+        if op in ("ADDconst", "SUBconst", "ANDconst", "ORconst", "XORconst"):
+            c = bv(int(aux) & M64, 64)
+            return {"ADDconst": lambda: x + c, "SUBconst": lambda: x - c, "ANDconst": lambda: x & c,
+                    "ORconst": lambda: x | c, "XORconst": lambda: x ^ c}[op]()
+        if op == "MVN":
+            # A bool reaching a bitwise op is represented as the integer 0/1.
+            if z3.is_bool(x):
+                x = z3.If(x, bv(1, 64), bv(0, 64))
+            return ~x
+        if op == "NEG":
+            return -x
+        if op in ("CMP", "CMPW", "CMPconst", "CMPWconst", "CMPshiftLL", "CMPshiftRL", "CMPshiftRA"):
+            width = 32 if op in ("CMPW", "CMPWconst") else 64
+            lhs = z3.Extract(width - 1, 0, x)
+            if op.endswith("const"):
+                rhs = bv(int(aux) & ((1 << width) - 1), width)
+            else:
+                rhs = z3.Extract(width - 1, 0, y)
+                if "shift" in op:
+                    count = bv(int(aux), width)
+                    rhs = rhs << count if op == "CMPshiftLL" else z3.LShR(rhs, count) if op == "CMPshiftRL" else rhs >> count
+            return _arm64_subflags(lhs, rhs)
+        if op in ("CMN", "CMNconst", "CMNW", "CMNWconst"):
+            width = 32 if op in ("CMNW", "CMNWconst") else 64
+            lhs = z3.Extract(width - 1, 0, x)
+            rhs = bv(int(aux) & ((1 << width) - 1), width) if op.endswith("const") else z3.Extract(width - 1, 0, y)
+            return _arm64_addflags(lhs, rhs)
+        if op in ("TST", "TSTconst", "TSTWconst"):
+            width = 32 if op == "TSTWconst" else 64
+            if z3.is_bool(x):
+                x = z3.If(x, bv(1, 64), bv(0, 64))
+            lhs = z3.Extract(width - 1, 0, x)
+            mask = bv(int(aux) & ((1 << width) - 1), width) if op.endswith("const") else z3.Extract(width - 1, 0, y)
+            result = lhs & mask
+            return ("arm64flags", z3.Extract(width - 1, width - 1, result) == 1,
+                    result == bv(0, width), z3.BoolVal(False, self.ctx),
+                    z3.BoolVal(False, self.ctx))
+        if op == "FlagConstant":
+            value = int(aux) & 15
+            return ("arm64flags", z3.BoolVal(bool(value & 1), self.ctx), z3.BoolVal(bool(value & 2), self.ctx),
+                    z3.BoolVal(bool(value & 4), self.ctx), z3.BoolVal(bool(value & 8), self.ctx))
+        if op in ARM64_CONDITIONS:
+            return _arm64_condition(op, x)
+        if op in ("CSEL", "CSEL0", "CSINV", "CSINC", "CSNEG", "CSETM"):
+            if op == "CSETM":
+                cond = _arm64_condition(aux, x)
+                return z3.If(cond, bv(M64, 64), bv(0, 64))
+            cond = _arm64_condition(aux, a[2] if op != "CSEL0" else a[1])
+            if op == "CSEL0":
+                return z3.If(cond, x, bv(0, 64))
+            if op == "CSINV":
+                return z3.If(cond, x, ~y)
+            if op == "CSINC":
+                return z3.If(cond, x, y + bv(1, 64))
+            if op == "CSNEG":
+                return z3.If(cond, x, -y)
+            return z3.If(cond, x, y)
+        if op in ("Equal", "NotEqual", "LessThan", "LessEqual", "GreaterThan", "GreaterEqual", "LessThanU",
+                  "LessEqualU", "GreaterThanU", "GreaterEqualU", "LessThanNoov", "LessEqualNoov",
+                  "GreaterThanNoov", "GreaterEqualNoov"):
+            return _arm64_condition(op, x)
+        if op == "SBFX":
+            bitfield = re.fullmatch(r"lsb=(\d+),width=(\d+)", str(aux))
+            if bitfield:
+                lsb, width = map(int, bitfield.groups())
+            else:
+                lsb, width = (int(aux) >> 8) & 0xFF, int(aux) & 0xFF
+            part = z3.Extract(lsb + width - 1, lsb, x)
+            return z3.SignExt(64 - width, part)
+        if op in ("UBFX", "UBFIZ"):
+            bitfield = re.fullmatch(r"lsb=(\d+),width=(\d+)", str(aux))
+            if bitfield:
+                lsb, width = map(int, bitfield.groups())
+            else:
+                lsb, width = (int(aux) >> 8) & 0xFF, int(aux) & 0xFF
+            if op == "UBFX":
+                return z3.ZeroExt(64 - width, z3.Extract(lsb + width - 1, lsb, x))
+            return z3.ZeroExt(64 - width, z3.Extract(width - 1, 0, x)) << bv(lsb, 64)
+        if op == "RORWconst":
+            count = int(aux) & 31
+            part = z3.Extract(31, 0, x)
+            rotated = part if count == 0 else z3.Concat(z3.Extract(count - 1, 0, part),
+                                                         z3.Extract(31, count, part))
+            return z3.ZeroExt(32, rotated)
+        if op == "SUBshiftLL":
+            return x - (y << z3.BitVecVal(int(aux), 64, self.ctx))
+        if op in ("ADDshiftLL", "ADDshiftRL", "ADDshiftRA", "SUBshiftRL", "SUBshiftRA",
+                  "NEGshiftLL", "NEGshiftRL", "NEGshiftRA"):
+            count = bv(int(aux), 64)
+            source = x if op.startswith("NEG") else y
+            shifted = source << count if op.endswith("LL") else z3.LShR(source, count) if op.endswith("RL") else source >> count
+            if op.startswith("NEG"):
+                return -shifted
+            return x + shifted if op.startswith("ADD") else x - shifted
+        if op in ("MULW", "MADDW", "MSUBW"):
+            a0, a1 = z3.Extract(31, 0, x), z3.Extract(31, 0, y)
+            product = a0 * a1
+            if op == "MADDW":
+                result = z3.Extract(31, 0, x) + z3.Extract(31, 0, a[2]) * a1
+            elif op == "MSUBW":
+                result = z3.Extract(31, 0, x) - z3.Extract(31, 0, a[2]) * a1
+            else:
+                result = product
+            return z3.ZeroExt(32, z3.Extract(31, 0, result))
+        if op in ("MNEG", "MNEGW"):
+            width = 32 if op == "MNEGW" else 64
+            lhs, rhs = z3.Extract(width - 1, 0, x), z3.Extract(width - 1, 0, y)
+            result = -lhs * rhs
+            return z3.ZeroExt(64 - width, result) if width < 64 else result
+        if op in ("DIV", "UDIV", "DIVW", "UDIVW", "MOD", "UMOD", "MODW", "UMODW"):
+            width = 32 if op.endswith("W") else 64
+            lhs, rhs = z3.Extract(width - 1, 0, x), z3.Extract(width - 1, 0, y)
+            unsigned, ismod = op.startswith("U"), op.startswith(("MOD", "UMOD"))
+            if unsigned:
+                result = z3.URem(lhs, rhs) if ismod else z3.UDiv(lhs, rhs)
+            else:
+                result = z3.SRem(lhs, rhs) if ismod else lhs / rhs
+            result = z3.If(rhs == bv(0, width), bv(0, width), result)
+            return z3.ZeroExt(64 - width, result) if width < 64 else result
+        if op in ("MADD", "MSUB"):
+            # ARM64's three-operand SSA order is (accumulator, lhs, rhs).
+            # MADD computes a + x*y; MSUB computes a - x*y.
+            product = y * a[2]
+            return x + product if op == "MADD" else x - product
+        if op in ("RBIT", "RBITW"):
+            width = 32 if op == "RBITW" else 64
+            result = z3.Concat(*[z3.Extract(i, i, x) for i in range(width)])
+            return z3.ZeroExt(64 - width, result) if width < 64 else result
+        shifts = {"SLL": "left", "SLLconst": "left", "SRL": "logical", "SRLconst": "logical",
+                  "SRA": "arithmetic", "SRAconst": "arithmetic"}
+        if op in shifts:
+            count = bv(int(aux), 64) if op.endswith("const") else y
+            n = z3.ZeroExt(58, z3.Extract(5, 0, count))
+            return x << n if shifts[op] == "left" else z3.LShR(x, n) if shifts[op] == "logical" else x >> n
+        raise Unsupported(f"arm64 op {op}")
+
     # ---- riscv64 (lowered passes): 64-bit registers, W ops sign-extend 32-bit results
     def _riscv64(self, v, a):
         op, aux, bv = v.op, v.auxint, self.bv
@@ -1215,7 +1607,9 @@ class _Enc:
                 if mr.op != "MakeResult" or len(mr.args) != 2:
                     raise Unsupported("result shape")
                 r = self.enc(mr.args[0])
-                if r.size() != 64:
+                if z3.is_bool(r):
+                    r = z3.If(r, self.bv(1, 64), self.bv(0, 64))
+                elif r.size() != 64:
                     raise Unsupported("non-64-bit result")
                 kind = z3.If(self.reach[b.name], self.bv(0, 8), kind)
                 val = z3.If(self.reach[b.name], r, val)
@@ -1511,7 +1905,7 @@ def main(argv=None):
         p.add_argument("--timeout-ms", type=int, default=20000, help="per solver query")
         p.add_argument("--gcflags", default="", help='extra compiler flags, e.g. "-N -l"')
         p.add_argument("--lowered", action="store_true",
-                       help="also check the lowered passes up to regalloc (amd64, loong64, ppc64, ppc64le, riscv64)")
+                       help="also check the lowered passes up to regalloc (amd64, arm64, loong64, ppc64, ppc64le, riscv64, s390x)")
         if name == "check":
             p.add_argument("file")
             p.add_argument("--funcs")

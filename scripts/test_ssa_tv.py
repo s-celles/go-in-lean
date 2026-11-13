@@ -109,6 +109,182 @@ d func(uint64, uint64) uint64
 """
 
 
+S390X_PRE = """\
+szLessB func(int8) bool
+  b1:
+    (?) v1 = InitMem <mem>
+    (+2) v6 = ArgIntReg <int8> {y+0} [0] (y[int8])
+    (+2) v8 = SignExt8to64 <uint64> v6
+    (?) v9 = Const64 <uint64> [4294967295]
+    (2) v10 = Less64U <bool> v8 v9
+    (2) v11 = MakeResult <bool,mem> v10 v1
+    Ret v11
+name y[int8]: [v6]
+"""
+
+S390X_LOWER = """\
+szLessB func(int8) bool
+  b1:
+    (?) v1 = InitMem <mem>
+    (+2) v6 = ArgIntReg <int8> {y+0} [0] (y[int8])
+    (+2) v8 = MOVBreg <uint64> v6
+    (2) v3 = MOVDconst <uint64> [0]
+    (2) v4 = MOVDconst <uint64> [1]
+    (2) v5 = CMPWUconst <flags> [-1] v8
+    (2) v10 = LOCGR <bool> {Less} v3 v4 v5
+    (2) v11 = MakeResult <bool,mem> v10 v1
+    Ret v11
+name y[int8]: [v6]
+"""
+
+S390X_CLEAN = S390X_LOWER.replace("CMPWUconst", "CMPUconst")
+
+S390X_BRANCH = """\
+s390Branch func(uint64) uint64
+  b1:
+    (?) v1 = InitMem <mem>
+    (2) v7 = ArgIntReg <uint64> {x+0} [0] (x[uint64])
+    (?) v8 = MOVDconst <uint64> [0]
+    (2) v9 = CMP <flags> v7 v8
+    BRC {Less} v9 -> b2 b3
+  b2: <- b1
+    (3) v10 = MOVDconst <uint64> [1]
+    (3) v11 = MakeResult <uint64,mem> v10 v1
+    Ret v11
+  b3: <- b1
+    (3) v12 = MOVDconst <uint64> [0]
+    (3) v13 = MakeResult <uint64,mem> v12 v1
+    Ret v13
+"""
+
+S390X_SRC = """\
+package main
+import (
+	"fmt"
+	"os"
+	"strconv"
+)
+
+func f0(x, y uint64) uint64 {
+	if uint64(int8(y)) < 0xFFFFFFFF { return 1 }
+	return 0
+}
+func f1(x, y uint64) uint64 {
+	if uint64(int16(y)) <= 0xFFFFFFF0 { return 1 }
+	return 0
+}
+func f2(x, y uint64) uint64 {
+	if uint64(int8(y)) < 0xFFFFFFFFFFFFFFFF { return 1 }
+	return 0
+}
+func f3(x, y uint64) uint64 { return (x + y) ^ (x & y) }
+
+func main() {
+	x, _ := strconv.ParseUint(os.Args[1], 0, 64)
+	y, _ := strconv.ParseUint(os.Args[2], 0, 64)
+	fmt.Printf("%d %d %d %d\\n", f0(x, y), f1(x, y), f2(x, y), f3(x, y))
+}
+"""
+
+ARM64_PRE = """\
+f0 func(int64, int64) int64
+  b1:
+    (?) v1 = InitMem <mem>
+    (+2) v6 = ArgIntReg <int64> {x+0} [0] (x[int64])
+    (+2) v7 = ArgIntReg <int64> {y+8} [1] (y[int64])
+    (+2) v8 = Com64 <int64> v7
+    (?) v9 = ConstBool <bool> [true]
+    (2) v10 = CondSelect <int64> v8 v6 v9
+    (2) v11 = MakeResult <int64,mem> v10 v1
+    Ret v11
+name x[int64]: [v6]
+name y[int64]: [v7]
+"""
+
+ARM64_BAD = """\
+f0 func(int64, int64) int64
+  b1:
+    (?) v1 = InitMem <mem>
+    (+2) v7 = ArgIntReg <int64> {y+8} [1] (y[int64])
+    (2) v8 = XORconst <int64> [1] v7
+    (2) v9 = MakeResult <int64,mem> v8 v1
+    Ret v9
+name y[int64]: [v7]
+"""
+
+ARM64_FIXED = ARM64_BAD.replace("XORconst <int64> [1]", "MVN <int64>")
+
+ARM64_BRANCH = """\
+arm64Branch func(int64) int64
+  b1:
+    (?) v1 = InitMem <mem>
+    (2) v2 = ArgIntReg <int64> {x+0} [0] (x[int64])
+    (2) v3 = CMPconst <flags> [0] v2
+    LT v3 -> b2 b3
+  b2: <- b1
+    (3) v4 = MOVDconst <int64> [1]
+    (3) v5 = MakeResult <int64,mem> v4 v1
+    Ret v5
+  b3: <- b1
+    (3) v6 = MOVDconst <int64> [0]
+    (3) v7 = MakeResult <int64,mem> v6 v1
+    Ret v7
+"""
+
+ARM64_MSUB = """\
+arm64Msub func(uint64, uint64, uint64) uint64
+  b1:
+    (?) v1 = InitMem <mem>
+    (2) v2 = ArgIntReg <uint64> {x+0} [0] (x[uint64])
+    (2) v3 = ArgIntReg <uint64> {y+8} [1] (y[uint64])
+    (2) v4 = ArgIntReg <uint64> {z+16} [2] (z[uint64])
+    (3) v5 = MSUB <uint64> v2 v3 v4
+    (3) v6 = MakeResult <uint64,mem> v5 v1
+    Ret v6
+name x[uint64]: [v2]
+name y[uint64]: [v3]
+name z[uint64]: [v4]
+"""
+
+ARM64_MADD = ARM64_MSUB.replace("arm64Msub", "arm64Madd").replace(" = MSUB ", " = MADD ")
+
+ARM64_MVN_BOOL = """\
+arm64MvnBool func(bool) uint64
+  b1:
+    (?) v1 = InitMem <mem>
+    (2) v2 = ArgIntReg <bool> {x+0} [0] (x[bool])
+    (3) v3 = MVN <int8> v2
+    (3) v4 = MOVBUreg <uint64> v3
+    (3) v5 = MakeResult <uint64,mem> v4 v1
+    Ret v5
+name x[bool]: [v2]
+"""
+
+ARM64_SRC = """\
+package main
+import (
+    "fmt"
+    "math/bits"
+    "os"
+    "strconv"
+)
+
+func f0(x, y int64) int64 {
+    r := x >> 33
+    if bits.OnesCount8(128) > 0 { r = ^y }
+    return r
+}
+func f1(x, y uint64) uint64 { return (x + y) ^ (x & y) }
+func f2(x int64) int64 { return x >> 33 }
+
+func main() {
+    x, _ := strconv.ParseInt(os.Args[1], 0, 64)
+    y, _ := strconv.ParseInt(os.Args[2], 0, 64)
+    fmt.Printf("%d %d %d\\n", f0(x, y), f1(uint64(x), uint64(y)), f2(x))
+}
+"""
+
+
 def v4_ref(x, y):
     """Go semantics of v4, for the evaluation tests."""
     def s(v, w):
@@ -202,6 +378,70 @@ s func(uint64, uint64) uint64
     def test_unsupported_op_raises(self):
         with self.assertRaises(tv.Unsupported):
             tv.evaluate(tv.parse_dump(BUILD.replace("Xor16", "Frobnicate16")), {"x": 1, "y": 2})
+
+
+@unittest.skipUnless(HAVE_Z3, "z3 module not available")
+class LoweredS390XModelTests(unittest.TestCase):
+    def test_s390x_sign_extension_compare_bug_is_reported_at_lower(self):
+        before = tv.parse_dump(S390X_PRE)
+        after = tv.parse_dump(S390X_LOWER)
+        rep = tv.validate([("writebarrier", S390X_PRE), ("lower", S390X_LOWER)], arch="s390x")
+        self.assertEqual([f["pass"] for f in rep["failures"]], ["lower"])
+        failure = rep["failures"][0]
+        self.assertEqual(failure["kind"], "equivalence")
+        self.assertEqual(failure["before_out"], ("ret", 0))
+        self.assertEqual(failure["after_out"], ("ret", 1))
+        self.assertEqual(tv.evaluate(before, {"y": 128}), ("ret", 0))
+        after.arch = "s390x"
+        self.assertEqual(tv.evaluate(after, {"y": 128}), ("ret", 1))
+
+    def test_s390x_wide_compare_has_no_report(self):
+        rep = tv.validate([("writebarrier", S390X_PRE), ("lower", S390X_CLEAN)], arch="s390x")
+        self.assertEqual((rep["failures"], rep["unsupported"]), ([], None))
+
+    def test_s390x_branch_condition(self):
+        f = tv.parse_dump(S390X_BRANCH)
+        f.arch = "s390x"
+        self.assertEqual(f.block("b1").aux, "Less")
+        self.assertEqual(tv.evaluate(f, {"x": 0}), ("ret", 0))
+        self.assertEqual(tv.evaluate(f, {"x": M64}), ("ret", 1))
+
+
+@unittest.skipUnless(HAVE_Z3, "z3 module not available")
+class LoweredARM64ModelTests(unittest.TestCase):
+    def test_madd_msub_accumulator_is_first_operand(self):
+        madd = tv.parse_dump(ARM64_MADD)
+        msub = tv.parse_dump(ARM64_MSUB)
+        madd.arch = msub.arch = "arm64"
+        self.assertEqual(tv.evaluate(madd, {"x": 2, "y": 3, "z": 4}), ("ret", 14))
+        self.assertEqual(tv.evaluate(msub, {"x": 2, "y": 3, "z": 4}), ("ret", M64 - 9))
+
+    def test_mvn_converts_bool_to_integer_before_complement(self):
+        f = tv.parse_dump(ARM64_MVN_BOOL)
+        f.arch = "arm64"
+        self.assertEqual(tv.evaluate(f, {"x": 0}), ("ret", 255))
+        self.assertEqual(tv.evaluate(f, {"x": 1}), ("ret", 254))
+
+    def test_csinv_not_miscompile_is_reported_at_lower(self):
+        rep = tv.validate([("writebarrier", ARM64_PRE), ("lower", ARM64_BAD)], arch="arm64")
+        self.assertEqual([f["pass"] for f in rep["failures"]], ["lower"])
+        failure = rep["failures"][0]
+        self.assertEqual(failure["kind"], "equivalence")
+        self.assertNotEqual(failure["before_out"], failure["after_out"])
+        self.assertEqual(tv.evaluate(tv.parse_dump(ARM64_PRE), {"x": 0, "y": 2}), ("ret", M64 - 2))
+        bad = tv.parse_dump(ARM64_BAD)
+        bad.arch = "arm64"
+        self.assertEqual(tv.evaluate(bad, {"x": 0, "y": 2}), ("ret", 3))
+
+    def test_mvn_fix_has_no_report(self):
+        rep = tv.validate([("writebarrier", ARM64_PRE), ("lower", ARM64_FIXED)], arch="arm64")
+        self.assertEqual((rep["failures"], rep["unsupported"]), ([], None))
+
+    def test_signed_arm64_condition_branch(self):
+        f = tv.parse_dump(ARM64_BRANCH)
+        f.arch = "arm64"
+        self.assertEqual(tv.evaluate(f, {"x": M64}), ("ret", 1))
+        self.assertEqual(tv.evaluate(f, {"x": 1}), ("ret", 0))
 
 
 @unittest.skipUnless(HAVE_Z3, "z3 module not available")
@@ -708,6 +948,120 @@ class LoweredLOONG64Tests(unittest.TestCase):
                 self.assertEqual(rep["failures"], [], (fl, f"f{i}"))
                 if not (fl and i in (3, 9)):
                     self.assertIsNone(rep["unsupported"], (fl, f"f{i}"))
+
+
+@unittest.skipUnless(HAVE_Z3 and GO, "z3 module or go not available")
+class LoweredS390XTests(unittest.TestCase):
+    """Lowered s390x operations, compared with the same Go functions on native amd64."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = Path(tempfile.mkdtemp(prefix="ssa_tv_s390x_"))
+        (cls.tmp / "main.go").write_text(S390X_SRC)
+        (cls.tmp / "go.mod").write_text("module s390test\n\ngo 1.22\n")
+        subprocess.run([GO, "build", "-buildvcs=false", "-o", "prog", "."], cwd=cls.tmp, check=True)
+        names = [f"f{i}" for i in range(4)]
+        # The s390x model currently covers optimized register SSA. Debug builds
+        # retain stack MOVDstore operations that are not modelled here.
+        cls.dumps = {"": tv.dump_passes(GO, cls.tmp, names, "s390x", lowered=True)}
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.tmp, ignore_errors=True)
+
+    def _native(self, x, y):
+        out = subprocess.run([str(self.tmp / "prog"), str(x), str(y)], capture_output=True,
+                             text=True, check=True).stdout.split()
+        return [int(v) for v in out]
+
+    def test_native_evaluation_matches_s390x_model_on_clean_functions(self):
+        rng = random.Random(17)
+        pts = [(0, 0), (M64, M64), (1 << 63, 0x80), (0x7FFFFFFF, 0xFFFFFFF0)]
+        pts += [(rng.getrandbits(64), rng.getrandbits(64)) for _ in range(5)]
+        for x, y in pts:
+            out = self._native(x, y)
+            for fl, dumps in self.dumps.items():
+                for i in (2, 3):
+                    for name in ("lower", "flagalloc"):
+                        f = tv.parse_dump(dict(dumps[f"f{i}"])[name])
+                        f.arch = "s390x"
+                        self.assertEqual(tv.evaluate(f, {"x": x, "y": y}), ("ret", out[i]),
+                                         (fl, f"f{i}", name, x, y))
+
+    def test_known_bug_site_or_fixed_toolchain(self):
+        version = subprocess.run([GO, "version"], capture_output=True, text=True, check=True).stdout
+        for fl, dumps in self.dumps.items():
+            for i in (0, 1):
+                rep = tv.validate(dumps[f"f{i}"], arch="s390x")
+                if any(v in version for v in ("go1.26", "go1.27", "56ae71df05")):
+                    eq = [f for f in rep["failures"] if f["kind"] == "equivalence"]
+                    self.assertEqual([f["pass"] for f in eq], ["lower"], (version, fl, f"f{i}"))
+                else:
+                    self.assertEqual((rep["failures"], rep["unsupported"]), ([], None),
+                                     (version, fl, f"f{i}"))
+
+    def test_no_report_on_correct_functions(self):
+        for fl, dumps in self.dumps.items():
+            for i in (2, 3):
+                rep = tv.validate(dumps[f"f{i}"], arch="s390x")
+                self.assertEqual((rep["failures"], rep["unsupported"]), ([], None), (fl, f"f{i}"))
+
+
+@unittest.skipUnless(HAVE_Z3 and GO, "z3 module or go not available")
+class LoweredARM64Tests(unittest.TestCase):
+    """Lowered arm64 operations, compared with the same Go functions on native amd64."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = Path(tempfile.mkdtemp(prefix="ssa_tv_arm64_"))
+        (cls.tmp / "main.go").write_text(ARM64_SRC)
+        (cls.tmp / "go.mod").write_text("module arm64test\n\ngo 1.22\n")
+        subprocess.run([GO, "build", "-buildvcs=false", "-o", "prog", "."], cwd=cls.tmp, check=True)
+        cls.dumps = tv.dump_passes(GO, cls.tmp, ["f0", "f1", "f2"], "arm64", lowered=True)
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.tmp, ignore_errors=True)
+
+    def _native(self, x, y):
+        out = subprocess.run([str(self.tmp / "prog"), str(x), str(y)], capture_output=True,
+                             text=True, check=True).stdout.split()
+        return [int(v) for v in out]
+
+    def test_native_evaluation_matches_arm64_model_on_clean_functions(self):
+        rng = random.Random(23)
+        pts = [(0, 0), (-1, 2), (-(1 << 63), -1), ((1 << 62) - 1, -(1 << 62))]
+        pts += [(rng.randint(-(1 << 63), (1 << 63) - 1), rng.randint(-(1 << 63), (1 << 63) - 1))
+                for _ in range(5)]
+        for x, y in pts:
+            out = self._native(x, y)
+            for i in (1, 2):
+                for stage in ("lower", "flagalloc"):
+                    f = tv.parse_dump(dict(self.dumps[f"f{i}"])[stage])
+                    f.arch = "arm64"
+                    self.assertEqual(tv.evaluate(f, {"x": x, "y": y}), ("ret", out[i] & M64),
+                                     (f"f{i}", stage, x, y))
+
+    def test_known_bug_site_or_fixed_toolchain(self):
+        version = subprocess.run([GO, "version"], capture_output=True, text=True, check=True).stdout
+        lower = dict(self.dumps["f0"])["lower"]
+        rep = tv.validate([("writebarrier", ARM64_PRE), ("lower", lower)], arch="arm64")
+        model = tv.parse_dump(lower)
+        model.arch = "arm64"
+        value = tv.evaluate(model, {"x": 0, "y": 2})
+        native = self._native(0, 2)[0]
+        if "go1.27" in version or "56ae71df05" in version:
+            eq = [f for f in rep["failures"] if f["kind"] == "equivalence"]
+            self.assertEqual([f["pass"] for f in eq], ["lower"], (version, rep))
+            self.assertEqual((value, native & M64), (("ret", 3), M64 - 2), version)
+        else:
+            self.assertEqual((rep["failures"], rep["unsupported"]), ([], None), (version, rep))
+            self.assertEqual(value, ("ret", native & M64), (version, value, native))
+
+    def test_no_report_on_correct_functions(self):
+        for i in (1, 2):
+            rep = tv.validate(self.dumps[f"f{i}"], arch="arm64")
+            self.assertEqual((rep["failures"], rep["unsupported"]), ([], None), f"f{i}")
 
 
 if __name__ == "__main__":

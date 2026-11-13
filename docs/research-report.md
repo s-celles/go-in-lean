@@ -761,7 +761,7 @@ a bit field, `ADDshiftLLV`, and the `ZERO` register. One assumption is explicit:
 `MinInt / -1` relies on the hardware and is modelled with the Go result. It finds #82773,
 still open on loong64, at `lower` on the three reproducers with go1.27.3, optimized and `-N -l`.
 
-**Limits.** Generic passes only, except for ppc64, amd64, riscv64 and loong64; functions with memory operations (the `panics` suite, with
+**Limits.** Generic passes only, except for ppc64, amd64, riscv64, loong64, s390x and arm64; functions with memory operations (the `panics` suite, with
 `defer`/`recover`), loops, tuples or 32-bit decomposition (`Int64Make` on 386, arm, mips)
 are skipped. The build cache must be defeated without rebuilding the standard library: a
 fixed `GOSSADIR` per process and a nonce file in the package make each build recompile only
@@ -841,6 +841,39 @@ riscv64 had no reports. The driver did not freeze; no `nixbld` process was obser
 sampled host loads remained below 12. All cases match already-tracked compiler issues; this
 sweep found no new defect.
 
+### 3.20 Iteration 15: lowered s390x validation
+
+`ssa_tv.py --lowered` now models the s390x
+register operations and condition codes used by this search, including the compare and
+conditional-select path in golang/go#82774. Its directed tests reproduce that mismatch at
+`lower` with go1.27.3, show no report for a 64-bit compare, and agree with native amd64
+evaluation on clean s390x functions. Tip no longer triggers #82774. The integration tests
+cover optimized builds; `-N -l` retains s390x stack `MOVDstore` operations that this model
+does not yet support.
+
+On OPTIPLEX7010, seed 20261124, the optimized `ext` and `core` suites each ran 60 programs
+with go1.27.3 and tip (four jobs, `MemoryMax=8G`, `nice -n 19`, `ionice -c3`). The 2,400
+function checks compared 15,636 pass pairs: zero reports, 718 unsupported functions and 22
+solver timeouts. This search found no new defect. The generated runs and directed tests
+reproduced the expected status of #82774 only.
+
+### 3.21 Iteration 16: lowered arm64 validation
+
+`ssa_tv.py --lowered` now models the ARM64 integer operations, NZCV conditions and
+conditional selects used by the generated programs. Directed tests reproduce
+golang/go#82777, the constant-condition `CSINV` mismatch, on go1.27.3 and on the
+installed tip snapshot (built 2026-11-03, before the fix merged on 2026-11-05).
+Clean functions agree with native amd64 evaluation.
+
+The first generated runs exposed two mistakes in the validator model rather than
+compiler defects: ARM64 `MADD`/`MSUB` take the accumulator as their first SSA
+operand, and `MVN` must treat a bool input as integer 0/1 before complementing
+it. After correcting both and adding regression tests, I replayed all 15 initial
+reports and the one report from the intermediate `core` run; none reproduced.
+The final go1.27.3 sweep (seed 20261125, 60 `core` and 60 `ext` programs) checked
+1,200 functions and 9,237 pass pairs. It produced zero reports, with 39 unsupported
+functions and 31 solver timeouts. This search found no new defect.
+
 ## 4. Success criteria check
 
 | # | Criterion | Status |
@@ -875,8 +908,8 @@ sweep found no new defect.
    growth is simplified to the minimum (Go rounds to size classes).
 5. **Compiler rules** are checked as equations, outside the matcher, rule
    ordering, fact propagation and panic edges; `isNonNegative` is assumed,
-   not derived. Architecture-specific lowering rules, where recent
-   miscompiles cluster, are not modelled.
+   not derived. `ssa_tv.py` models selected lowered operations on seven 64-bit
+   architectures; most architecture-specific lowering rules remain unmodelled.
 6. **Review depth.** One independent reviewer agent run covered `math/bits`
    only; the slices and compiler models have not been reviewed
    independently.

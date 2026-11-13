@@ -12,6 +12,12 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- `scripts/ssa_tv.py --lowered` support for ARM64 integer ops, NZCV conditions and conditional selects. Directed tests reproduce golang/go#82777; after correcting two validator-model errors, the `core`/`ext` sweep reported no new defect (`docs/research-report.md` 3.21).
+- `scripts/ssa_tv.py --lowered` support for s390x compare, condition-code, conditional-select
+  and integer register operations. Directed tests detect the known #82774 mismatch on
+  go1.27.3 and agree with native evaluation on clean functions; an optimized `core`/`ext`
+  search of 2,400 function checks on OPTIPLEX7010 produced no new report
+  (`docs/research-report.md` 3.20).
 - Follow-up `ext` symbolic sweep on OPTIPLEX7010 (seed 20261123): 60 programs across
   amd64, ppc64le power8/power10, loong64 and riscv64, with go1.27.3 and tip, under
   `-N -l` (6,000 function checks, 34,120 pass pairs). It reproduced only tracked issues
