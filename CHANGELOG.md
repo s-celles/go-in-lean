@@ -12,6 +12,14 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- Campaign 5 of `ssa_tv.py --lowered` on OPTIPLEX7010 (seed 20261126): `core`/`bits` under
+  `-N -l` on amd64, ppc64le, loong64 and riscv64, `bits` on arm64 and s390x, arm64 with tip;
+  about 13,200 function checks, no report (`docs/research-report.md` 3.19).
+- ARM64 stack accesses in `scripts/ssa_tv.py --lowered`, including signed/unsigned
+  loads, partial stores and `MOVDaddr`, so `--gcflags "-N -l"` can validate debug
+  builds. A go1.27.4 search on VASSIVIERE checked 1,800 generated functions across
+  `core`, `ext` and `bits`, optimized and debug builds, with no new compiler report
+  (`docs/research-report.md` 3.22).
 - `scripts/ssa_tv.py --lowered` support for ARM64 integer ops, NZCV conditions and conditional selects. Directed tests reproduce golang/go#82777; after correcting two validator-model errors, the `core`/`ext` sweep reported no new defect (`docs/research-report.md` 3.21).
 - `scripts/ssa_tv.py --lowered` support for s390x compare, condition-code, conditional-select
   and integer register operations. Directed tests detect the known #82774 mismatch on
@@ -146,6 +154,11 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Fixed
 
+- ARM64 SSA validation now materializes comparison results as integer 0/1 when
+  consumed by register operations or merged with integer values in a phi. This
+  includes the pending bool-`NEG` correction and clears seven encoding failures
+  found by the new campaign; regression tests cover arithmetic, comparisons,
+  mixed phis and native evaluation.
 - The metamorphic fuzzer silently skipped programs that did not compile.
 - The `--carry` mode now masks the borrow input to 0 or 1.
 - Hand-written `bv_decide` calls have an explicit 120 s SAT timeout.

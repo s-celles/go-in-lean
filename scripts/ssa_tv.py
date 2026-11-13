@@ -284,15 +284,20 @@ S390X_OPS = {
 S390X_BRANCHES = {"BRC", "CRJ", "CGRJ", "CLRJ", "CLGRJ", "CIJ", "CGIJ", "CLIJ", "CLGIJ"}
 S390X_CONDITIONS = {"Equal": 8, "Less": 4, "Greater": 2, "Unordered": 1, "LessOrEqual": 12,
                     "GreaterOrEqual": 10, "NotEqual": 6, "Always": 15, "Never": 0}
-ARM64_OPS = {
+ARM64_MEM_OPS = {f"MOV{w}store" for w in "BHWD"}
+ARM64_SHIFTED_LOGICAL_OPS = {f"{op}shift{shift}" for op in ("AND", "OR", "XOR", "BIC", "EON", "ORN", "MVN", "TST")
+                             for shift in ("LL", "RL", "RA", "RO")}
+ARM64_OPS = ARM64_MEM_OPS | ARM64_SHIFTED_LOGICAL_OPS | {"CMNshiftLL", "CMNshiftRL", "CMNshiftRA"} | {
+    f"MOV{w}load" for w in ("B", "BU", "H", "HU", "W", "WU", "D")} | {
+    "MOVDaddr",
     "ZERO", "MOVDconst", "MOVDreg", "MOVDnop", "MOVBreg", "MOVBUreg", "MOVHreg", "MOVHUreg", "MOVWreg", "MOVWUreg",
     "ADD", "ADDconst", "ADDshiftLL", "ADDshiftRL", "ADDshiftRA", "SUB", "SUBconst", "SUBshiftLL",
     "SUBshiftRL", "SUBshiftRA", "MUL", "MULW", "MNEG", "MNEGW", "MADD", "MSUB", "MADDW", "MSUBW", "DIV", "UDIV", "DIVW", "UDIVW",
     "MOD", "UMOD", "MODW", "UMODW", "NEGshiftLL", "NEGshiftRL", "NEGshiftRA", "AND", "ANDconst", "OR", "ORconst",
     "XOR", "XORconst", "BIC", "EON", "ORN", "MVN", "NEG", "SLL", "SLLconst", "SRL", "SRLconst",
-    "SRA", "SRAconst", "RORWconst", "RBIT", "RBITW", "SBFX", "UBFX", "UBFIZ", "CMP", "CMPconst",
+    "SRA", "SRAconst", "ROR", "RORW", "RORconst", "RORWconst", "RBIT", "RBITW", "SBFX", "SBFIZ", "UBFX", "UBFIZ", "CMP", "CMPconst",
     "CMPW", "CMPWconst", "CMPshiftLL", "CMPshiftRL", "CMPshiftRA", "CMN", "CMNconst", "CMNW", "CMNWconst",
-    "TST", "TSTconst", "TSTWconst",
+    "TST", "TSTW", "TSTconst", "TSTWconst",
     "FlagConstant", "CSEL", "CSEL0", "CSINV", "CSINC", "CSNEG", "CSETM", "Equal", "NotEqual",
     "LessThan", "LessEqual", "GreaterThan", "GreaterEqual", "LessThanU", "LessEqualU", "GreaterThanU",
     "GreaterEqualU", "LessThanNoov", "LessEqualNoov", "GreaterThanNoov", "GreaterEqualNoov",
@@ -563,7 +568,8 @@ class _Enc:
         if v.type == "mem" and op not in ("Copy", "Phi") and not (
                 self.arch == "amd64" and op in AMD64_MEM_OPS or self.arch == "riscv64" and op in RISCV64_MEM_OPS
                 or self.arch in ("ppc64", "ppc64le") and op in PPC64_MEM_OPS
-                or self.arch == "loong64" and op in LOONG64_MEM_OPS):
+                or self.arch == "loong64" and op in LOONG64_MEM_OPS
+                or self.arch == "arm64" and op in ARM64_MEM_OPS):
             raise Unsupported(f"memory op {op}")
         if op == "HasCPUFeature":
             return z3.Bool(f"cpu_{v.aux}", self.ctx)
@@ -666,6 +672,8 @@ class _Enc:
             k = seen.get(p, 0)
             seen[p] = k + 1
             val = self.enc(x)
+            if self.arch == "arm64" and z3.is_bool(val):
+                val = z3.If(val, self.bv(1, 64), self.bv(0, 64))
             cond = self.edges.get((p, b.name, k), z3.BoolVal(False, self.ctx))
             if isinstance(val, Mem):
                 res = val if res is None else val.merge(cond, res, self)
@@ -1064,8 +1072,34 @@ class _Enc:
     # ---- arm64 (lowered passes): 64-bit general-purpose registers
     def _arm64(self, v, a):
         op, aux, bv = v.op, v.auxint, self.bv
+        # Conditions materialize as the integer 0/1 when read as registers.
+        a = [z3.If(arg, bv(1, 64), bv(0, 64)) if z3.is_bool(arg) else arg for arg in a]
         x = a[0] if a else None
         y = a[1] if len(a) > 1 else None
+        m = re.fullmatch(r"(AND|OR|XOR|BIC|EON|ORN|MVN|TST|CMN)shift(LL|RL|RA|RO)", op)
+        if m:
+            op, shift = m.groups()
+            source = x if op == "MVN" else y
+            count = bv(int(aux), 64)
+            shifted = (source << count if shift == "LL" else z3.LShR(source, count) if shift == "RL"
+                       else source >> count if shift == "RA" else z3.RotateRight(source, count))
+            if op == "MVN":
+                x = shifted
+            else:
+                y = shifted
+        if op == "MOVDaddr":
+            sym, off = self._arm64_addr(v, x)
+            return ("ptr", sym, off)
+        m = re.fullmatch(r"MOV(B|H|W|D)(store|load|Uload)", op)
+        if m:
+            width = {"B": 8, "H": 16, "W": 32, "D": 64}[m.group(1)]
+            sym, off = self._arm64_addr(v, x)
+            if m.group(2) == "store":
+                return self._write(a[2], sym, off, z3.Extract(width - 1, 0, y), width // 8)
+            val = self._read(a[1], sym, off, width // 8)
+            if width == 64:
+                return val
+            return (z3.ZeroExt if m.group(2) == "Uload" else z3.SignExt)(64 - width, val)
         if op == "ZERO":
             return bv(0, 64)
         if op == "MOVDconst":
@@ -1077,8 +1111,6 @@ class _Enc:
         extensions = {"MOVBreg": (8, True), "MOVBUreg": (8, False), "MOVHreg": (16, True),
                       "MOVHUreg": (16, False), "MOVWreg": (32, True), "MOVWUreg": (32, False)}
         if op in extensions:
-            if z3.is_bool(x):
-                return z3.If(x, bv(1, 64), bv(0, 64))
             width, signed = extensions[op]
             part = z3.Extract(width - 1, 0, x)
             return (z3.SignExt if signed else z3.ZeroExt)(64 - width, part)
@@ -1091,9 +1123,6 @@ class _Enc:
             return {"ADDconst": lambda: x + c, "SUBconst": lambda: x - c, "ANDconst": lambda: x & c,
                     "ORconst": lambda: x | c, "XORconst": lambda: x ^ c}[op]()
         if op == "MVN":
-            # A bool reaching a bitwise op is represented as the integer 0/1.
-            if z3.is_bool(x):
-                x = z3.If(x, bv(1, 64), bv(0, 64))
             return ~x
         if op == "NEG":
             return -x
@@ -1113,10 +1142,8 @@ class _Enc:
             lhs = z3.Extract(width - 1, 0, x)
             rhs = bv(int(aux) & ((1 << width) - 1), width) if op.endswith("const") else z3.Extract(width - 1, 0, y)
             return _arm64_addflags(lhs, rhs)
-        if op in ("TST", "TSTconst", "TSTWconst"):
-            width = 32 if op == "TSTWconst" else 64
-            if z3.is_bool(x):
-                x = z3.If(x, bv(1, 64), bv(0, 64))
+        if op in ("TST", "TSTW", "TSTconst", "TSTWconst"):
+            width = 32 if op in ("TSTW", "TSTWconst") else 64
             lhs = z3.Extract(width - 1, 0, x)
             mask = bv(int(aux) & ((1 << width) - 1), width) if op.endswith("const") else z3.Extract(width - 1, 0, y)
             result = lhs & mask
@@ -1155,7 +1182,7 @@ class _Enc:
                 lsb, width = (int(aux) >> 8) & 0xFF, int(aux) & 0xFF
             part = z3.Extract(lsb + width - 1, lsb, x)
             return z3.SignExt(64 - width, part)
-        if op in ("UBFX", "UBFIZ"):
+        if op in ("UBFX", "UBFIZ", "SBFIZ"):
             bitfield = re.fullmatch(r"lsb=(\d+),width=(\d+)", str(aux))
             if bitfield:
                 lsb, width = map(int, bitfield.groups())
@@ -1163,13 +1190,13 @@ class _Enc:
                 lsb, width = (int(aux) >> 8) & 0xFF, int(aux) & 0xFF
             if op == "UBFX":
                 return z3.ZeroExt(64 - width, z3.Extract(lsb + width - 1, lsb, x))
-            return z3.ZeroExt(64 - width, z3.Extract(width - 1, 0, x)) << bv(lsb, 64)
-        if op == "RORWconst":
-            count = int(aux) & 31
-            part = z3.Extract(31, 0, x)
-            rotated = part if count == 0 else z3.Concat(z3.Extract(count - 1, 0, part),
-                                                         z3.Extract(31, count, part))
-            return z3.ZeroExt(32, rotated)
+            extend = z3.SignExt if op == "SBFIZ" else z3.ZeroExt
+            return extend(64 - width, z3.Extract(width - 1, 0, x)) << bv(lsb, 64)
+        if op in ("ROR", "RORW", "RORconst", "RORWconst"):
+            width = 32 if op.startswith("RORW") else 64
+            count = bv(int(aux), width) if op.endswith("const") else z3.Extract(width - 1, 0, y)
+            rotated = z3.RotateRight(z3.Extract(width - 1, 0, x), count)
+            return z3.ZeroExt(64 - width, rotated) if width < 64 else rotated
         if op == "SUBshiftLL":
             return x - (y << z3.BitVecVal(int(aux), 64, self.ctx))
         if op in ("ADDshiftLL", "ADDshiftRL", "ADDshiftRA", "SUBshiftRL", "SUBshiftRA",
@@ -1221,6 +1248,17 @@ class _Enc:
             n = z3.ZeroExt(58, z3.Extract(5, 0, count))
             return x << n if shifts[op] == "left" else z3.LShR(x, n) if shifts[op] == "logical" else x >> n
         raise Unsupported(f"arm64 op {op}")
+
+    def _arm64_addr(self, v, ptr):
+        """Resolve only named stack locations, including MOVDaddr-derived bases."""
+        if not (isinstance(ptr, tuple) and ptr[0] == "ptr"):
+            raise Unsupported(f"{v.op} through a non-stack base")
+        if ptr[1] is not None and v.aux:
+            raise Unsupported(f"{v.op} with two address symbols")
+        sym = ptr[1] or v.aux
+        if not sym:
+            raise Unsupported(f"{v.op} without a stack symbol")
+        return sym, ptr[2] + int(v.auxint or 0)
 
     # ---- riscv64 (lowered passes): 64-bit registers, W ops sign-extend 32-bit results
     def _riscv64(self, v, a):

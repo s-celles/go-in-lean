@@ -841,6 +841,14 @@ riscv64 had no reports. The driver did not freeze; no `nixbld` process was obser
 sampled host loads remained below 12. All cases match already-tracked compiler issues; this
 sweep found no new defect.
 
+**Campaign 5 on OPTIPLEX7010** (2026-11-13, 05:17 to 05:40, seed 20261126, same conditions;
+the guard froze the scope once, 05:19 to 05:23, during a Nix build). It covered what the
+earlier runs had not: `core` and `bits` under `-N -l` on amd64, ppc64le power8, loong64 and
+riscv64; optimized `bits` on arm64 and s390x; arm64 `core` and `ext` with tip. 22 lots of
+60 programs, about 13,200 function checks and 77,000 pass pairs, with go1.27.3 and tip: no
+report. One lot (tip, arm64, `core`) crashed in the validator on an ARM64 `NEG` of a
+materialized condition; after the fix (3.22) the lot replayed locally with no failure.
+
 ### 3.20 Iteration 15: lowered s390x validation
 
 `ssa_tv.py --lowered` now models the s390x
@@ -873,6 +881,78 @@ reports and the one report from the intermediate `core` run; none reproduced.
 The final go1.27.3 sweep (seed 20261125, 60 `core` and 60 `ext` programs) checked
 1,200 functions and 9,237 pass pairs. It produced zero reports, with 39 unsupported
 functions and 31 solver timeouts. This search found no new defect.
+
+### 3.22 Iteration 17: ARM64 debug builds and materialized conditions
+
+On 2026-11-13, the repository was at `c58d89f` with one uncommitted change:
+conversion of a bool operand to integer 0/1 before ARM64 `NEG`. That correction
+is preserved by generalizing the conversion to ARM64 register operands and phi
+inputs. A materialized condition can feed arithmetic or a comparison directly,
+or merge with an integer value; representing one input as a z3 Bool and another
+as a bit-vector had made otherwise valid lowered SSA unsupported.
+
+The validator now also models ARM64 `MOVB/H/W/Dstore`, signed and unsigned
+`MOVB/H/W/Dload`, and `MOVDaddr` for named stack slots, using the existing
+byte-level little-endian memory model. The implementation follows the installed
+toolchain's `src/cmd/compile/internal/ssa/_gen/ARM64Ops.go`. It accepts a named
+SP-relative location or an address derived from that location, and rejects
+unknown bases and accesses without a stack symbol. Paired/indexed memory
+operations, heap accesses and post-regalloc spill behavior remain outside this
+extension.
+
+Tests exercise overlapping partial stores, sign/zero extension at every load
+width, boolean stores, rejection of a non-stack base, and a phi merging a
+condition with an integer. Compiled clean functions, including the generated
+subtraction/comparison shapes, are compared against native amd64 execution at
+`lower` and `flagalloc`, in optimized and `-N -l` ARM64 builds.
+All 53 SSA-validator tests pass with the 1,000 ms query limit; the 12 ARM64
+tests also pass with the default 20,000 ms limit.
+
+**Search.** On VASSIVIERE, go1.27.4, seed `20261126`, each of `core`, `ext` and
+`bits` ran 30 programs in both optimized and `-N -l` configurations. Three
+workers ran at `nice -n 15`, with a 1,000 ms limit per solver query:
+
+| Suite / build | Function checks | Pass pairs | Unsupported | Solver timeouts | Reports |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `core`, optimized | 300 | 2,314 | 7 | 8 | 0 |
+| `core`, `-N -l` | 300 | 2,003 | 3 | 10 | 0 |
+| `ext`, optimized | 300 | 2,388 | 12 | 5 | 0 |
+| `ext`, `-N -l` | 300 | 1,909 | 16 | 2 | 0 |
+| `bits`, optimized | 300 | 2,217 | 22 | 12 | 0 |
+| `bits`, `-N -l` | 300 | 1,860 | 28 | 11 | 0 |
+| **Total** | **1,800** | **12,691** | **88** | **48** | **0** |
+
+There were no build errors. These are the initial search counts, after stack
+support but before generalizing condition materialization. Seven of the 88
+unsupported functions exposed that encoding limitation: `core` programs 6/v6,
+20/v6 and 29/v2; `ext` 11/v4 and 25/v7,v9; `bits` 6/v5. After the register and
+phi fixes, exact-function replays checked all seven through the lowered passes
+(117 pass pairs, no report, unsupported function or timeout). This clears seven
+unsupported entries; the remaining 81 involve unmodelled operations or calls.
+For those seven exact functions, the `lower` and `flagalloc` models also match
+native amd64 execution on the six generated inputs each (84 comparisons).
+The campaign found no new compiler defect. A timeout or unsupported function is
+incomplete validation, not a proof of correctness.
+
+Raw per-function reports, generated programs, metadata and replay results are
+retained locally under `build/research-20261113-arm64/` (ignored by Git). To
+regenerate the search with z3 installed and `GO` set to a go1.27.4 executable:
+
+```sh
+for suite in core ext bits; do
+  python3 scripts/ssa_tv.py gen --go "$GO" --goarch arm64 --lowered \
+    --suite "$suite" --seed 20261126 --count 30 --timeout-ms 1000
+  python3 scripts/ssa_tv.py gen --go "$GO" --goarch arm64 --lowered \
+    --suite "$suite" --seed 20261126 --count 30 --timeout-ms 1000 --gcflags "-N -l"
+done
+```
+
+The final code includes the materialization fixes, so regenerated unsupported
+counts should be lower than the initial table; timeout counts depend on the
+machine and load. Remaining coverage gaps suggest the next search extension:
+shifted logical operations, `SBFIZ`, rotations, high multiplication, byte
+reversal/count-leading-zero operations, and non-inlined small-width `math/bits`
+helpers. Float register transfers remain unsupported.
 
 ## 4. Success criteria check
 

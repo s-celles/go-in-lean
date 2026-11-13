@@ -276,13 +276,52 @@ func f0(x, y int64) int64 {
 }
 func f1(x, y uint64) uint64 { return (x + y) ^ (x & y) }
 func f2(x int64) int64 { return x >> 33 }
+func f3(x, y uint64) uint64 {
+    a, b := int8(x), uint16(y)
+    var r int64
+    if x < y { r = int64(a) } else { r = int64(b) }
+    return uint64(r)
+}
+func b2i(b bool) uint64 { if b { return 1 }; return 0 }
+func f4(x, y uint64) uint64 { return -b2i(x < y) }
+func f5(x, y uint64) uint64 { return uint64(int16(b2i(uint8(^y) >= uint8(y))) + int16(-32768)) }
+func f6(x, y uint64) uint64 { return b2i(uint32(b2i(uint8(x) > uint8(y))) != uint32(y)&169) }
 
 func main() {
     x, _ := strconv.ParseInt(os.Args[1], 0, 64)
     y, _ := strconv.ParseInt(os.Args[2], 0, 64)
-    fmt.Printf("%d %d %d\\n", f0(x, y), f1(uint64(x), uint64(y)), f2(x))
+    fmt.Printf("%d %d %d %d %d %d %d\\n", f0(x, y), f1(uint64(x), uint64(y)), f2(x),
+        f3(uint64(x), uint64(y)), f4(uint64(x), uint64(y)),
+        f5(uint64(x), uint64(y)), f6(uint64(x), uint64(y)))
 }
 """
+
+# Clean Go expressions that reach shifted logical ops, flag-setting operations,
+# signed bitfield insertion and both rotate widths on ARM64.
+ARM64_BIT_EXPRS = []
+for _shifted in ("(y << 17)", "(y >> 17)", "uint64(int64(y) >> 17)", "bits.RotateLeft64(y, -17)"):
+    ARM64_BIT_EXPRS += [f"x {op} ({_shifted})" for op in ("&", "|", "^", "&^")]
+    ARM64_BIT_EXPRS += [f"x {op} ^({_shifted})" for op in ("^", "|")]
+    ARM64_BIT_EXPRS += [f"^({_shifted})", f"b2i(x & ({_shifted}) == 0)"]
+ARM64_BIT_EXPRS += [f"b2i(x + ({s}) == 0)" for s in ("y << 17", "y >> 17", "uint64(int64(y) >> 17)")]
+ARM64_BIT_EXPRS += ["uint64(int64(int8(x)) << 17)", "uint64(int32(x << 7))",
+                   "bits.RotateLeft64(x, int(y))", "uint64(bits.RotateLeft32(uint32(x), int(y)))",
+                   "bits.RotateLeft64(x, -17)", "uint64(bits.RotateLeft32(uint32(x), -17))",
+                   "b2i(uint32(x) & uint32(y) == 0)"]
+
+
+def arm64_bit_source():
+    funcs = [f"//go:noinline\nfunc f{i}(x, y uint64) uint64 {{ return {expr} }}\n"
+             for i, expr in enumerate(ARM64_BIT_EXPRS)]
+    calls = "\n".join(f'fmt.Println(f{i}(x, y))' for i in range(len(funcs)))
+    return ('''package main
+import ("fmt"; "math/bits"; "os"; "strconv")
+func b2i(b bool) uint64 { if b { return 1 }; return 0 }
+''' + "\n".join(funcs) + '''
+func main() {
+    x, _ := strconv.ParseUint(os.Args[1], 0, 64)
+    y, _ := strconv.ParseUint(os.Args[2], 0, 64)
+''' + calls + "\n}\n")
 
 
 def v4_ref(x, y):
@@ -409,6 +448,77 @@ class LoweredS390XModelTests(unittest.TestCase):
 
 @unittest.skipUnless(HAVE_Z3, "z3 module not available")
 class LoweredARM64ModelTests(unittest.TestCase):
+    @staticmethod
+    def _expression(body, arch=None):
+        f = tv.parse_dump("""\
+expression func(uint64, uint64) uint64
+  b1:
+    (?) v1 = InitMem <mem>
+    (2) v2 = ArgIntReg <uint64> {x+0} [0]
+    (2) v3 = ArgIntReg <uint64> {y+0} [1]
+""" + body + "\n    (4) v9 = MakeResult <uint64,mem> v8 v1\n    Ret v9\n")
+        f.arch = arch
+        return f
+
+    def test_shifted_logical_ops_agree_with_generic_ssa_for_all_inputs(self):
+        for shift in ("LL", "RL", "RA", "RO"):
+            for count in (0, 17, 63):
+                generic_shift = {"LL": "Lsh64x64", "RL": "Rsh64Ux64", "RA": "Rsh64x64",
+                                 "RO": "RotateLeft64"}[shift]
+                amount = (64 - count) % 64 if shift == "RO" else count
+                shifted = (f"    (?) v4 = Const64 <uint64> [{amount}]\n"
+                           f"    (3) v5 = {generic_shift} <uint64> v3 v4\n")
+                operations = {"AND": "And64", "OR": "Or64", "XOR": "Xor64",
+                              "BIC": "And64", "EON": "Xor64", "ORN": "Or64"}
+                for op in (*operations, "MVN", "TST", "CMN"):
+                    if op == "CMN" and shift == "RO":
+                        continue
+                    with self.subTest(op=op, shift=shift, count=count):
+                        body = shifted
+                        operand = "v5"
+                        if op in ("BIC", "EON", "ORN"):
+                            body += "    (3) v6 = Com64 <uint64> v5\n"
+                            operand = "v6"
+                        if op in ("TST", "CMN"):
+                            body += (f"    (3) v6 = {'And64' if op == 'TST' else 'Add64'} <uint64> v2 v5\n"
+                                     "    (?) v7 = Const64 <uint64> [0]\n"
+                                     "    (3) v8 = Eq64 <bool> v6 v7")
+                            machine = (f"    (3) v6 = {op}shift{shift} <flags> [{count}] v2 v3\n"
+                                       "    (3) v8 = Equal <bool> v6")
+                        elif op == "MVN":
+                            body += "    (3) v8 = Com64 <uint64> v5"
+                            machine = f"    (3) v8 = MVNshift{shift} <uint64> [{count}] v3"
+                        else:
+                            body += f"    (3) v8 = {operations[op]} <uint64> v2 {operand}"
+                            machine = f"    (3) v8 = {op}shift{shift} <uint64> [{count}] v2 v3"
+                        self.assertIsNone(tv.equivalent(self._expression(body),
+                                                       self._expression(machine, "arm64")))
+
+    def test_variable_rotates_agree_with_generic_ssa_for_all_inputs(self):
+        for width in (32, 64):
+            with self.subTest(width=width):
+                trunc = "    (3) v4 = Trunc64to32 <uint32> v2\n" if width == 32 else ""
+                src = "v4" if width == 32 else "v2"
+                spec = (trunc + "    (3) v5 = Neg64 <uint64> v3\n"
+                        f"    (3) v6 = RotateLeft{width} <uint{width}> {src} v5\n")
+                spec += ("    (3) v8 = ZeroExt32to64 <uint64> v6" if width == 32
+                         else "    (3) v8 = Copy <uint64> v6")
+                machine = f"    (3) v8 = {'RORW' if width == 32 else 'ROR'} <uint64> v2 v3"
+                self.assertIsNone(tv.equivalent(self._expression(spec), self._expression(machine, "arm64")))
+
+    def test_signed_bitfield_insert_sign_extends_above_field(self):
+        for aux in ("lsb=17,width=8", str((17 << 8) | 8)):
+            f = self._expression(f"    (3) v8 = SBFIZ <uint64> [{aux}] v2", "arm64")
+            for x in (0, 0x7F, 0x80, 0xFF, 0x123456789ABCDEF0):
+                signed = (x & 0x7F) - (x & 0x80)
+                self.assertEqual(tv.evaluate(f, {"x": x, "y": 0}), ("ret", (signed << 17) & M64))
+
+    def test_word_test_flags_ignore_upper_bits(self):
+        for condition, expected in (("Equal", 1), ("LessThan", 0), ("LessThanU", 1), ("GreaterEqualU", 0)):
+            f = self._expression("    (3) v6 = TSTW <flags> v2 v3\n"
+                                 f"    (3) v8 = {condition} <bool> v6", "arm64")
+            self.assertEqual(tv.evaluate(f, {"x": 1 << 63, "y": M64}), ("ret", expected))
+
     def test_madd_msub_accumulator_is_first_operand(self):
         madd = tv.parse_dump(ARM64_MADD)
         msub = tv.parse_dump(ARM64_MSUB)
@@ -421,6 +531,93 @@ class LoweredARM64ModelTests(unittest.TestCase):
         f.arch = "arm64"
         self.assertEqual(tv.evaluate(f, {"x": 0}), ("ret", 255))
         self.assertEqual(tv.evaluate(f, {"x": 1}), ("ret", 254))
+
+    def test_neg_converts_condition_to_integer_before_negation(self):
+        # Use an actual condition (a z3 Bool), rather than a register argument.
+        text = ARM64_MVN_BOOL.replace(
+            "    (3) v3 = MVN <int8> v2",
+            "    (3) v6 = CMPconst <flags> [0] v2\n"
+            "    (3) v7 = NotEqual <bool> v6\n"
+            "    (3) v3 = NEG <int8> v7")
+        f = tv.parse_dump(text)
+        f.arch = "arm64"
+        self.assertEqual(tv.evaluate(f, {"x": 0}), ("ret", 0))
+        self.assertEqual(tv.evaluate(f, {"x": 1}), ("ret", 255))
+
+    def test_stack_load_extensions_and_overlapping_store(self):
+        template = """\
+stack func(uint64) uint64
+  b1:
+    (?) v1 = InitMem <mem>
+    (?) v2 = SP <uintptr>
+    (2) v3 = ArgIntReg <uint64> {x+0} [0]
+    (2) v4 = MOVDaddr <*uint64> {slot} [8] v2
+    (3) v5 = MOVDstore <mem> v4 v3 v1
+    (3) v6 = MOVDconst <uint64> [-1]
+    (3) v7 = MOVBstore <mem> [1] v4 v6 v5
+    (4) v8 = LOAD <uint64> {slot} [8] v2 v7
+    (4) v9 = MakeResult <uint64,mem> v8 v7
+    Ret v9
+"""
+        x = 0xFEDCBA9876543280
+        stored = (x & ~0xFF00) | 0xFF00
+        for suffix, width, signed in (("B", 8, True), ("BU", 8, False),
+                                      ("H", 16, True), ("HU", 16, False),
+                                      ("W", 32, True), ("WU", 32, False), ("D", 64, False)):
+            with self.subTest(load=suffix):
+                f = tv.parse_dump(template.replace("LOAD", f"MOV{suffix}load"))
+                f.arch = "arm64"
+                expected = stored & ((1 << width) - 1)
+                if signed and expected & (1 << (width - 1)):
+                    expected -= 1 << width
+                self.assertEqual(tv.evaluate(f, {"x": x}), ("ret", expected & M64))
+
+    def test_phi_merges_condition_and_integer_register(self):
+        text = """\
+phiBool func(uint64) uint64
+  b1:
+    (?) v1 = InitMem <mem>
+    (2) v2 = ArgIntReg <uint64> {x+0} [0]
+    (3) v3 = CMPconst <flags> [0] v2
+    EQ v3 -> b2 b3
+  b2: <- b1
+    (4) v4 = MOVDconst <uint64> [3]
+    Plain -> b4
+  b3: <- b1
+    (5) v5 = NotEqual <bool> v3
+    Plain -> b4
+  b4: <- b2 b3
+    (6) v6 = Phi <uint64> v4 v5
+    (6) v7 = MakeResult <uint64,mem> v6 v1
+    Ret v7
+"""
+        f = tv.parse_dump(text)
+        f.arch = "arm64"
+        self.assertEqual(tv.evaluate(f, {"x": 0}), ("ret", 3))
+        self.assertEqual(tv.evaluate(f, {"x": 1}), ("ret", 1))
+
+    def test_bool_stack_store_and_unknown_base(self):
+        text = """\
+stackBool func(uint64) uint64
+  b1:
+    (?) v1 = InitMem <mem>
+    (?) v2 = SP <uintptr>
+    (2) v3 = ArgIntReg <uint64> {x+0} [0]
+    (3) v4 = CMPconst <flags> [0] v3
+    (3) v5 = NotEqual <bool> v4
+    (3) v6 = MOVBstore <mem> {slot} v2 v5 v1
+    (4) v7 = MOVBUload <uint64> {slot} v2 v6
+    (4) v8 = MakeResult <uint64,mem> v7 v6
+    Ret v8
+"""
+        f = tv.parse_dump(text)
+        f.arch = "arm64"
+        for x in (0, 1, M64):
+            self.assertEqual(tv.evaluate(f, {"x": x}), ("ret", int(x != 0)))
+        bad = tv.parse_dump(text.replace("{slot} v2", "{slot} v3"))
+        bad.arch = "arm64"
+        with self.assertRaisesRegex(tv.Unsupported, "non-stack base"):
+            tv.evaluate(bad, {"x": 0})
 
     def test_csinv_not_miscompile_is_reported_at_lower(self):
         rep = tv.validate([("writebarrier", ARM64_PRE), ("lower", ARM64_BAD)], arch="arm64")
@@ -1017,7 +1214,8 @@ class LoweredARM64Tests(unittest.TestCase):
         (cls.tmp / "main.go").write_text(ARM64_SRC)
         (cls.tmp / "go.mod").write_text("module arm64test\n\ngo 1.22\n")
         subprocess.run([GO, "build", "-buildvcs=false", "-o", "prog", "."], cwd=cls.tmp, check=True)
-        cls.dumps = tv.dump_passes(GO, cls.tmp, ["f0", "f1", "f2"], "arm64", lowered=True)
+        cls.dumps = {fl: tv.dump_passes(GO, cls.tmp, [f"f{i}" for i in range(7)], "arm64",
+                                      lowered=True, gcflags=fl) for fl in ("", "-N -l")}
 
     @classmethod
     def tearDownClass(cls):
@@ -1035,16 +1233,17 @@ class LoweredARM64Tests(unittest.TestCase):
                 for _ in range(5)]
         for x, y in pts:
             out = self._native(x, y)
-            for i in (1, 2):
-                for stage in ("lower", "flagalloc"):
-                    f = tv.parse_dump(dict(self.dumps[f"f{i}"])[stage])
-                    f.arch = "arm64"
-                    self.assertEqual(tv.evaluate(f, {"x": x, "y": y}), ("ret", out[i] & M64),
-                                     (f"f{i}", stage, x, y))
+            for fl, dumps in self.dumps.items():
+                for i in range(1, 7):
+                    for stage in ("lower", "flagalloc"):
+                        f = tv.parse_dump(dict(dumps[f"f{i}"])[stage])
+                        f.arch = "arm64"
+                        self.assertEqual(tv.evaluate(f, {"x": x, "y": y}), ("ret", out[i] & M64),
+                                         (fl, f"f{i}", stage, x, y))
 
     def test_known_bug_site_or_fixed_toolchain(self):
         version = subprocess.run([GO, "version"], capture_output=True, text=True, check=True).stdout
-        lower = dict(self.dumps["f0"])["lower"]
+        lower = dict(self.dumps[""]["f0"])["lower"]
         rep = tv.validate([("writebarrier", ARM64_PRE), ("lower", lower)], arch="arm64")
         model = tv.parse_dump(lower)
         model.arch = "arm64"
@@ -1059,9 +1258,10 @@ class LoweredARM64Tests(unittest.TestCase):
             self.assertEqual(value, ("ret", native & M64), (version, value, native))
 
     def test_no_report_on_correct_functions(self):
-        for i in (1, 2):
-            rep = tv.validate(self.dumps[f"f{i}"], arch="arm64")
-            self.assertEqual((rep["failures"], rep["unsupported"]), ([], None), f"f{i}")
+        for fl, dumps in self.dumps.items():
+            for i in range(1, 7):
+                rep = tv.validate(dumps[f"f{i}"], arch="arm64")
+                self.assertEqual((rep["failures"], rep["unsupported"]), ([], None), (fl, f"f{i}"))
 
 
 if __name__ == "__main__":
