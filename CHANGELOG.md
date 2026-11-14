@@ -161,6 +161,10 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Changed
 
+- Expanded `AGENTS.md` with finding deduplication, reproducible evidence,
+  human-controlled classifications, upstream publication scope, privacy and
+  private handling of potentially memory-unsafe findings. Aligned the Gerrit
+  instructions with explicitly authorized publication after human review.
 - Moved the full README content into `docs/project.md`, published as the site's
   project guide and linked from the dashboard and documentation navigation.
   The README is now a short introduction linking to the site. Site generation

@@ -33,8 +33,12 @@ git codereview change            # amends with a Change-Id
 git codereview mail              # sends to Gerrit for review
 ```
 
-Do not run `git codereview mail` from this automation: it posts under your Gerrit identity and
-depends on your CLA. The automation only prepares and verifies the packages.
+Automation prepares and verifies the packages by default. Running
+`git codereview mail`, pushing a patchset, or posting a review response requires
+human review of the content and an explicit user instruction to publish, as
+specified in `AGENTS.md`. An existing authorization remains valid within its
+reviewed scope. Publication uses the contributor's Gerrit identity and requires
+their CLA; it does not authorize merging the change.
 
 ## Notes
 
