@@ -46,6 +46,53 @@ test + commit message); see `docs/upstream-cls.md` for the Gerrit workflow.
 
 `GOPPC64=power10`, test/fixedbugs/issue82782.go: before fix rc=2 (f=7), after fix rc=0. Reclassified from a suspected OOB to a wrong-code miscompilation after canary + `go tool objdump` showed no out-of-bounds access. CL https://go-review.googlesource.com/c/go/+/857542 (mailed 2026-11-02).
 
+### Direct-test review follow-up (validated 2026-11-13, published 2026-11-14)
+
+Robert Griesemer requested a more direct test of `bits.ReverseBytes16`.
+The updated `cl/issue82782.go` adds a `//go:noinline` wrapper that returns
+`bits.ReverseBytes16(x)` directly, then checks all 65,536 `uint16` inputs
+against `uint16(x<<8 | x>>8)` computed with a `uint32` loop variable. The
+original conditional-selection reproducer is retained: the direct return
+already works before the fix, while that reproducer detects the incorrect
+type's effect on `prove`. Disassembly confirms the direct wrapper uses
+`BRH` on Power10.
+
+Validation used a fresh build of CL 857542 patchset 2 (`1e9d2862fe18`),
+with qemu-user 11.0.1 for both PPC64 byte orders. For the before-fix control,
+the compiler was rebuilt from the same sources with only the intrinsic's
+`TUINT16` change reverted to `TUINT`.
+
+| Target | Before fix | With fix |
+|---|---|---|
+| ppc64le, power10 | rc=2, original reproducer returns 7 instead of -5 | pass |
+| ppc64, power10 | rc=2, original reproducer returns 7 instead of -5 | pass |
+| ppc64le, power9 | pass | pass |
+| ppc64, power9 | pass | pass |
+| amd64 | — | pass |
+
+Go 1.27.4 independently gives the same PPC64 results as the before-fix
+control. The PS2 toolchain also passes `go test math/bits -run
+'^TestReverseBytes$' -count=1`. The updated regression test passes through
+the official `cmd/internal/testdir` harness on both PPC64 byte orders:
+
+```sh
+GOPPC64=power10 CGO_ENABLED=0 go test cmd/internal/testdir \
+  -run '^Test/fixedbugs/issue82782.go$' -count=1 -target=linux/ppc64le
+GOPPC64=power10 CGO_ENABLED=0 go test cmd/internal/testdir \
+  -run '^Test/fixedbugs/issue82782.go$' -count=1 -target=linux/ppc64
+```
+
+These cross-target harness runs use `go_linux_ppc64le_exec` and
+`go_linux_ppc64_exec` wrappers on `PATH`, each invoking the corresponding
+qemu-user emulator with `-cpu power10`.
+
+The incremental patch against PS2 is
+[`update-ps2.patch`](../findings/PPC64-POWER10-BSWAP16-MISCOMPILE/cl/update-ps2.patch);
+the posted reply is
+[`review-reply.md`](../findings/PPC64-POWER10-BSWAP16-MISCOMPILE/cl/review-reply.md).
+Published as patchset 3 (`ab447517908b`) on 2026-11-14. The reply was
+posted on the original review thread and the direct-test request resolved.
+
 ## #82786 (ARM MVNshiftRA fold, 2026-11-02)
 
 `GOARCH=arm`, test/fixedbugs/issue82786.go: before fix `TrailingZeros64(0) = 32`, after fix 64 (qemu-arm). CL https://go-review.googlesource.com/c/go/+/857821.

@@ -12,6 +12,11 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- A direct exhaustive `bits.ReverseBytes16` check in the CL 857542 regression
+  test, covering all 65,536 inputs alongside the original Power10 miscompilation
+  reproducer, in response to review feedback; an incremental patch against
+  PS2, a review reply, and before/after validation on both PPC64 byte orders.
+  Published as patchset 3 on 2026-11-14; review request resolved.
 - Campaign 5 of `ssa_tv.py --lowered` on OPTIPLEX7010 (seed 20261126): `core`/`bits` under
   `-N -l` on amd64, ppc64le, loong64 and riscv64, `bits` on arm64 and s390x, arm64 with tip;
   about 13,200 function checks, no report (`docs/research-report.md` 3.19).

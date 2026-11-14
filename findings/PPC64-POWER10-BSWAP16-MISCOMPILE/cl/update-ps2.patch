@@ -1,0 +1,31 @@
+diff --git a/test/fixedbugs/issue82782.go b/test/fixedbugs/issue82782.go
+index 5d3da60d2d..166bc6e7ec 100644
+--- a/test/fixedbugs/issue82782.go
++++ b/test/fixedbugs/issue82782.go
+@@ -11,6 +11,11 @@ import (
+ 	"math/bits"
+ )
+ 
++//go:noinline
++func reverseBytes16(x uint16) uint16 {
++	return bits.ReverseBytes16(x)
++}
++
+ //go:noinline
+ func f(k uint16, y, z int16) int16 {
+ 	r := ^int16(bits.ReverseBytes16(k))
+@@ -21,6 +26,14 @@ func f(k uint16, y, z int16) int16 {
+ }
+ 
+ func main() {
++	for x := uint32(0); x < 1<<16; x++ {
++		want := uint16(x<<8 | x>>8)
++		if got := reverseBytes16(uint16(x)); got != want {
++			fmt.Printf("ReverseBytes16(%#04x) = %#04x, want %#04x\n", x, got, want)
++			panic("FAIL")
++		}
++	}
++
+ 	if got := f(0x0400, 5, 1); got != -5 {
+ 		fmt.Printf("f(0x0400, 5, 1) = %d, want -5\n", got)
+ 		panic("FAIL")
