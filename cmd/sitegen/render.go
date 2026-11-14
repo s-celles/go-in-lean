@@ -100,15 +100,16 @@ func (g *generator) render() error {
 	if err := g.page("findings/_index.md", "Findings", 10, nil, findex); err != nil {
 		return err
 	}
-	readme, err := g.read("README.md")
+	guide, err := g.read("docs/project.md")
 	if err != nil {
 		return err
 	}
-	pitch, err := readmePitch(string(readme))
+	pitch, err := projectPitch(string(guide))
 	if err != nil {
 		return err
 	}
 	home := "<div class=\"project-kicker\">Lean 4 · Go · executable evidence</div>\n\n" + pitch + "\n\n"
+	home += "The " + ref("complete project guide", "/docs/project") + " covers the project results, research map, symbolic and concolic approaches, setup, repository layout and contribution policy.\n\n"
 	home += fmt.Sprintf("{{< registry-summary registered=%q proved=%q reproduced=%q findings=%q >}}\n\n", fmt.Sprint(len(g.properties)), fmt.Sprint(counts["proved_in_model"]), fmt.Sprint(counts["go_discrepancy_reproduced"]), fmt.Sprint(len(g.findings)))
 	home += ref("Browse findings →", "/findings") + " · " + ref("Explore the registry →", "/properties") + " · " + ref("Read the methodology →", "/about") + "\n\n## Verification status\n\nCounts are recomputed from the YAML on every build. Registry entries, audited theorems and research findings are different units; one entry can cite several theorems, and several entries can share one root cause.\n\n| Registry status | Entries |\n|---|---:|\n"
 	for _, s := range statuses {
@@ -143,7 +144,7 @@ func (g *generator) render() error {
 		return err
 	}
 	docs := "Project research and contributor documentation, imported from the repository at build time.\n\n"
-	imports := []struct{ Path, Title, Route string }{{"docs/prior-art.md", "Prior art", "docs/prior-art.md"}, {"docs/fuzzing-vision.md", "Fuzzing vision", "docs/fuzzing-vision.md"}, {"docs/cedar-notes.md", "Research notes", "docs/cedar-notes.md"}, {"upstream-bugs.md", "Upstream bugs", "docs/upstream-bugs.md"}, {"CHANGELOG.md", "Changelog", "docs/changelog.md"}, {"docs/site.md", "Building this site", "docs/site.md"}, {"docs/upstream-status.md", "Upstream status", "upstream/_index.md"}}
+	imports := []struct{ Path, Title, Route string }{{"docs/project.md", "Project guide", "docs/project.md"}, {"docs/prior-art.md", "Prior art", "docs/prior-art.md"}, {"docs/fuzzing-vision.md", "Fuzzing vision", "docs/fuzzing-vision.md"}, {"docs/cedar-notes.md", "Research notes", "docs/cedar-notes.md"}, {"upstream-bugs.md", "Upstream bugs", "docs/upstream-bugs.md"}, {"CHANGELOG.md", "Changelog", "docs/changelog.md"}, {"docs/site.md", "Building this site", "docs/site.md"}, {"docs/upstream-status.md", "Upstream status", "upstream/_index.md"}}
 	for i, item := range imports {
 		b, err := g.read(item.Path)
 		if err != nil {
@@ -313,14 +314,14 @@ func removeTitle(s string) string {
 	}
 	return strings.TrimSpace(s)
 }
-func readmePitch(s string) (string, error) {
+func projectPitch(s string) (string, error) {
 	start := strings.Index(s, "**Finding correctness")
 	if start < 0 {
-		return "", fmt.Errorf("README pitch marker not found")
+		return "", fmt.Errorf("project guide pitch marker not found")
 	}
 	end := strings.Index(s[start:], "> **About the name.")
 	if end < 0 {
-		return "", fmt.Errorf("README pitch end marker not found")
+		return "", fmt.Errorf("project guide pitch end marker not found")
 	}
 	return strings.TrimSpace(s[start : start+end]), nil
 }

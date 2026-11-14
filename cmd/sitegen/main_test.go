@@ -73,6 +73,73 @@ func TestRegistryCoverageAndDeterminism(t *testing.T) {
 	}
 }
 
+func TestFullProjectGuideWithMinimalReadme(t *testing.T) {
+	root := t.TempDir()
+	guide := `# Project guide
+
+**Finding correctness bugs in Go with Lean.**
+
+The complete project introduction.
+
+> **About the name.** A seagull.
+
+## Research map
+
+` + "```mermaid\nflowchart LR\n    Model --> Reproducer\n```\n" + `
+## Quick start
+
+Run the full harness.
+
+## Contributing
+
+The complete upstream contribution policy.
+
+## Licence
+
+The complete licence notes.
+`
+	files := map[string]string{
+		"README.md":               "# go-in-lean\n\n[Read the documentation](https://s-celles.github.io/go-in-lean/).\n",
+		"docs/project.md":         guide,
+		"docs/prior-art.md":       "# Prior art\n",
+		"docs/fuzzing-vision.md":  "# Fuzzing vision\n",
+		"docs/cedar-notes.md":     "# Research notes\n",
+		"upstream-bugs.md":        "# Upstream bugs\n",
+		"CHANGELOG.md":            "# Changelog\n",
+		"docs/site.md":            "# Building the site\n",
+		"docs/upstream-status.md": "# Upstream status\n",
+	}
+	for path, body := range files {
+		path = filepath.Join(root, path)
+		if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(path, []byte(body), 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	g := &generator{root: root, pages: map[string][]byte{}, routes: map[string]string{}}
+	if err := g.render(); err != nil {
+		t.Fatal(err)
+	}
+	page := string(g.pages["docs/project.md"])
+	if !strings.Contains(page, removeTitle(guide)) {
+		t.Fatal("project guide was truncated instead of imported in full")
+	}
+	if !strings.Contains(string(g.pages["_index.md"]), "The complete project introduction.") {
+		t.Fatal("home pitch is not read from the project guide")
+	}
+	for _, path := range []string{"_index.md", "docs/_index.md"} {
+		if !strings.Contains(string(g.pages[path]), `relref "/docs/project"`) {
+			t.Errorf("project guide is not linked from %s", path)
+		}
+	}
+	got := rewriteLinks("[Research](../README.md#research-map)", "docs/prior-art.md")
+	if !strings.Contains(got, `relref "/docs/project" >}}#research-map`) {
+		t.Fatalf("former README section link is not preserved: %s", got)
+	}
+}
+
 func TestRejectMalformedYAML(t *testing.T) {
 	for _, input := range []string{"properties: [", "properties: []\nunknown: 1\n", "properties: []\n---\nproperties: []\n", "properties: []\nproperties: []\n"} {
 		t.Run(input, func(t *testing.T) {

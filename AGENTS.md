@@ -27,4 +27,5 @@
 
 ## Layout
 
-See `README.md` for the directory layout and how to run each harness.
+See `docs/project.md` for the directory layout and how to run each harness.
+`README.md` is a short entry point to the documentation website.

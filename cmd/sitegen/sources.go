@@ -232,7 +232,7 @@ func (g *generator) upstreamFor(url string) []upstreamRow {
 // pages get local relrefs; other evidence links keep their exact GitHub path.
 var markdownLinkRE = regexp.MustCompile(`(!?\[[^\]\n]*\])\(([^\s)]+)([^)]*)\)`)
 var localPages = map[string]string{
-	"README.md": "/about", "docs/upstream-status.md": "/upstream", "upstream-bugs.md": "/docs/upstream-bugs",
+	"README.md": "/docs/project", "docs/project.md": "/docs/project", "docs/upstream-status.md": "/upstream", "upstream-bugs.md": "/docs/upstream-bugs",
 	"docs/prior-art.md": "/docs/prior-art", "docs/fuzzing-vision.md": "/docs/fuzzing-vision", "docs/cedar-notes.md": "/docs/cedar-notes", "CHANGELOG.md": "/docs/changelog", "docs/site.md": "/docs/site",
 }
 

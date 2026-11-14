@@ -161,6 +161,11 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Changed
 
+- Moved the full README content into `docs/project.md`, published as the site's
+  project guide and linked from the dashboard and documentation navigation.
+  The README is now a short introduction linking to the site. Site generation
+  reads the guide independently of the README and preserves links to former
+  README sections.
 - Refreshed the upstream status snapshot on 2026-11-14, including the merged
   Loong64 fix and the published Power10 direct-test follow-up.
 - All written artifacts are in English (2026-11-04).

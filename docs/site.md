@@ -31,7 +31,9 @@ by the website's separate root module (`gopkg.in/yaml.v3` is its only dependency
 - `docs/upstream-status.md` supplies issue and CL states. These are a checked-in
   snapshot, not a browser-time API query; update that record when reviews or
   merges change. A closed issue does not imply every release branch is fixed.
-- The README supplies the pitch. The research docs, upstream bug notes and
+- `docs/project.md` holds the full project guide, including the material moved
+  from the former long README, and supplies the site's pitch. The README is a
+  short entry point to the published site. The research docs, upstream bug notes and
   changelog are imported on every build. Relative links are rewritten to site
   pages where available, otherwise to their exact repository paths.
 
