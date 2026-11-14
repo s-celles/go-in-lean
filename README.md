@@ -165,6 +165,8 @@ manifest validation; mutation test (5 mutants → `bv_decide` counterexamples
 
 ## Documentation website
 
+**[Browse the documentation and findings](https://s-celles.github.io/go-in-lean/)**
+
 The documentation and findings site is generated from `targets/properties.yaml`,
 `findings/*.yaml`, and the project docs, using Hugo Extended 0.152.2 with Hextra
 v0.13.0. No Node.js or JavaScript build is needed.

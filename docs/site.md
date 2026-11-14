@@ -69,3 +69,11 @@ hugo --source site --minify
 to `main` through GitHub Pages. Repository Pages must use the GitHub Actions
 source. The deployment base URL comes from `actions/configure-pages`, allowing
 repository subpaths. Generated content is uploaded only as a deployment artifact.
+
+The website's build and generator tests are independent of the formal build.
+During the 2026-11-14 validation, the site build, registry checks, browser checks,
+Nix package, and Go tests/vet passed. The full `scripts/check.sh` run reached
+the Lean build, then timed out in the unchanged `mul_sound_16` and
+`ctz_sound_64` proofs in `GoInLean/Compiler/ProveLimits.lean`; an isolated
+retry reproduced both timeouts. That run does not establish a successful
+end-to-end axiom audit or differential/mutation check.

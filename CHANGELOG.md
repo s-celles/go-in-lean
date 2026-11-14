@@ -18,6 +18,7 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
   julia-findings, and GitHub Pages deployment. Finding metadata
   now has one YAML manifest per existing research record. Hugo Extended 0.152.2
   and Hextra v0.13.0 are pinned; Nix and CI use the same Hugo release.
+  Published at [s-celles.github.io/go-in-lean](https://s-celles.github.io/go-in-lean/).
 - Generator checks for registry coverage, deterministic output, invalid YAML,
   status histories, upstream table parsing, and safe content replacement.
 - A direct exhaustive `bits.ReverseBytes16` check in the CL 857542 regression
