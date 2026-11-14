@@ -12,6 +12,14 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- A generated Hugo/Hextra documentation and findings website, with strict Go
+  YAML validation, per-property and per-finding evidence pages, computed status
+  and trust counts, local search, filterable/sortable registries inspired by
+  julia-findings, and GitHub Pages deployment. Finding metadata
+  now has one YAML manifest per existing research record. Hugo Extended 0.152.2
+  and Hextra v0.13.0 are pinned; Nix and CI use the same Hugo release.
+- Generator checks for registry coverage, deterministic output, invalid YAML,
+  status histories, upstream table parsing, and safe content replacement.
 - A direct exhaustive `bits.ReverseBytes16` check in the CL 857542 regression
   test, covering all 65,536 inputs alongside the original Power10 miscompilation
   reproducer, in response to review feedback; an incremental patch against
@@ -152,6 +160,8 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Changed
 
+- Refreshed the upstream status snapshot on 2026-11-14, including the merged
+  Loong64 fix and the published Power10 direct-test follow-up.
 - All written artifacts are in English (2026-11-04).
 - The README states the scope of upstream contributions: reports with a reproducer and
   an analysis, no pull request offered by default, and a courteous request to flag any
@@ -159,6 +169,8 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Fixed
 
+- Reworded a documentation comment in the float-rounding proof to avoid a
+  false positive in the existing banned-token scan; no proof is changed.
 - ARM64 SSA validation now materializes comparison results as integer 0/1 when
   consumed by register operations or merged with integer values in a phi. This
   includes the pending bool-`NEG` correction and clears seven encoding failures

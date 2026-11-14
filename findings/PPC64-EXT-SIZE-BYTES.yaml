@@ -1,0 +1,24 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "PPC64-EXT-SIZE-BYTES"
+title: "PPC64 extension elision compares bytes with bits"
+package: "cmd/compile/internal/ssa (PPC64.rules, GOARCH=ppc64/ppc64le)"
+architectures:
+  - "ppc64"
+  - "ppc64le"
+priority: "P1"
+severity: "medium"
+status: "go_discrepancy_reproduced"
+summary: "A narrowing conversion after a right shift is dropped because Type.Size() in bytes is compared with bit counts. Review also questions assumptions about upper register bits."
+affected_versions: "go1.21.13 through go1.27.3 and master babb75be"
+go_source: "PPC64.rules (MOV(HZ|H)reg (S(R|RA)Wconst [c] x)) && x.Type.Size() <= 16, (MOV(BZ|B)reg ...) && x.Type.Size() == 8 (go1.21 .. master babb75be)"
+report: "findings/PPC64-EXT-SIZE-BYTES/finding.md"
+reproducer: "go/reproducers/finding_ppc64_ext_test.go"
+lean_file: "findings/PPC64-EXT-SIZE-BYTES/property.lean"
+source_records:
+  - "findings/PPC64-EXT-SIZE-BYTES/source.json"
+  - "findings/PPC64-EXT-SIZE-BYTES/validation.json"
+upstream:
+  - "https://github.com/golang/go/issues/82775"
+history:
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "variant campaign seeds 50589 (go1.27.3) and 50694 (master); no existing issue found"}
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "reported as golang/go#82775"}

@@ -1,0 +1,20 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "SIMD-MASKED-SHIFT-NOIMM"
+title: "Masked SIMD shifts omit their immediate operand"
+package: "simd"
+architectures:
+  - "amd64"
+priority: "P2"
+severity: "build failure"
+status: "go_discrepancy_reproduced"
+summary: "The amd64 SIMD backend omits the aux shift count for merge-masked immediate shifts, producing an invalid VPSLLQ instruction."
+affected_versions: "GOEXPERIMENT=simd on master 740d909bb5; AVX-512 variant"
+go_source: "See the source analysis in the research record."
+report: "findings/SIMD-MASKED-SHIFT-NOIMM/finding.md"
+reproducer: "findings/SIMD-MASKED-SHIFT-NOIMM/reproducer.go"
+lean_file: ""
+source_records: []
+upstream:
+  - "https://github.com/golang/go/issues/82847"
+history:
+  - {"date": "2026-11-03", "status": "go_discrepancy_reproduced", "note": "Recorded in the project research record; see linked reproduction evidence."}

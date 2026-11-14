@@ -1,0 +1,24 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "MIPS-RSH8-SIGNEXT16"
+title: "MIPS signed byte shifts extend from the wrong bit"
+package: "cmd/compile/internal/ssa (MIPS.rules lowering, GOARCH=mips/mipsle)"
+architectures:
+  - "mips"
+  - "mipsle"
+priority: "P1"
+severity: "medium"
+status: "go_discrepancy_reproduced"
+summary: "Signed 8-bit right shifts sign-extend from bit 15 rather than bit 7 on 32-bit MIPS."
+affected_versions: "go1.8 through go1.27.3 and master babb75be"
+go_source: "go1.27.3 and master babb75be: src/cmd/compile/internal/ssa/_gen/MIPS.rules:116-118 (same text since go1.8)"
+report: "findings/MIPS-RSH8-SIGNEXT16/finding.md"
+reproducer: "go/reproducers/finding_mips_rsh8_test.go"
+lean_file: "findings/MIPS-RSH8-SIGNEXT16/property.lean"
+source_records:
+  - "findings/MIPS-RSH8-SIGNEXT16/source.json"
+  - "findings/MIPS-RSH8-SIGNEXT16/validation.json"
+upstream:
+  - "https://github.com/golang/go/issues/82772"
+history:
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "found by the first cross-arch fuzz campaign (12/60 mipsle seeds on go1.27.3 and master); rule text unchanged since go1.8; no existing issue found"}
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "reported as golang/go#82772"}

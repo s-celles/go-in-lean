@@ -1,0 +1,24 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "PPC64-POWER10-BSWAP16-MISCOMPILE"
+title: "Power10 byte reversal carries an incorrect 64-bit type"
+package: "cmd/compile/internal/ssagen (intrinsics), GOARCH=ppc64le/ppc64 GOPPC64=power10"
+architectures:
+  - "ppc64"
+  - "ppc64le"
+priority: "P2"
+severity: "medium"
+status: "go_discrepancy_reproduced"
+summary: "ReverseBytes16 is typed as uint instead of uint16, allowing prove to fold a conditional selection to the wrong result. No out-of-bounds access was demonstrated."
+affected_versions: "go1.27.x and master a0c8470e; GOPPC64=power10"
+go_source: "ssagen/intrinsics.go: Power10 (cfg.goppc64>=10) ReverseBytes16 -> OpBswap16 types.Types[types.TUINT] (loong64/riscv64 use TUINT16); go1.27 .. master a0c8470e"
+report: "findings/PPC64-POWER10-BSWAP16-MISCOMPILE/finding.md"
+reproducer: "go/reproducers/finding_ppc64_power10_bswap16_test.go"
+lean_file: "findings/PPC64-POWER10-BSWAP16-MISCOMPILE/property.lean"
+source_records:
+  - "findings/PPC64-POWER10-BSWAP16-MISCOMPILE/source.json"
+  - "findings/PPC64-POWER10-BSWAP16-MISCOMPILE/validation.json"
+upstream:
+  - "https://github.com/golang/go/issues/82782"
+history:
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "found via --bits power10 fuzzing; first thought OOB, canary disproved it; miscompilation; reported as golang/go#82782"}
+  - {"date": "2026-11-14", "status": "go_discrepancy_reproduced", "note": "CL 857542 patchset 3 published with direct exhaustive coverage; review request answered and resolved."}

@@ -1,0 +1,24 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "MIPS-CONST64-COUNT-UINT32"
+title: "MIPS truncates large constant shift counts"
+package: "cmd/compile/internal/ssa (MIPS.rules lowering, GOARCH=mips/mipsle)"
+architectures:
+  - "mips"
+  - "mipsle"
+priority: "P2"
+severity: "low-medium"
+status: "go_discrepancy_reproduced"
+summary: "MIPS lowering tests uint32(c) for a 64-bit shift count, turning huge counts into small shifts."
+affected_versions: "go1.12 through go1.27.3 and master babb75be"
+go_source: "MIPS.rules:58-79 (go1.12 .. master babb75be); generic.rules shift-merging rules"
+report: "findings/MIPS-CONST64-COUNT-UINT32/finding.md"
+reproducer: "go/reproducers/finding_mips_const64_count_test.go"
+lean_file: "findings/MIPS-CONST64-COUNT-UINT32/property.lean"
+source_records:
+  - "findings/MIPS-CONST64-COUNT-UINT32/source.json"
+  - "findings/MIPS-CONST64-COUNT-UINT32/validation.json"
+upstream:
+  - "https://github.com/golang/go/issues/82776"
+history:
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "variant campaign seed 52073 on master with the golang/go#82772 fix; no existing issue found"}
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "reported as golang/go#82776"}

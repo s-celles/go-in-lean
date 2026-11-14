@@ -1,0 +1,67 @@
+baseURL: https://s-celles.github.io/go-in-lean/
+title: go-in-lean
+languageCode: en
+enableRobotsTXT: true
+disableKinds: [taxonomy, term]
+module:
+  imports:
+    - path: github.com/imfing/hextra
+  mounts:
+    - source: content
+      target: content
+    - source: assets
+      target: assets
+    - source: ../assets/brand
+      target: static/brand
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    noClasses: false
+menu:
+  main:
+    - name: Findings
+      pageRef: /findings
+      weight: 1
+    - name: Properties
+      pageRef: /properties
+      weight: 2
+    - name: Upstream
+      pageRef: /upstream
+      weight: 3
+    - name: Docs
+      pageRef: /docs
+      weight: 4
+    - name: GitHub
+      url: https://github.com/s-celles/go-in-lean
+      weight: 5
+      params:
+        icon: github
+    - name: Search
+      weight: 6
+      params:
+        type: search
+params:
+  description: Bit-precise Lean models, executable counterexamples, and Go compiler findings.
+  navbar:
+    displayTitle: false
+    logo:
+      path: brand/lockup.svg
+      dark: brand/lockup-dark.svg
+      width: 164
+      height: 36
+  theme:
+    default: system
+    displayToggle: true
+  search:
+    enable: true
+    type: flexsearch
+    flexsearch:
+      index: content
+      tokenize: forward
+  page:
+    width: wide
+  footer:
+    displayCopyright: false
+    displayPoweredBy: false

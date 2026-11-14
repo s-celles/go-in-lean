@@ -1,0 +1,21 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "AMD64-CMPL-SHRL-32"
+title: "An unreachable amd64 shift rule folds incorrect flags"
+package: "cmd/compile/internal/ssa (AMD64.rules)"
+architectures:
+  - "amd64"
+priority: "P3"
+severity: "none"
+status: "counterexample_in_model"
+summary: "The shift-count condition admits 32 even though the x86 instruction masks that count to zero. No compiled Go trigger is known."
+affected_versions: "Model of go1.25.5; no reachable Go trigger"
+go_source: "src/cmd/compile/internal/ssa/_gen/AMD64.rules:1197"
+report: "findings/AMD64-CMPL-SHRL-32/finding.md"
+reproducer: "findings/AMD64-CMPL-SHRL-32/reproducer_test.go"
+lean_file: "findings/AMD64-CMPL-SHRL-32/property.lean"
+source_records:
+  - "findings/AMD64-CMPL-SHRL-32/source.json"
+  - "findings/AMD64-CMPL-SHRL-32/validation.json"
+upstream: []
+history:
+  - {"date": "2026-11-01", "status": "counterexample_in_model", "note": "found by the independent reviewer, re-checked"}

@@ -1,0 +1,23 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "ARM64-CSINV-NOT"
+title: "ARM64 conditional complement becomes boolean NOT"
+package: "cmd/compile/internal/ssa (ARM64.rules, GOARCH=arm64)"
+architectures:
+  - "arm64"
+priority: "P2"
+severity: "medium"
+status: "go_discrepancy_reproduced"
+summary: "A constant-flag CSINV folds to boolean Not instead of the bitwise complement MVN."
+affected_versions: "go1.21.13 through go1.27.3 and master babb75be"
+go_source: "ARM64.rules (CSINV [cc] _ y flag) && ccARM64Eval(cc, flag) < 0 => (Not y) (go1.21 .. master babb75be)"
+report: "findings/ARM64-CSINV-NOT/finding.md"
+reproducer: "go/reproducers/finding_arm64_csinv_test.go"
+lean_file: "findings/ARM64-CSINV-NOT/property.lean"
+source_records:
+  - "findings/ARM64-CSINV-NOT/source.json"
+  - "findings/ARM64-CSINV-NOT/validation.json"
+upstream:
+  - "https://github.com/golang/go/issues/82777"
+history:
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "--bits campaign seed 62089; reproduced natively on darwin/arm64; no existing issue found"}
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "reported as golang/go#82777"}

@@ -1,0 +1,21 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "BITREV-INT-SHIFT-COUNT-126"
+title: "Bit-reversal intrinsics give prove an incorrect signed type"
+package: "cmd/compile"
+architectures:
+  - "arm64"
+  - "loong64"
+priority: "P2"
+severity: "medium"
+status: "go_discrepancy_reproduced"
+summary: "A bit-reversal result typed as int can cause a spurious negative-shift panic. Follow-up reproducers also show an unconditional divide panic and a silently wrong value."
+affected_versions: "go1.26.10; fixed on go1.27 and master"
+go_source: "See the source analysis in the research record."
+report: "findings/BITREV-INT-SHIFT-COUNT-126/finding.md"
+reproducer: "findings/BITREV-INT-SHIFT-COUNT-126/reproducer.go"
+lean_file: ""
+source_records: []
+upstream:
+  - "https://github.com/golang/go/issues/82873"
+history:
+  - {"date": "2026-11-05", "status": "go_discrepancy_reproduced", "note": "Recorded in the project research record; see linked reproduction evidence."}

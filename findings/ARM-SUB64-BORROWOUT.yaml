@@ -1,0 +1,20 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "ARM-SUB64-BORROWOUT"
+title: "ARM bits.Sub64 returns the wrong borrow"
+package: "cmd/compile"
+architectures:
+  - "arm"
+priority: "P1"
+severity: "medium"
+status: "go_discrepancy_reproduced"
+summary: "In-contract bits.Sub64 inputs produce an incorrect borrowOut. This is another manifestation of the MVNshiftRA defect tracked by #82786."
+affected_versions: "go1.21.13 through go1.27.3 and master 2b74366d"
+go_source: "See the source analysis in the research record."
+report: "findings/ARM-SUB64-BORROWOUT/finding.md"
+reproducer: "findings/ARM-SUB64-BORROWOUT/reproducer.go"
+lean_file: ""
+source_records: []
+upstream:
+  - "https://github.com/golang/go/issues/82834"
+history:
+  - {"date": "2026-11-03", "status": "go_discrepancy_reproduced", "note": "Recorded in the project research record; see linked reproduction evidence."}

@@ -12,7 +12,8 @@
           # v4.35.0) because nixpkgs lags behind Lean releases. Go is pinned
           # to the 1.25 series; `scripts/check.sh` prints a warning if the
           # patch version differs from go/.go-version.
-          packages = [ pkgs.elan pkgs.go_1_25 pkgs.python3 pkgs.git ];
+          packages = [ pkgs.elan pkgs.go_1_25 pkgs.python3 pkgs.git
+            (pkgs.callPackage ./nix/hugo.nix { }) ];
           shellHook = ''
             export ELAN_HOME="$PWD/.lake/elan"
             export PATH="$ELAN_HOME/bin:$PATH"

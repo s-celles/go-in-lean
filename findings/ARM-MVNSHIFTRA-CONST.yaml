@@ -1,0 +1,23 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "ARM-MVNSHIFTRA-CONST"
+title: "ARM arithmetic-shift folding loses the complement"
+package: "cmd/compile/internal/ssa (ARM.rules, GOARCH=arm)"
+architectures:
+  - "arm"
+priority: "P1"
+severity: "medium"
+status: "go_discrepancy_reproduced"
+summary: "MVNshiftRA constant folding drops the complement; bits.TrailingZeros64(0) can return 32 instead of 64."
+affected_versions: "go1.16 through go1.27.3 and master a0c8470e"
+go_source: "ARM.rules (MVNshiftRA (MOVWconst [c]) [d]) => (MOVWconst [int32(c)>>uint64(d)]) (go1.16 .. master a0c8470e)"
+report: "findings/ARM-MVNSHIFTRA-CONST/finding.md"
+reproducer: "go/reproducers/finding_arm_mvnshiftra_test.go"
+lean_file: "findings/ARM-MVNSHIFTRA-CONST/property.lean"
+source_records:
+  - "findings/ARM-MVNSHIFTRA-CONST/source.json"
+  - "findings/ARM-MVNSHIFTRA-CONST/validation.json"
+upstream:
+  - "https://github.com/golang/go/issues/82786"
+history:
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "from the --bits index campaign, arm seed 60372; regression from the go1.16 typed-AuxInt conversion"}
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "reported as golang/go#82786"}

@@ -1,0 +1,25 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "SSA-SHIFTMASK-SIGNED-COUNT"
+title: "Shift-mask rules compare huge counts as signed"
+package: "cmd/compile/internal/ssa (generic.rules)"
+architectures:
+  - "all"
+priority: "P2"
+severity: "low-medium"
+status: "go_discrepancy_reproduced"
+summary: "Rules for ((x >> c) & d) << e compare constant counts as signed; counts at least 2^63 take the wrong rewrite."
+affected_versions: "go1.25.5, go1.26.10, go1.27.3 and master babb75be"
+go_source: "src/cmd/compile/internal/ssa/_gen/generic.rules:522-530"
+report: "findings/SSA-SHIFTMASK-SIGNED-COUNT/finding.md"
+reproducer: "go/reproducers/finding_shiftmask_test.go"
+lean_file: "findings/SSA-SHIFTMASK-SIGNED-COUNT/property.lean"
+source_records:
+  - "findings/SSA-SHIFTMASK-SIGNED-COUNT/source.json"
+  - "findings/SSA-SHIFTMASK-SIGNED-COUNT/validation.json"
+upstream:
+  - "https://github.com/golang/go/issues/82763"
+history:
+  - {"date": "2026-11-01", "status": "counterexample_in_model", "note": "8 triage counterexamples r527_0..r530_1"}
+  - {"date": "2026-11-01", "status": "go_discrepancy_reproduced", "note": "reproduced with the real compiler; SSA dump identifies the rule; fix proved"}
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "also present in go1.26.10, go1.27.3 and master babb75be; fix validated on master; reported as golang/go#82763"}
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "upstream bisect to CL 621357 (introduced the rules, Go 1.24); go1.23.12 correct, go1.24.0 wrong"}

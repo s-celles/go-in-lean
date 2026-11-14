@@ -1,0 +1,20 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "AMD64-ANDL-MINUS1-ZEXT-NOOPT"
+title: "amd64 debug builds drop a zero extension"
+package: "cmd/compile"
+architectures:
+  - "amd64"
+priority: "P2"
+severity: "low"
+status: "go_discrepancy_reproduced"
+summary: "The ANDLconst [-1] rewrite drops the zero extension required after a 32-bit operation in debug builds."
+affected_versions: "go1.26.10, go1.27.3 and tip 56ae71df05 with -N"
+go_source: "See the source analysis in the research record."
+report: "findings/AMD64-ANDL-MINUS1-ZEXT-NOOPT/finding.md"
+reproducer: "findings/AMD64-ANDL-MINUS1-ZEXT-NOOPT/reproducer.go"
+lean_file: ""
+source_records: []
+upstream:
+  - "https://github.com/golang/go/issues/36897"
+history:
+  - {"date": "2026-11-06", "status": "go_discrepancy_reproduced", "note": "Recorded in the project research record; see linked reproduction evidence."}

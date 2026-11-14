@@ -146,7 +146,7 @@ for equivalence, exhaustive. Approaches, with their status:
 
 Prerequisites: [elan](https://github.com/leanprover/elan) (installs Lean
 4.35.0 from `lean-toolchain`), Go 1.25.x, Python 3 (standard library only).
-With Nix: `nix develop` provides elan, Go and Python.
+With Nix: `nix develop` provides elan, Go, Python and the pinned Hugo binary.
 
 ```sh
 lake build                 # models, specifications, proofs (≈1 min)
@@ -163,6 +163,22 @@ exhaustive slice search and Go replay of 16k aliasing configurations;
 manifest validation; mutation test (5 mutants → `bv_decide` counterexamples
 → generated Go reproducers → `go test`).
 
+## Documentation website
+
+The documentation and findings site is generated from `targets/properties.yaml`,
+`findings/*.yaml`, and the project docs, using Hugo Extended 0.152.2 with Hextra
+v0.13.0. No Node.js or JavaScript build is needed.
+
+```sh
+bash scripts/install_hugo.sh   # optional: install the pinned binary in build/tools
+export PATH="$PWD/build/tools:$PATH"
+go run ./cmd/sitegen
+hugo --source site --minify
+```
+
+See [`docs/site.md`](docs/site.md) for preview, data conventions, checks and
+GitHub Pages deployment. Generated content is ignored and never committed.
+
 ## Layout
 
 ```
@@ -176,7 +192,9 @@ go/tests/               Go property tests and vector generator
 go/reference/           Go twins of the mutants
 go/reproducers/         generated reproducers (one per Lean counterexample)
 targets/properties.yaml property manifest with status history
-findings/               reproduced findings awaiting human review (none yet)
+cmd/sitegen/            deterministic Go generator for website content
+site/                   Hugo/Hextra config, layouts and styles (content generated)
+findings/               YAML finding registry and supporting research records
 scripts/                check.sh, gen_bits_tables.py, validate_manifest.py, mutation_test.py,
                         gen_brand.py (visual identity)
 docs/                   prior-art, semantic-boundary, architecture, compiler feasibility, report, brand

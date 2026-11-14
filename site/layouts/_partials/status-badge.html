@@ -1,0 +1,17 @@
+{{- $labels := dict
+  "proved_in_model" "✓ Proved in model"
+  "counterexample_in_model" "◇ Model counterexample"
+  "model_mismatch" "≠ Model mismatch"
+  "specification_ambiguity" "? Specification ambiguity"
+  "go_discrepancy_reproduced" "! Reproduced in Go"
+  "known_issue" "↗ Known issue"
+  "inconclusive" "… Inconclusive"
+  "kernel" "K · kernel"
+  "bv_decide" "BV · bv_decide"
+-}}
+{{- $label := index $labels .value -}}
+{{- if not $label }}{{ errorf "Unknown badge value: %s" .value }}{{ end -}}
+{{- $title := $label -}}
+{{- if eq .value "kernel" }}{{ $title = "Recorded kernel trust tier. Consult the property status and theorem links." }}{{ end -}}
+{{- if eq .value "bv_decide" }}{{ $title = "Recorded bv_decide trust tier: adds a per-theorem native-evaluation axiom." }}{{ end -}}
+<span class="status-badge status--{{ .value }}" title="{{ $title }}">{{ $label }}</span>

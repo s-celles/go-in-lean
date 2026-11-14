@@ -3,3 +3,7 @@ build/
 go/testdata/fuzz/
 *.olean
 *.pyc
+site/content/
+site/public/
+site/resources/
+site/.hugo_build.lock

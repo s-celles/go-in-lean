@@ -1,0 +1,22 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "JOIN-GUARD-CONSERVATIVE"
+title: "Join rejects a length that fits in int"
+package: "strings, bytes"
+architectures:
+  - "all"
+priority: "P3"
+severity: "negligible"
+status: "go_discrepancy_reproduced"
+summary: "The separator overflow guard is conservative at a boundary. Reproduction needs unsafe; no upstream report is proposed."
+affected_versions: "go1.25.5; requires unsafe construction of a huge string"
+go_source: "src/strings/strings.go Join; src/bytes/bytes.go Join"
+report: "findings/JOIN-GUARD-CONSERVATIVE/finding.md"
+reproducer: "findings/JOIN-GUARD-CONSERVATIVE/reproducer_test.go"
+lean_file: "findings/JOIN-GUARD-CONSERVATIVE/property.lean"
+source_records:
+  - "findings/JOIN-GUARD-CONSERVATIVE/source.json"
+  - "findings/JOIN-GUARD-CONSERVATIVE/validation.json"
+upstream: []
+history:
+  - {"date": "2026-11-01", "status": "counterexample_in_model"}
+  - {"date": "2026-11-01", "status": "go_discrepancy_reproduced"}

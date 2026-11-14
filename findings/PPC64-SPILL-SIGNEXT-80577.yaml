@@ -1,0 +1,24 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "PPC64-SPILL-SIGNEXT-80577"
+title: "Spill restoration chooses an incorrect extension"
+package: "cmd/compile/internal/ssa (regalloc spill/restore + ppc64 extension elision)"
+architectures:
+  - "arm64"
+  - "ppc64"
+  - "ppc64le"
+priority: "P1"
+severity: "medium"
+status: "known_issue"
+summary: "Spill restoration chooses an extension from unreliable SSA type information. The earlier RISC-V fix does not settle the ARM64/PPC64 contract."
+affected_versions: "At least go1.21.13 through go1.27.3 and master ede4e4ff00"
+go_source: "ppc64 lowering elides MOVHreg on EXTSB; regalloc restores by the (unsigned) type"
+report: "findings/PPC64-SPILL-SIGNEXT-80577/finding.md"
+reproducer: "findings/PPC64-SPILL-SIGNEXT-80577/reproducer.go"
+lean_file: ""
+source_records: []
+upstream:
+  - "https://github.com/golang/go/issues/80577"
+history:
+  - {"date": "2026-11-02", "status": "known_issue", "note": "--bits index seed 61164 (power9); reduced; classified as a ppc64 instance of golang/go#80577"}
+  - {"date": "2026-11-02", "status": "known_issue", "note": "ppc64 reproducer posted on golang/go#80577"}
+  - {"date": "2026-11-05", "status": "known_issue", "note": "producer/width audit: arm64 105/945, ppc64le 441/945; local guards make both 945/945 clean; CL 825904 PS6 does not yet cover these rules"}

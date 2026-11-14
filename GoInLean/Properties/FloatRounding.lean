@@ -6,7 +6,7 @@ import GoInLean.Semantics.Float64
 The executable IEEE 754 models of `GoInLean.Semantics.Float64` and `Float32`
 are validated differentially (canaries and campaigns); this file starts
 turning that validation into proof. Everything here is kernel-checked
-arithmetic - no `bv_decide`, no `sorry`.
+arithmetic, without bit-blasting or proof holes.
 
 * `shiftRound_spec` / `shiftRound_unique`: `shiftRound m k` is the unique
   integer q with `m` within half an ulp of `q * 2^k`, ties to even - the

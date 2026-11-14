@@ -1,0 +1,23 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "S390X-CMPU-SIGNEXT"
+title: "s390x narrows an unsigned comparison incorrectly"
+package: "cmd/compile/internal/ssa (S390X.rules, GOARCH=s390x)"
+architectures:
+  - "s390x"
+priority: "P2"
+severity: "medium"
+status: "go_discrepancy_reproduced"
+summary: "An unsigned comparison of a sign-extended small integer is narrowed incorrectly; uint64(int8(-128)) < 0xFFFFFFFF becomes true."
+affected_versions: "Reachable since go1.26; rule also present in go1.25.5"
+go_source: "S390X.rules \\\"Convert 64-bit comparisons to 32-bit comparisons\\\" (go1.25.5 .. master babb75be)"
+report: "findings/S390X-CMPU-SIGNEXT/finding.md"
+reproducer: "go/reproducers/finding_s390x_cmpu_test.go"
+lean_file: "findings/S390X-CMPU-SIGNEXT/property.lean"
+source_records:
+  - "findings/S390X-CMPU-SIGNEXT/source.json"
+  - "findings/S390X-CMPU-SIGNEXT/validation.json"
+upstream:
+  - "https://github.com/golang/go/issues/82774"
+history:
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "cross-arch fuzz seed 41665 (index mode); no existing issue found"}
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "reported as golang/go#82774"}

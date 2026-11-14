@@ -1,0 +1,24 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "RISCV64-SLLI-NARROW-TYPE"
+title: "A narrow shift type produces a wrong zero on RISC-V"
+package: "cmd/compile/internal/ssa (RISCV64.rules lowering, GOARCH=riscv64)"
+architectures:
+  - "riscv64"
+  - "loong64"
+priority: "P1"
+severity: "medium"
+status: "go_discrepancy_reproduced"
+summary: "An inner 64-bit shift is typed as int8 or int16. A later rule trusts that type and folds int8(x - (-x)) >> 8 to zero."
+affected_versions: "go1.26 and go1.27.3; go1.25.5 is correct"
+go_source: "go1.27.3 RISCV64.rules:698-699 and 788-789; master babb75be same text"
+report: "findings/RISCV64-SLLI-NARROW-TYPE/finding.md"
+reproducer: "go/reproducers/finding_riscv64_slli_test.go"
+lean_file: "findings/RISCV64-SLLI-NARROW-TYPE/property.lean"
+source_records:
+  - "findings/RISCV64-SLLI-NARROW-TYPE/source.json"
+  - "findings/RISCV64-SLLI-NARROW-TYPE/validation.json"
+upstream:
+  - "https://github.com/golang/go/issues/82773"
+history:
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "cross-arch fuzz seed 40799; regression introduced in go1.26 by the (SLLI (ADD x x)) fold; no existing issue found"}
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "reported as golang/go#82773"}

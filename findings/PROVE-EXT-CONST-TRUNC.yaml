@@ -1,0 +1,22 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "PROVE-EXT-CONST-TRUNC"
+title: "prove truncates a wide constant through an extension"
+package: "cmd/compile/internal/ssacompile (prove), all GOARCH"
+architectures:
+  - "all"
+priority: "P1"
+severity: "medium"
+status: "go_discrepancy_reproduced"
+summary: "After looking through an extension, prove reads a wide constant at a narrower width and derives a false bound, taking a branch that cannot be taken."
+affected_versions: "go1.26.6 through go1.26.10, go1.27.3 and master; other shapes on go1.24.13/go1.25.5"
+go_source: "prove.go update: isCleanExt look-through repeats ext(x) op w on x with the same w; x+delta case computes int16(w.AuxInt)-int16(delta)"
+report: "findings/PROVE-EXT-CONST-TRUNC/finding.md"
+reproducer: "go/reproducers/finding_prove_ext_const_test.go"
+lean_file: "findings/PROVE-EXT-CONST-TRUNC/property.lean"
+source_records:
+  - "findings/PROVE-EXT-CONST-TRUNC/source.json"
+  - "findings/PROVE-EXT-CONST-TRUNC/validation.json"
+upstream:
+  - "https://github.com/golang/go/issues/82839"
+history:
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "--late --bits index campaign, arm seed 90587, on master with all earlier fixes; reproduced natively"}

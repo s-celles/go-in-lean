@@ -1,0 +1,23 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "BITS-ADD-64-NOPRE"
+title: "Add64 without its carry precondition: a negative control"
+package: "math/bits"
+architectures:
+  - "all"
+priority: "P3"
+severity: "none"
+status: "known_issue"
+summary: "An unrestricted carry breaks the proposed Add64 identity. The documentation requires a carry of 0 or 1, so this is not a Go defect."
+affected_versions: "Model and go1.25.5; out-of-contract input"
+go_source: "src/math/bits/bits.go:386-394"
+report: "findings/BITS-ADD-64-NOPRE/finding.md"
+reproducer: "findings/BITS-ADD-64-NOPRE/reproducer_test.go"
+lean_file: "findings/BITS-ADD-64-NOPRE/property.lean"
+source_records:
+  - "findings/BITS-ADD-64-NOPRE/source.json"
+  - "findings/BITS-ADD-64-NOPRE/validation.json"
+upstream:
+  - "https://github.com/golang/go/issues/54255"
+history:
+  - {"date": "2026-11-01", "status": "counterexample_in_model", "note": "refuted by bv_decide; negation proved by decide"}
+  - {"date": "2026-11-01", "status": "known_issue", "note": "matches #54255; documented precondition"}

@@ -1,0 +1,60 @@
+name: documentation
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: |
+            go.sum
+            site/go.sum
+      - name: Install pinned Hugo Extended
+        run: bash scripts/install_hugo.sh "$RUNNER_TEMP/hugo"
+      - name: Generator checks
+        run: go test ./cmd/sitegen
+      - name: Generate content
+        run: go run ./cmd/sitegen
+      - name: Check deterministic output
+        run: |
+          cp -a site/content "$RUNNER_TEMP/content-first"
+          go run ./cmd/sitegen
+          diff -r "$RUNNER_TEMP/content-first" site/content
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+      - name: Build
+        env:
+          HUGO_ENVIRONMENT: production
+        run: '"$RUNNER_TEMP/hugo/hugo" --source site --minify --baseURL "${{ steps.pages.outputs.base_url }}/"'
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/public
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

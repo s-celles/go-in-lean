@@ -1,0 +1,23 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "SSA-COMPOSE-CONST64-TYPE"
+title: "Shift composition gives huge counts a narrow type"
+package: "cmd/compile/internal/ssa (generic.rules + prove), Go master"
+architectures:
+  - "all"
+priority: "P2"
+severity: "low-medium"
+status: "go_discrepancy_reproduced"
+summary: "Combining two shifts creates a Const64 count typed like the narrow shifted value; prove then trusts the false type bounds."
+affected_versions: "Master babb75be; go1.25.5 and go1.27.3 are correct"
+go_source: "master babb75be: _gen/generic.rules:537-549; ssa/prove.go InitLimit; ssacompile/prove.go:2454"
+report: "findings/SSA-COMPOSE-CONST64-TYPE/finding.md"
+reproducer: "go/reproducers/finding_compose_const64_test.go"
+lean_file: ""
+source_records:
+  - "findings/SSA-COMPOSE-CONST64-TYPE/source.json"
+  - "findings/SSA-COMPOSE-CONST64-TYPE/validation.json"
+upstream:
+  - "https://github.com/golang/go/issues/82767"
+history:
+  - {"date": "2026-11-02", "status": "go_discrepancy_reproduced", "note": "7 fuzz seeds on master, all explained; fix validated"}
+  - {"date": "2026-11-04", "status": "go_discrepancy_reproduced", "note": "current tip 67219752 also ICEs in prove flowLimit on (y >> 1) >> (uint32(1) << 31); CL 857342 ps1 fixes the compile crash"}

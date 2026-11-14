@@ -1,6 +1,6 @@
 # Upstream issue, PR and CL status
 
-Last checked: **2026-11-05**, from the GitHub issue API and the Go Gerrit API.
+Last checked: **2026-11-14**, from the GitHub issue API and the Go Gerrit API.
 
 This is the single status table for upstream bugs found, reproduced, or
 directly followed by go-in-lean. GitHub and Gerrit are separate workflows: an
@@ -26,8 +26,8 @@ distinguish a complete fix from a partial or related CL.
 | [#82763](https://github.com/golang/go/issues/82763) | OPEN | [857741](https://go-review.googlesource.com/c/go/+/857741) | NEW | Signed comparison of huge constant shift counts. |
 | [#82767](https://github.com/golang/go/issues/82767) | OPEN | [857342](https://go-review.googlesource.com/c/go/+/857342) | NEW | Correct type for combined shift counts; also fixes the `prove/Limit` ICE family. Rediscovered on tip by the alternative-compiler campaign (2026-11-05); comment posted that go1.27.3/go1.26.10 show no wrong code for the backports #82810/#82811. |
 | [#82772](https://github.com/golang/go/issues/82772) | CLOSED | [857442](https://go-review.googlesource.com/c/go/+/857442) | MERGED | MIPS `Rsh8` sign-extension bit; merged 2026-11-05 as `ff3d7c172b6b` after showing the mipsle/mips64le crypto tryjob failures were pre-existing (identical `.text` with and without the fix; #82681). |
-| [#82773](https://github.com/golang/go/issues/82773) | OPEN (REOPENED) | [857143](https://go-review.googlesource.com/c/go/+/857143) | MERGED | RISC-V fix. The issue was reopened on 2026-11-05 because the bug also affects Loong64. |
-| [#82773](https://github.com/golang/go/issues/82773) | OPEN (REOPENED) | [859601](https://go-review.googlesource.com/c/go/+/859601), [859721](https://go-review.googlesource.com/c/go/+/859721) | NEW | Two Loong64 fixes currently in review. |
+| [#82773](https://github.com/golang/go/issues/82773) | CLOSED | [857143](https://go-review.googlesource.com/c/go/+/857143) | MERGED | RISC-V fix. The issue was reopened for Loong64, then closed again on 2026-11-05 after CL 859601 merged. |
+| [#82773](https://github.com/golang/go/issues/82773) | CLOSED | [859601](https://go-review.googlesource.com/c/go/+/859601), [859721](https://go-review.googlesource.com/c/go/+/859721) | MERGED / ABANDONED | Loong64 fix 859601 merged 2026-11-05; alternative 859721 abandoned in its favor. |
 | [#82774](https://github.com/golang/go/issues/82774) | CLOSED | [856905](https://go-review.googlesource.com/c/go/+/856905) | MERGED | S390X unsigned comparison of a sign-extended value. |
 | [#82774](https://github.com/golang/go/issues/82774) | CLOSED | [859762](https://go-review.googlesource.com/c/go/+/859762), [859742](https://go-review.googlesource.com/c/go/+/859742) | NEW | Go 1.26 and 1.27 backports. |
 | [#82775](https://github.com/golang/go/issues/82775) | OPEN | [857742](https://go-review.googlesource.com/c/go/+/857742) | NEW | PPC64 `Type.Size()` byte/bit mismatch. |
@@ -35,7 +35,7 @@ distinguish a complete fix from a partial or related CL.
 | [#82776](https://github.com/golang/go/issues/82776) | CLOSED | [859662](https://go-review.googlesource.com/c/go/+/859662), [859801](https://go-review.googlesource.com/c/go/+/859801) | NEW | Go 1.26 and 1.27 backports. |
 | [#82777](https://github.com/golang/go/issues/82777) | CLOSED (rechecked 2026-11-13) | [857344](https://go-review.googlesource.com/c/go/+/857344) | MERGED | ARM64 constant-flag `CSINV`; the local tip snapshot (built 2026-11-03) predates the 2026-11-05 merge, so it still shows the bug. |
 | [#82777](https://github.com/golang/go/issues/82777) | CLOSED | [859761](https://go-review.googlesource.com/c/go/+/859761), [859781](https://go-review.googlesource.com/c/go/+/859781) | NEW | Go 1.26 and 1.27 backports remain under review. |
-| [#82782](https://github.com/golang/go/issues/82782) | OPEN | [857542](https://go-review.googlesource.com/c/go/+/857542) | NEW | Power10 `ReverseBytes16` result type. |
+| [#82782](https://github.com/golang/go/issues/82782) | OPEN | [857542](https://go-review.googlesource.com/c/go/+/857542) | NEW | Power10 `ReverseBytes16` result type. Patchset 3 published 2026-11-14 with a direct exhaustive test over all 65,536 inputs; Robert Griesemer's review request answered and resolved. |
 | [#82786](https://github.com/golang/go/issues/82786) | OPEN | [857821](https://go-review.googlesource.com/c/go/+/857821) | NEW | ARM `MVNshiftRA` constant fold. |
 | [#82825](https://github.com/golang/go/issues/82825) | CLOSED | [858262](https://go-review.googlesource.com/c/go/+/858262) | MERGED | x86 SBB carry masks now clobber flags. |
 | [#82825](https://github.com/golang/go/issues/82825) | CLOSED | [859802](https://go-review.googlesource.com/c/go/+/859802), [859663](https://go-review.googlesource.com/c/go/+/859663) | NEW | Go 1.26 and 1.27 backports. |

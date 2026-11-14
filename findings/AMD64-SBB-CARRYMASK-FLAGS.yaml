@@ -1,0 +1,21 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "AMD64-SBB-CARRYMASK-FLAGS"
+title: "x86 carry masks clobber comparison flags"
+package: "cmd/compile"
+architectures:
+  - "amd64"
+  - "386"
+priority: "P1"
+severity: "medium"
+status: "go_discrepancy_reproduced"
+summary: "SBB carry-mask operations fail to declare their flag clobber, so a later comparison reads overwritten flags."
+affected_versions: "go1.24.13 through go1.27.3 and master 2b74366d"
+go_source: "See the source analysis in the research record."
+report: "findings/AMD64-SBB-CARRYMASK-FLAGS/finding.md"
+reproducer: "findings/AMD64-SBB-CARRYMASK-FLAGS/reproducer_test.go"
+lean_file: ""
+source_records: []
+upstream:
+  - "https://github.com/golang/go/issues/82825"
+history:
+  - {"date": "2026-11-03", "status": "go_discrepancy_reproduced", "note": "Recorded in the project research record; see linked reproduction evidence."}

@@ -1,0 +1,23 @@
+# Website finding metadata. Evidence files remain the detailed research record.
+id: "SIMD-BRIDGE-MULADD-GOAMD64"
+title: "Emulated SIMD MulAdd double-rounds"
+package: "simd"
+architectures:
+  - "amd64"
+  - "386"
+  - "arm"
+  - "mipsle"
+priority: "P2"
+severity: "medium"
+status: "known_issue"
+summary: "The emulated MulAdd path and midway bridge do not always implement the documented fused, single-rounding result, including a float32 double-rounding gap."
+affected_versions: "Experimental simd on master, before CL 858921"
+go_source: "See the source analysis in the research record."
+report: "findings/SIMD-BRIDGE-MULADD-GOAMD64/finding.md"
+reproducer: ""
+lean_file: ""
+source_records: []
+upstream:
+  - "https://github.com/golang/go/pull/80355"
+history:
+  - {"date": "2026-11-04", "status": "known_issue", "note": "Recorded in the project research record; see linked reproduction evidence."}
