@@ -12,6 +12,9 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- A patchset 2 for CL 858581 (golang/go#82839), prepared after review: the check moves
+  from the extension case of `prove` into the `x+delta` constant case, where the constant is
+  truncated; validated locally, not mailed (`docs/cl-verification.md`).
 - A generated Hugo/Hextra documentation and findings website, with strict Go
   YAML validation, per-property and per-finding evidence pages, computed status
   and trust counts, local search, filterable/sortable registries inspired by

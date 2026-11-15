@@ -127,3 +127,22 @@ Fix re-validated on master `740d909b` (the 2026-11-02 validation was against `28
 passes on master+patch, and the `ssa`/`ssacompile`/`test` (short) plus
 `prove|loopbce|checkbce|codegen|fixedbugs` suites pass. Mailed as Gerrit CL
 https://go-review.googlesource.com/c/go/+/858581 (mailed from the Linux workstation).
+
+### Patchset 2 following review (prepared 2026-11-15, not mailed)
+
+Keith Randall preferred moving the check to where the constant is truncated
+(option (b) in the 2026-11-13 reply). The extension case in
+`factsTable.update` is now unchanged. The `x+delta > w` constant case runs
+only when `w` fits in `x`'s type, checked by a new helper `fitsSigned`. Its
+doc comment says only what it does, and the reason sits at the call site.
+The commit subject becomes "do not truncate a wider constant in prove's
+x+delta case" (`cl/message-ps2.txt`).
+
+Validated on the parent of PS1 (`740d909bb5`) with the same regression
+test `issue82839.go`. It panics with go1.27.4 and passes with PS2. Also passing
+with PS2: `test/prove*.go`, `loopbce`, `checkbce`, all of `codegen` and
+`fixedbugs` through `cmd/internal/testdir`, and `go test -short`
+`cmd/compile/internal/ssa` and `cmd/compile/internal/ssacompile`. Files:
+`fix-ps2.patch` (compiler change against the base), `cl/update-ps1-to-ps2.patch`
+(incremental), and `cl/review-reply-ps2.md` (draft replies). Nothing has been
+uploaded or posted.

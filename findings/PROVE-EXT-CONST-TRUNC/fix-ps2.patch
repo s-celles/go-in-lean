@@ -1,0 +1,37 @@
+diff --git a/src/cmd/compile/internal/ssacompile/prove.go b/src/cmd/compile/internal/ssacompile/prove.go
+index ae1dd24463..8d7fdc2c7d 100644
+--- a/src/cmd/compile/internal/ssacompile/prove.go
++++ b/src/cmd/compile/internal/ssacompile/prove.go
+@@ -803,7 +803,14 @@ func (ft *factsTable) update(parent *ssa.Block, v, w *ssa.Value, d domain, r rel
+ 				if delta < 0 && !underflow {
+ 					ft.update(parent, x, w, signed, r)
+ 				}
+-			} else {
++			} else if fitsSigned(w.AuxInt, x.Type.Size()) {
++				// The constant w can be wider than x when the fact was
++				// first stated on an extension of x+delta (see the
++				// extension case below). The computation below reads w
++				// at x's width, so it is only done when w fits there.
++				// When it does not, x+delta > w is always true or
++				// always false, and the limits of x+delta decide it.
++				//
+ 				// With w,delta constants, we want to derive: x+delta > w  ⇒  x > w-delta
+ 				//
+ 				// We compute (using integers of the correct size):
+@@ -2823,6 +2830,16 @@ func (ft *factsTable) compareConstDelta(b *ssa.Block, v1 *ssa.Value) {
+ 	}
+ }
+ 
++// fitsSigned reports whether c is representable as a signed
++// integer of the given size in bytes.
++func fitsSigned(c int64, size int64) bool {
++	if size >= 8 {
++		return true
++	}
++	bits := uint(size * 8)
++	return c >= -(1<<(bits-1)) && c < 1<<(bits-1)
++}
++
+ // isCleanExt reports whether v is the result of a value-preserving
+ // sign or zero extension.
+ func isCleanExt(v *ssa.Value) bool {

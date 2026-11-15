@@ -1,0 +1,68 @@
+diff --git a/src/cmd/compile/internal/ssacompile/prove.go b/src/cmd/compile/internal/ssacompile/prove.go
+index fa6b03b3f6..8d7fdc2c7d 100644
+--- a/src/cmd/compile/internal/ssacompile/prove.go
++++ b/src/cmd/compile/internal/ssacompile/prove.go
+@@ -803,7 +803,14 @@ func (ft *factsTable) update(parent *ssa.Block, v, w *ssa.Value, d domain, r rel
+ 				if delta < 0 && !underflow {
+ 					ft.update(parent, x, w, signed, r)
+ 				}
+-			} else {
++			} else if fitsSigned(w.AuxInt, x.Type.Size()) {
++				// The constant w can be wider than x when the fact was
++				// first stated on an extension of x+delta (see the
++				// extension case below). The computation below reads w
++				// at x's width, so it is only done when w fits there.
++				// When it does not, x+delta > w is always true or
++				// always false, and the limits of x+delta decide it.
++				//
+ 				// With w,delta constants, we want to derive: x+delta > w  ⇒  x > w-delta
+ 				//
+ 				// We compute (using integers of the correct size):
+@@ -870,7 +877,7 @@ func (ft *factsTable) update(parent *ssa.Block, v, w *ssa.Value, d domain, r rel
+ 	// Look through value-preserving extensions.
+ 	// If the domain is appropriate for the pre-extension Type,
+ 	// repeat the update with the pre-extension Value.
+-	if isCleanExt(v) && constFitsIn(w, v.Args[0].Type.Size(), d) {
++	if isCleanExt(v) {
+ 		switch {
+ 		case d == signed && v.Args[0].Type.IsSigned():
+ 			fallthrough
+@@ -878,7 +885,7 @@ func (ft *factsTable) update(parent *ssa.Block, v, w *ssa.Value, d domain, r rel
+ 			ft.update(parent, v.Args[0], w, d, r)
+ 		}
+ 	}
+-	if isCleanExt(w) && constFitsIn(v, w.Args[0].Type.Size(), d) {
++	if isCleanExt(w) {
+ 		switch {
+ 		case d == signed && w.Args[0].Type.IsSigned():
+ 			fallthrough
+@@ -2823,24 +2830,14 @@ func (ft *factsTable) compareConstDelta(b *ssa.Block, v1 *ssa.Value) {
+ 	}
+ }
+ 
+-// constFitsIn reports whether c, if it is an integer constant, is representable in a value of
+-// the given size under domain d. A fact ext(x) op c is only carried over to x when it is: an
+-// out-of-range constant makes the fact on x trivially true or false (already decided by the
+-// limits of ext(x)), and later steps such as the x+delta reasoning compute with c at x's width,
+-// which would truncate it.
+-func constFitsIn(c *ssa.Value, size int64, d domain) bool {
+-	if !c.IsGenericIntConst() || size >= 8 {
++// fitsSigned reports whether c is representable as a signed
++// integer of the given size in bytes.
++func fitsSigned(c int64, size int64) bool {
++	if size >= 8 {
+ 		return true
+ 	}
+ 	bits := uint(size * 8)
+-	if d == signed {
+-		return c.AuxInt >= -(1<<(bits-1)) && c.AuxInt < 1<<(bits-1)
+-	}
+-	u := uint64(c.AuxInt)
+-	if cs := c.Type.Size(); cs < 8 {
+-		u &= 1<<(uint(cs)*8) - 1
+-	}
+-	return u < 1<<bits
++	return c >= -(1<<(bits-1)) && c < 1<<(bits-1)
+ }
+ 
+ // isCleanExt reports whether v is the result of a value-preserving

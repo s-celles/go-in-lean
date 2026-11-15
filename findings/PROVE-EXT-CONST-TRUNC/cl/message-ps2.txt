@@ -1,0 +1,19 @@
+cmd/compile: do not truncate a wider constant in prove's x+delta case
+
+factsTable.update looks through value-preserving extensions and repeats
+a fact ext(x) op w on x with the same w. When w is a constant, it can
+then be wider than x. The x+delta > w step computes w - delta at x's
+width, truncating w: for SignExt16to32(x - 513) >= -536870911 it
+derives x >= 514 and declares the branch impossible, so
+
+	if int32(int16(x)-513) < -536870911 { ... }
+
+was taken for every x.
+
+Only do the constant computation when w fits in x's type. When it does
+not, x+delta > w is always true or always false, and the limits of
+x+delta already decide it.
+
+Fixes #82839.
+
+Assisted-by: AI
