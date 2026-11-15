@@ -726,8 +726,32 @@ class CheckTests(unittest.TestCase):
         src = BUILD.replace("    (?) v15 = Const16", '    (?) v99 = ConstString <string> {"[\\x00"}\n    (?) v15 = Const16')
         f = tv.parse_dump(src)
         self.assertEqual(f.values["v99"].op, "ConstString")
+        self.assertEqual(tv._go_string(f.values["v99"].aux), b"[\x00")
+        self.assertEqual(tv.evaluate(f, {"x": 1, "y": 2}), tv.evaluate(tv.parse_dump(BUILD), {"x": 1, "y": 2}))
+
+    def test_read_only_table_lookup(self):
+        table = bytes((7 * i + 3) & 255 for i in range(256))
+        lit = '"' + "".join(f"\\x{b:02x}" for b in table) + '"'
+        src = BUILD.replace("    (5) v10 = Trunc64to16 <int16> v8\n", f"""\
+    (5) v10 = Trunc64to16 <int16> v8
+    (?) v90 = ConstString <string> {{{lit}}}
+    (?) v91 = StringPtr <*uint8> v90
+    (?) v92 = Trunc64to8 <uint8> v7
+    (?) v93 = ZeroExt8to64 <int> v92
+    (?) v94 = AddPtr <*uint8> v91 v93
+    (?) v95 = Load <uint8> v94 v1
+""").replace("(10) v24 = SignExt16to64 <uint64> v23", "(10) v24 = ZeroExt8to64 <uint64> v95")
+        f = tv.parse_dump(src)
+        f.rodata = {256: table}
+        for x in (0, 5, 255, 256 + 9):
+            self.assertEqual(tv.evaluate(f, {"x": x, "y": 0}), ("ret", table[x & 255]))
+        opt = src.replace("(?) v91 = StringPtr <*uint8> v90", "(?) v89 = SB <uintptr>\n    (?) v91 = Addr <*uint8> {go:string..gostring.256.AbC==} v89")
+        g = tv.parse_dump(opt)
+        g.rodata = {256: table}
+        self.assertEqual(tv.evaluate(g, {"x": 9, "y": 0}), ("ret", table[9]))
+        g.rodata = {}
         with self.assertRaises(tv.Unsupported):
-            tv.evaluate(f, {"x": 1, "y": 2})
+            tv.evaluate(g, {"x": 9, "y": 0})
 
     def test_narrow_type_that_fits_is_benign(self):
         # divmod.rules types the 32-bit shifts of an int8 division by a constant as int8:
@@ -852,6 +876,236 @@ class AgainstGcTests(unittest.TestCase):
             rep = tv.validate(passes)
             self.assertEqual(rep["failures"], [], fn)
             self.assertGreater(rep["checked"], 0, fn)
+
+
+W32_SRC = """\
+package main
+
+import (
+	"fmt"
+	"os"
+	"strconv"
+)
+
+//go:noinline
+func f0(x, y uint64) uint64 { return x>>3 + y }
+
+//go:noinline
+func f1(x, y uint64) uint64 { return x - y ^ y<<7 }
+
+//go:noinline
+func f2(x, y uint64) uint64 { return x * y }
+
+//go:noinline
+func f3(x, y uint64) uint64 { return uint64(int64(x) >> (y & 63)) }
+
+//go:noinline
+func f4(x, y uint64) uint64 {
+	if int64(x) < int64(y) {
+		return x | 1
+	}
+	return y &^ x
+}
+
+//go:noinline
+func f5(x, y uint64) uint64 { return uint64(int64(int32(x))) + uint64(uint32(y)) }
+
+//go:noinline
+func f6(x, y uint64) uint64 {
+	if x == y {
+		return 1
+	}
+	if x > y {
+		return x - y
+	}
+	return y % 8
+}
+
+//go:noinline
+func f7(x, y uint64) uint64 { return uint64(int8(x)/int8(y|1)) + x<<(y&63) }
+
+func main() {
+	fs := []func(uint64, uint64) uint64{f0, f1, f2, f3, f4, f5, f6, f7}
+	x, _ := strconv.ParseUint(os.Args[1], 10, 64)
+	y, _ := strconv.ParseUint(os.Args[2], 10, 64)
+	for _, f := range fs {
+		fmt.Println(f(x, y))
+	}
+}
+"""
+W32_N = 8
+
+
+@unittest.skipUnless(HAVE_Z3 and GO, "z3 module or go not available")
+class Word32Tests(unittest.TestCase):
+    """Generic passes of the 32-bit little-endian targets, where dec64 splits 64-bit values."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = Path(tempfile.mkdtemp(prefix="ssa_tv_w32_"))
+        (cls.tmp / "main.go").write_text(W32_SRC)
+        (cls.tmp / "go.mod").write_text("module m\n\ngo 1.22\n")
+        subprocess.run([GO, "build", "-buildvcs=false", "-o", "prog", "."], cwd=cls.tmp, check=True)
+        names = [f"f{i}" for i in range(W32_N)]
+        cls.dumps = {a: tv.dump_passes(GO, cls.tmp, names, a) for a in ("386", "arm", "mipsle")}
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.tmp, ignore_errors=True)
+
+    def test_dec64_splits_arguments(self):
+        last = dict(self.dumps["arm"]["f0"])["late_opt"]
+        self.assertIn("Arg <uint32> {x} [4]", last)
+        self.assertIn("Add32carry", last)
+
+    def test_evaluation_matches_gc(self):
+        rng = random.Random(32)
+        pts = [(0, 0), (M64, M64), (0xFFFFFFFF, 1), (1 << 63, 33), (1 << 32, 0xFFFFFFFF), (5, 31)]
+        pts += [(rng.getrandbits(64), rng.getrandbits(64)) for _ in range(4)]
+        for x, y in pts:
+            out = subprocess.run([str(self.tmp / "prog"), str(x), str(y)], capture_output=True,
+                                 text=True, check=True).stdout.split()
+            for arch, dumps in self.dumps.items():
+                for i in range(W32_N):
+                    for name, dump in (dumps[f"f{i}"][0], dumps[f"f{i}"][-1]):
+                        f = tv.parse_dump(dump)
+                        f.word_bits = 32
+                        got = tv.evaluate(f, {"x": x, "y": y})
+                        self.assertEqual(got, ("ret", int(out[i])), (arch, f"f{i}", name, x, y))
+
+    def test_validate_reports_no_failure(self):
+        for arch, dumps in self.dumps.items():
+            for i in range(W32_N):
+                rep = tv.validate(dumps[f"f{i}"], 32)
+                self.assertEqual(rep["failures"], [], (arch, f"f{i}"))
+                self.assertIsNone(rep["unsupported"], (arch, f"f{i}"))
+                self.assertGreater(rep["checked"], 0, (arch, f"f{i}"))
+
+    def test_wrong_carry_is_reported(self):
+        passes = self.dumps["arm"]["f0"]
+        i = next(k for k, (n, t) in enumerate(passes) if "Add32withcarry" in t)
+        bad = [(n, t.replace("Add32withcarry", "Sub32withcarry") if k >= i else t) for k, (n, t) in enumerate(passes)]
+        rep = tv.validate(bad, 32)
+        self.assertEqual([r["kind"] for r in rep["failures"]], ["equivalence"])
+
+
+ARM_SRC = """\
+package main
+
+import (
+	"fmt"
+	"math/bits"
+	"os"
+	"strconv"
+)
+
+//go:noinline
+func f0(x, y uint64) uint64 { return uint64(uint32(x) << (y & 63)) }
+
+//go:noinline
+func f1(x, y uint64) uint64 { return uint64(int32(x) >> uint8(y)) }
+
+//go:noinline
+func f2(x, y uint64) uint64 { return uint64(uint32(x)/(uint32(y)|1)) + uint64(uint32(x)%(uint32(y)|1)) }
+
+//go:noinline
+func f3(x, y uint64) uint64 {
+	return uint64(bits.LeadingZeros32(uint32(x))) + uint64(bits.ReverseBytes32(uint32(y)))
+}
+
+//go:noinline
+func f4(x, y uint64) uint64 { return uint64(int8(x>>3)) - uint64(uint16(y)>>2) ^ uint64(^(int32(y) >> 5)) }
+
+//go:noinline
+func f5(x, y uint64) uint64 {
+	if int32(x) < int32(y) {
+		return 7
+	}
+	if uint32(x) >= uint32(y) {
+		return 9
+	}
+	return 3
+}
+
+//go:noinline
+func f6(x, y uint64) uint64 { return uint64(int32(x)*int32(y)) + uint64(uint32(x)>>uint32(y)) }
+
+// golang/go#82786: the MVNshiftRA constant fold computes ^(c>>d) with a logical shift.
+//
+//go:noinline
+func f7(x, y uint64) uint64 {
+	return uint64(bits.TrailingZeros64(uint64(uint16(bits.OnesCount16(16384))) &^ 16777217))
+}
+
+func main() {
+	fs := []func(uint64, uint64) uint64{f0, f1, f2, f3, f4, f5, f6, f7}
+	x, _ := strconv.ParseUint(os.Args[1], 10, 64)
+	y, _ := strconv.ParseUint(os.Args[2], 10, 64)
+	for _, f := range fs {
+		fmt.Println(f(x, y))
+	}
+}
+"""
+ARM_N = 8  # f7 is golang/go#82786
+
+
+@unittest.skipUnless(HAVE_Z3 and GO, "z3 module or go not available")
+class LoweredARMTests(unittest.TestCase):
+    """Lowered 32-bit arm passes, optimized and -N, against the native program."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = Path(tempfile.mkdtemp(prefix="ssa_tv_arm_"))
+        (cls.tmp / "main.go").write_text(ARM_SRC)
+        (cls.tmp / "go.mod").write_text("module m\n\ngo 1.22\n")
+        subprocess.run([GO, "build", "-buildvcs=false", "-o", "prog", "."], cwd=cls.tmp, check=True)
+        names = [f"f{i}" for i in range(ARM_N)]
+        cls.dumps = {fl: tv.dump_passes(GO, cls.tmp, names, "arm", lowered=True, gcflags=fl)
+                     for fl in ("", "-N -l")}
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.tmp, ignore_errors=True)
+
+    def test_lowered_evaluation_matches_gc(self):
+        rng = random.Random(7)
+        pts = [(0, 0), (M64, M64), (0x80000000, 31), (0x80000000, 32), (0xFFFF8000, 255), (65536, 256),
+               (5, 0xFFFFFFFF), (0x7FFFFFFF, 0x80000000), (3, 2)]
+        pts += [(rng.getrandbits(64), rng.getrandbits(64)) for _ in range(4)]
+        for x, y in pts:
+            out = subprocess.run([str(self.tmp / "prog"), str(x), str(y)], capture_output=True,
+                                 text=True, check=True).stdout.split()
+            for fl, dumps in self.dumps.items():
+                for i in range(ARM_N - 1):
+                    if fl and i == 3:
+                        continue  # a math/bits helper left as a call by -l
+                    for name in ("lower", "flagalloc"):
+                        f = tv.parse_dump(dict(dumps[f"f{i}"])[name])
+                        f.arch, f.word_bits, f.param_names = "arm", 32, {"x", "y"}
+                        got = tv.evaluate(f, {"x": x, "y": y})
+                        self.assertEqual(got, ("ret", int(out[i])), (fl, f"f{i}", name, x, y))
+
+    def test_finds_82786(self):
+        rep = tv.validate(self.dumps[""]["f7"], 32, arch="arm")
+        eq = [r for r in rep["failures"] if r["kind"] == "equivalence"]
+        self.assertEqual([r["pass"] for r in eq], ["lower"])
+        self.assertEqual(eq[0]["before_out"], ("ret", 64))
+
+    def test_no_report_on_correct_functions(self):
+        for fl, dumps in self.dumps.items():
+            for i in range(ARM_N - 1):
+                rep = tv.validate(dumps[f"f{i}"], 32, arch="arm")
+                self.assertEqual(rep["failures"], [], (fl, f"f{i}"))
+                if not (fl and i == 3):
+                    self.assertIsNone(rep["unsupported"], (fl, f"f{i}"))
+
+    def test_noov_conditions_read_n_alone(self):
+        ctx = z3.Context()
+        t, f = z3.BoolVal(True, ctx), z3.BoolVal(False, ctx)
+        flags = ("arm64flags", t, f, f, t)  # N=1, V=1: MI is taken, LT is not
+        self.assertTrue(z3.is_true(z3.simplify(tv._arm64_condition("LessThanNoov", flags))))
+        self.assertTrue(z3.is_false(z3.simplify(tv._arm64_condition("LessThan", flags))))
+        self.assertTrue(z3.is_false(z3.simplify(tv._arm64_condition("GreaterEqualNoov", flags))))
 
 
 PPC_SRC = GO_SRC.replace("func main() {", """//go:noinline

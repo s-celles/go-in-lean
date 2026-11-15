@@ -954,6 +954,73 @@ shifted logical operations, `SBFIZ`, rotations, high multiplication, byte
 reversal/count-leading-zero operations, and non-inlined small-width `math/bits`
 helpers. Float register transfers remain unsupported.
 
+### 3.23 Iteration 18: 32-bit targets, lowered arm and read-only tables
+
+`ssa_tv.py` previously reported every generated function as unsupported on the
+32-bit targets, even for the generic passes. After `decompose_builtin`, a `uint64`
+parameter is two `Arg <uint32>` values (offsets 0 and 4), 64-bit arithmetic goes through
+`Add32carry`/`Select0`/`Select1`/`Add32withcarry`, and under ABI0 the result is stored to
+the `~r0` stack slot instead of being returned by `MakeResult`. The validator now models:
+
+- the dec64 operations (`Int64Make/Hi/Lo`, `Add32carry`, `Add32carrywithcarry`,
+  `Add32withcarry`, `Sub32carry`, `Sub32withcarry`, `Mul32uhilo`, `Mul32uover`,
+  `Signmask`, `Zeromask`, `MakeTuple`, `Last`) and `int`/`uint`/`uintptr` at the target's
+  word size;
+- the halves of split parameters, the `~r0` result slot, and, for `-N -l` builds, the
+  parameter slots that ABI0 code reads directly;
+- ABI0 calls to `b2i`, whose argument and result go through the outgoing area at
+  `SP+off`;
+- read-only string tables. The `ConstString` literals of the `build` pass are
+  decoded and matched to the `go:string..gostring.<len>.<hash>` symbols of later passes
+  when the length names a single literal; loads at a constant or symbolic index are
+  encoded. This covers `math/bits`' `len8tab` and similar tables, which previously made
+  the generic passes of `bits.Len*`/`OnesCount*` unsupported wherever they are not
+  intrinsified.
+
+Big-endian mips is reported as unsupported rather than modelled. 64-bit division and
+modulo on 32-bit targets call the runtime (`runtime.int64div` and similar) and stay
+unsupported.
+
+`--lowered` now also covers 32-bit arm: about 150 operations, including every shifted
+form (`*shiftLL/RL/RA` and the register-shift `*reg` forms, where ARM uses the low byte
+of the register and shifts of 32 or more give 0 or the sign), carries (`ADDS`, `ADC`,
+`SUBS`, `SBC`, `RSC`), `CALLudiv`, `SRAcond`, `CMOVWHSconst/LSconst`, `BFX/BFXU`, `CLZ`,
+`REV`, `RBIT`, and loads and stores to named stack slots and to read-only data. The
+carry and overflow left by `TST`/`TEQ` are free variables. On a program written to
+exercise these shapes, the `lower` and `flagalloc` models match native execution (13
+inputs, optimized and `-N -l`). The validator reports golang/go#82786 at `lower` with
+the expected value 64. The original reproducer depends on `len8tab`, so this detection
+needed the read-only tables.
+
+The conditions `LessThanNoov`/`GreaterEqualNoov` and the corresponding blocks were
+modelled as `lt ∧ ¬V` and `ge ∧ ¬V`. gc emits `MI`/`PL` for them (`arm/ssa.go`,
+`arm64/ssa.go`): N alone. The two differ when N = V = 1. This affected the arm64 model
+too, and is now fixed for both. A test checks the N = V = 1 case.
+
+A smoke run with go1.27.4 (seed 11, five programs per suite, optimized and `-N -l`)
+found no report. Function checks:
+
+| Target | Suite | Optimized | `-N -l` | Unsupported |
+| --- | --- | ---: | ---: | --- |
+| arm, lowered | `core` | 50 | 50 | none |
+| arm, lowered | `bits` | 50 | 50 | 4 runtime 64-bit divisions in each build; one `math/bits` call under `-l` |
+| 386, generic | `core` | 50 | 50 | none |
+| 386, generic | `bits` | 50 | 50 | as for arm, plus one more under `-N -l` |
+
+**CL 862781 (golang/go#36897).** Keith Randall's fix, patchset 5 on top of CL 833045,
+was built locally. The 2026-11-06 reproducer prints 5 instead of
+9223372036854775813 with `-gcflags='-N -l'`, and `ssa_tv --lowered --gcflags "-N -l"`
+no longer reports it. On the `ext` suite (seed 20261115, 300 programs, 3,000 functions,
+amd64, `-N -l`):
+
+| Toolchain | Pass pairs | Unsupported | Timeouts | Reports |
+| --- | ---: | ---: | ---: | ---: |
+| go1.27.4 | 16,323 | 84 | 18 | 8 |
+| CL 862781 | 16,207 | 84 | 18 | 0 |
+
+The 8 go1.27.4 reports share the signature of golang/go#36897: at `lower`, the upper 32
+bits of the input reach the result where 0 is expected.
+
 ## 4. Success criteria check
 
 | # | Criterion | Status |

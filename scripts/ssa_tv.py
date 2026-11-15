@@ -19,17 +19,20 @@ Two checks, for all inputs at once rather than on sampled ones:
   lowering trusts it).
 
 Functions with heap memory, loops, calls other than b2i or unmodelled ops are reported
-as unsupported and skipped. With --lowered on amd64, arm64, loong64, ppc64/ppc64le,
-riscv64 or s390x, the check goes on through the lowered passes up to regalloc, with the machine
-semantics of the target's ops (bits the ISA leaves undefined are free variables). --gcflags
-"-N -l" checks debug builds, whose stack slots are modelled byte by byte. The
-lowered passes of other architectures are out of scope.
+as unsupported and skipped; read-only string tables (such as math/bits' len8tab) are
+modelled. On the 32-bit targets (386, arm, mipsle) the ops by which dec64 splits 64-bit
+values and the ABI0 result slot are modelled too. With --lowered on amd64, arm, arm64,
+loong64, ppc64/ppc64le, riscv64 or s390x, the check goes on through the lowered passes up
+to regalloc, with the machine semantics of the target's ops (bits the ISA leaves undefined
+are free variables). --gcflags "-N -l" checks debug builds, whose stack slots are modelled
+byte by byte. The lowered passes of other architectures are out of scope.
 
   python3 scripts/ssa_tv.py check main.go [--go GO] [--goarch A] [--funcs v0,v1] [--lowered] [--gcflags F]
   python3 scripts/ssa_tv.py gen --suite core --seed 7 --count 20 [--go GO] [--goarch A] [--lowered]
 """
 
 import argparse
+import codecs
 import json
 import os
 from pathlib import Path
@@ -46,6 +49,9 @@ WIDTH = {"int8": 8, "uint8": 8, "int16": 16, "uint16": 16, "int32": 32, "uint32"
          "int64": 64, "uint64": 64, "int": 64, "uint": 64, "uintptr": 64, "bool": 1}
 MEM_OPS = {"InitMem", "Copy", "Phi", "InlMark", "StaticCall", "StaticLECall", "CALLstatic", "MakeResult"}
 CALLS = ("StaticCall", "StaticLECall", "CALLstatic")
+DEC64_OPS = {"Int64Make", "Int64Hi", "Int64Lo", "MakeTuple", "Select0", "Select1", "Last", "Add32carry",
+             "Add32carrywithcarry", "Add32withcarry", "Sub32carry", "Sub32withcarry", "Mul32uhilo",
+             "Mul32uover", "Signmask", "Zeromask"}
 PANICS = ("runtime.panicdivide", "runtime.panicshift", "runtime.panicoverflow")
 TIMEOUT_MS = [20000]  # per solver query; --timeout-ms
 
@@ -132,6 +138,13 @@ def _parse_rest(rest):
     return auxint, aux, args
 
 
+def _go_string(aux):
+    """Bytes of a ConstString literal as the dump quotes it (Go %q, no \\u escapes handled)."""
+    if not (aux and aux.startswith('"') and aux.endswith('"')) or "\\u" in aux or "\\U" in aux:
+        raise Unsupported(f"string literal {aux[:40] if aux else aux!r}")
+    return codecs.escape_decode(aux[1:-1].encode("utf-8"))[0]
+
+
 def parse_dump(text):
     lines = text.splitlines()
     f = Func(lines[0].split()[0])
@@ -147,6 +160,9 @@ def parse_dump(text):
         m = _VALUE.match(line)
         if m:
             auxint, aux, args = _parse_rest(m.group(4))
+            if m.group(2) == "ConstString" and "{" in m.group(4):  # the literal may hold brackets
+                rest = m.group(4)
+                aux = rest[rest.index("{") + 1:rest.rindex("}")]
             v = Value(m.group(1), m.group(2), m.group(3), auxint, aux, args, blk.name)
             blk.values.append(v)
             f.values[v.id] = v
@@ -168,7 +184,7 @@ def parse_dump(text):
     return f
 
 
-LOWERED_ARCHES = ("ppc64", "ppc64le", "amd64", "riscv64", "loong64", "s390x", "arm64")
+LOWERED_ARCHES = ("ppc64", "ppc64le", "amd64", "riscv64", "loong64", "s390x", "arm64", "arm")
 
 
 class Mem:
@@ -314,6 +330,22 @@ ARM64_BLOCK_CONDITIONS = {"EQ": "Equal", "NE": "NotEqual", "LT": "LessThan", "LE
                           "LEnoov": "LessEqualNoov", "GTnoov": "GreaterThanNoov", "GEnoov": "GreaterEqualNoov"}
 
 
+ARM_SHIFTS = ("LL", "RL", "RA")
+ARM_MEM_OPS = {"MOVBstore", "MOVHstore", "MOVWstore"}
+ARM_OPS = ARM_MEM_OPS | {"MOVBload", "MOVBUload", "MOVHload", "MOVHUload", "MOVWload", "MOVWaddr"} | {
+    "MOVBloadidx", "MOVBUloadidx", "MOVHloadidx", "MOVHUloadidx", "MOVWloadidx"} | {
+    "ADD", "ADDconst", "SUB", "SUBconst", "RSB", "RSBconst", "MUL", "HMUL", "HMULU", "MULLU", "MULA", "MULS",
+    "CALLudiv", "ADDS", "ADDSconst", "ADC", "ADCconst", "ADCS", "SUBS", "SUBSconst", "RSBSconst", "SBC",
+    "SBCconst", "RSCconst", "AND", "ANDconst", "OR", "ORconst", "XOR", "XORconst", "BIC", "BICconst", "BFX",
+    "BFXU", "MVN", "CLZ", "REV", "REV16", "RBIT", "SLL", "SLLconst", "SRL", "SRLconst", "SRA", "SRAconst",
+    "SRR", "SRRconst", "CMP", "CMPconst", "CMN", "CMNconst", "TST", "TSTconst", "TEQ", "TEQconst",
+    "MOVWconst", "MOVBreg", "MOVBUreg", "MOVHreg", "MOVHUreg", "MOVWreg", "MOVWnop", "CMOVWHSconst",
+    "CMOVWLSconst", "SRAcond", "Select0", "Select1", "XORshiftRR"} | set(ARM64_CONDITIONS)
+ARM_OPS |= {f"{o}shift{k}{r}" for o in ("ADD", "SUB", "RSB", "AND", "OR", "XOR", "BIC", "MVN", "ADC", "SBC",
+                                       "RSC", "ADDS", "SUBS", "RSBS", "CMP", "CMN", "TST", "TEQ")
+            for k in ARM_SHIFTS for r in ("", "reg")}
+
+
 def _arm64_condition(condition, flags):
     """Evaluate an ARM64 condition code against symbolic NZCV flags."""
     if not (isinstance(flags, tuple) and flags[0] == "arm64flags"):
@@ -327,8 +359,9 @@ def _arm64_condition(condition, flags):
     gt = z3.And(z3.Not(z), ge)
     predicates = {"eq": z, "ne": z3.Not(z), "lt": lt, "le": le, "gt": gt, "ge": ge,
                   "ult": z3.Not(c), "ule": z3.Or(z, z3.Not(c)), "ugt": z3.And(z3.Not(z), c), "uge": c,
-                  "ltnoov": z3.And(lt, z3.Not(v)), "lenoov": z3.And(le, z3.Not(v)),
-                  "gtnoov": z3.And(gt, z3.Not(v)), "genoov": z3.And(ge, z3.Not(v))}
+                  # gc emits MI/PL for these: N alone, whatever V is (arm64/ssa.go, arm/ssa.go).
+                  "ltnoov": n, "lenoov": z3.Or(z, n), "gtnoov": z3.And(z3.Not(z), z3.Not(n)),
+                  "genoov": z3.Not(n)}
     if cond not in predicates:
         raise Unsupported(f"unknown ARM64 condition {condition}")
     return predicates[cond]
@@ -418,6 +451,7 @@ class _Enc:
         self.params = {}
         self.arch = getattr(f, "arch", None)
         self.lowered = self.arch in LOWERED_ARCHES
+        self.word = getattr(f, "word_bits", 64)  # 32 on 386, arm, mipsle
         self.order = self._topo()
         self.reach = {b.name: z3.BoolVal(False, ctx) for b in f.blocks}
         self.edges = {}
@@ -479,7 +513,7 @@ class _Enc:
         elif self.arch == "s390x" and b.kind in S390X_BRANCHES:
             c = self._s390x_branch(b, [self.enc(x) for x in b.controls])
             outs = [z3.And(r, c), z3.And(r, z3.Not(c))]
-        elif self.arch == "arm64" and b.kind in ARM64_BLOCK_CONDITIONS:
+        elif self.arch in ("arm64", "arm") and b.kind in ARM64_BLOCK_CONDITIONS:
             c = _arm64_condition(ARM64_BLOCK_CONDITIONS[b.kind], self.enc(b.controls[0]))
             outs = [z3.And(r, c), z3.And(r, z3.Not(c))]
         elif self.arch == "arm64" and b.kind in ("Z", "NZ", "ZW", "NZW"):
@@ -542,9 +576,52 @@ class _Enc:
         return self.cache[vid]
 
     def _width(self, v):
+        if v.type in ("int", "uint", "uintptr"):
+            return self.word
         if v.type not in WIDTH:
             raise Unsupported(f"type {v.type} of {v.id}")
         return WIDTH[v.type]
+
+    def _dec64(self, v, a):
+        """The generic ops by which dec64 splits 64-bit values on 32-bit targets."""
+        op, bv = v.op, self.bv
+        carry = lambda t: z3.If(t, bv(1, 32), bv(0, 32))  # noqa: E731
+        if op == "Int64Make":
+            return z3.Concat(a[0], a[1])
+        if op in ("Int64Hi", "Int64Lo"):
+            return z3.Extract(63, 32, a[0]) if op == "Int64Hi" else z3.Extract(31, 0, a[0])
+        if op == "MakeTuple":
+            return ("tuple", a[0], a[1])
+        if op in ("Select0", "Select1"):
+            if not (isinstance(a[0], tuple) and a[0][0] == "tuple"):
+                raise Unsupported(f"{op} of a non-tuple")
+            return a[0][1 if op == "Select0" else 2]
+        if op == "Last":
+            return a[-1]
+        x, y = a[0], a[1] if len(a) > 1 else None
+        if op == "Add32carry":
+            r = x + y
+            return ("tuple", r, z3.ULT(r, x))
+        if op == "Add32carrywithcarry":
+            r = z3.ZeroExt(1, x) + z3.ZeroExt(1, y) + z3.ZeroExt(1, carry(a[2]))
+            return ("tuple", z3.Extract(31, 0, r), z3.Extract(32, 32, r) == 1)
+        if op == "Add32withcarry":
+            return x + y + carry(a[2])
+        if op == "Sub32carry":
+            return ("tuple", x - y, z3.ULT(x, y))
+        if op == "Sub32withcarry":
+            return x - y - carry(a[2])
+        if op == "Mul32uhilo":
+            p = z3.ZeroExt(32, x) * z3.ZeroExt(32, y)
+            return ("tuple", z3.Extract(63, 32, p), z3.Extract(31, 0, p))
+        if op == "Mul32uover":
+            p = z3.ZeroExt(32, x) * z3.ZeroExt(32, y)
+            return ("tuple", z3.Extract(31, 0, p), z3.Extract(63, 32, p) != bv(0, 32))
+        if op == "Signmask":
+            return x >> 31
+        if op == "Zeromask":
+            return z3.If(x == bv(0, 32), bv(0, 32), bv(0xFFFFFFFF, 32))
+        raise Unsupported(f"op {op}")
 
     def _enc(self, v):
         op, a = v.op, [self.enc(x) for x in v.args] if v.op not in ("Phi",) else None
@@ -560,16 +637,21 @@ class _Enc:
         if op in CALLS:
             return self._call(v, a)
         if op == "SelectN":
+            if isinstance(a[0], Mem) and int(v.auxint) == 0:  # ABI0 call: only its memory
+                return a[0]
             if not (isinstance(a[0], tuple) and a[0][0] == "call"):
                 raise Unsupported("SelectN of a non-call")
             return a[0][1 + int(v.auxint)]
+        if op in ("SB", "Addr", "ConstString", "StringPtr", "StringLen", "AddPtr") or op in ("OffPtr", "Load") and a and \
+                isinstance(a[0], tuple) and a[0][0] in ("ro", "roidx"):
+            return self._rodata(v, a)
         if op in ("SP", "LocalAddr", "OffPtr", "Store", "Load", "Dereference") and not self.lowered or op == "SP":
             return self._generic_mem(v, a)
         if v.type == "mem" and op not in ("Copy", "Phi") and not (
                 self.arch == "amd64" and op in AMD64_MEM_OPS or self.arch == "riscv64" and op in RISCV64_MEM_OPS
                 or self.arch in ("ppc64", "ppc64le") and op in PPC64_MEM_OPS
                 or self.arch == "loong64" and op in LOONG64_MEM_OPS
-                or self.arch == "arm64" and op in ARM64_MEM_OPS):
+                or self.arch == "arm64" and op in ARM64_MEM_OPS or self.arch == "arm" and op in ARM_MEM_OPS):
             raise Unsupported(f"memory op {op}")
         if op == "HasCPUFeature":
             return z3.Bool(f"cpu_{v.aux}", self.ctx)
@@ -577,6 +659,8 @@ class _Enc:
             return self._amd64(v, a)
         if self.arch == "arm64" and op in ARM64_OPS:
             return self._arm64(v, a)
+        if self.arch == "arm" and op in ARM_OPS:
+            return self._arm(v, a)
         if self.arch == "s390x" and op in S390X_OPS:
             return self._s390x(v, a)
         if self.arch == "riscv64" and op in RISCV64_OPS:
@@ -586,9 +670,14 @@ class _Enc:
         if self.arch in ("ppc64", "ppc64le") and op in PPC64_OPS:
             return self._ppc64(v, a)
         if op in ("Arg", "ArgIntReg"):
-            if self._width(v) != 64 and op != "ArgIntReg":
+            off = int(v.auxint) if op == "Arg" and v.auxint not in (None, "") else 0
+            if op == "Arg" and self.word == 32 and self._width(v) == 32 and off in (0, 4):
+                return z3.Extract(8 * off + 31, 8 * off, self.param(v.aux.split("+")[0]))  # half of a split uint64
+            if self._width(v) != 64 and op != "ArgIntReg" or off:
                 raise Unsupported("non-64-bit parameter")
             return self.param(v.aux.split("+")[0])
+        if self.word == 32 and op in DEC64_OPS:
+            return self._dec64(v, a)
         if op == "Copy":
             return a[0]
         if op == "Phi":
@@ -726,7 +815,13 @@ class _Enc:
 
     # ---- memory (stack slots of -N code) and calls
     def _byte0(self, key):
-        """Initial content of a stack byte: shared by name across passes."""
+        """Initial content of a stack byte: shared by name across passes.
+
+        Under ABI0 (the 32-bit targets) a parameter lives in its stack slot, which
+        -N builds read directly: those bytes are the parameter's.
+        """
+        if self.word == 32 and key[0] in getattr(self.f, "param_names", ()) and 0 <= key[1] < 8:
+            return z3.Extract(8 * key[1] + 7, 8 * key[1], self.param(key[0]))
         return z3.BitVec(f"stk_{key[0]}_{key[1]}", 8, self.ctx)
 
     def _read(self, mem, sym, off, nbytes):
@@ -751,21 +846,69 @@ class _Enc:
                 raise Unsupported("OffPtr of a non-pointer")
             return ("ptr", a[0][1], a[0][2] + int(v.auxint))
         ptr = a[0]
-        if not (isinstance(ptr, tuple) and ptr[0] == "ptr" and ptr[1] is not None):
+        if not (isinstance(ptr, tuple) and ptr[0] == "ptr" and (ptr[1] is not None or self.word == 32)):
             raise Unsupported(f"{op} through an unknown pointer")
+        sym = ptr[1] if ptr[1] is not None else "SP"  # ABI0 outgoing arguments and results
+        widths = dict(WIDTH, int=self.word, uint=self.word, uintptr=self.word)
         if op == "Store":
             typ, val, mem = v.aux, a[1], a[2]
             if typ == "bool":
                 val = z3.If(val, self.bv(1, 8), self.bv(0, 8))
-            if typ not in WIDTH:
+            if typ not in widths:
                 raise Unsupported(f"store of {typ}")
-            nb = max(WIDTH[typ], 8) // 8
-            return self._write(mem, ptr[1], ptr[2], val, nb)
+            nb = max(widths[typ], 8) // 8
+            return self._write(mem, sym, ptr[2], val, nb)
         typ, mem = v.type, a[1]  # Load, Dereference
-        if typ not in WIDTH:
+        if typ not in widths:
             raise Unsupported(f"load of {typ}")
-        val = self._read(mem, ptr[1], ptr[2], max(WIDTH[typ], 8) // 8)
+        val = self._read(mem, sym, ptr[2], max(widths[typ], 8) // 8)
         return val != self.bv(0, 8) if typ == "bool" else val
+
+    def _rodata(self, v, a):
+        """Read-only string data: the ConstString literals and the go:string.. symbols holding them."""
+        op = v.op
+        if op == "SB":
+            return ("sb",)
+        if op == "ConstString":
+            return ("str", _go_string(v.aux))
+        if op == "StringPtr" and isinstance(a[0], tuple) and a[0][0] == "str":
+            return ("ro", a[0][1], 0)
+        if op == "StringLen" and isinstance(a[0], tuple) and a[0][0] == "str":
+            return self.bv(len(a[0][1]), self.word)
+        if op == "Addr":
+            return self._ro_symbol(v, a[0])
+        if op == "OffPtr" and a[0][0] == "ro":
+            return ("ro", a[0][1], a[0][2] + int(v.auxint))
+        if op == "AddPtr" and isinstance(a[0], tuple) and a[0][0] in ("ro", "roidx") and z3.is_bv(a[1]):
+            return self._ro_index(a[0], a[1])
+        if op == "Load":
+            return self._ro_read(v, a[0], max(self._width(v), 8) // 8)
+        raise Unsupported(f"{op} of {a[0][0] if a and isinstance(a[0], tuple) else 'a value'}")
+
+    def _ro_symbol(self, v, base):
+        m = re.fullmatch(r"go:string\.\.gostring\.(\d+)\.\S+", v.aux or "")
+        table = getattr(self.f, "rodata", {}).get(int(m.group(1))) if m else None
+        if base != ("sb",) or table is None:
+            raise Unsupported(f"{v.op} {{{v.aux}}}: unknown global data")
+        return ("ro", table, int(v.auxint or 0) if v.op != "Addr" else 0)
+
+    def _ro_index(self, ptr, idx):
+        off = z3.ZeroExt(64 - idx.size(), idx) if idx.size() < 64 else idx
+        if ptr[0] == "ro":
+            return ("roidx", ptr[1], ptr[2], off)
+        return ("roidx", ptr[1], ptr[2], ptr[3] + off)
+
+    def _ro_read(self, v, ptr, nbytes):
+        data = ptr[1]
+        if ptr[0] == "ro":
+            if not 0 <= ptr[2] <= len(data) - nbytes:
+                raise Unsupported("read-only access out of range")
+            return self.bv(int.from_bytes(data[ptr[2]:ptr[2] + nbytes], "little"), 8 * nbytes)
+        r = self._undef(v, 8 * nbytes)  # out of range: the IR's bounds check makes it unreachable
+        for i in range(len(data) - nbytes + 1 - ptr[2]):
+            val = int.from_bytes(data[ptr[2] + i:ptr[2] + i + nbytes], "little")
+            r = z3.If(ptr[3] == self.bv(i, 64), self.bv(val, 8 * nbytes), r)
+        return r
 
     def _call(self, v, a):
         callee = (v.aux or "").removeprefix("AuxCall{").removesuffix("}")
@@ -776,6 +919,20 @@ class _Enc:
             arg = a[0]
             t = arg if z3.is_bool(arg) else z3.Extract(7, 0, arg) != self.bv(0, 8)
             return ("call", z3.If(t, self.bv(1, 64), self.bv(0, 64)), mem)
+        if callee == "main.b2i" and len(a) == 1 and self.word == 32 and isinstance(mem, Mem):
+            # ABI0: the bool argument was just stored at SP+off, the uint64 result goes at SP+off+4.
+            st = self.f.values[v.args[0]]
+            if st.op == "Store" and st.aux == "bool":
+                ptr = self.enc(st.args[0])
+                off = ptr[2] if isinstance(ptr, tuple) and ptr[0] == "ptr" and ptr[1] is None else None
+            elif st.op == "MOVBstore" and not st.aux:
+                off = int(st.auxint or 0)
+            else:
+                off = None
+            if off is None:
+                raise Unsupported("ABI0 call to main.b2i without its argument store")
+            t = self._read(mem, "SP", off, 1) != self.bv(0, 8)
+            return self._write(mem, "SP", off + 4, z3.If(t, self.bv(1, 64), self.bv(0, 64)), 8)
         raise Unsupported(f"call to {callee}")
 
     # ---- amd64 (lowered passes): every value is a 64-bit register
@@ -1260,6 +1417,175 @@ class _Enc:
             raise Unsupported(f"{v.op} without a stack symbol")
         return sym, ptr[2] + int(v.auxint or 0)
 
+    # ---- arm (lowered passes): 32-bit registers, NZCV flags, register shifts by the low byte
+    def _arm_shift(self, kind, x, n, reg):
+        """x shifted as an ARM operand: by a constant (0..31) or by the low byte of a register."""
+        bv = self.bv
+        if not reg:
+            n = bv(int(n) & 31, 32)
+            return x << n if kind == "LL" else z3.LShR(x, n) if kind == "RL" else x >> n
+        n = n & bv(0xFF, 32)
+        if kind == "LL":
+            return z3.If(z3.UGE(n, bv(32, 32)), bv(0, 32), x << n)
+        if kind == "RL":
+            return z3.If(z3.UGE(n, bv(32, 32)), bv(0, 32), z3.LShR(x, n))
+        return z3.If(z3.UGE(n, bv(32, 32)), x >> bv(31, 32), x >> n)
+
+    def _arm_flags(self, v, kind, x, y, cin=None):
+        """NZCV of x+y (+cin), x-y (-borrow), or the logical result x (C, V unchanged: free here)."""
+        bv = self.bv
+        if kind == "logic":
+            c, vv = (z3.Extract(0, 0, self._undef(v, 2)) == 1, z3.Extract(1, 1, self._undef(v, 2)) == 1)
+            return ("arm64flags", z3.Extract(31, 31, x) == 1, x == bv(0, 32), c, vv)
+        if kind == "add":
+            cin = cin if cin is not None else z3.BoolVal(False, self.ctx)
+            wide = z3.ZeroExt(1, x) + z3.ZeroExt(1, y) + z3.If(cin, bv(1, 33), bv(0, 33))
+            r = z3.Extract(31, 0, wide)
+            c = z3.Extract(32, 32, wide) == 1
+            sx, sy = z3.Extract(31, 31, x), z3.Extract(31, 31, y)
+            ov = z3.And(sx == sy, z3.Extract(31, 31, r) != sx)
+        else:  # sub: x - y = x + ~y + 1
+            fl = _arm64_subflags(x, y)
+            return fl
+        return ("arm64flags", z3.Extract(31, 31, r) == 1, r == bv(0, 32), c, ov)
+
+    def _arm(self, v, a):
+        op, aux, bv = v.op, v.auxint, self.bv
+        c = (int(aux) & 0xFFFFFFFF) if aux not in (None, "", "true", "false") and not str(aux).startswith(
+            ("val=", "{")) else 0
+        x = a[0] if a else None
+        y = a[1] if len(a) > 1 and not isinstance(a[1], Mem) else None
+        b01 = lambda t: z3.If(t, bv(1, 32), bv(0, 32))  # noqa: E731
+        carry = lambda f: z3.If(f[3], bv(1, 32), bv(0, 32))  # noqa: E731
+        borrow = lambda f: z3.If(f[3], bv(0, 32), bv(1, 32))  # noqa: E731
+
+        def flags(f):
+            if not (isinstance(f, tuple) and f[0] == "arm64flags"):
+                raise Unsupported(f"{op} reads a non-flags value")
+            return f
+
+        if op in ("MOVBstore", "MOVHstore", "MOVWstore", "MOVBload", "MOVBUload", "MOVHload", "MOVHUload",
+                  "MOVWload") and x == ("ptr", None, 0) and not v.aux:
+            w = {"B": 8, "H": 16, "W": 32}[op[3]]  # SP-relative without a symbol: ABI0 outgoing area
+            if op.endswith("store"):
+                return self._write(a[2], "SP", int(aux or 0), z3.Extract(w - 1, 0, a[1]), w // 8)
+            r = self._read(a[1], "SP", int(aux or 0), w // 8)
+            return r if w == 32 else (z3.ZeroExt if "U" in op else z3.SignExt)(32 - w, r)
+        if op == "MOVWaddr":
+            if x == ("sb",):
+                return self._ro_symbol(v, x)
+            sym, off = self._arm64_addr(v, x)
+            return ("ptr", sym, off)
+        m = re.fullmatch(r"MOV(B|H|W)(U?)(store|load|loadidx)", op)
+        if m and isinstance(x, tuple) and x[0] in ("ro", "roidx"):  # read-only data
+            w = {"B": 8, "H": 16, "W": 32}[m.group(1)]
+            if m.group(3) == "store":
+                raise Unsupported(f"{op} to read-only data")
+            ptr = self._ro_index(x, a[1]) if m.group(3) == "loadidx" else (
+                ("ro", x[1], x[2] + int(aux or 0)) if x[0] == "ro" else ("roidx", x[1], x[2] + int(aux or 0), x[3]))
+            r = self._ro_read(v, ptr, w // 8)
+            return r if w == 32 else (z3.ZeroExt if m.group(2) else z3.SignExt)(32 - w, r)
+        if m and m.group(3) == "loadidx":
+            raise Unsupported(f"{op} through a non-constant base")
+        if m:
+            w = {"B": 8, "H": 16, "W": 32}[m.group(1)]
+            sym, off = self._arm64_addr(v, x)
+            if m.group(3) == "store":
+                return self._write(a[2], sym, off, z3.Extract(w - 1, 0, a[1]), w // 8)
+            r = self._read(a[1], sym, off, w // 8)
+            return r if w == 32 else (z3.ZeroExt if m.group(2) else z3.SignExt)(32 - w, r)
+        if op in ARM64_CONDITIONS:
+            return b01(_arm64_condition(op, flags(x)))
+        if op in ("Select0", "Select1"):
+            if not (isinstance(x, tuple) and x[0] == "tuple"):
+                raise Unsupported(f"{op} of a non-tuple")
+            return x[1 if op == "Select0" else 2]
+        m = re.fullmatch(r"(\w+?)shift(LL|RL|RA)(reg)?", op)
+        if m:  # the shifted operand is the last register argument before flags
+            base, kind, reg = m.group(1), m.group(2), bool(m.group(3))
+            if base == "MVN":
+                return ~self._arm_shift(kind, x, a[1] if reg else aux, reg)
+            sh = self._arm_shift(kind, y, a[2] if reg else aux, reg)
+            fl = a[3] if reg else (a[2] if len(a) > 2 else None)
+            op, y = base, sh
+            if op in ("ADC", "SBC", "RSC"):
+                a = [x, y, fl]
+            else:
+                a = [x, y]
+        if op == "XORshiftRR":
+            return x ^ z3.RotateRight(y, bv(c & 31, 32))
+        k = op[:-5] if op.endswith("const") and op not in ("MOVWconst",) else None
+        if k in ("ADD", "SUB", "RSB", "AND", "OR", "XOR", "BIC", "ADC", "SBC", "RSC", "ADDS", "SUBS", "RSBS",
+                 "CMP", "CMN", "TST", "TEQ"):  # op with an immediate second operand
+            op, a = k, [x, bv(c, 32)] + a[1:]
+            y = a[1]
+        simple = {"ADD": lambda: x + y, "SUB": lambda: x - y, "RSB": lambda: y - x, "MUL": lambda: x * y,
+                  "AND": lambda: x & y, "OR": lambda: x | y, "XOR": lambda: x ^ y, "BIC": lambda: x & ~y,
+                  "MVN": lambda: ~x, "MOVWconst": lambda: bv(c, 32), "MOVWreg": lambda: x, "MOVWnop": lambda: x,
+                  "MOVBreg": lambda: z3.SignExt(24, z3.Extract(7, 0, x)),
+                  "MOVBUreg": lambda: z3.ZeroExt(24, z3.Extract(7, 0, x)),
+                  "MOVHreg": lambda: z3.SignExt(16, z3.Extract(15, 0, x)),
+                  "MOVHUreg": lambda: z3.ZeroExt(16, z3.Extract(15, 0, x)),
+                  "HMUL": lambda: z3.Extract(63, 32, z3.SignExt(32, x) * z3.SignExt(32, y)),
+                  "HMULU": lambda: z3.Extract(63, 32, z3.ZeroExt(32, x) * z3.ZeroExt(32, y)),
+                  "MULA": lambda: x * y + a[2], "MULS": lambda: a[2] - x * y,
+                  "SLLconst": lambda: self._arm_shift("LL", x, c, False),
+                  "SRLconst": lambda: self._arm_shift("RL", x, c, False),
+                  "SRAconst": lambda: self._arm_shift("RA", x, c, False),
+                  "SLL": lambda: self._arm_shift("LL", x, y, True), "SRL": lambda: self._arm_shift("RL", x, y, True),
+                  "SRA": lambda: self._arm_shift("RA", x, y, True),
+                  "SRR": lambda: z3.RotateRight(x, y & bv(31, 32)), "SRRconst": lambda: z3.RotateRight(x, bv(c & 31, 32)),
+                  "REV": lambda: z3.Concat(*[z3.Extract(8 * i + 7, 8 * i, x) for i in range(4)]),
+                  "REV16": lambda: z3.Concat(z3.Extract(23, 16, x), z3.Extract(31, 24, x),
+                                             z3.Extract(7, 0, x), z3.Extract(15, 8, x)),
+                  "RBIT": lambda: z3.Concat(*[z3.Extract(i, i, x) for i in range(32)])}
+        if op in simple:
+            return simple[op]()
+        if op == "MULLU":
+            p = z3.ZeroExt(32, x) * z3.ZeroExt(32, y)
+            return ("tuple", z3.Extract(63, 32, p), z3.Extract(31, 0, p))
+        if op == "CALLudiv":  # runtime.udiv: (x/y, x%y); a zero divisor is guarded by the IR
+            und = self._undef(v, 32)
+            return ("tuple", z3.If(y == bv(0, 32), und, z3.UDiv(x, y)), z3.If(y == bv(0, 32), und, z3.URem(x, y)))
+        if op == "CLZ":
+            r = bv(32, 32)
+            for i in range(32):
+                r = z3.If(z3.Extract(i, i, x) == 1, bv(31 - i, 32), r)
+            return r
+        if op in ("BFX", "BFXU"):
+            width, lsb = (int(aux) >> 8) & 0xFF, int(aux) & 0xFF
+            if width == 0 or lsb + width > 32:
+                raise Unsupported(f"{op} [{aux}]")
+            field = z3.Extract(lsb + width - 1, lsb, x)
+            return field if width == 32 else (z3.SignExt if op == "BFX" else z3.ZeroExt)(32 - width, field)
+        if op == "ADC":
+            return x + y + carry(flags(a[2]))
+        if op == "SBC":
+            return x - y - borrow(flags(a[2]))
+        if op == "RSC":
+            return y - x - borrow(flags(a[2]))
+        if op in ("ADDS", "ADCS"):
+            cin = flags(a[2])[3] if op == "ADCS" else None
+            r = x + y + (carry(a[2]) if op == "ADCS" else bv(0, 32))
+            return ("tuple", r, self._arm_flags(v, "add", x, y, cin))
+        if op == "SUBS":
+            return ("tuple", x - y, _arm64_subflags(x, y))
+        if op == "RSBS":
+            return ("tuple", y - x, _arm64_subflags(y, x))
+        if op == "CMP":
+            return _arm64_subflags(x, y)
+        if op == "CMN":
+            return self._arm_flags(v, "add", x, y)
+        if op in ("TST", "TEQ"):
+            return self._arm_flags(v, "logic", x & y if op == "TST" else x ^ y, None)
+        if op in ("CMOVWHSconst", "CMOVWLSconst"):
+            cond = _arm64_condition("GreaterEqualU" if op == "CMOVWHSconst" else "LessEqualU", flags(y))
+            return z3.If(cond, bv(c, 32), x)
+        if op == "SRAcond":
+            hs = _arm64_condition("GreaterEqualU", flags(a[2]))
+            return z3.If(hs, x >> bv(31, 32), self._arm_shift("RA", x, y, True))
+        raise Unsupported(f"arm op {op}")
+
     # ---- riscv64 (lowered passes): 64-bit registers, W ops sign-extend 32-bit results
     def _riscv64(self, v, a):
         op, aux, bv = v.op, v.auxint, self.bv
@@ -1642,9 +1968,15 @@ class _Enc:
         for b in self.order:
             if b.kind == "Ret":
                 mr = self.f.values[b.controls[0]]
-                if mr.op != "MakeResult" or len(mr.args) != 2:
+                if mr.op == "MakeResult" and len(mr.args) == 1 and self.word == 32:
+                    mem = self.enc(mr.args[0])  # ABI0: the result was stored to its stack slot
+                    if not isinstance(mem, Mem):
+                        raise Unsupported("result shape")
+                    r = self._read(mem, "~r0", 0, 8)
+                elif mr.op != "MakeResult" or len(mr.args) != 2:
                     raise Unsupported("result shape")
-                r = self.enc(mr.args[0])
+                else:
+                    r = self.enc(mr.args[0])
                 if z3.is_bool(r):
                     r = z3.If(r, self.bv(1, 64), self.bv(0, 64))
                 elif r.size() != 64:
@@ -1802,7 +2134,7 @@ def validate(passes, word_bits=64, arch=None):
     """Check a function's passes. passes = [(name, dump text), ...].
 
     Dumps from `lower` on are encoded with the machine semantics of arch
-    (ppc64/ppc64le only); without it they are left out.
+    (one of LOWERED_ARCHES); without it they are left out.
     """
     rep = {"checked": 0, "failures": [], "unsupported": None, "benign": 0}
     try:
@@ -1811,7 +2143,19 @@ def validate(passes, word_bits=64, arch=None):
         if arch not in LOWERED_ARCHES:
             passes = passes[:cut]
         parsed = [(n, parse_dump(t)) for n, t in passes]
+        params = {v.aux.split("+")[0] for _, f in parsed[:1] for v in f.values.values()
+                  if v.op in ("Arg", "ArgIntReg") and v.aux}
+        lits = {}
+        for v in parsed[0][1].values.values() if parsed else ():
+            if v.op == "ConstString":
+                try:
+                    b = _go_string(v.aux)
+                except Unsupported:
+                    continue
+                lits.setdefault(len(b), set()).add(b)
+        rodata = {n: next(iter(bs)) for n, bs in lits.items() if len(bs) == 1}  # a length names one literal
         for i, (_, f) in enumerate(parsed):
+            f.word_bits, f.param_names, f.rodata = word_bits, params, rodata
             if i >= cut:
                 f.arch = arch
         prev_name, prev, prev_text = None, None, None
@@ -1926,7 +2270,10 @@ def check_source(go, src, funcs=None, goarch=None, lowered=False, gcflags=""):
             if isinstance(dumps[fn], RuntimeError):
                 reps[fn] = {"checked": 0, "failures": [], "unsupported": None, "build_error": str(dumps[fn])[:2000]}
             else:
-                reps[fn] = validate(dumps[fn], 32 if goarch in ("386", "arm", "mips", "mipsle") else 64,
+                if goarch == "mips":  # big endian: dec64 halves and ABI0 slots are laid out the other way
+                    reps[fn] = {"checked": 0, "failures": [], "unsupported": "big-endian 32-bit target"}
+                    continue
+                reps[fn] = validate(dumps[fn], 32 if goarch in ("386", "arm", "mipsle") else 64,
                                     goarch if lowered else None)
         return reps
     finally:
@@ -1943,7 +2290,7 @@ def main(argv=None):
         p.add_argument("--timeout-ms", type=int, default=20000, help="per solver query")
         p.add_argument("--gcflags", default="", help='extra compiler flags, e.g. "-N -l"')
         p.add_argument("--lowered", action="store_true",
-                       help="also check the lowered passes up to regalloc (amd64, arm64, loong64, ppc64, ppc64le, riscv64, s390x)")
+                       help="also check the lowered passes up to regalloc (amd64, arm, arm64, loong64, ppc64, ppc64le, riscv64, s390x)")
         if name == "check":
             p.add_argument("file")
             p.add_argument("--funcs")

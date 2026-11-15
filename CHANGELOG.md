@@ -12,6 +12,14 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- `ssa_tv.py` on the 32-bit targets (386, arm, mipsle): the dec64 operations that split
+  64-bit values, parameter halves, the ABI0 result and parameter slots, and ABI0 calls to
+  `b2i`. `--lowered` now covers 32-bit arm (about 150 operations) and finds
+  golang/go#82786 at `lower`. Read-only string tables such as `math/bits`' `len8tab` are
+  modelled. Big-endian mips is reported as unsupported (`docs/research-report.md` 3.23).
+- Local verification of CL 862781 (golang/go#36897): the reproducer is fixed, and an
+  `ext` sweep (3,000 functions, amd64 `-N -l`) gives 8 reports on go1.27.4 and none with
+  the CL.
 - A patchset 2 for CL 858581 (golang/go#82839), prepared after review: the check moves
   from the extension case of `prove` into the `x+delta` constant case, where the constant is
   truncated; validated locally, not mailed (`docs/cl-verification.md`).
@@ -182,6 +190,8 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Fixed
 
+- `ssa_tv.py` modelled the ARM/ARM64 `Noov` conditions as `lt ∧ ¬V` and `ge ∧ ¬V`; gc
+  emits `MI`/`PL` for them, which test N alone.
 - Reworded a documentation comment in the float-rounding proof to avoid a
   false positive in the existing banned-token scan; no proof is changed.
 - ARM64 SSA validation now materializes comparison results as integer 0/1 when

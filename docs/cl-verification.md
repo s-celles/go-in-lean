@@ -146,3 +146,17 @@ with PS2: `test/prove*.go`, `loopbce`, `checkbce`, all of `codegen` and
 `fix-ps2.patch` (compiler change against the base), `cl/update-ps1-to-ps2.patch`
 (incremental), and `cl/review-reply-ps2.md` (draft replies). Nothing has been
 uploaded or posted.
+
+## CL 862781 (golang/go#36897, by Keith Randall, verified locally 2026-11-15)
+
+Patchset 5 (`230a349655`, parent CL 833045 `abec217787`), built with `make.bash`.
+
+- `findings/AMD64-ANDL-MINUS1-ZEXT-NOOPT/reproducer.go` with `-gcflags='-N -l'`:
+  go1.27.4 prints `9223372036854775813`, the CL prints `5`.
+- `ssa_tv.py check --funcs f --goarch amd64 --lowered --gcflags "-N -l"`:
+  one equivalence failure at `lower` on go1.27.4, none with the CL.
+- `ssa_tv.py gen --suite ext --seed 20261115 --count 300 --goarch amd64 --lowered
+  --gcflags "-N -l"` (3,000 functions): 8 reports on go1.27.4, all at `lower` with
+  the #36897 signature; 0 with the CL.
+
+Nothing has been posted on the CL.
