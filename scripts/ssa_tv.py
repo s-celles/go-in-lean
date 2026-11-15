@@ -1506,12 +1506,9 @@ class _Enc:
             if base == "MVN":
                 return ~self._arm_shift(kind, x, a[1] if reg else aux, reg)
             sh = self._arm_shift(kind, y, a[2] if reg else aux, reg)
-            fl = a[3] if reg else (a[2] if len(a) > 2 else None)
             op, y = base, sh
-            if op in ("ADC", "SBC", "RSC"):
-                a = [x, y, fl]
-            else:
-                a = [x, y]
+            # only ADC/SBC/RSC read flags, as their last argument
+            a = [x, y, a[-1]] if op in ("ADC", "SBC", "RSC") else [x, y]
         if op == "XORshiftRR":
             return x ^ z3.RotateRight(y, bv(c & 31, 32))
         k = op[:-5] if op.endswith("const") and op not in ("MOVWconst",) else None
@@ -2201,6 +2198,9 @@ def validate(passes, word_bits=64, arch=None):
             prev_name, prev, prev_text = name, f, text
     except Unsupported as exc:
         rep["unsupported"] = str(exc)
+    except Exception as exc:  # a defect of the model, not of the compiler: report it, keep going
+        rep["unsupported"] = f"model error: {type(exc).__name__}: {exc}"
+        rep["model_error"] = True
     return rep
 
 
@@ -2317,6 +2317,9 @@ def main(argv=None):
         for fn, r in fns.items():
             total["functions"] += 1
             total["unsupported"] += r["unsupported"] is not None
+            if r.get("model_error"):
+                total["model_errors"] = total.get("model_errors", 0) + 1
+                print(json.dumps({"program": prog, "func": fn, "kind": "model_error", "error": r["unsupported"]}))
             if r.get("build_error"):
                 total["build_errors"] = total.get("build_errors", 0) + 1
                 print(json.dumps({"program": prog, "func": fn, "kind": "build_error",

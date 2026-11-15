@@ -785,6 +785,12 @@ d func(uint64, uint64) uint64
         self.assertEqual(len(tv.ill_typed(tv.parse_dump(src))), 1)
         self.assertEqual(tv.ill_typed(tv.parse_dump(src), word_bits=32), [])
 
+    def test_model_error_is_reported_not_raised(self):
+        bad = BUILD.replace("(5) v12 = And16 <int16> v10 v11", "(5) v12 = And16 <int16> v10")
+        rep = tv.validate([("build", BUILD), ("opt", bad)])
+        self.assertTrue(rep.get("model_error"))
+        self.assertIn("model error", rep["unsupported"])
+
     def test_loops_are_unsupported(self):
         loop = BUILD.replace("Plain -> b2\n", "Plain -> b1\n").replace("  b3: <- b1", "  b3: <- b1")
         loop = loop.replace("  b1:\n", "  b1: <- b3\n")
@@ -1030,15 +1036,26 @@ func f5(x, y uint64) uint64 {
 //go:noinline
 func f6(x, y uint64) uint64 { return uint64(int32(x)*int32(y)) + uint64(uint32(x)>>uint32(y)) }
 
-// golang/go#82786: the MVNshiftRA constant fold computes ^(c>>d) with a logical shift.
+// Register-shift operands: ORshiftLLreg, CMPshiftLLreg (three arguments, no flags).
 //
 //go:noinline
 func f7(x, y uint64) uint64 {
+	r := uint64(int64(9223372036854775806) ^ int64(x)>>uint8(y))
+	if uint32(2147483648)<<uint8(y) <= uint32(x) {
+		r ^= 1
+	}
+	return r
+}
+
+// golang/go#82786: the MVNshiftRA constant fold computes ^(c>>d) with a logical shift.
+//
+//go:noinline
+func f8(x, y uint64) uint64 {
 	return uint64(bits.TrailingZeros64(uint64(uint16(bits.OnesCount16(16384))) &^ 16777217))
 }
 
 func main() {
-	fs := []func(uint64, uint64) uint64{f0, f1, f2, f3, f4, f5, f6, f7}
+	fs := []func(uint64, uint64) uint64{f0, f1, f2, f3, f4, f5, f6, f7, f8}
 	x, _ := strconv.ParseUint(os.Args[1], 10, 64)
 	y, _ := strconv.ParseUint(os.Args[2], 10, 64)
 	for _, f := range fs {
@@ -1046,7 +1063,7 @@ func main() {
 	}
 }
 """
-ARM_N = 8  # f7 is golang/go#82786
+ARM_N = 9  # f8 is golang/go#82786
 
 
 @unittest.skipUnless(HAVE_Z3 and GO, "z3 module or go not available")
@@ -1086,7 +1103,7 @@ class LoweredARMTests(unittest.TestCase):
                         self.assertEqual(got, ("ret", int(out[i])), (fl, f"f{i}", name, x, y))
 
     def test_finds_82786(self):
-        rep = tv.validate(self.dumps[""]["f7"], 32, arch="arm")
+        rep = tv.validate(self.dumps[""]["f8"], 32, arch="arm")
         eq = [r for r in rep["failures"] if r["kind"] == "equivalence"]
         self.assertEqual([r["pass"] for r in eq], ["lower"])
         self.assertEqual(eq[0]["before_out"], ("ret", 64))

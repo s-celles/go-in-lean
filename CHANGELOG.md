@@ -190,6 +190,10 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Fixed
 
+- `ssa_tv.py`: the arm model read a flags argument for every register-shift operation
+  (`ORshiftLLreg`, `CMPshiftLLreg`, ...), which crashed it; only `ADC`/`SBC`/`RSC` read
+  flags. An unexpected exception in the model is now reported as a `model_error` for that
+  function instead of stopping the run.
 - `ssa_tv.py` modelled the ARM/ARM64 `Noov` conditions as `lt ∧ ¬V` and `ge ∧ ¬V`; gc
   emits `MI`/`PL` for them, which test N alone.
 - Reworded a documentation comment in the float-rounding proof to avoid a
