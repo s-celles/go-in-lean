@@ -18,3 +18,4 @@ upstream:
   - "https://github.com/golang/go/issues/82847"
 history:
   - {"date": "2026-11-03", "status": "go_discrepancy_reproduced", "note": "Recorded in the project research record; see linked reproduction evidence."}
+  - {"date": "2026-11-16", "status": "go_discrepancy_reproduced", "note": "golang/go#82847 closed by David Chase's CL 863164 (master 712a852b54), which supersedes CL 858901. Checked on linux/amd64 with GOEXPERIMENT=simd (build only, no AVX-512 on the host): the reproducer and 11 ShiftAllLeft/ShiftAllRight IfElse variants over the 16/32/64-bit types build on 712a852b54; tip 56ae71df05 rejects 10 of them (VPSLLW/D/Q, VPSRLW/D/Q and VPSRAD emitted without their immediate). Release branches not checked."}
