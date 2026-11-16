@@ -188,6 +188,10 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Changed
 
+- `ssa_tv.py gen` writes its programs for the target's `uint` size. On 386, arm and
+  mips(le), untyped shift counts of 2^32 or more become typed constants, so these programs
+  compile. All other programs are unchanged. `--word-bits 64` reproduces the programs of
+  the earlier campaigns.
 - Expanded `AGENTS.md` with finding deduplication, reproducible evidence,
   human-controlled classifications, upstream publication scope, privacy and
   private handling of potentially memory-unsafe findings. Aligned the Gerrit

@@ -802,6 +802,33 @@ callBits func(uint64, uint64) uint64
                     tv.evaluate(f, {"x": 1, "y": 2})
 
 
+@unittest.skipUnless(HAVE_Z3, "z3 module not available")
+class GenWordBitsTests(unittest.TestCase):
+    """gen writes programs for the target's uint size unless --word-bits overrides it."""
+
+    def test_word_bits_follow_the_target(self):
+        for goarch in ("386", "arm", "mipsle", "mips"):
+            self.assertEqual(tv.gen_word_bits(goarch, None), 32, goarch)
+            self.assertEqual(tv.gen_word_bits(goarch, 64), 64, goarch)
+        for goarch in (None, "amd64", "arm64", "ppc64le", "riscv64"):
+            self.assertEqual(tv.gen_word_bits(goarch, None), 64, goarch)
+
+    def test_programs_change_only_where_a_uint_constant_overflows(self):
+        import alt_compiler_diff as acd
+        changed = 0
+        for i in range(20):
+            src = tv.gen_programs("core", 20261127, i, 1, "arm")[0][1]
+            self.assertEqual(src, acd.random_program("core", 20261127, i, word_bits=32).source)
+            old = acd.random_program("core", 20261127, i).source
+            if src != old:
+                changed += 1
+                self.assertIn("uint64(", src)
+        self.assertGreater(changed, 0)
+        self.assertEqual(tv.gen_programs("core", 20261127, 0, 2, "arm", 64),
+                         [(f"core-20261127-{i:05d}", acd.random_program("core", 20261127, i).source)
+                          for i in range(2)])
+
+
 class CheckTests(unittest.TestCase):
     def test_equivalent_passes(self):
         self.assertIsNone(tv.equivalent(tv.parse_dump(BUILD), tv.parse_dump(LATE)))

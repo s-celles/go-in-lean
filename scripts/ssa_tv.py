@@ -28,7 +28,11 @@ are free variables). --gcflags "-N -l" checks debug builds, whose stack slots ar
 byte by byte. The lowered passes of other architectures are out of scope.
 
   python3 scripts/ssa_tv.py check main.go [--go GO] [--goarch A] [--funcs v0,v1] [--lowered] [--gcflags F]
-  python3 scripts/ssa_tv.py gen --suite core --seed 7 --count 20 [--go GO] [--goarch A] [--lowered]
+  python3 scripts/ssa_tv.py gen --suite core --seed 7 --count 20 [--go GO] [--goarch A] [--lowered] [--word-bits 64]
+
+gen writes the programs for the target's uint size: on 386, arm and mips(le), untyped shift
+counts of 2^32 or more become typed constants, so they compile; --word-bits 64 reproduces
+the programs of the campaigns before 2026-11-16.
 """
 
 import argparse
@@ -954,7 +958,7 @@ class _Enc:
         """
         regs = [r for r in a if z3.is_bv(r)]
         if len(regs) != (2 if kind == "RotateLeft" else 1) or (kind == "ReverseBytes" and w == 8):
-            raise Unsupported(f"call to math/bits.{kind} with {len(regs)} register arguments")
+            raise Unsupported(f"call to math/bits.{kind}{w} with {len(regs)} register arguments")
         x = regs[0]
         x = z3.Extract(w - 1, 0, x) if x.size() > w else z3.ZeroExt(w - x.size(), x)
         rtype = v.type.split(",")[0]
@@ -2351,6 +2355,28 @@ def check_source(go, src, funcs=None, goarch=None, lowered=False, gcflags=""):
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+WORD32_ARCHES = ("386", "arm", "mipsle", "mips")
+
+
+def gen_word_bits(goarch, override=None):
+    """The uint size the generated programs are written for: the target's, unless overridden."""
+    return override or (32 if goarch in WORD32_ARCHES else 64)
+
+
+def gen_programs(suite, seed, start, count, goarch=None, word_bits=None):
+    """[(name, source)] of generated programs, written for the target's uint size.
+
+    On 32-bit targets this only rewrites untyped shift counts of 2^32 or more as typed
+    constants, which do not compile there otherwise; every other program is unchanged.
+    word_bits=64 reproduces the programs of the campaigns before 2026-11-16.
+    """
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import alt_compiler_diff as acd
+    wb = gen_word_bits(goarch, word_bits)
+    return [(f"{suite}-{seed}-{i:05d}", acd.random_program(suite, seed, i, word_bits=wb).source)
+            for i in range(start, start + count)]
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -2370,19 +2396,18 @@ def main(argv=None):
             p.add_argument("--seed", type=int, default=1)
             p.add_argument("--start", type=int, default=0)
             p.add_argument("--count", type=int, default=10)
+            p.add_argument("--word-bits", type=int, choices=(32, 64),
+                           help="uint size of the generated programs (default: the target's; "
+                                "64 reproduces the campaigns before 2026-11-16 on 32-bit targets)")
     a = ap.parse_args(argv)
     TIMEOUT_MS[0] = a.timeout_ms
     if a.cmd == "check":
         reps = {a.file: check_source(a.go, Path(a.file).read_text(),
                                      a.funcs.split(",") if a.funcs else None, a.goarch, a.lowered, a.gcflags)}
     else:
-        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-        import alt_compiler_diff as acd
         reps = {}
-        for i in range(a.start, a.start + a.count):
-            prog = acd.random_program(a.suite, a.seed, i)
-            reps[f"{a.suite}-{a.seed}-{i:05d}"] = check_source(a.go, prog.source, goarch=a.goarch, lowered=a.lowered,
-                                                               gcflags=a.gcflags)
+        for name, src in gen_programs(a.suite, a.seed, a.start, a.count, a.goarch, a.word_bits):
+            reps[name] = check_source(a.go, src, goarch=a.goarch, lowered=a.lowered, gcflags=a.gcflags)
     total = {"functions": 0, "unsupported": 0, "pairs": 0, "timeouts": 0, "failures": 0}
     for prog, fns in reps.items():
         for fn, r in fns.items():

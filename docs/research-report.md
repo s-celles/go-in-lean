@@ -1100,6 +1100,30 @@ compiler defect. Timeouts and unsupported functions are incomplete validation, n
 proofs of correctness. The driver, raw reports and generated programs are kept locally
 under `build/research-20261116-arm64/`, which Git ignores.
 
+### 3.25 Generated programs for 32-bit `uint`
+
+In campaign 6 (3.23), 1,040 functions did not build. The reason was untyped shift counts
+of 2^32 or more, which overflow `uint` on the 32-bit targets. `alt_compiler_diff.py`
+already had a 32-bit mode (`word_bits=32`, see 3.16), which spells such counts as typed
+constants, for example `x << uint64(18446744073709551615)`. That mode makes no extra
+random draw. `ssa_tv.py gen` now uses it on 386, arm and mips(le). `--word-bits 64`
+reproduces the earlier programs.
+
+On seed `20261127`, 60 programs per suite, the two modes differ in 13 of the 180
+programs: 6 `core`, 1 `ext` and 6 `bits`. These are exactly the programs that did not
+build for arm. The other 167 are byte-for-byte identical. So the counts already reported
+for campaign 6 stand, and only the functions that did not build are added. Those 13
+programs were checked on 2026-11-16 with go1.27.4, on arm (lowered), 386 and mipsle,
+optimized and `-N -l`, with a 1,000 ms limit per query:
+
+| Function checks | Pass pairs | Unsupported | Timeouts | Build errors | Reports |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 780 | 4,698 | 28 | 10 | 0 | 0 |
+
+The unsupported functions are runtime calls for 64-bit division (`runtime.uint64mod`), and
+`math/bits` calls under `-l`. These targets pass the arguments of those calls on the
+stack (ABI0), and only register arguments are modelled (3.24).
+
 ## 4. Success criteria check
 
 | # | Criterion | Status |
