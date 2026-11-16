@@ -313,7 +313,8 @@ ARM64_OPS = ARM64_MEM_OPS | ARM64_SHIFTED_LOGICAL_OPS | {"CMNshiftLL", "CMNshift
     "XOR", "XORconst", "BIC", "EON", "ORN", "MVN", "NEG", "SLL", "SLLconst", "SRL", "SRLconst",
     "SRA", "SRAconst", "ROR", "RORW", "RORconst", "RORWconst", "RBIT", "RBITW", "SBFX", "SBFIZ", "UBFX", "UBFIZ", "CMP", "CMPconst",
     "CMPW", "CMPWconst", "CMPshiftLL", "CMPshiftRL", "CMPshiftRA", "CMN", "CMNconst", "CMNW", "CMNWconst",
-    "TST", "TSTW", "TSTconst", "TSTWconst",
+    "TST", "TSTW", "TSTconst", "TSTWconst", "REV", "REVW", "REV16", "REV16W", "CLZ", "CLZW",
+    "MULH", "UMULH", "MULL", "UMULL", "EXTRconst", "EXTRWconst",
     "FlagConstant", "CSEL", "CSEL0", "CSINV", "CSINC", "CSNEG", "CSETM", "Equal", "NotEqual",
     "LessThan", "LessEqual", "GreaterThan", "GreaterEqual", "LessThanU", "LessEqualU", "GreaterThanU",
     "GreaterEqualU", "LessThanNoov", "LessEqualNoov", "GreaterThanNoov", "GreaterEqualNoov",
@@ -711,6 +712,11 @@ class _Enc:
         m = re.fullmatch(r"(Div|Mod)(8|16|32|64)(u?)", op)
         if m:
             return self._divmod(v, m.group(1), int(m.group(2)), m.group(3) == "u", *a)
+        if op == "Mul64uhilo":  # bits.Mul64: (hi, lo)
+            p = z3.ZeroExt(64, a[0]) * z3.ZeroExt(64, a[1])
+            return ("tuple", z3.Extract(127, 64, p), z3.Extract(63, 0, p))
+        if op in ("Select0", "Select1") and isinstance(a[0], tuple) and a[0][0] == "tuple":
+            return a[0][1 if op == "Select0" else 2]
         m = re.fullmatch(r"Hmul(32|64)(u?)", op)
         if m:
             w = int(m.group(1))
@@ -933,7 +939,48 @@ class _Enc:
                 raise Unsupported("ABI0 call to main.b2i without its argument store")
             t = self._read(mem, "SP", off, 1) != self.bv(0, 8)
             return self._write(mem, "SP", off + 4, z3.If(t, self.bv(1, 64), self.bv(0, 64)), 8)
+        m = re.fullmatch(r"math/bits\.(Len|LeadingZeros|TrailingZeros|OnesCount|Reverse|ReverseBytes|RotateLeft)"
+                         r"(8|16|32|64)?", callee)
+        if m and isinstance(mem, Mem):
+            return ("call", self._bits_call(v, m.group(1), int(m.group(2) or self.word), a), mem)
         raise Unsupported(f"call to {callee}")
+
+    def _bits_call(self, v, kind, w, a):
+        """A math/bits helper that -l leaves out of line, by its documented result.
+
+        The callee reads the low w bits of its argument registers; in the lowered
+        passes the bits of a result register above its type are left free, since the
+        register ABI does not define them.
+        """
+        regs = [r for r in a if z3.is_bv(r)]
+        if len(regs) != (2 if kind == "RotateLeft" else 1) or (kind == "ReverseBytes" and w == 8):
+            raise Unsupported(f"call to math/bits.{kind} with {len(regs)} register arguments")
+        x = regs[0]
+        x = z3.Extract(w - 1, 0, x) if x.size() > w else z3.ZeroExt(w - x.size(), x)
+        rtype = v.type.split(",")[0]
+        rw = self.word if rtype in ("int", "uint") else WIDTH.get(rtype)
+        if rw is None:
+            raise Unsupported(f"call result type {rtype}")
+        if kind == "RotateLeft":
+            k = regs[1]
+            s = z3.Extract(w.bit_length() - 2, 0, k)  # k mod w, also for a negative k
+            r = z3.RotateLeft(x, z3.ZeroExt(w - s.size(), s))
+        elif kind == "Reverse":
+            r = z3.Concat(*[z3.Extract(i, i, x) for i in range(w)])
+        elif kind == "ReverseBytes":
+            r = z3.Concat(*[z3.Extract(8 * i + 7, 8 * i, x) for i in range(w // 8)])
+        elif kind == "OnesCount":
+            r = sum((z3.ZeroExt(rw - 1, z3.Extract(i, i, x)) for i in range(w)), self.bv(0, rw))
+        else:
+            r = self.bv(w if kind in ("LeadingZeros", "TrailingZeros") else 0, rw)
+            for i in (reversed(range(w)) if kind == "TrailingZeros" else range(w)):
+                n = {"Len": i + 1, "LeadingZeros": w - 1 - i, "TrailingZeros": i}[kind]
+                r = z3.If(z3.Extract(i, i, x) == 1, self.bv(n, rw), r)
+        if r.size() != rw:
+            raise Unsupported(f"call result type {rtype} for math/bits.{kind}{w}")
+        if self.lowered and rw < self.word:
+            r = z3.Concat(self._undef(v, self.word - rw), r)
+        return r
 
     # ---- amd64 (lowered passes): every value is a 64-bit register
     def _amd64(self, v, a):
@@ -1394,6 +1441,30 @@ class _Enc:
             # MADD computes a + x*y; MSUB computes a - x*y.
             product = y * a[2]
             return x + product if op == "MADD" else x - product
+        if op in ("REV", "REVW", "REV16", "REV16W"):
+            width = 32 if op.endswith("W") else 64
+            swap = 1 if op.startswith("REV16") else width // 8 - 1  # result byte i is source byte i ^ swap
+            result = z3.Concat(*[z3.Extract(8 * (i ^ swap) + 7, 8 * (i ^ swap), x)
+                                 for i in reversed(range(width // 8))])
+            return z3.ZeroExt(64 - width, result) if width < 64 else result
+        if op in ("CLZ", "CLZW"):
+            width = 32 if op == "CLZW" else 64
+            result = bv(width, 64)
+            for i in range(width):
+                result = z3.If(z3.Extract(i, i, x) == 1, bv(width - 1 - i, 64), result)
+            return result
+        if op in ("MULH", "UMULH"):
+            ext = z3.SignExt if op == "MULH" else z3.ZeroExt
+            return z3.Extract(127, 64, ext(64, x) * ext(64, y))
+        if op in ("MULL", "UMULL"):
+            ext = z3.SignExt if op == "MULL" else z3.ZeroExt
+            return ext(32, z3.Extract(31, 0, x)) * ext(32, z3.Extract(31, 0, y))
+        if op in ("EXTRconst", "EXTRWconst"):
+            # Bits lsb.. of the concatenation arg0:arg1 (ARM64Ops.go), the W form on the low words.
+            width = 32 if op == "EXTRWconst" else 64
+            pair = z3.Concat(z3.Extract(width - 1, 0, x), z3.Extract(width - 1, 0, y))
+            result = z3.Extract(int(aux) + width - 1, int(aux), pair)
+            return z3.ZeroExt(64 - width, result) if width < 64 else result
         if op in ("RBIT", "RBITW"):
             width = 32 if op == "RBITW" else 64
             result = z3.Concat(*[z3.Extract(i, i, x) for i in range(width)])

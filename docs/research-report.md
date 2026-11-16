@@ -1047,6 +1047,59 @@ amd64, `-N -l`):
 The 8 go1.27.4 reports share the signature of golang/go#36897: at `lower`, the upper 32
 bits of the input reach the result where 0 is expected.
 
+### 3.24 Iteration 19: ARM64 bit operations and out-of-line `math/bits` calls
+
+The arm64 search of 3.22 left 88 unsupported functions out of 1,800. Most were ARM64
+operations without a model, and in `-N -l` builds, calls to small `math/bits` helpers
+that are not inlined. `ssa_tv.py --lowered` now models these ARM64 operations:
+
+* byte reversal: `REV`, `REVW`, `REV16`, `REV16W`;
+* `CLZ` and `CLZW`;
+* the high and widening multiplications: `MULH`, `UMULH`, `MULL`, `UMULL`;
+* `EXTRconst` and `EXTRWconst`, which take bits of `arg0:arg1` from `auxInt` upward
+  (`ARM64Ops.go`; `ARM64.rules` writes `x2<<c | x>>(64-c)` as
+  `EXTRconst [64-c] x2 x`).
+
+The generic passes model `Mul64uhilo`, which comes from `bits.Mul64`. The validator also
+models calls to the `math/bits` functions `Len*`, `LeadingZeros*`, `TrailingZeros*`,
+`OnesCount*`, `Reverse*`, `ReverseBytes*` and `RotateLeft*` by their documented results.
+This applies to every target. The callee reads only the low bits of its argument
+registers. In the lowered passes, the bits of a result register above the result type
+are free variables, because the register ABI does not define them. A caller that relied
+on them would therefore be reported. A call with any other number of register arguments
+is unsupported, as it is on the ABI0 targets and for split 64-bit arguments.
+
+The tests were written first. They check the new operations against generic SSA for all
+inputs, or against a Python reference where no single generic operation corresponds.
+They check every helper call, generic and lowered, against its documented result, and
+check that reading the upper bits of a narrow result is not proved equivalent. An
+end-to-end test compiles 11 functions that reach each operation for arm64. The `lower`
+and `flagalloc` models of their optimized and `-N -l` dumps match native amd64
+execution on 8 inputs. With `-N -l`, the riscv64 table functions (`bits.Len64`,
+`bits.TrailingZeros64` without Zbb) are now supported, because the helpers stay calls.
+In optimized builds they remain unsupported, since the inlined helper reads a global
+table. The 75 SSA-validator tests pass.
+
+**Replay and search (VASSIVIERE, 2026-11-16).** Five jobs ran at `nice -n 15`, with a
+1,000 ms limit per solver query. The replay uses the programs of 3.22 (seed
+`20261126`, 30 programs for each of `core`, `ext` and `bits`, optimized and `-N -l`).
+The search uses seed `20261128`, with 50 programs per suite and build. The tip binary
+is the `56ae71df05` build used in campaign 6:
+
+| Run | Toolchain | Function checks | Pass pairs | Unsupported | Timeouts | Reports |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Replay of 3.22 | go1.27.4 | 1,800 | 13,017 | 7 | 57 | 0 |
+| Search | go1.27.4 | 3,000 | 21,643 | 0 | 96 | 0 |
+| Search | tip `56ae71df05` | 3,000 | 21,281 | 0 | 93 | 0 |
+| **Total** | | **7,800** | **55,941** | **7** | **246** | **0** |
+
+On the same programs, unsupported functions fall from 88 to 7. All 7 are `FMOVDgpfp`:
+`OnesCount` goes through the vector unit (`VCNT`) on arm64, and float registers remain
+out of scope. No build error or `model_error` was recorded. The campaign found no new
+compiler defect. Timeouts and unsupported functions are incomplete validation, not
+proofs of correctness. The driver, raw reports and generated programs are kept locally
+under `build/research-20261116-arm64/`, which Git ignores.
+
 ## 4. Success criteria check
 
 | # | Criterion | Status |

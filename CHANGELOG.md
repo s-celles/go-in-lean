@@ -12,6 +12,17 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- `ssa_tv.py --lowered` on arm64 models byte reversal (`REV`, `REVW`, `REV16`, `REV16W`),
+  `CLZ`/`CLZW`, the high and widening multiplications (`MULH`, `UMULH`, `MULL`, `UMULL`) and
+  `EXTRconst`/`EXTRWconst`. The generic passes model `Mul64uhilo` (`bits.Mul64`). Calls to the
+  `math/bits` helpers that `-l` leaves out of line (`Len*`, `LeadingZeros*`, `TrailingZeros*`,
+  `OnesCount*`, `Reverse*`, `ReverseBytes*`, `RotateLeft*`) are modelled by their documented
+  results; in the lowered passes, the bits of a result register above its type are left free.
+- An arm64 lowered `ssa_tv.py` campaign on VASSIVIERE, run on 2026-11-16. Replaying the 3.22
+  programs (seed 20261126, go1.27.4) leaves 7 unsupported functions out of 1,800, down from
+  88. All 7 are `FMOVDgpfp` (`OnesCount` through `VCNT`). A new search (seed 20261128,
+  go1.27.4 and tip) covers 6,000 function checks with no unsupported function. Across
+  7,800 function checks and 55,941 pass pairs, no report (`docs/research-report.md` 3.24).
 - Campaign 6 of `ssa_tv.py` on OPTIPLEX7010 (seed 20261127): arm lowered (go1.27.3 and
   tip), 386 and mipsle generic, `core`/`bits`/`ext`, optimized and `-N -l`; 14,400
   function checks, 82,319 pass pairs, no report (`docs/research-report.md` 3.23).

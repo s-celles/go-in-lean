@@ -519,6 +519,53 @@ expression func(uint64, uint64) uint64
                                  f"    (3) v8 = {condition} <bool> v6", "arm64")
             self.assertEqual(tv.evaluate(f, {"x": 1 << 63, "y": M64}), ("ret", expected))
 
+    def test_byte_reverse_count_and_multiply_ops_agree_with_generic_ssa(self):
+        lo = "    (3) v4 = Trunc64to32 <uint32> v2\n    (3) v5 = Trunc64to32 <uint32> v3\n"
+        cases = {
+            "REV": ("    (3) v8 = Bswap64 <uint64> v2", "REV <uint64> v2"),
+            "REVW": (lo + "    (3) v6 = Bswap32 <uint32> v4\n    (3) v8 = ZeroExt32to64 <uint64> v6",
+                     "REVW <uint64> v2"),
+            "CLZ": ("    (3) v6 = BitLen64 <int> v2\n    (?) v7 = Const64 <int> [64]\n"
+                    "    (3) v8 = Sub64 <uint64> v7 v6", "CLZ <uint64> v2"),
+            "CLZW": (lo + "    (3) v6 = BitLen32 <int> v4\n    (?) v7 = Const64 <int> [32]\n"
+                     "    (3) v8 = Sub64 <uint64> v7 v6", "CLZW <uint64> v2"),
+            "MULH": ("    (3) v8 = Hmul64 <int64> v2 v3", "MULH <int64> v2 v3"),
+            "UMULH": ("    (3) v8 = Hmul64u <uint64> v2 v3", "UMULH <uint64> v2 v3"),
+            "MULL": (lo + "    (3) v6 = SignExt32to64 <int64> v4\n    (3) v7 = SignExt32to64 <int64> v5\n"
+                     "    (3) v8 = Mul64 <int64> v6 v7", "MULL <int64> v2 v3"),
+            "UMULL": (lo + "    (3) v6 = ZeroExt32to64 <uint64> v4\n    (3) v7 = ZeroExt32to64 <uint64> v5\n"
+                      "    (3) v8 = Mul64 <uint64> v6 v7", "UMULL <uint64> v2 v3"),
+        }
+        for op, (spec, machine) in cases.items():
+            with self.subTest(op=op):
+                self.assertIsNone(tv.equivalent(self._expression(spec),
+                                                self._expression(f"    (3) v8 = {machine}", "arm64")))
+
+    def test_halfword_byte_reverse_and_extract(self):
+        def rev16(x, width):
+            x &= (1 << width) - 1
+            return sum((((x >> (16 * i)) & 0xFF) << 8 | ((x >> (16 * i + 8)) & 0xFF)) << (16 * i)
+                       for i in range(width // 16))
+
+        def extr(x, y, c, width):
+            m = (1 << width) - 1
+            return (((x & m) << (width - c)) | ((y & m) >> c)) & m
+
+        rng = random.Random(5)
+        pts = [(0, 0), (M64, 1), (0x0123456789ABCDEF, 0xFEDCBA9876543210)]
+        pts += [(rng.getrandbits(64), rng.getrandbits(64)) for _ in range(4)]
+        for op, width in (("REV16", 64), ("REV16W", 32)):
+            f = self._expression(f"    (3) v8 = {op} <uint64> v2", "arm64")
+            for x, y in pts:
+                with self.subTest(op=op, x=x):
+                    self.assertEqual(tv.evaluate(f, {"x": x, "y": y}), ("ret", rev16(x, width)))
+        for op, width in (("EXTRconst", 64), ("EXTRWconst", 32)):
+            for c in (0, 1, 17, width - 1):
+                f = self._expression(f"    (3) v8 = {op} <uint64> [{c}] v2 v3", "arm64")
+                for x, y in pts:
+                    with self.subTest(op=op, c=c, x=x, y=y):
+                        self.assertEqual(tv.evaluate(f, {"x": x, "y": y}), ("ret", extr(x, y, c, width)))
+
     def test_madd_msub_accumulator_is_first_operand(self):
         madd = tv.parse_dump(ARM64_MADD)
         msub = tv.parse_dump(ARM64_MSUB)
@@ -642,6 +689,119 @@ stackBool func(uint64) uint64
 
 
 @unittest.skipUnless(HAVE_Z3, "z3 module not available")
+def _bits_reference(name, x, k):
+    """The documented result of math/bits.<name>(x[, k]) for a 64-bit word."""
+    base = name.rstrip("0123456789")
+    w = int(name[len(base):] or 64)
+    x &= (1 << w) - 1
+    if base == "Len":
+        return x.bit_length()
+    if base == "LeadingZeros":
+        return w - x.bit_length()
+    if base == "TrailingZeros":
+        return w if x == 0 else (x & -x).bit_length() - 1
+    if base == "OnesCount":
+        return bin(x).count("1")
+    if base == "Reverse":
+        return int(f"{x:0{w}b}"[::-1], 2)
+    if base == "ReverseBytes":
+        return int.from_bytes(x.to_bytes(w // 8, "little"), "big")
+    s = k & (w - 1)
+    return ((x << s) | (x >> (w - s))) & ((1 << w) - 1)
+
+
+BITS_CALLS = [f"{b}{n}" for b in ("Len", "LeadingZeros", "TrailingZeros", "OnesCount", "Reverse", "RotateLeft")
+              for n in ("8", "16", "32", "64", "")] + [f"ReverseBytes{n}" for n in ("16", "32", "64", "")]
+
+
+@unittest.skipUnless(HAVE_Z3, "z3 module not available")
+class BitsCallTests(unittest.TestCase):
+    """math/bits helpers left as calls under -l, modelled by their documented results."""
+
+    @staticmethod
+    def _call(name, lowered):
+        w = name.rstrip("0123456789")
+        width = int(name[len(w):] or 64)
+        counts = w in ("Len", "LeadingZeros", "TrailingZeros", "OnesCount")
+        rtype = "int" if counts else ("uint" if width == 64 and not name[-1].isdigit() else f"uint{width}")
+        args = "v2 v3" if w == "RotateLeft" else "v2"
+        if lowered:
+            pre, call, ext = "", "CALLstatic", "MOVDreg" if rtype in ("int", "uint", "uint64") else {
+                8: "MOVBUreg", 16: "MOVHUreg", 32: "MOVWUreg"}[width]
+            use = f"    (3) v8 = {ext} <uint64> v7\n"
+        else:
+            pre = f"    (3) v4 = Trunc64to{width} <uint{width}> v2\n" if width < 64 else ""
+            args = args.replace("v2", "v4") if width < 64 else args
+            call = "StaticCall"
+            use = (f"    (3) v8 = ZeroExt{width}to64 <uint64> v7\n" if rtype.startswith("uint") and width < 64
+                   else "    (3) v8 = Copy <uint64> v7\n")
+        f = tv.parse_dump(f"""\
+callBits func(uint64, uint64) uint64
+  b1:
+    (?) v1 = InitMem <mem>
+    (2) v2 = ArgIntReg <uint64> {{x+0}} [0]
+    (2) v3 = ArgIntReg <uint64> {{y+0}} [1]
+{pre}    (3) v5 = {call} <{rtype},mem> {{AuxCall{{math/bits.{name}}}}} [16] {args} v1
+    (3) v6 = SelectN <mem> [1] v5
+    (3) v7 = SelectN <{rtype}> [0] v5
+{use}    (4) v9 = MakeResult <uint64,mem> v8 v6
+    Ret v9
+""")
+        f.arch = "arm64" if lowered else None
+        return f
+
+    def test_calls_match_documented_results(self):
+        rng = random.Random(11)
+        pts = [(0, 0), (1, M64), (M64, 3), (0x8000000000000001, 1 << 63), (0x00F0, 70)]
+        pts += [(rng.getrandbits(64), rng.getrandbits(64)) for _ in range(3)]
+        for name in BITS_CALLS:
+            for lowered in (False, True):
+                f = self._call(name, lowered)
+                for x, y in pts:
+                    with self.subTest(name=name, lowered=lowered, x=x, y=y):
+                        k = y - (1 << 64) if y >> 63 else y
+                        self.assertEqual(tv.evaluate(f, {"x": x, "y": y}),
+                                         ("ret", _bits_reference(name, x, k) & M64))
+
+    def test_lowered_narrow_result_has_undefined_upper_bits(self):
+        f = self._call("RotateLeft16", True)
+        text = """\
+callBits func(uint64, uint64) uint64
+  b1:
+    (?) v1 = InitMem <mem>
+    (2) v2 = ArgIntReg <uint64> {x+0} [0]
+    (2) v3 = ArgIntReg <uint64> {y+0} [1]
+    (3) v5 = CALLstatic <uint16,mem> {AuxCall{math/bits.RotateLeft16}} [16] v2 v3 v1
+    (3) v6 = SelectN <mem> [1] v5
+    (3) v7 = SelectN <uint16> [0] v5
+    (4) v9 = MakeResult <uint64,mem> v7 v6
+    Ret v9
+"""
+        raw = tv.parse_dump(text)
+        raw.arch = "arm64"
+        self.assertIsNotNone(tv.equivalent(raw, f))
+
+    def test_unknown_callee_and_arity_mismatch_are_unsupported(self):
+        for name, args in (("math/bits.Add64", "v2 v3"), ("math/bits.RotateLeft16", "v2"),
+                           ("math/bits.Len64", "v2 v3")):
+            with self.subTest(name=name):
+                f = tv.parse_dump(f"""\
+callBits func(uint64, uint64) uint64
+  b1:
+    (?) v1 = InitMem <mem>
+    (2) v2 = ArgIntReg <uint64> {{x+0}} [0]
+    (2) v3 = ArgIntReg <uint64> {{y+0}} [1]
+    (3) v5 = CALLstatic <uint64,mem> {{AuxCall{{{name}}}}} [16] {args} v1
+    (3) v6 = SelectN <mem> [1] v5
+    (3) v7 = SelectN <uint64> [0] v5
+    (4) v9 = MakeResult <uint64,mem> v7 v6
+    Ret v9
+""")
+                f.arch = "arm64"
+                with self.assertRaises(tv.Unsupported):
+                    tv.evaluate(f, {"x": 1, "y": 2})
+
+
 class CheckTests(unittest.TestCase):
     def test_equivalent_passes(self):
         self.assertIsNone(tv.equivalent(tv.parse_dump(BUILD), tv.parse_dump(LATE)))
@@ -1303,7 +1463,9 @@ func f13(x, y uint64) uint64 { a := int8(x); return uint64((a - (-a)) >> 8) }
 
 func main() {""").replace("f11, f12}", "f11, f12, f13}")
 RV_N = 14
-RV_TABLES = (3, 9)  # bits.Len64/TrailingZeros64 read a global table without Zbb (unsupported)
+# Optimized builds inline bits.Len64/TrailingZeros64, which read a global table
+# without Zbb (unsupported); -N -l leaves them as calls, which are modelled.
+RV_TABLES = (3, 9)
 
 
 @unittest.skipUnless(HAVE_Z3 and GO, "z3 module or go not available")
@@ -1334,7 +1496,7 @@ class LoweredRISCV64Tests(unittest.TestCase):
                                  text=True, check=True).stdout.split()
             for fl, dumps in self.dumps.items():
                 for i in range(RV_N - 1):  # f13 is miscompiled on riscv64 (golang/go#82773)
-                    if i in RV_TABLES:
+                    if i in RV_TABLES and not fl:
                         continue
                     for name in ("lower", "flagalloc"):
                         f = tv.parse_dump(dict(dumps[f"f{i}"])[name])
@@ -1357,7 +1519,7 @@ class LoweredRISCV64Tests(unittest.TestCase):
         for fl, dumps in self.dumps.items():
             for i in range(RV_N - 1):
                 rep = tv.validate(dumps[f"f{i}"], arch="riscv64")
-                if i in RV_TABLES:  # reported as unsupported, never as a failure
+                if i in RV_TABLES and not fl:  # reported as unsupported, never as a failure
                     self.assertEqual(rep["failures"], [], (fl, f"f{i}"))
                     self.assertIsNotNone(rep["unsupported"], (fl, f"f{i}"))
                     continue
@@ -1533,6 +1695,90 @@ class LoweredARM64Tests(unittest.TestCase):
             for i in range(1, 7):
                 rep = tv.validate(dumps[f"f{i}"], arch="arm64")
                 self.assertEqual((rep["failures"], rep["unsupported"]), ([], None), (fl, f"f{i}"))
+
+
+# Clean functions that reach ARM64 byte reversal, CLZ, high and widening
+# multiplications and EXTR, and math/bits helpers that -l leaves as calls.
+ARM64_BITS_SRC = """\
+package main
+import (
+    "fmt"
+    "math/bits"
+    "os"
+    "strconv"
+)
+
+func g0(x, y uint64) uint64 { return bits.ReverseBytes64(x) ^ uint64(bits.ReverseBytes32(uint32(y))) }
+func g1(x, y uint64) uint64 { return uint64(bits.ReverseBytes16(uint16(x))) }
+func g2(x, y uint64) uint64 { return uint64(bits.LeadingZeros64(x)) + uint64(bits.LeadingZeros32(uint32(y))) }
+func g3(x, y uint64) uint64 { hi, _ := bits.Mul64(x, y); return hi }
+func g4(x, y uint64) uint64 { return uint64(int64(x) / 7) }
+func g5(x, y uint64) uint64 { return uint64(int64(int32(x)) * int64(int32(y))) }
+func g6(x, y uint64) uint64 { return uint64(uint32(x)) * uint64(uint32(y)) }
+func g7(x, y uint64) uint64 { return x<<17 | y>>47 }
+func g8(x, y uint64) uint64 { return uint64(uint32(x)<<7 | uint32(y)>>25) }
+func g9(x, y uint64) uint64 {
+    return uint64(bits.RotateLeft16(uint16(x), int(y))) + uint64(bits.LeadingZeros8(uint8(y)))
+}
+func g10(x, y uint64) uint64 {
+    return uint64(bits.Len8(uint8(x))) + uint64(bits.TrailingZeros16(uint16(y))) +
+        uint64(bits.Reverse8(uint8(y)))
+}
+
+func main() {
+    x, _ := strconv.ParseUint(os.Args[1], 0, 64)
+    y, _ := strconv.ParseUint(os.Args[2], 0, 64)
+    fmt.Println(g0(x, y), g1(x, y), g2(x, y), g3(x, y), g4(x, y), g5(x, y), g6(x, y), g7(x, y),
+        g8(x, y), g9(x, y), g10(x, y))
+}
+"""
+
+
+@unittest.skipUnless(HAVE_Z3 and GO, "z3 module or go toolchain not available")
+class LoweredARM64BitsTests(unittest.TestCase):
+    """ARM64 bit-manipulation ops and math/bits calls, against native amd64 execution."""
+
+    N = 11
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = Path(tempfile.mkdtemp(prefix="ssa_tv_arm64bits_"))
+        (cls.tmp / "main.go").write_text(ARM64_BITS_SRC)
+        (cls.tmp / "go.mod").write_text("module arm64bits\n\ngo 1.22\n")
+        subprocess.run([GO, "build", "-buildvcs=false", "-o", "prog", "."], cwd=cls.tmp, check=True)
+        cls.dumps = {fl: tv.dump_passes(GO, cls.tmp, [f"g{i}" for i in range(cls.N)], "arm64",
+                                      lowered=True, gcflags=fl) for fl in ("", "-N -l")}
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.tmp, ignore_errors=True)
+
+    def test_ops_are_reached(self):
+        text = "".join(t for dumps in self.dumps.values() for d in dumps.values() for _, t in d)
+        for op in ("REV ", "REVW ", "REV16W ", "CLZ ", "CLZW ", "UMULH ", "MULH ", "MULL ", "UMULL ",
+                   "EXTRconst ", "EXTRWconst ", "CALLstatic "):
+            self.assertIn(f"= {op}", text, op)
+
+    def test_native_evaluation_matches_model(self):
+        rng = random.Random(29)
+        pts = [(0, 0), (M64, 2), (1 << 63, M64), (0x0123456789ABCDEF, 0x00F0)]
+        pts += [(rng.getrandbits(64), rng.getrandbits(64)) for _ in range(4)]
+        for x, y in pts:
+            out = [int(v) for v in subprocess.run([str(self.tmp / "prog"), str(x), str(y)], capture_output=True,
+                                                  text=True, check=True).stdout.split()]
+            for fl, dumps in self.dumps.items():
+                for i in range(self.N):
+                    for stage in ("lower", "flagalloc"):
+                        f = tv.parse_dump(dict(dumps[f"g{i}"])[stage])
+                        f.arch = "arm64"
+                        self.assertEqual(tv.evaluate(f, {"x": x, "y": y}), ("ret", out[i] & M64),
+                                         (fl, f"g{i}", stage, x, y))
+
+    def test_no_report_and_nothing_unsupported(self):
+        for fl, dumps in self.dumps.items():
+            for i in range(self.N):
+                rep = tv.validate(dumps[f"g{i}"], arch="arm64")
+                self.assertEqual((rep["failures"], rep["unsupported"]), ([], None), (fl, f"g{i}"))
 
 
 if __name__ == "__main__":
