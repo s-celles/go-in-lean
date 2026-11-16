@@ -1007,6 +1007,32 @@ found no report. Function checks:
 | 386, generic | `core` | 50 | 50 | none |
 | 386, generic | `bits` | 50 | 50 | as for arm, plus one more under `-N -l` |
 
+**Campaign 6 (OPTIPLEX7010, seed 20261127, 2026-11-16).** This run used commit `93b0f3f`.
+The first start was stopped after two minutes: the arm model read a flags argument for
+every register-shift operation (`ORshiftLLreg`, `CMPshiftLLreg`) and crashed, and the
+exception ended the whole job. The fix added a test function producing both forms, and
+any unexpected model exception is now recorded as a `model_error` for its function. The
+restarted run used 4 jobs in a 3 GB user scope; the largest z3 process stayed under
+150 MB. It was frozen three times for Nix builds, for 20 s, 4 min and 1 min 20.
+
+Each configuration checked 60 programs, 600 functions, of the `core`, `bits` and `ext`
+suites, optimized and `-N -l`:
+
+| Target | Toolchains | Function checks | Pass pairs | Unsupported | Timeouts | Reports |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| arm, lowered | go1.27.3, tip `56ae71df05` | 7,200 | 49,441 | 374 | 160 | 0 |
+| 386, generic | go1.27.3 | 3,600 | 16,418 | 197 | 41 | 0 |
+| mipsle, generic | go1.27.3 | 3,600 | 16,460 | 199 | 40 | 0 |
+| **Total** | | **14,400** | **82,319** | **770** | **241** | **0** |
+
+No `model_error` was recorded. The remaining unsupported functions are mostly 64-bit
+divisions, which call the runtime on 32-bit targets, and `math/bits` helpers left as
+calls under `-l`. Another 1,040 functions did not build: the generator writes `uint`
+constants above 2^32, which do not compile when `uint` is 32 bits wide. These are build
+errors of the generated programs, not compiler defects. Fixing the generator for 32-bit
+targets would change the programs of existing seeds, so it is left as is. The campaign
+found no new compiler defect.
+
 **CL 862781 (golang/go#36897).** Keith Randall's fix, patchset 5 on top of CL 833045,
 was built locally. The 2026-11-06 reproducer prints 5 instead of
 9223372036854775813 with `-gcflags='-N -l'`, and `ssa_tv --lowered --gcflags "-N -l"`

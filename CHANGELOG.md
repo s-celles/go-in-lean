@@ -12,6 +12,9 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- Campaign 6 of `ssa_tv.py` on OPTIPLEX7010 (seed 20261127): arm lowered (go1.27.3 and
+  tip), 386 and mipsle generic, `core`/`bits`/`ext`, optimized and `-N -l`; 14,400
+  function checks, 82,319 pass pairs, no report (`docs/research-report.md` 3.23).
 - `ssa_tv.py` on the 32-bit targets (386, arm, mipsle): the dec64 operations that split
   64-bit values, parameter halves, the ABI0 result and parameter slots, and ABI0 calls to
   `b2i`. `--lowered` now covers 32-bit arm (about 150 operations) and finds
