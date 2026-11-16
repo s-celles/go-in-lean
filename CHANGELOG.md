@@ -210,6 +210,12 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Fixed
 
+- CI: every `ci` run since 2026-11-07 failed in `lake build`. Lean reserves more virtual
+  memory than RAM plus swap, so with the runner's default heuristic overcommit,
+  `bv_decide` could not spawn its SAT solver ("resource exhausted (error code: 12)").
+  The job now sets `vm.overcommit_memory=1`. Two `ProveLimits` proofs (`mul_sound_16`,
+  `popcount_sound_64`) then exceeded their 300 s solver limit on the runner and now have
+  900 s; the proofs themselves are unchanged.
 - `ssa_tv.py`: the arm model read a flags argument for every register-shift operation
   (`ORshiftLLreg`, `CMPshiftLLreg`, ...), which crashed it; only `ADC`/`SBC`/`RSC` read
   flags. An unexpected exception in the model is now reported as a `model_error` for that

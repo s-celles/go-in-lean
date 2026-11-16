@@ -22,6 +22,10 @@ jobs:
           build: false
           test: false
           lint: false
+      - name: Allow bv_decide to spawn its SAT solver
+        # Lean reserves more virtual memory than RAM plus swap; under the default heuristic
+        # overcommit, spawning the solver then fails with "resource exhausted (error code: 12)".
+        run: sudo sysctl -w vm.overcommit_memory=1
       - name: Full check (build, audit, Go tests, differential vectors, manifest, mutation test)
         run: scripts/check.sh
       - name: Fuzz smoke (30s, deterministic seeds + coverage-guided)

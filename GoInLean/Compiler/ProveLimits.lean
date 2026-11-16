@@ -205,7 +205,7 @@ theorem popcount_sound_16 (a : BitVec 16) (l1 : Lim) (h1n : norm 16 l1) (ha : in
   obtain ⟨_, _, _, _⟩ := l1; lim_unfold; bv_decide (config := {timeout := 300})
 theorem mul_sound_16 (a b : BitVec 16) (l1 : Lim) (h1n : norm 16 l1) (l2 : Lim) (h2n : norm 16 l2) (ha : inL 16 l1 a) (hb : inL 16 l2 b) :
     (mul 16 l1 l2).umn ≤ (a * b).setWidth 64 ∧ (a * b).setWidth 64 ≤ (mul 16 l1 l2).umx := by
-  obtain ⟨_, _, _, _⟩ := l1; obtain ⟨_, _, _, _⟩ := l2; lim_unfold; bv_decide (config := {timeout := 300})
+  obtain ⟨_, _, _, _⟩ := l1; obtain ⟨_, _, _, _⟩ := l2; lim_unfold; bv_decide (config := {timeout := 900})
 theorem add_sound_32 (a b : BitVec 32) (l1 : Lim) (h1n : norm 32 l1) (l2 : Lim) (h2n : norm 32 l2) (ha : inL 32 l1 a) (hb : inL 32 l2 b) :
     inL 32 (add 32 l1 l2) (a + b) := by
   obtain ⟨_, _, _, _⟩ := l1; obtain ⟨_, _, _, _⟩ := l2; lim_unfold; bv_decide (config := {timeout := 300})
@@ -247,5 +247,5 @@ theorem ctz_sound_64 (a : BitVec 64) (l1 : Lim) (h1n : norm 64 l1) (ha : inL 64 
   obtain ⟨_, _, _, _⟩ := l1; lim_unfold; bv_decide (config := {timeout := 300})
 theorem popcount_sound_64 (a : BitVec 64) (l1 : Lim) (h1n : norm 64 l1) (ha : inL 64 l1 a) :
     (popcount l1).umn ≤ BitSpec.popcount a ∧ BitSpec.popcount a ≤ (popcount l1).umx := by
-  obtain ⟨_, _, _, _⟩ := l1; lim_unfold; bv_decide (config := {timeout := 300})
+  obtain ⟨_, _, _, _⟩ := l1; lim_unfold; bv_decide (config := {timeout := 900})
 end Go.Compiler.ProveLimits
