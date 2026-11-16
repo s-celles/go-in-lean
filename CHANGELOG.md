@@ -22,7 +22,8 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
   modelled. Big-endian mips is reported as unsupported (`docs/research-report.md` 3.23).
 - Local verification of CL 862781 (golang/go#36897): the reproducer is fixed, and an
   `ext` sweep (3,000 functions, amd64 `-N -l`) gives 8 reports on go1.27.4 and none with
-  the CL.
+  the CL; posted on the CL as a top-level comment on 2026-11-16
+  (`findings/AMD64-ANDL-MINUS1-ZEXT-NOOPT/cl/comment-cl862781.md`).
 - A patchset 2 for CL 858581 (golang/go#82839), prepared after review: the check moves
   from the extension case of `prove` into the `x+delta` constant case, where the constant is
   truncated; validated locally and uploaded on 2026-11-16 with the review replies

@@ -159,4 +159,5 @@ Patchset 5 (`230a349655`, parent CL 833045 `abec217787`), built with `make.bash`
   --gcflags "-N -l"` (3,000 functions): 8 reports on go1.27.4, all at `lower` with
   the #36897 signature; 0 with the CL.
 
-Nothing has been posted on the CL.
+Posted as a top-level comment on patchset 5 on 2026-11-16, with no vote
+(`findings/AMD64-ANDL-MINUS1-ZEXT-NOOPT/cl/comment-cl862781.md`).
