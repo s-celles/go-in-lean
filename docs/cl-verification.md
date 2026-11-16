@@ -128,7 +128,7 @@ passes on master+patch, and the `ssa`/`ssacompile`/`test` (short) plus
 `prove|loopbce|checkbce|codegen|fixedbugs` suites pass. Mailed as Gerrit CL
 https://go-review.googlesource.com/c/go/+/858581 (mailed from the Linux workstation).
 
-### Patchset 2 following review (prepared 2026-11-15, not mailed)
+### Patchset 2 following review (prepared 2026-11-15, uploaded 2026-11-16)
 
 Keith Randall preferred moving the check to where the constant is truncated
 (option (b) in the 2026-11-13 reply). The extension case in

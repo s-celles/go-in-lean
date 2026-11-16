@@ -1,4 +1,4 @@
-<!-- Draft replies for CL 858581 patchset 2, answering Keith Randall's 2026-11-13 comments. Not posted. -->
+<!-- Draft replies for CL 858581 patchset 2, answering Keith Randall's 2026-11-13 comments. Posted on 2026-11-16 as written: the two inline replies on patchset 1 threads, the top-level message on patchset 2. -->
 
 ## prove.go line 873 ("b certainly sounds better to me")
 
