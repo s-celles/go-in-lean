@@ -12,6 +12,24 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- The website follows the shared site-kit structure (SPEC 0.2, module
+  `github.com/s-celles/site-kit` v0.2.0, imported before Hextra). The menu now has a
+  Methodology page (moved from `/about/`, with a pipeline diagram and the pinned
+  site-kit tag) and a Statuses page that defines every badge word. The home page now
+  has a data stamp naming its commit, a disclaimer and an AI provenance note (texts
+  approved by the owner), site-kit stat tiles, and a Cite section generated from the
+  new `CITATION.cff`. The Upstream page shows the new `docs/upstream.tsv` snapshot by
+  repository. History charts use site-kit's dense chart markup and `viz.js`, and the
+  registries use `tables.js`. The generator writes `llms.txt`, `llms-full.txt` and
+  `registry.json`. The site's CI runs site-kit's `check_site.py` and
+  `compare_builds.py`, and every page has a footer line naming the licences.
+- Data and prose are licensed CC BY 4.0 (`LICENSE-DATA`); code stays MIT. The README
+  and the project guide list the paths under each licence. `NOTICE` now also covers
+  the theorems generated from `ARM64.rules`, `AMD64.rules` and `magic.go`, and the
+  patches against Go.
+- `scripts/history.py` writes `docs/upstream.tsv` (site-kit SPEC §6). It records issue
+  titles and states, and every CL linked from `docs/upstream-status.md` with an
+  ownership flag, and retries transient network errors.
 - A History page on the website with time-series charts. It plots Lean theorem and
   lemma declarations, the property registry (registered and proved), findings by
   priority, issues reported upstream and closed, and Gerrit CLs mailed, merged and
@@ -198,6 +216,10 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Changed
 
+- The project guide's research-map diagram no longer uses `<br/>`, `&` or `#` in its
+  Mermaid labels (site-kit rule SK-MERMAID). Two statements in it that had become
+  stale are corrected: not every finding still has a CL in review, and
+  golang/go#82847 is fixed by CL 863164.
 - golang/go#82847 (masked SIMD shifts without an immediate) is closed. David Chase's CL 863164
   (master `712a852b54`) fixes it and supersedes CL 858901, which was abandoned on 2026-11-17.
   The fix was checked locally:

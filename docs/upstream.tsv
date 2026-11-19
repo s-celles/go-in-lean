@@ -1,0 +1,64 @@
+repo	number	kind	state	created	closed	merged	fixes	cited_by	title
+golang/go	36897	issue	open	2020-01-30				AMD64-ANDL-MINUS1-ZEXT-NOOPT	cmd/compile: possible latent codegen issue on amd64 removing zero extensions
+golang/go	54255	issue	closed	2022-08-04	2022-08-04			BITS-ADD-64-NOPRE	math/bits: different results when using a pure Go copy of Add64
+golang/go	80577	issue	open	2026-07-27				PPC64-SPILL-SIGNEXT-80577	cmd/compile: regalloc uses unreliable type data (like `v.Type.IsSigned()`) to choose the restore of spills
+golang/go	82763	issue	open	2026-11-02				SSA-SHIFTMASK-SIGNED-COUNT	cmd/compile: wrong result for `((x >> c) & d) << e` with constant shift count c >= 1<<63
+golang/go	82767	issue	open	2026-11-02				SSA-COMPOSE-CONST64-TYPE	cmd/compile: wrong result for `(x >> c) >> d` on int16/int32 with huge constant counts (tip regression)
+golang/go	82772	issue	closed	2026-11-02	2026-11-05			MIPS-RSH8-SIGNEXT16	cmd/compile: wrong result for int8 >> variable count on mips/mipsle (Rsh8x* lowering sign-extends from bit 15)
+golang/go	82773	issue	closed	2026-11-02	2026-11-05			RISCV64-SLLI-NARROW-TYPE	cmd/compile: int8(x - (-x)) >> 8 compiles to 0 on riscv64 (go1.26 regression)
+golang/go	82774	issue	closed	2026-11-02	2026-11-05			S390X-CMPU-SIGNEXT	cmd/compile: uint64(int8(-128)) < 0xFFFFFFFF is true on s390x (go1.26+)
+golang/go	82775	issue	open	2026-11-02				PPC64-EXT-SIZE-BYTES	cmd/compile: int32(int16(x >> 1)) keeps 32 bits on ppc64/ppc64le (rules compare Type.Size() in bytes with bit widths)
+golang/go	82776	issue	closed	2026-11-02	2026-11-05			MIPS-CONST64-COUNT-UINT32	cmd/compile: constant 64-bit shift counts >= 2^32 truncated on mips/mipsle
+golang/go	82777	issue	closed	2026-11-02	2026-11-05			ARM64-CSINV-NOT	cmd/compile: arm64 constant-flag CSINV folds to boolean Not (^y becomes y ^ 1)
+golang/go	82782	issue	open	2026-11-02				PPC64-POWER10-BSWAP16-MISCOMPILE	cmd/compile: wrong result from math/bits.ReverseBytes16 on GOPPC64=power10 (Bswap16 typed as 64-bit)
+golang/go	82786	issue	open	2026-11-02				ARM-MVNSHIFTRA-CONST	cmd/compile: bits.TrailingZeros64(0) can be 32 on GOARCH=arm (MVNshiftRA constant fold drops the complement)
+golang/go	82825	issue	closed	2026-11-03	2026-11-05			AMD64-SBB-CARRYMASK-FLAGS	cmd/compile: amd64/386 miscompile (comparison sharing flags with an SBB carry mask reads them clobbered)
+golang/go	82834	issue	open	2026-11-03				ARM-SUB64-BORROWOUT	cmd/compile: bits.Sub64 returns a wrong borrow on GOARCH=arm (miscompile)
+golang/go	82839	issue	open	2026-11-03				PROVE-EXT-CONST-TRUNC	cmd/compile: prove takes a branch that cannot be taken (fact carried through a sign extension with a constant too wide for the narrow type)
+golang/go	82847	issue	closed	2026-11-04	2026-11-16			SIMD-MASKED-SHIFT-NOIMM	cmd/compile: GOEXPERIMENT=simd amd64 fails to build IfElse of a constant shift ("invalid instruction: VPSLLQ Z0, K1, Z1")
+golang/go	82873	issue	closed	2026-11-05	2026-11-06			BITREV-INT-SHIFT-COUNT-126	cmd/compile: spurious "negative shift amount" panic with a bits.Reverse64 shift count on arm64/loong64 (go1.26)
+golang/go	82745	issue	closed	2026-10-31	2026-11-18				cmd/compile: "invalid instruction" for VPTERNLOGD/VPTERNLOGQ with a merged memory operand (GOEXPERIMENT=simd)
+golang/go	81842	issue	closed	2026-09-29	2026-10-05				cmd/compile: signed division on ppc64x clobbers CR0 without clobberFlags, so a later branch tests the wrong condition
+traefik/yaegi	1750	issue	open	2026-11-05					Shift count converted to the type of the shifted operand in assignments (wrong result or rejected program)
+traefik/yaegi	1751	issue	open	2026-11-06					A negative shift count does not panic
+golang/go	65290	cl	merged	2017-09-21		2017-09-26	golang/go#80577	PPC64-SPILL-SIGNEXT-80577	cmd/compile: fix sign-extension merging rules
+golang/go	568616	cl	merged	2024-03-03		2024-03-12	golang/go#80577	PPC64-SPILL-SIGNEXT-80577	cmd/compile: fix sign/zero-extension removal
+golang/go	621357	cl	merged	2024-10-21		2024-10-23			cmd/compile: arithmetic optimization for shifts
+golang/go	731300	cl	merged	2025-12-18		2026-01-22	golang/go#82873	BITREV-INT-SHIFT-COUNT-126	cmd/compile: ensure ops have the expected argument widths
+golang/go	795240	cl	merged	2026-06-29		2026-06-30			cmd/compile: fix misscompile in rewrite generic rules
+golang/go	799281	cl	new	2026-07-10					simd: use fused multiply-add in emulated MulAdd
+golang/go	804220	cl	merged	2026-07-22		2026-07-29			cmd/compile: fix time traveling proofs in prove
+golang/go	806340	cl	merged	2026-07-27		2026-07-30	golang/go#80577	PPC64-SPILL-SIGNEXT-80577	cmd/compile: do not elide riscv64 sign extension of unsigned values
+golang/go	810440	cl	merged	2026-08-04		2026-08-05	golang/go#80577	PPC64-SPILL-SIGNEXT-80577	[release-branch.go1.25] cmd/compile: do not elide riscv64 sign extension of unsigned values
+golang/go	810441	cl	merged	2026-08-04		2026-08-05	golang/go#80577	PPC64-SPILL-SIGNEXT-80577	[release-branch.go1.27] cmd/compile: do not elide riscv64 sign extension of unsigned values
+golang/go	810460	cl	merged	2026-08-04		2026-08-05	golang/go#80577	PPC64-SPILL-SIGNEXT-80577	[release-branch.go1.26] cmd/compile: do not elide riscv64 sign extension of unsigned values
+golang/go	823424	cl	new	2026-08-28			golang/go#80577	PPC64-SPILL-SIGNEXT-80577	cmd/compile: elide redundant sub-word extensions on arm64
+golang/go	825904	cl	new	2026-09-01			golang/go#80577	PPC64-SPILL-SIGNEXT-80577	cmd/compile: express the spill/restore contract once
+golang/go	827284	cl	abandoned	2026-09-03	2026-09-03		golang/go#80577	PPC64-SPILL-SIGNEXT-80577	cmd/compile: express the spill/restore contract once
+golang/go	841125	cl	merged	2026-09-29		2026-10-05	golang/go#81842		cmd/compile: mark ppc64x signed division ops as clobbering flags
+golang/go	856905	cl	merged	2026-11-02		2026-11-05	golang/go#82774	S390X-CMPU-SIGNEXT	cmd/compile: do not narrow an unsigned compare of a sign-extended value
+golang/go	857143	cl	merged	2026-11-02		2026-11-05	golang/go#82773	RISCV64-SLLI-NARROW-TYPE	cmd/compile: type the inner shift as int64 in riscv64 SRAI(MOVBreg) lowering
+golang/go	857342	cl	new	2026-11-02			golang/go#82767	SSA-COMPOSE-CONST64-TYPE	cmd/compile: give the combined count the right type in shift-composition rules
+golang/go	857343	cl	merged	2026-11-02		2026-11-05	golang/go#82776	MIPS-CONST64-COUNT-UINT32	cmd/compile: test the full 64-bit constant shift count in MIPS lowering
+golang/go	857344	cl	merged	2026-11-02		2026-11-05	golang/go#82777	ARM64-CSINV-NOT	cmd/compile: fold constant-flag CSINV to MVN, not the boolean Not
+golang/go	857442	cl	merged	2026-11-02		2026-11-05	golang/go#82772	MIPS-RSH8-SIGNEXT16	cmd/compile: sign-extend from the correct bit in MIPS Rsh8 lowering
+golang/go	857542	cl	new	2026-11-02			golang/go#82782	PPC64-POWER10-BSWAP16-MISCOMPILE	cmd/compile: type Power10 ReverseBytes16 as uint16, not uint
+golang/go	857741	cl	new	2026-11-02			golang/go#82763	SSA-SHIFTMASK-SIGNED-COUNT	cmd/compile: fix signed comparison of constant shift counts in ((x>>c)&d)<<e
+golang/go	857742	cl	new	2026-11-02			golang/go#82775	PPC64-EXT-SIZE-BYTES	cmd/compile: compare Type.Size() in bytes in PPC64 extension-elision rules
+golang/go	857821	cl	new	2026-11-02			golang/go#82786	ARM-MVNSHIFTRA-CONST	cmd/compile: restore the complement in ARM MVNshiftRA constant folding
+golang/go	858262	cl	merged	2026-11-03		2026-11-05	golang/go#82825	AMD64-SBB-CARRYMASK-FLAGS	cmd/compile: mark the x86 SBB carry-mask ops as clobbering flags
+golang/go	858581	cl	new	2026-11-03			golang/go#82839	PROVE-EXT-CONST-TRUNC	cmd/compile: do not truncate a wider constant in prove's x+delta case
+golang/go	858901	cl	abandoned	2026-11-04	2026-11-17		golang/go#82847	SIMD-MASKED-SHIFT-NOIMM	cmd/compile: emit the shift count for masked immediate shifts in the amd64 SIMD backend
+golang/go	858921	cl	new	2026-11-04					simd: correctly-rounded fused multiply-add in emulated MulAdd and the midway bridge
+golang/go	859601	cl	merged	2026-11-05		2026-11-05	golang/go#82773	RISCV64-SLLI-NARROW-TYPE	cmd/compile: type the inner shift as int64 in loong64 SRAVconst(MOVBreg) lowering
+golang/go	859662	cl	new	2026-11-05			golang/go#82776	MIPS-CONST64-COUNT-UINT32	[release-branch.go1.26] cmd/compile: test the full 64-bit constant shift count in MIPS lowering
+golang/go	859663	cl	new	2026-11-05			golang/go#82825	AMD64-SBB-CARRYMASK-FLAGS	[release-branch.go1.27] cmd/compile: mark the x86 SBB carry-mask ops as clobbering flags
+golang/go	859721	cl	abandoned	2026-11-05	2026-11-05		golang/go#82773	RISCV64-SLLI-NARROW-TYPE	cmd/compile: fix wrong SRAV(MOVBreg) lowering on loong64
+golang/go	859742	cl	new	2026-11-05			golang/go#82774	S390X-CMPU-SIGNEXT	[release-branch.go1.27] cmd/compile: do not narrow an unsigned compare of a sign-extended value
+golang/go	859761	cl	new	2026-11-05			golang/go#82777	ARM64-CSINV-NOT	[release-branch.go1.26] cmd/compile: fold constant-flag CSINV to MVN, not the boolean Not
+golang/go	859762	cl	new	2026-11-05			golang/go#82774	S390X-CMPU-SIGNEXT	[release-branch.go1.26] cmd/compile: do not narrow an unsigned compare of a sign-extended value
+golang/go	859781	cl	new	2026-11-05			golang/go#82777	ARM64-CSINV-NOT	[release-branch.go1.27] cmd/compile: fold constant-flag CSINV to MVN, not the boolean Not
+golang/go	859801	cl	new	2026-11-05			golang/go#82776	MIPS-CONST64-COUNT-UINT32	[release-branch.go1.27] cmd/compile: test the full 64-bit constant shift count in MIPS lowering
+golang/go	859802	cl	new	2026-11-05			golang/go#82825	AMD64-SBB-CARRYMASK-FLAGS	[release-branch.go1.26] cmd/compile: mark the x86 SBB carry-mask ops as clobbering flags
+golang/go	862781	cl	new	2026-11-12			golang/go#36897	AMD64-ANDL-MINUS1-ZEXT-NOOPT	cmd/compile: stop dropping zero-extension behavior on 32-bit amd64 ops
+golang/go	863164	cl	merged	2026-11-13		2026-11-16	golang/go#82847	SIMD-MASKED-SHIFT-NOIMM	cmd/compile, simd/archsimd: fix v2kvResultInArg0Imm8 code generation case

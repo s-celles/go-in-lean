@@ -41,6 +41,14 @@ jobs:
         env:
           HUGO_ENVIRONMENT: production
         run: '"$RUNNER_TEMP/hugo/hugo" --source site --minify --baseURL "${{ steps.pages.outputs.base_url }}/"'
+      - name: Check the site-kit SPEC and build determinism
+        env:
+          HUGO_ENVIRONMENT: production
+        run: |
+          kit=$(cd site && go mod download -json github.com/s-celles/site-kit | python3 -c 'import json,sys; print(json.load(sys.stdin)["Dir"])')
+          python3 -I "$kit/tools/check_site.py" --site site/public --hugo site/hugo.yaml --config site-kit.json --repo .
+          "$RUNNER_TEMP/hugo/hugo" --source site --minify --baseURL "${{ steps.pages.outputs.base_url }}/" --destination "$RUNNER_TEMP/second"
+          python3 -I "$kit/tools/compare_builds.py" site/public "$RUNNER_TEMP/second" --config site-kit.json
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site/public

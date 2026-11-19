@@ -79,15 +79,18 @@ type source struct {
 }
 type upstreamRow struct{ Item, State, CL, CLState, Note string }
 type generator struct {
-	root       string
-	properties []Property
-	findings   []Finding
-	theorems   map[string]source
-	tests      map[string]source
-	upstream   []upstreamRow
-	history    *historySnapshot
-	pages      map[string][]byte
-	routes     map[string]string
+	root        string
+	properties  []Property
+	findings    []Finding
+	theorems    map[string]source
+	tests       map[string]source
+	upstream    []upstreamRow
+	history     *historySnapshot
+	upstreamTSV []upstreamEntry
+	commit      string
+	commitDate  string
+	pages       map[string][]byte
+	routes      map[string]string
 }
 
 func main() {
@@ -286,6 +289,14 @@ func (g *generator) load() error {
 	if g.history, err = readSnapshot(filepath.Join(g.root, "docs/history.json")); err != nil {
 		return err
 	}
+	tsv, err := g.read("docs/upstream.tsv")
+	if err != nil {
+		return err
+	}
+	if g.upstreamTSV, err = parseUpstreamTSV(string(tsv)); err != nil {
+		return err
+	}
+	g.commit, g.commitDate = gitStamp(g.root)
 	for _, f := range g.findings {
 		for _, u := range f.Upstream {
 			if len(g.upstreamFor(u)) == 0 {

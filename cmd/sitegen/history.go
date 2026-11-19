@@ -34,6 +34,8 @@ type issueEvent struct {
 	Reported bool   `json:"reported"`
 	Opened   string `json:"opened"`
 	Closed   string `json:"closed"`
+	State    string `json:"state"`
+	Title    string `json:"title"`
 }
 type changeEvent struct {
 	Number    int    `json:"number"`
@@ -42,6 +44,8 @@ type changeEvent struct {
 	Mailed    string `json:"mailed"`
 	Merged    string `json:"merged"`
 	Abandoned string `json:"abandoned"`
+	Subject   string `json:"subject"`
+	Own       bool   `json:"own"`
 }
 
 func readSnapshot(path string) (*historySnapshot, error) {
@@ -192,9 +196,11 @@ func thousands(n int) string {
 	return s
 }
 
-// lineChart renders one figure: an inline SVG line chart on one y-axis, an HTML
-// legend for two or more series, and a data table. The HTML has no blank line, so
-// Goldmark keeps it as one raw block. history.js adds the crosshair and tooltip.
+// lineChart renders one figure in site-kit's chart markup (SPEC §7, §11): an
+// inline SVG line chart on one y-axis from 0, dense (one tab stop; viz.js steps
+// through x with the arrow keys and lists every series), an HTML legend for two
+// or more series, direct end labels and a data table. The HTML has no blank
+// line, so Goldmark keeps it as one raw block.
 func lineChart(id, title, unit string, days []string, ss []series) string {
 	const w, hgt, left, right, top, bottom = 720.0, 240.0, 52.0, 150.0, 12.0, 28.0
 	pw, ph := w-left-right, hgt-top-bottom
@@ -216,35 +222,41 @@ func lineChart(id, title, unit string, days []string, ss []series) string {
 	y := func(v int) float64 { return top + ph*(1-float64(v)/float64(ymax)) }
 	esc := html.EscapeString
 	var b strings.Builder
-	data, _ := json.Marshal(map[string]any{"dates": days, "series": ss})
-	fmt.Fprintf(&b, `<figure class="hchart" id="%s" data-chart="%s">`, esc(id), esc(string(data)))
-	fmt.Fprintf(&b, `<figcaption><strong>%s</strong> <span>%s</span></figcaption>`, esc(title), esc(unit))
+	fmt.Fprintf(&b, `<figure class="viz" id="%s"><figcaption><strong>%s</strong> <span>%s, y from 0. Tab to the chart, then use the arrow keys.</span></figcaption>`, esc(id), esc(title), esc(unit))
 	if len(ss) > 1 {
-		b.WriteString(`<ul class="hchart-legend">`)
+		b.WriteString(`<ul class="viz-legend">`)
 		for i, s := range ss {
-			fmt.Fprintf(&b, `<li><span class="hchart-key hchart-s%d"></span>%s</li>`, i+1, esc(s.Name))
+			fmt.Fprintf(&b, `<li><span class="viz-key" style="background:var(--viz-%d)"></span>%s</li>`, i+1, esc(s.Name))
 		}
 		b.WriteString(`</ul>`)
 	}
-	b.WriteString(`<div class="hchart-plot">`)
-	fmt.Fprintf(&b, `<svg viewBox="0 0 %.0f %.0f" role="img" aria-label="%s, %s to %s" focusable="false">`, w, hgt, esc(title), days[0], days[len(days)-1])
-	for v := 0; v <= ymax; v += tickStep(maxV) {
-		fmt.Fprintf(&b, `<line class="hchart-grid" x1="%.1f" x2="%.1f" y1="%.1f" y2="%.1f"/>`, left, left+pw, y(v), y(v))
-		fmt.Fprintf(&b, `<text class="hchart-tick" x="%.1f" y="%.1f" text-anchor="end" dominant-baseline="middle">%s</text>`, left-8, y(v), thousands(v))
+	fmt.Fprintf(&b, `<div class="viz-plot"><svg class="viz-chart" data-viz="dense" tabindex="0" viewBox="0 0 %.0f %.0f" role="img" aria-label="%s, %s to %s">`, w, hgt, esc(title), days[0], days[len(days)-1])
+	for v := 0; v <= ymax; v += tickStep(maxV) { // bottom to top: viz.js reads the guide's ends from the first and last grid lines
+		fmt.Fprintf(&b, `<line class="viz-grid" x1="%.1f" x2="%.1f" y1="%.1f" y2="%.1f"/>`, left, left+pw, y(v), y(v))
+		fmt.Fprintf(&b, `<text class="viz-tick" x="%.1f" y="%.1f" text-anchor="end" dominant-baseline="middle">%s</text>`, left-8, y(v), thousands(v))
 	}
-	step := 7
-	for i := 0; i < len(days); i += step {
-		fmt.Fprintf(&b, `<text class="hchart-tick" x="%.1f" y="%.1f" text-anchor="middle">%s</text>`, x(i), hgt-8, shortDate(days[i]))
+	for i := 0; i < len(days); i += 7 {
+		fmt.Fprintf(&b, `<text class="viz-tick" x="%.1f" y="%.1f" text-anchor="middle">%s</text>`, x(i), hgt-8, shortDate(days[i]))
 	}
 	labelY := []float64{}
 	for si, s := range ss {
-		var pts []string
+		var d []string
 		for i, v := range s.Values {
-			pts = append(pts, fmt.Sprintf("%.1f,%.1f", x(i), y(v)))
+			cmd := "L"
+			if i == 0 {
+				cmd = "M"
+			}
+			d = append(d, fmt.Sprintf("%s%.1f,%.1f", cmd, x(i), y(v)))
+		}
+		fmt.Fprintf(&b, `<path class="viz-line" style="stroke:var(--viz-%d)" d="%s"/>`, si+1, strings.Join(d, " "))
+		for i, v := range s.Values {
+			r := 0
+			if i == len(s.Values)-1 {
+				r = 4 // the end dot; the others appear when focused
+			}
+			fmt.Fprintf(&b, `<g class="viz-pt" aria-label="%s, %s: %s"><circle class="viz-hit" cx="%.1f" cy="%.1f" r="9"/><circle class="viz-dot" style="fill:var(--viz-%d)" cx="%.1f" cy="%.1f" r="%d"/></g>`, days[i], esc(s.Name), thousands(v), x(i), y(v), si+1, x(i), y(v), r)
 		}
 		last := s.Values[len(s.Values)-1]
-		fmt.Fprintf(&b, `<polyline class="hchart-line hchart-s%d" points="%s"/>`, si+1, strings.Join(pts, " "))
-		fmt.Fprintf(&b, `<circle class="hchart-dot hchart-s%d" cx="%.1f" cy="%.1f" r="4"/>`, si+1, x(len(days)-1), y(last))
 		// direct end label, skipped when it would collide with an earlier one (the legend still names it)
 		ly, clash := y(last), false
 		for _, o := range labelY {
@@ -258,15 +270,14 @@ func lineChart(id, title, unit string, days []string, ss []series) string {
 			if len(ss) > 1 {
 				label = esc(s.Name) + " " + label
 			}
-			fmt.Fprintf(&b, `<text class="hchart-end" x="%.1f" y="%.1f" dominant-baseline="middle">%s</text>`, x(len(days)-1)+10, ly, label)
+			fmt.Fprintf(&b, `<text class="viz-label" x="%.1f" y="%.1f" dominant-baseline="middle">%s</text>`, x(len(days)-1)+10, ly, label)
 		}
 	}
-	fmt.Fprintf(&b, `<line class="hchart-cross" x1="0" x2="0" y1="%.1f" y2="%.1f" visibility="hidden"/>`, top, top+ph)
-	b.WriteString(`</svg></div><div class="hchart-tip" hidden></div>`)
+	b.WriteString(`</svg></div>`)
 	for _, s := range ss {
 		fmt.Fprintf(&b, `<span hidden data-last="%s %d"></span>`, esc(s.Name), s.Values[len(s.Values)-1])
 	}
-	b.WriteString(`<details class="hchart-data"><summary>Data table</summary><table><thead><tr><th scope="col">Date</th>`)
+	b.WriteString(`<details class="viz-data"><summary>Data table</summary><table><thead><tr><th scope="col">Date</th>`)
 	for _, s := range ss {
 		fmt.Fprintf(&b, `<th scope="col">%s</th>`, esc(s.Name))
 	}
@@ -320,7 +331,12 @@ func (g *generator) historyPage() error {
 			closed = append(closed, i.Closed)
 		}
 	}
+	own := 0
 	for _, c := range h.Changes {
+		if !c.Own {
+			continue
+		}
+		own++
 		mailed = append(mailed, c.Mailed)
 		if c.Merged != "" {
 			merged = append(merged, c.Merged)
@@ -337,11 +353,11 @@ func (g *generator) historyPage() error {
 		{Name: "Proved in model", Values: carry(func(d gitDay) int { return d.Proved })}}) + "\n\n"
 	body += fmt.Sprintf("## Findings\n\nThe %d findings by priority, each counted from the first date in its history. A finding is not automatically a Go bug; see the "+ref("findings registry", "/findings")+".\n\n", len(g.findings))
 	body += lineChart("findings", "Research findings by priority", "findings", days, findings) + "\n\n"
-	body += fmt.Sprintf("## Upstream reports\n\nThe %d GitHub issues opened by the project among those tracked in the "+ref("upstream status", "/upstream")+", and its %d Go Gerrit CLs. A closed issue or a merged master CL does not establish that release branches contain the fix.\n\n", reported, len(h.Changes))
+	body += fmt.Sprintf("## Upstream reports\n\nThe %d GitHub issues opened by the project among those tracked in the "+ref("upstream status", "/upstream")+", and the %d Go Gerrit CLs it mailed. A closed issue or a merged master CL does not establish that release branches contain the fix.\n\n", reported, own)
 	body += lineChart("issues", "Issues reported upstream", "issues", days, []series{
 		{Name: "Reported", Values: cumulative(days, opened)}, {Name: "Closed", Values: cumulative(days, closed)}}) + "\n\n"
 	body += lineChart("changes", "Gerrit CLs", "CLs", days, []series{
 		{Name: "Mailed", Values: cumulative(days, mailed)}, {Name: "Merged", Values: cumulative(days, merged)},
 		{Name: "Abandoned", Values: cumulative(days, abandoned)}}) + "\n"
-	return g.page("history/_index.md", "History", 25, nil, body)
+	return g.page("history/_index.md", "History", 35, nil, body)
 }

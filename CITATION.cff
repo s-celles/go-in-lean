@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use go-in-lean, its findings or its data, please cite it as below."
+type: software
+title: "go-in-lean: bit-precise Lean models and executable evidence for Go correctness bugs"
+authors:
+  - family-names: Celles
+    given-names: Sébastien
+    orcid: "https://orcid.org/0000-0001-9987-4338"
+repository-code: "https://github.com/s-celles/go-in-lean"
+url: "https://s-celles.github.io/go-in-lean/"
+license: MIT
+keywords:
+  - Go
+  - Lean 4
+  - compiler testing
+  - formal verification
+  - translation validation

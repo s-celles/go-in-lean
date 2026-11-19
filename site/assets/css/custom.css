@@ -1,73 +1,19 @@
+/* go-in-lean additions to site-kit.css (badges, stat tiles, filterable tables and
+   charts come from the site-kit module). */
 :root { --evidence-blue: #173f66; }
-.project-kicker { font: 600 .78rem/1.5 ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; color: #426384; margin-bottom: 1rem; }
-.registry-stats { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: .8rem; margin: 2rem 0 1.5rem; }
-.registry-stat { display: flex; flex-direction: column; gap: .45rem; padding: 1.3rem 1rem; border: 1px solid #cbd5e1; border-radius: .5rem; background: #f8fafc; color: #173f66; text-decoration: none !important; }
-.registry-stat:hover, .registry-stat:focus-visible { border-color: #3174ae; outline-offset: 3px; }
-.registry-stat strong { font: 650 2.2rem/1 ui-monospace,monospace; font-variant-numeric: tabular-nums; }
-.registry-stat span { font-size: .78rem; line-height: 1.4; }
-.status-badge { display: inline-flex; align-items: center; white-space: nowrap; border: 1px solid currentColor; border-radius: .3rem; padding: .12rem .42rem; font: 550 .71rem/1.5 ui-monospace,monospace; vertical-align: middle; }
-.status--proved_in_model { color: #075c4d; background: #e6f5ef; }
-.status--counterexample_in_model { color: #60328a; background: #f2eafa; border-style: dashed; }
-.status--model_mismatch { color: #8b3d00; background: #fff0db; }
-.status--specification_ambiguity { color: #795b00; background: #fff8d6; border-style: dotted; }
-.status--go_discrepancy_reproduced { color: #8d263b; background: #fce9ee; }
-.status--known_issue { color: #174f8b; background: #e8f1ff; }
-.status--inconclusive { color: #465160; background: #edf0f3; border-style: dashed; }
-.status--kernel { color: #334155; background: #f1f5f9; }
-.status--bv_decide { color: #694000; background: #fff3db; }
-.content table { font-size: .86rem; }
-.content th { text-align: left; }
-.content td { vertical-align: top; }
-.content pre { max-height: 38rem; overflow: auto; }
-.registry-controls { margin: 1.5rem 0; }
-.registry-controls label { display: block; font-size: .85rem; font-weight: 600; margin-bottom: .4rem; }
-.registry-controls input { box-sizing: border-box; width: 100%; padding: .65rem .8rem; border: 1px solid #94a3b8; border-radius: .3rem; background: transparent; color: inherit; font: inherit; }
-.registry-controls p { font-size: .78rem; margin: .35rem 0; color: #54677e; }
-.registry-sort { cursor: pointer; text-align: inherit; font: inherit; color: inherit; }
-.registry-sort:focus-visible { outline: 2px solid #3174ae; outline-offset: 3px; }
-.content tr[hidden] { display: none; }
-.dark .registry-controls p { color: #b1c0d1; }
-.dark .project-kicker { color: #a1bdd5; }
-.dark .registry-stat { background: #16212d; border-color: #3c5269; color: #d3e7f7; }
-.dark .status--proved_in_model { color: #9ee2c9; background: #123d35; }
-.dark .status--counterexample_in_model { color: #dbc0f4; background: #392b4b; }
-.dark .status--model_mismatch { color: #ffd0a0; background: #4a301d; }
-.dark .status--specification_ambiguity { color: #f9dfa0; background: #443918; }
-.dark .status--go_discrepancy_reproduced { color: #ffb8cb; background: #4c2533; }
-.dark .status--known_issue { color: #b5d6ff; background: #203951; }
-.dark .status--inconclusive, .dark .status--kernel { color: #d1dbe5; background: #28313d; }
-.dark .status--bv_decide { color: #ffd89d; background: #48351d; }
-@media (max-width: 760px) { .registry-stats { grid-template-columns: repeat(2,minmax(0,1fr)); } .registry-stat strong { font-size: 1.8rem; } }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
 
-/* History charts: reference palette slots 1-3, validated for light (#ffffff) and dark (#111111) surfaces. */
-.hchart { --surface-1: #ffffff; --grid: #e4e4e0; --ink-1: #0b0b0b; --ink-2: #52514e;
-  --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a;
-  position: relative; margin: 1.25rem 0 2rem; color: var(--ink-1); }
-.dark .hchart { --surface-1: #111111; --grid: #2c2c2a; --ink-1: #f0efec; --ink-2: #c3c2b7;
-  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; }
-.hchart figcaption { margin-bottom: .35rem; text-align: left; }
-.hchart figcaption span { color: var(--ink-2); font-size: .85rem; margin-left: .35rem; }
-.hchart-plot { overflow-x: auto; }
-.hchart svg { display: block; width: 100%; min-width: 560px; height: auto; overflow: visible; touch-action: pan-y; }
-.hchart-grid { stroke: var(--grid); stroke-width: 1; }
-.hchart-tick { fill: var(--ink-2); font-size: 11px; font-variant-numeric: tabular-nums; }
-.hchart-end { fill: var(--ink-1); font-size: 12px; }
-.hchart-line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
-.hchart-dot { stroke: var(--surface-1); stroke-width: 2; }
-.hchart-cross { stroke: var(--ink-2); stroke-width: 1; }
-.hchart-line.hchart-s1 { stroke: var(--series-1); } .hchart-dot.hchart-s1, .hchart-key.hchart-s1 { fill: var(--series-1); background: var(--series-1); }
-.hchart-line.hchart-s2 { stroke: var(--series-2); } .hchart-dot.hchart-s2, .hchart-key.hchart-s2 { fill: var(--series-2); background: var(--series-2); }
-.hchart-line.hchart-s3 { stroke: var(--series-3); } .hchart-dot.hchart-s3, .hchart-key.hchart-s3 { fill: var(--series-3); background: var(--series-3); }
-.hchart-legend { display: flex; flex-wrap: wrap; gap: .25rem 1rem; list-style: none; padding: 0; margin: 0 0 .25rem; font-size: .85rem; color: var(--ink-2); }
-.hchart-legend li { margin: 0; display: flex; align-items: center; gap: .4rem; }
-.hchart-key { display: inline-block; width: 14px; height: 2px; border-radius: 1px; }
-.hchart-tip { position: absolute; pointer-events: none; z-index: 2; min-width: 9rem; padding: .4rem .6rem; border-radius: 6px;
-  background: var(--surface-1); color: var(--ink-1); border: 1px solid var(--grid); box-shadow: 0 2px 8px rgb(0 0 0 / .15); font-size: .8rem; }
-.hchart-tip .row { display: flex; align-items: center; gap: .4rem; }
-.hchart-tip strong { font-variant-numeric: tabular-nums; }
-.hchart-tip .name { color: var(--ink-2); }
-.hchart-tip .date { color: var(--ink-2); margin-bottom: .2rem; }
-.hchart-data summary { cursor: pointer; color: var(--ink-2); font-size: .85rem; }
-.hchart-data table { font-size: .85rem; font-variant-numeric: tabular-nums; }
-.hchart:focus-visible { outline: 2px solid var(--series-1); outline-offset: 4px; border-radius: 4px; }
+/* A third series colour for the History charts (reference palette slot 3), validated
+   with slots 1-2 for colour-vision deficiency against #ffffff and #111111. */
+.viz { --viz-3: #1baf7a; }
+.dark .viz { --viz-3: #199e70; }
+.viz figcaption { text-align: left; }
+.viz-legend { display: flex; flex-wrap: wrap; gap: .25rem 1rem; list-style: none; padding: 0; margin: 0 0 .25rem; font-size: .85rem; color: var(--viz-ink); }
+.viz-legend li { margin: 0; display: flex; align-items: center; gap: .4rem; }
+.viz-key { display: inline-block; width: 14px; height: 2px; border-radius: 1px; }
+.viz-plot { overflow-x: auto; }
+.viz-plot .viz-chart { min-width: 560px; }
+.viz-data summary { font-weight: 400; font-size: .85rem; color: var(--viz-ink); }
+.viz-data table { font-variant-numeric: tabular-nums; }
+@media (forced-colors: active) { .viz-key { background: CanvasText !important; } }
+
+@media (max-width: 760px) { .sk-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .sk-stat strong { font-size: 1.8rem; } }

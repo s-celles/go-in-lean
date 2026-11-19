@@ -60,10 +60,12 @@ class ParseTests(unittest.TestCase):
     def test_issue_record(self):
         api = {"user": {"login": "s-celles-bot"}, "created_at": "2026-11-02T10:00:00Z",
                "closed_at": "2026-11-05T01:00:00Z", "state": "closed"}
+        api["title"] = "t"
         self.assertEqual(h.issue_record(("golang/go", 82763), api), {
             "ref": "golang/go#82763", "url": "https://github.com/golang/go/issues/82763",
-            "reported": True, "opened": "2026-11-02", "closed": "2026-11-05"})
-        api = {"user": {"login": "someone"}, "created_at": "2020-01-30T00:00:00Z", "closed_at": None}
+            "reported": True, "opened": "2026-11-02", "closed": "2026-11-05", "state": "closed", "title": "t"})
+        api = {"user": {"login": "someone"}, "created_at": "2020-01-30T00:00:00Z", "closed_at": None,
+               "state": "open", "title": "u"}
         self.assertEqual(h.issue_record(("golang/go", 36897), api)["reported"], False)
         self.assertIsNone(h.issue_record(("golang/go", 36897), api)["closed"])
 
@@ -74,10 +76,37 @@ class ParseTests(unittest.TestCase):
                                {"date": "2026-11-17 09:28:13.889000000", "message": "Abandoned\n\nSuperseded"}]}
         self.assertEqual(h.change_record(change), {
             "number": 858901, "url": "https://go-review.googlesource.com/c/go/+/858901",
-            "status": "ABANDONED", "mailed": "2026-11-04", "merged": None, "abandoned": "2026-11-17"})
+            "status": "ABANDONED", "mailed": "2026-11-04", "merged": None, "abandoned": "2026-11-17",
+            "subject": "s", "own": False})
+        change["owner"] = {"_account_id": h.GERRIT_OWNER}
+        self.assertTrue(h.change_record(change)["own"])
         change = {"_number": 1, "status": "MERGED", "created": "2026-11-02 08:00:00.000000000",
-                  "submitted": "2026-11-05 12:00:00.000000000", "messages": []}
+                  "submitted": "2026-11-05 12:00:00.000000000", "messages": [], "subject": "m"}
         self.assertEqual(h.change_record(change)["merged"], "2026-11-05")
+
+    def test_cl_rows_and_fixes(self):
+        self.assertEqual(h.cl_fixes(STATUS), {857741: "golang/go#82763"})
+
+    def test_cited_by(self):
+        manifests = {"A": 'upstream:\n  - "https://github.com/golang/go/issues/82763"\n',
+                     "B": 'upstream: []\nnote: see golang/go#82763\n'}
+        self.assertEqual(h.cited_by(manifests), {"golang/go#82763": ["A"]})
+
+    def test_tsv_rows(self):
+        issues = [{"ref": "golang/go#82763", "url": "https://github.com/golang/go/issues/82763", "reported": True,
+                   "opened": "2026-11-02", "closed": "2026-11-05", "state": "closed", "title": "a\tb"}]
+        cls = [{"number": 857741, "url": "https://go-review.googlesource.com/c/go/+/857741", "status": "MERGED",
+                "mailed": "2026-11-02", "merged": "2026-11-05", "abandoned": None, "subject": "fix"}]
+        text = h.upstream_tsv(issues, cls, {857741: "golang/go#82763"}, {"golang/go#82763": ["A", "B"]})
+        lines = text.splitlines()
+        self.assertEqual(lines[0], "repo\tnumber\tkind\tstate\tcreated\tclosed\tmerged\tfixes\tcited_by\ttitle")
+        self.assertEqual(lines[1], "golang/go\t82763\tissue\tclosed\t2026-11-02\t2026-11-05\t\t\tA B\ta b")
+        self.assertEqual(lines[2], "golang/go\t857741\tcl\tmerged\t2026-11-02\t\t2026-11-05\tgolang/go#82763\tA B\tfix")
+
+    def test_issue_state(self):
+        self.assertEqual(h.issue_state({"state": "open"}), "open")
+        self.assertEqual(h.issue_state({"state": "closed", "state_reason": "completed"}), "closed")
+        self.assertEqual(h.issue_state({"state": "closed", "state_reason": "not_planned"}), "not planned")
 
     def test_daily_last_commit(self):
         log = "a 2026-11-01\nb 2026-11-01\nc 2026-11-03\n"

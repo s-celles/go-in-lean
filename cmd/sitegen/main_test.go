@@ -2,9 +2,11 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 	"testing"
@@ -38,7 +40,7 @@ func TestRegistryCoverageAndDeterminism(t *testing.T) {
 	for _, p := range g.properties {
 		counts[p.Status]++
 	}
-	if !bytes.Contains(g.pages["_index.md"], []byte("registered=\""+strconv.Itoa(len(g.properties))+"\"")) {
+	if !bytes.Contains(g.pages["_index.md"], []byte(`{{< stat value="`+strconv.Itoa(len(g.properties))+`" label="Registered properties"`)) {
 		t.Error("dashboard registered count differs from YAML")
 	}
 	for status, count := range counts {
@@ -109,6 +111,7 @@ The complete licence notes.
 		"CHANGELOG.md":            "# Changelog\n",
 		"docs/site.md":            "# Building the site\n",
 		"docs/upstream-status.md": "# Upstream status\n",
+		"CITATION.cff":            "cff-version: 1.2.0\nmessage: Cite it.\ntitle: go-in-lean\nauthors:\n  - family-names: Celles\n    given-names: Sébastien\n",
 	}
 	for path, body := range files {
 		path = filepath.Join(root, path)
@@ -238,7 +241,7 @@ func TestHistoryPage(t *testing.T) {
 	if page == "" {
 		t.Fatal("no history page")
 	}
-	if n := strings.Count(page, `<figure class="hchart"`); n != 5 {
+	if n := strings.Count(page, `<svg class="viz-chart" data-viz="dense" tabindex="0"`); n != 5 {
 		t.Fatalf("%d charts, want 5", n)
 	}
 	h := g.history
@@ -262,7 +265,7 @@ func TestHistoryPage(t *testing.T) {
 		}
 	}
 	for _, c := range h.Changes {
-		if c.Merged != "" {
+		if c.Own && c.Merged != "" {
 			merged++
 		}
 	}
@@ -277,6 +280,9 @@ func TestHistoryPage(t *testing.T) {
 		if !strings.Contains(page, want) {
 			t.Errorf("history page lacks %q", want)
 		}
+	}
+	if !regexp.MustCompile(`<g class="viz-pt" aria-label="\d{4}-\d{2}-\d{2}, `).MatchString(page) {
+		t.Error("dense chart points do not start their aria-label with the date")
 	}
 	if strings.Contains(page, "\n\n<svg") || strings.Contains(strings.SplitN(page, "<figure", 2)[1], "\n\n</figure>") {
 		t.Error("a blank line inside a figure ends the raw HTML block")
@@ -321,7 +327,7 @@ func TestRejectHistorySnapshot(t *testing.T) {
 func TestLineChart(t *testing.T) {
 	days := []string{"2026-11-01", "2026-11-02", "2026-11-03"}
 	html := lineChart("x", "A <title>", "unit", days, []series{{Name: "One & two", Values: []int{0, 3, 7}}, {Name: "Other", Values: []int{1, 1, 2}}})
-	for _, want := range []string{"A &lt;title&gt;", "One &amp; two", `data-last="One &amp; two 7"`, `<th scope="row">2026-11-03</th><td>7</td><td>2</td>`, "hchart-legend"} {
+	for _, want := range []string{"A &lt;title&gt;", "One &amp; two", `data-last="One &amp; two 7"`, `<th scope="row">2026-11-03</th><td>7</td><td>2</td>`, "viz-legend", `aria-label="2026-11-03, One &amp; two: 7"`, `style="stroke:var(--viz-2)"`} {
 		if !strings.Contains(html, want) {
 			t.Errorf("chart lacks %q", want)
 		}
@@ -330,7 +336,7 @@ func TestLineChart(t *testing.T) {
 		t.Error("blank line in chart HTML")
 	}
 	single := lineChart("y", "Only", "unit", days, []series{{Name: "Only", Values: []int{1, 2, 3}}})
-	if strings.Contains(single, "hchart-legend") {
+	if strings.Contains(single, "viz-legend") {
 		t.Error("a single series has a legend box")
 	}
 	for v, want := range map[int]int{0: 1, 1: 1, 3: 3, 7: 8, 10: 10, 17: 20, 76: 80, 2244: 3000} {
@@ -340,5 +346,144 @@ func TestLineChart(t *testing.T) {
 	}
 	if got := dateRange("2026-10-31", "2026-11-02"); strings.Join(got, ",") != "2026-10-31,2026-11-01,2026-11-02" {
 		t.Errorf("dateRange = %v", got)
+	}
+}
+
+func TestSiteKitContract(t *testing.T) {
+	root, err := filepath.Abs("../..")
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := &generator{root: root, pages: map[string][]byte{}, routes: map[string]string{}}
+	if err := g.load(); err != nil {
+		t.Fatal(err)
+	}
+	if err := g.render(); err != nil {
+		t.Fatal(err)
+	}
+	home := string(g.pages["_index.md"])
+	stamp := regexp.MustCompile(`<p class="data-stamp">Data at commit <a href="[^"]+"><code>[0-9a-f]{7,40}</code></a> \(\d{4}-\d{2}-\d{2}\)\.</p>`)
+	if !stamp.MatchString(home) {
+		t.Error("home page lacks the data stamp")
+	}
+	disclaimer := regexp.MustCompile(`(?s)<div class="disclaimer">(.*?)</div>`).FindStringSubmatch(home)
+	if disclaimer == nil || !strings.Contains(disclaimer[1], "non-commercial") || !regexp.MustCompile(`\bAI\b`).MatchString(disclaimer[1]) {
+		t.Error("disclaimer block lacks non-commercial or AI")
+	}
+	order := []string{"data-stamp", `class="disclaimer"`, "{{< stats >}}", "## Cite"}
+	last := -1
+	for _, s := range order {
+		i := strings.Index(home, s)
+		if i < last {
+			t.Errorf("home page element %q out of order", s)
+		}
+		last = i
+	}
+	if n := strings.Count(home, "{{< stat "); n != 4 {
+		t.Errorf("%d stat tiles, want 4", n)
+	}
+	for _, want := range []string{`relref "/findings"`, `relref "/methodology"`, `relref "/statuses"`, "0000-0001-9987-4338", "@software{"} {
+		if !strings.Contains(home, want) {
+			t.Errorf("home page lacks %q", want)
+		}
+	}
+	statuses := string(g.pages["statuses/_index.md"])
+	for _, w := range append(append([]string{}, statusWords()...), "kernel", "bv_decide", "open", "closed", "not planned", "new", "merged", "abandoned") {
+		if !strings.Contains(statuses, quote(w)+" >}}") {
+			t.Errorf("statuses page does not define %q", w)
+		}
+	}
+	badgeRE := regexp.MustCompile(`\{\{< badge "[a-z]+" "([^"]+)" >\}\}`)
+	for path, body := range g.pages {
+		for _, m := range badgeRE.FindAllStringSubmatch(string(body), -1) {
+			if !strings.Contains(statuses, quote(m[1])+" >}}") {
+				t.Errorf("%s uses badge word %q that the statuses page does not define", path, m[1])
+			}
+		}
+	}
+	method := string(g.pages["methodology/_index.md"])
+	if !strings.Contains(method, "site-kit v0.2.0") || !strings.Contains(method, "```mermaid") {
+		t.Error("methodology page lacks the site-kit tag or the pipeline diagram")
+	}
+	for _, block := range regexp.MustCompile("(?s)```mermaid\n(.*?)```").FindAllStringSubmatch(method, -1) {
+		for _, label := range regexp.MustCompile(`\[([^\]]*)\]|\(([^)]*)\)|\|([^|]*)\|`).FindAllString(block[1], -1) {
+			if strings.ContainsAny(label, ";<#") {
+				t.Errorf("Mermaid label %q contains ; < or #", label)
+			}
+		}
+	}
+	findex := string(g.pages["findings/_index.md"])
+	if !strings.Contains(findex, `<div class="filterable">`) || strings.Count(findex, "\n|---") != 1 {
+		t.Error("findings index is not one filterable table")
+	}
+	llms, full := string(g.pages["llms.txt"]), string(g.pages["llms-full.txt"])
+	if !strings.Contains(llms, "non-commercial") || !strings.Contains(llms, "llms-full.txt") {
+		t.Error("llms.txt lacks the disclaimer or the link to llms-full.txt")
+	}
+	for _, f := range g.findings {
+		if !strings.Contains(full, f.ID) {
+			t.Errorf("llms-full.txt lacks finding %s", f.ID)
+		}
+	}
+	for _, p := range g.properties {
+		if !strings.Contains(full, p.ID) {
+			t.Errorf("llms-full.txt lacks property %s", p.ID)
+		}
+	}
+	var registry struct {
+		Findings   []map[string]any `json:"findings"`
+		Properties []map[string]any `json:"properties"`
+	}
+	if err := json.Unmarshal(g.pages["registry.json"], &registry); err != nil || len(registry.Findings) != len(g.findings) || len(registry.Properties) != len(g.properties) {
+		t.Errorf("registry.json: %v", err)
+	}
+	upstream := string(g.pages["upstream/_index.md"])
+	for _, u := range g.upstreamTSV {
+		if !strings.Contains(upstream, fmt.Sprintf("[%s %d](", u.Kind, u.Number)) {
+			t.Errorf("upstream page lacks %s %s %d", u.Repo, u.Kind, u.Number)
+		}
+	}
+	if !strings.Contains(upstream, "does not prove") {
+		t.Error("upstream page lacks the release caveat")
+	}
+}
+
+func TestRejectUpstreamTSV(t *testing.T) {
+	head := "repo\tnumber\tkind\tstate\tcreated\tclosed\tmerged\tfixes\tcited_by\ttitle\n"
+	good := head + "golang/go\t1\tissue\topen\t2026-11-01\t\t\t\tA\tt\n"
+	if _, err := parseUpstreamTSV(good); err != nil {
+		t.Fatal(err)
+	}
+	for name, bad := range map[string]string{
+		"header":    "repo\tnumber\n",
+		"kind":      head + "golang/go\t1\tbug\topen\t2026-11-01\t\t\t\t\tt\n",
+		"state":     head + "golang/go\t1\tcl\topen\t2026-11-01\t\t\t\t\tt\n",
+		"date":      head + "golang/go\t1\tissue\topen\tsoon\t\t\t\t\tt\n",
+		"columns":   head + "golang/go\t1\tissue\topen\n",
+		"number":    head + "golang/go\tx\tissue\topen\t2026-11-01\t\t\t\t\tt\n",
+		"merged cl": head + "golang/go\t2\tcl\tmerged\t2026-11-01\t\t\t\t\tt\n",
+		"bad fixes": head + "golang/go\t2\tcl\tnew\t2026-11-01\t\t\tnot-a-ref\t\tt\n",
+		"duplicate": head + "golang/go\t1\tissue\topen\t2026-11-01\t\t\t\t\tt\n" + "golang/go\t1\tissue\topen\t2026-11-01\t\t\t\t\tt\n",
+	} {
+		if _, err := parseUpstreamTSV(bad); err == nil {
+			t.Errorf("%s: accepted invalid TSV", name)
+		}
+	}
+}
+
+func TestCitation(t *testing.T) {
+	cff := "cff-version: 1.2.0\nmessage: Cite it.\ntitle: \"go-in-lean: a title\"\nauthors:\n  - family-names: Celles\n    given-names: Sébastien\n    orcid: \"https://orcid.org/0000-0001-9987-4338\"\nrepository-code: \"https://github.com/s-celles/go-in-lean\"\nurl: \"https://s-celles.github.io/go-in-lean/\"\nlicense: MIT\n"
+	c, err := parseCitation([]byte(cff))
+	if err != nil {
+		t.Fatal(err)
+	}
+	text := c.markdown("2026")
+	for _, want := range []string{"Celles, S. (2026). *go-in-lean: a title*", "https://github.com/s-celles/go-in-lean", "author = {Celles, Sébastien}", "orcid.org/0000-0001-9987-4338"} {
+		if !strings.Contains(text, want) {
+			t.Errorf("citation lacks %q:\n%s", want, text)
+		}
+	}
+	if _, err := parseCitation([]byte("cff-version: 1.2.0\n")); err == nil {
+		t.Error("accepted a citation without title or authors")
 	}
 }

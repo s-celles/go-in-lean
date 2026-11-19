@@ -1,9 +1,19 @@
-go-in-lean contains Lean 4 transliterations of, and lookup tables generated
-from, source code of the Go programming language (https://go.dev), in
-particular src/math/bits, src/slices, src/sort and
-src/cmd/compile/internal/ssa/_gen/generic.rules of release go1.25.5.
+go-in-lean contains material derived from source code of the Go programming
+language (https://go.dev):
+
+- Lean 4 transliterations of, and lookup tables generated from, src/math/bits
+  (bits.go, bits_tables.go), src/slices and src/sort of release go1.25.5;
+- Lean theorems generated from the SSA rewrite rules of
+  src/cmd/compile/internal/ssa/_gen/generic.rules (go1.25.5, and master for
+  the rules checked by check_new_rules), of ARM64.rules and AMD64.rules (the
+  revision is recorded by sha256 in each generated file), and from the
+  magic-constant division of src/cmd/compile/internal/ssa/magic.go;
+- patches against the Go source tree (findings/*/fix.patch and the change
+  packages in findings/*/cl/), and Go source quoted in the finding write-ups.
+
 Those files are Copyright The Go Authors and licensed under the BSD 3-Clause
-license reproduced below (https://go.dev/LICENSE).
+license reproduced below (https://go.dev/LICENSE). Patches offered to the Go
+project are contributed under Go's own terms.
 
 Copyright 2009 The Go Authors.
 

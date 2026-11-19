@@ -96,6 +96,14 @@
    "theorems": 2244,
    "properties": 76,
    "proved": 52
+  },
+  {
+   "date": "2026-11-19",
+   "commit": "0e7668c986",
+   "commits": 1,
+   "theorems": 2244,
+   "properties": 76,
+   "proved": 52
   }
  ],
  "issues": [
@@ -104,164 +112,360 @@
    "url": "https://github.com/golang/go/issues/36897",
    "reported": false,
    "opened": "2020-01-30",
-   "closed": null
+   "closed": null,
+   "state": "open",
+   "title": "cmd/compile: possible latent codegen issue on amd64 removing zero extensions"
   },
   {
    "ref": "golang/go#54255",
    "url": "https://github.com/golang/go/issues/54255",
    "reported": false,
    "opened": "2022-08-04",
-   "closed": "2022-08-04"
+   "closed": "2022-08-04",
+   "state": "closed",
+   "title": "math/bits: different results when using a pure Go copy of Add64"
   },
   {
    "ref": "golang/go#80577",
    "url": "https://github.com/golang/go/issues/80577",
    "reported": false,
    "opened": "2026-07-27",
-   "closed": null
+   "closed": null,
+   "state": "open",
+   "title": "cmd/compile: regalloc uses unreliable type data (like `v.Type.IsSigned()`) to choose the restore of spills"
   },
   {
    "ref": "golang/go#82763",
    "url": "https://github.com/golang/go/issues/82763",
    "reported": true,
    "opened": "2026-11-02",
-   "closed": null
+   "closed": null,
+   "state": "open",
+   "title": "cmd/compile: wrong result for `((x >> c) & d) << e` with constant shift count c >= 1<<63"
   },
   {
    "ref": "golang/go#82767",
    "url": "https://github.com/golang/go/issues/82767",
    "reported": true,
    "opened": "2026-11-02",
-   "closed": null
+   "closed": null,
+   "state": "open",
+   "title": "cmd/compile: wrong result for `(x >> c) >> d` on int16/int32 with huge constant counts (tip regression)"
   },
   {
    "ref": "golang/go#82772",
    "url": "https://github.com/golang/go/issues/82772",
    "reported": true,
    "opened": "2026-11-02",
-   "closed": "2026-11-05"
+   "closed": "2026-11-05",
+   "state": "closed",
+   "title": "cmd/compile: wrong result for int8 >> variable count on mips/mipsle (Rsh8x* lowering sign-extends from bit 15)"
   },
   {
    "ref": "golang/go#82773",
    "url": "https://github.com/golang/go/issues/82773",
    "reported": true,
    "opened": "2026-11-02",
-   "closed": "2026-11-05"
+   "closed": "2026-11-05",
+   "state": "closed",
+   "title": "cmd/compile: int8(x - (-x)) >> 8 compiles to 0 on riscv64 (go1.26 regression)"
   },
   {
    "ref": "golang/go#82774",
    "url": "https://github.com/golang/go/issues/82774",
    "reported": true,
    "opened": "2026-11-02",
-   "closed": "2026-11-05"
+   "closed": "2026-11-05",
+   "state": "closed",
+   "title": "cmd/compile: uint64(int8(-128)) < 0xFFFFFFFF is true on s390x (go1.26+)"
   },
   {
    "ref": "golang/go#82775",
    "url": "https://github.com/golang/go/issues/82775",
    "reported": true,
    "opened": "2026-11-02",
-   "closed": null
+   "closed": null,
+   "state": "open",
+   "title": "cmd/compile: int32(int16(x >> 1)) keeps 32 bits on ppc64/ppc64le (rules compare Type.Size() in bytes with bit widths)"
   },
   {
    "ref": "golang/go#82776",
    "url": "https://github.com/golang/go/issues/82776",
    "reported": true,
    "opened": "2026-11-02",
-   "closed": "2026-11-05"
+   "closed": "2026-11-05",
+   "state": "closed",
+   "title": "cmd/compile: constant 64-bit shift counts >= 2^32 truncated on mips/mipsle"
   },
   {
    "ref": "golang/go#82777",
    "url": "https://github.com/golang/go/issues/82777",
    "reported": true,
    "opened": "2026-11-02",
-   "closed": "2026-11-05"
+   "closed": "2026-11-05",
+   "state": "closed",
+   "title": "cmd/compile: arm64 constant-flag CSINV folds to boolean Not (^y becomes y ^ 1)"
   },
   {
    "ref": "golang/go#82782",
    "url": "https://github.com/golang/go/issues/82782",
    "reported": true,
    "opened": "2026-11-02",
-   "closed": null
+   "closed": null,
+   "state": "open",
+   "title": "cmd/compile: wrong result from math/bits.ReverseBytes16 on GOPPC64=power10 (Bswap16 typed as 64-bit)"
   },
   {
    "ref": "golang/go#82786",
    "url": "https://github.com/golang/go/issues/82786",
    "reported": true,
    "opened": "2026-11-02",
-   "closed": null
+   "closed": null,
+   "state": "open",
+   "title": "cmd/compile: bits.TrailingZeros64(0) can be 32 on GOARCH=arm (MVNshiftRA constant fold drops the complement)"
   },
   {
    "ref": "golang/go#82825",
    "url": "https://github.com/golang/go/issues/82825",
    "reported": true,
    "opened": "2026-11-03",
-   "closed": "2026-11-05"
+   "closed": "2026-11-05",
+   "state": "closed",
+   "title": "cmd/compile: amd64/386 miscompile (comparison sharing flags with an SBB carry mask reads them clobbered)"
   },
   {
    "ref": "golang/go#82834",
    "url": "https://github.com/golang/go/issues/82834",
    "reported": true,
    "opened": "2026-11-03",
-   "closed": null
+   "closed": null,
+   "state": "open",
+   "title": "cmd/compile: bits.Sub64 returns a wrong borrow on GOARCH=arm (miscompile)"
   },
   {
    "ref": "golang/go#82839",
    "url": "https://github.com/golang/go/issues/82839",
    "reported": true,
    "opened": "2026-11-03",
-   "closed": null
+   "closed": null,
+   "state": "open",
+   "title": "cmd/compile: prove takes a branch that cannot be taken (fact carried through a sign extension with a constant too wide for the narrow type)"
   },
   {
    "ref": "golang/go#82847",
    "url": "https://github.com/golang/go/issues/82847",
    "reported": true,
    "opened": "2026-11-04",
-   "closed": "2026-11-16"
+   "closed": "2026-11-16",
+   "state": "closed",
+   "title": "cmd/compile: GOEXPERIMENT=simd amd64 fails to build IfElse of a constant shift (\"invalid instruction: VPSLLQ Z0, K1, Z1\")"
   },
   {
    "ref": "golang/go#82873",
    "url": "https://github.com/golang/go/issues/82873",
    "reported": true,
    "opened": "2026-11-05",
-   "closed": "2026-11-06"
+   "closed": "2026-11-06",
+   "state": "closed",
+   "title": "cmd/compile: spurious \"negative shift amount\" panic with a bits.Reverse64 shift count on arm64/loong64 (go1.26)"
   },
   {
    "ref": "golang/go#82745",
    "url": "https://github.com/golang/go/issues/82745",
    "reported": false,
    "opened": "2026-10-31",
-   "closed": "2026-11-18"
+   "closed": "2026-11-18",
+   "state": "closed",
+   "title": "cmd/compile: \"invalid instruction\" for VPTERNLOGD/VPTERNLOGQ with a merged memory operand (GOEXPERIMENT=simd)"
   },
   {
    "ref": "golang/go#81842",
    "url": "https://github.com/golang/go/issues/81842",
    "reported": false,
    "opened": "2026-09-29",
-   "closed": "2026-10-05"
+   "closed": "2026-10-05",
+   "state": "closed",
+   "title": "cmd/compile: signed division on ppc64x clobbers CR0 without clobberFlags, so a later branch tests the wrong condition"
   },
   {
    "ref": "traefik/yaegi#1750",
    "url": "https://github.com/traefik/yaegi/issues/1750",
    "reported": true,
    "opened": "2026-11-05",
-   "closed": null
+   "closed": null,
+   "state": "open",
+   "title": "Shift count converted to the type of the shifted operand in assignments (wrong result or rejected program)"
   },
   {
    "ref": "traefik/yaegi#1751",
    "url": "https://github.com/traefik/yaegi/issues/1751",
    "reported": true,
    "opened": "2026-11-06",
-   "closed": null
+   "closed": null,
+   "state": "open",
+   "title": "A negative shift count does not panic"
   }
  ],
  "changes": [
+  {
+   "number": 65290,
+   "url": "https://go-review.googlesource.com/c/go/+/65290",
+   "status": "MERGED",
+   "mailed": "2017-09-21",
+   "merged": "2017-09-26",
+   "abandoned": null,
+   "subject": "cmd/compile: fix sign-extension merging rules",
+   "own": false
+  },
+  {
+   "number": 568616,
+   "url": "https://go-review.googlesource.com/c/go/+/568616",
+   "status": "MERGED",
+   "mailed": "2024-03-03",
+   "merged": "2024-03-12",
+   "abandoned": null,
+   "subject": "cmd/compile: fix sign/zero-extension removal",
+   "own": false
+  },
+  {
+   "number": 621357,
+   "url": "https://go-review.googlesource.com/c/go/+/621357",
+   "status": "MERGED",
+   "mailed": "2024-10-21",
+   "merged": "2024-10-23",
+   "abandoned": null,
+   "subject": "cmd/compile: arithmetic optimization for shifts",
+   "own": false
+  },
+  {
+   "number": 731300,
+   "url": "https://go-review.googlesource.com/c/go/+/731300",
+   "status": "MERGED",
+   "mailed": "2025-12-18",
+   "merged": "2026-01-22",
+   "abandoned": null,
+   "subject": "cmd/compile: ensure ops have the expected argument widths",
+   "own": false
+  },
+  {
+   "number": 795240,
+   "url": "https://go-review.googlesource.com/c/go/+/795240",
+   "status": "MERGED",
+   "mailed": "2026-06-29",
+   "merged": "2026-06-30",
+   "abandoned": null,
+   "subject": "cmd/compile: fix misscompile in rewrite generic rules",
+   "own": false
+  },
+  {
+   "number": 799281,
+   "url": "https://go-review.googlesource.com/c/go/+/799281",
+   "status": "NEW",
+   "mailed": "2026-07-10",
+   "merged": null,
+   "abandoned": null,
+   "subject": "simd: use fused multiply-add in emulated MulAdd",
+   "own": false
+  },
+  {
+   "number": 804220,
+   "url": "https://go-review.googlesource.com/c/go/+/804220",
+   "status": "MERGED",
+   "mailed": "2026-07-22",
+   "merged": "2026-07-29",
+   "abandoned": null,
+   "subject": "cmd/compile: fix time traveling proofs in prove",
+   "own": false
+  },
+  {
+   "number": 806340,
+   "url": "https://go-review.googlesource.com/c/go/+/806340",
+   "status": "MERGED",
+   "mailed": "2026-07-27",
+   "merged": "2026-07-30",
+   "abandoned": null,
+   "subject": "cmd/compile: do not elide riscv64 sign extension of unsigned values",
+   "own": false
+  },
+  {
+   "number": 810440,
+   "url": "https://go-review.googlesource.com/c/go/+/810440",
+   "status": "MERGED",
+   "mailed": "2026-08-04",
+   "merged": "2026-08-05",
+   "abandoned": null,
+   "subject": "[release-branch.go1.25] cmd/compile: do not elide riscv64 sign extension of unsigned values",
+   "own": false
+  },
+  {
+   "number": 810441,
+   "url": "https://go-review.googlesource.com/c/go/+/810441",
+   "status": "MERGED",
+   "mailed": "2026-08-04",
+   "merged": "2026-08-05",
+   "abandoned": null,
+   "subject": "[release-branch.go1.27] cmd/compile: do not elide riscv64 sign extension of unsigned values",
+   "own": false
+  },
+  {
+   "number": 810460,
+   "url": "https://go-review.googlesource.com/c/go/+/810460",
+   "status": "MERGED",
+   "mailed": "2026-08-04",
+   "merged": "2026-08-05",
+   "abandoned": null,
+   "subject": "[release-branch.go1.26] cmd/compile: do not elide riscv64 sign extension of unsigned values",
+   "own": false
+  },
+  {
+   "number": 823424,
+   "url": "https://go-review.googlesource.com/c/go/+/823424",
+   "status": "NEW",
+   "mailed": "2026-08-28",
+   "merged": null,
+   "abandoned": null,
+   "subject": "cmd/compile: elide redundant sub-word extensions on arm64",
+   "own": false
+  },
+  {
+   "number": 825904,
+   "url": "https://go-review.googlesource.com/c/go/+/825904",
+   "status": "NEW",
+   "mailed": "2026-09-01",
+   "merged": null,
+   "abandoned": null,
+   "subject": "cmd/compile: express the spill/restore contract once",
+   "own": false
+  },
+  {
+   "number": 827284,
+   "url": "https://go-review.googlesource.com/c/go/+/827284",
+   "status": "ABANDONED",
+   "mailed": "2026-09-03",
+   "merged": null,
+   "abandoned": "2026-09-03",
+   "subject": "cmd/compile: express the spill/restore contract once",
+   "own": false
+  },
+  {
+   "number": 841125,
+   "url": "https://go-review.googlesource.com/c/go/+/841125",
+   "status": "MERGED",
+   "mailed": "2026-09-29",
+   "merged": "2026-10-05",
+   "abandoned": null,
+   "subject": "cmd/compile: mark ppc64x signed division ops as clobbering flags",
+   "own": false
+  },
   {
    "number": 856905,
    "url": "https://go-review.googlesource.com/c/go/+/856905",
    "status": "MERGED",
    "mailed": "2026-11-02",
    "merged": "2026-11-05",
-   "abandoned": null
+   "abandoned": null,
+   "subject": "cmd/compile: do not narrow an unsigned compare of a sign-extended value",
+   "own": true
   },
   {
    "number": 857143,
@@ -269,7 +473,9 @@
    "status": "MERGED",
    "mailed": "2026-11-02",
    "merged": "2026-11-05",
-   "abandoned": null
+   "abandoned": null,
+   "subject": "cmd/compile: type the inner shift as int64 in riscv64 SRAI(MOVBreg) lowering",
+   "own": true
   },
   {
    "number": 857342,
@@ -277,7 +483,9 @@
    "status": "NEW",
    "mailed": "2026-11-02",
    "merged": null,
-   "abandoned": null
+   "abandoned": null,
+   "subject": "cmd/compile: give the combined count the right type in shift-composition rules",
+   "own": true
   },
   {
    "number": 857343,
@@ -285,7 +493,9 @@
    "status": "MERGED",
    "mailed": "2026-11-02",
    "merged": "2026-11-05",
-   "abandoned": null
+   "abandoned": null,
+   "subject": "cmd/compile: test the full 64-bit constant shift count in MIPS lowering",
+   "own": true
   },
   {
    "number": 857344,
@@ -293,7 +503,9 @@
    "status": "MERGED",
    "mailed": "2026-11-02",
    "merged": "2026-11-05",
-   "abandoned": null
+   "abandoned": null,
+   "subject": "cmd/compile: fold constant-flag CSINV to MVN, not the boolean Not",
+   "own": true
   },
   {
    "number": 857442,
@@ -301,7 +513,9 @@
    "status": "MERGED",
    "mailed": "2026-11-02",
    "merged": "2026-11-05",
-   "abandoned": null
+   "abandoned": null,
+   "subject": "cmd/compile: sign-extend from the correct bit in MIPS Rsh8 lowering",
+   "own": true
   },
   {
    "number": 857542,
@@ -309,7 +523,9 @@
    "status": "NEW",
    "mailed": "2026-11-02",
    "merged": null,
-   "abandoned": null
+   "abandoned": null,
+   "subject": "cmd/compile: type Power10 ReverseBytes16 as uint16, not uint",
+   "own": true
   },
   {
    "number": 857741,
@@ -317,7 +533,9 @@
    "status": "NEW",
    "mailed": "2026-11-02",
    "merged": null,
-   "abandoned": null
+   "abandoned": null,
+   "subject": "cmd/compile: fix signed comparison of constant shift counts in ((x>>c)&d)<<e",
+   "own": true
   },
   {
    "number": 857742,
@@ -325,7 +543,9 @@
    "status": "NEW",
    "mailed": "2026-11-02",
    "merged": null,
-   "abandoned": null
+   "abandoned": null,
+   "subject": "cmd/compile: compare Type.Size() in bytes in PPC64 extension-elision rules",
+   "own": true
   },
   {
    "number": 857821,
@@ -333,7 +553,9 @@
    "status": "NEW",
    "mailed": "2026-11-02",
    "merged": null,
-   "abandoned": null
+   "abandoned": null,
+   "subject": "cmd/compile: restore the complement in ARM MVNshiftRA constant folding",
+   "own": true
   },
   {
    "number": 858262,
@@ -341,7 +563,9 @@
    "status": "MERGED",
    "mailed": "2026-11-03",
    "merged": "2026-11-05",
-   "abandoned": null
+   "abandoned": null,
+   "subject": "cmd/compile: mark the x86 SBB carry-mask ops as clobbering flags",
+   "own": true
   },
   {
    "number": 858581,
@@ -349,7 +573,9 @@
    "status": "NEW",
    "mailed": "2026-11-03",
    "merged": null,
-   "abandoned": null
+   "abandoned": null,
+   "subject": "cmd/compile: do not truncate a wider constant in prove's x+delta case",
+   "own": true
   },
   {
    "number": 858901,
@@ -357,7 +583,9 @@
    "status": "ABANDONED",
    "mailed": "2026-11-04",
    "merged": null,
-   "abandoned": "2026-11-17"
+   "abandoned": "2026-11-17",
+   "subject": "cmd/compile: emit the shift count for masked immediate shifts in the amd64 SIMD backend",
+   "own": true
   },
   {
    "number": 858921,
@@ -365,7 +593,129 @@
    "status": "NEW",
    "mailed": "2026-11-04",
    "merged": null,
-   "abandoned": null
+   "abandoned": null,
+   "subject": "simd: correctly-rounded fused multiply-add in emulated MulAdd and the midway bridge",
+   "own": true
+  },
+  {
+   "number": 859601,
+   "url": "https://go-review.googlesource.com/c/go/+/859601",
+   "status": "MERGED",
+   "mailed": "2026-11-05",
+   "merged": "2026-11-05",
+   "abandoned": null,
+   "subject": "cmd/compile: type the inner shift as int64 in loong64 SRAVconst(MOVBreg) lowering",
+   "own": false
+  },
+  {
+   "number": 859662,
+   "url": "https://go-review.googlesource.com/c/go/+/859662",
+   "status": "NEW",
+   "mailed": "2026-11-05",
+   "merged": null,
+   "abandoned": null,
+   "subject": "[release-branch.go1.26] cmd/compile: test the full 64-bit constant shift count in MIPS lowering",
+   "own": false
+  },
+  {
+   "number": 859663,
+   "url": "https://go-review.googlesource.com/c/go/+/859663",
+   "status": "NEW",
+   "mailed": "2026-11-05",
+   "merged": null,
+   "abandoned": null,
+   "subject": "[release-branch.go1.27] cmd/compile: mark the x86 SBB carry-mask ops as clobbering flags",
+   "own": false
+  },
+  {
+   "number": 859721,
+   "url": "https://go-review.googlesource.com/c/go/+/859721",
+   "status": "ABANDONED",
+   "mailed": "2026-11-05",
+   "merged": null,
+   "abandoned": "2026-11-05",
+   "subject": "cmd/compile: fix wrong SRAV(MOVBreg) lowering on loong64",
+   "own": false
+  },
+  {
+   "number": 859742,
+   "url": "https://go-review.googlesource.com/c/go/+/859742",
+   "status": "NEW",
+   "mailed": "2026-11-05",
+   "merged": null,
+   "abandoned": null,
+   "subject": "[release-branch.go1.27] cmd/compile: do not narrow an unsigned compare of a sign-extended value",
+   "own": false
+  },
+  {
+   "number": 859761,
+   "url": "https://go-review.googlesource.com/c/go/+/859761",
+   "status": "NEW",
+   "mailed": "2026-11-05",
+   "merged": null,
+   "abandoned": null,
+   "subject": "[release-branch.go1.26] cmd/compile: fold constant-flag CSINV to MVN, not the boolean Not",
+   "own": false
+  },
+  {
+   "number": 859762,
+   "url": "https://go-review.googlesource.com/c/go/+/859762",
+   "status": "NEW",
+   "mailed": "2026-11-05",
+   "merged": null,
+   "abandoned": null,
+   "subject": "[release-branch.go1.26] cmd/compile: do not narrow an unsigned compare of a sign-extended value",
+   "own": false
+  },
+  {
+   "number": 859781,
+   "url": "https://go-review.googlesource.com/c/go/+/859781",
+   "status": "NEW",
+   "mailed": "2026-11-05",
+   "merged": null,
+   "abandoned": null,
+   "subject": "[release-branch.go1.27] cmd/compile: fold constant-flag CSINV to MVN, not the boolean Not",
+   "own": false
+  },
+  {
+   "number": 859801,
+   "url": "https://go-review.googlesource.com/c/go/+/859801",
+   "status": "NEW",
+   "mailed": "2026-11-05",
+   "merged": null,
+   "abandoned": null,
+   "subject": "[release-branch.go1.27] cmd/compile: test the full 64-bit constant shift count in MIPS lowering",
+   "own": false
+  },
+  {
+   "number": 859802,
+   "url": "https://go-review.googlesource.com/c/go/+/859802",
+   "status": "NEW",
+   "mailed": "2026-11-05",
+   "merged": null,
+   "abandoned": null,
+   "subject": "[release-branch.go1.26] cmd/compile: mark the x86 SBB carry-mask ops as clobbering flags",
+   "own": false
+  },
+  {
+   "number": 862781,
+   "url": "https://go-review.googlesource.com/c/go/+/862781",
+   "status": "NEW",
+   "mailed": "2026-11-12",
+   "merged": null,
+   "abandoned": null,
+   "subject": "cmd/compile: stop dropping zero-extension behavior on 32-bit amd64 ops",
+   "own": false
+  },
+  {
+   "number": 863164,
+   "url": "https://go-review.googlesource.com/c/go/+/863164",
+   "status": "MERGED",
+   "mailed": "2026-11-13",
+   "merged": "2026-11-16",
+   "abandoned": null,
+   "subject": "cmd/compile, simd/archsimd: fix v2kvResultInArg0Imm8 code generation case",
+   "own": false
   }
  ]
 }

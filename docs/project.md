@@ -56,41 +56,41 @@ Past and planned exploration axes, and what each found (2026-11):
 ```mermaid
 flowchart LR
     subgraph F["Formal (Lean 4, kernel + bv_decide)"]
-        F1["2,241 theorems: math/bits, slices guards,<br/>generic.rules instances, shift &amp; rotate lowering,<br/>magic division, prove interval arithmetic"]
-        F2["check_new_rules: 95 rules new on master,<br/>87 proved, 7 SAT timeouts (benign)"]
-        F3["Oracle.lean: the model as an in-loop oracle<br/>for the expression fuzzers (J1)"]
+        F1["2,241 theorems: math/bits, slices guards, generic.rules instances, shift and rotate lowering, magic division, prove interval arithmetic"]
+        F2["check_new_rules: 95 rules new on master, 87 proved, 7 SAT timeouts (benign)"]
+        F3["Oracle.lean: the model as an in-loop oracle for the expression fuzzers (J1)"]
     end
-    subgraph L["Rule &amp; op lints"]
-        L1["rules_sibling_lint<br/>(flags the shapes of #82786, #82776, #82775)"]
+    subgraph L["Rule and op lints"]
+        L1["rules_sibling_lint (flags the shapes of issue 82786, issue 82776, issue 82775)"]
         L2["rules_type_lint"]
-        L3["ops_clobber_lint<br/>(OpcodeTable clobberFlags)"]
+        L3["ops_clobber_lint (OpcodeTable clobberFlags)"]
     end
     subgraph Z["Metamorphic differential fuzzing"]
-        Z1["cross campaigns: plain / branchy / index / late,<br/>go1.27.3 + master, rel vs tip"]
+        Z1["cross campaigns: plain / branchy / index / late, go1.27.3 + master, rel vs tip"]
         Z2["--countvar mode"]
         Z3["--carry mode"]
         Z4["float / conversion fuzzer"]
         Z5["BCE fuzzer + poison guards (private repo)"]
-        Z6["rewrite-trace instrumentation<br/>(generated matchers, per function)"]
-        Z7["simd_fuzz.py: SIMD chains,<br/>cross-configuration oracle"]
+        Z6["rewrite-trace instrumentation (generated matchers, per function)"]
+        Z7["simd_fuzz.py: SIMD chains, cross-configuration oracle"]
     end
     subgraph T["Targets"]
         T1["amd64 v1 / v3 / v4, 386, arm v5 / v7, arm64"]
         T2["ppc64 / ppc64le, riscv64, s390x, mips / mipsle, loong64"]
         T3["wasm (js), wasip1"]
     end
-    subgraph B["Findings 2026-11 (all with CLs in review)"]
-        B1["#82763-#82786: 10 miscompilations"]
-        B2["#82825 SBB carry masks - CL 858262"]
-        B3["#82834 arm bits.Sub64 borrow<br/>= 3rd manifestation of #82786"]
-        B4["#82839 prove extension/constant - CL 858581"]
-        B5["#82847 SIMD masked shift has no<br/>immediate - CL 858901 (build failure)"]
-        B6["oracle_canaries.py: 13/13 known bugs caught,<br/>a merge monitor for every CL in review (J2)"]
-        B0["clean: no OOB in BCE (8,800 poison seeds),<br/>float late 2,800 seeds clean,<br/>flags-clobber class closed on all arches"]
+    subgraph B["Findings 2026-11"]
+        B1["issues 82763 to 82786: 10 miscompilations"]
+        B2["issue 82825 SBB carry masks - CL 858262"]
+        B3["issue 82834 arm bits.Sub64 borrow = 3rd manifestation of issue 82786"]
+        B4["issue 82839 prove extension/constant - CL 858581"]
+        B5["issue 82847 SIMD masked shift has no immediate, fixed upstream by CL 863164 (build failure)"]
+        B6["oracle_canaries.py: 13/13 known bugs caught, a merge monitor for every CL in review (J2)"]
+        B0["clean: no OOB in BCE (8,800 poison seeds), float late 2,800 seeds clean, flags-clobber class closed on all arches"]
     end
     subgraph U["Upcoming"]
-        U1["SIMD (GOEXPERIMENT=simd):<br/>chain fuzzer campaigns arm64 / riscv64 / wasm,<br/>rotate Masked ops, --late-style constants"]
-        U2["J1/J2 done (oracle + 13/13 canaries);<br/>J3 steps 1-4 done (SIMD oracle: ints, masks, float64, float32,<br/>FMA, Div, Sqrt); next: Reshape/reductions, cross-arch float campaigns,<br/>then J2-synthesis from bv_decide counterexamples"]
+        U1["SIMD (GOEXPERIMENT=simd): chain fuzzer campaigns arm64 / riscv64 / wasm, rotate Masked ops, --late-style constants"]
+        U2["J1/J2 done (oracle + 13/13 canaries), J3 steps 1-4 done (SIMD oracle: ints, masks, float64, float32, FMA, Div, Sqrt), next: Reshape/reductions, cross-arch float campaigns, then J2-synthesis from bv_decide counterexamples"]
         U3["knownbits / ZeroUpper*Bits pass (LOONG64latelower)"]
     end
 
@@ -231,5 +231,13 @@ corrected or withdrawn.
 
 ## Licence
 
-MIT (see `LICENSE`). Transliterated Go code and generated tables are
-derived from Go sources under the BSD 3-Clause licence (see `NOTICE`).
+| What | Licence |
+|---|---|
+| Code: Lean models and proofs (`GoInLean/`), Go harness (`go/`), scripts, the site generator (`cmd/sitegen`), templates, Go reproducers, brand assets | MIT, see `LICENSE` |
+| Derived from Go: transliterations and tables from `math/bits`, `slices` and `sort`, theorems generated from Go's SSA rules and `magic.go`, patches against Go (`findings/*/fix.patch`, `findings/*/cl/`), quoted Go source | BSD 3-Clause of the Go Authors, kept alongside MIT, see `NOTICE` |
+| Data and prose: documentation (`docs/`), finding write-ups, manifests and evidence records (`findings/*.yaml`, `findings/*/*.md`, `findings/*/*.json`), the property registry (`targets/*.yaml`), the snapshots `docs/history.json` and `docs/upstream.tsv`, and the generated site content | Creative Commons Attribution 4.0 International (CC BY 4.0), see `LICENSE-DATA` |
+
+When you reuse data or text, cite the repository (see `CITATION.cff`) and the
+commit of the data. Issue and CL titles in `docs/upstream.tsv` are quoted
+from their trackers. The website uses Hextra (MIT) and site-kit (MIT) as Hugo
+modules.

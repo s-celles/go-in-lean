@@ -1,0 +1,318 @@
+package main
+
+// The site-kit contract (github.com/s-celles/site-kit, SPEC 0.2): data stamp,
+// disclaimer and provenance, citation, Statuses and Methodology pages, the
+// upstream snapshot table, llms.txt and registry.json.
+
+import (
+	"encoding/json"
+	"fmt"
+	"os/exec"
+	"regexp"
+	"strconv"
+	"strings"
+
+	"gopkg.in/yaml.v3"
+)
+
+const siteKitTag = "v0.2.0"
+
+// The owner-approved texts (2026-11-19).
+const disclaimerText = "**Disclaimer.** go-in-lean is an individual, non-commercial project. It is not produced, endorsed or certified by the Go project, Google, or the maintainers of the other projects it examines. Its aim is to find, and help fix, correctness bugs in Go's compiler and standard library, using bit-precise Lean models and executable evidence."
+const provenanceText = "**Provenance.** An AI assistant wrote most of the code: the Lean models and proofs, the Go and Python harnesses, the site generator. It also wrote the tests and drafts of the findings and of the upstream reports. Lean's kernel checks every proof; `bv_decide` proofs also rely on its native-evaluation axiom. Every Go discrepancy is reproduced on a real Go toolchain before it is classified. A person reviews each finding, and decides and publishes every upstream issue, comment and CL. A model, a classification or a text may still be wrong: please report it in a [GitHub issue](" + repository + "/issues)."
+
+func statusWords() []string { return statuses }
+
+// gitStamp returns the short commit and its committer date, or empty strings outside a git checkout.
+func gitStamp(root string) (string, string) {
+	out, err := exec.Command("git", "-C", root, "show", "-s", "--format=%h %cs", "--abbrev=10", "HEAD").Output()
+	if err != nil {
+		return "", ""
+	}
+	f := strings.Fields(string(out))
+	if len(f) != 2 {
+		return "", ""
+	}
+	return f[0], f[1]
+}
+
+func (g *generator) dataStamp() string {
+	if g.commit == "" {
+		return ""
+	}
+	return fmt.Sprintf(`<p class="data-stamp">Data at commit <a href="%s/commit/%s"><code>%s</code></a> (%s).</p>`, repository, g.commit, g.commit, g.commitDate) + "\n\n"
+}
+
+func disclaimerBlock() string {
+	return "<div class=\"disclaimer\">\n\n" + disclaimerText + "\n\n" + provenanceText + "\n\n</div>\n\n"
+}
+
+// ---- CITATION.cff
+
+type citation struct {
+	Title   string `yaml:"title"`
+	Authors []struct {
+		Family string `yaml:"family-names"`
+		Given  string `yaml:"given-names"`
+		ORCID  string `yaml:"orcid"`
+	} `yaml:"authors"`
+	Repository string `yaml:"repository-code"`
+	URL        string `yaml:"url"`
+	License    string `yaml:"license"`
+	Version    string `yaml:"version"`
+}
+
+func parseCitation(b []byte) (*citation, error) {
+	var c citation
+	if err := yaml.Unmarshal(b, &c); err != nil {
+		return nil, fmt.Errorf("CITATION.cff: %w", err)
+	}
+	if c.Title == "" || len(c.Authors) == 0 || c.Authors[0].Family == "" {
+		return nil, fmt.Errorf("CITATION.cff: title and authors are required")
+	}
+	return &c, nil
+}
+
+// markdown renders the citation as text and BibTeX; year is the year of the data stamp.
+func (c *citation) markdown(year string) string {
+	var names, bib []string
+	for _, a := range c.Authors {
+		initials := ""
+		for _, part := range strings.Fields(a.Given) {
+			initials += string([]rune(part)[0]) + ". "
+		}
+		names = append(names, strings.TrimSpace(a.Family+", "+initials))
+		bib = append(bib, a.Family+", "+a.Given)
+	}
+	where := c.Repository
+	if where == "" {
+		where = c.URL
+	}
+	s := fmt.Sprintf("%s (%s). *%s*", strings.Join(names, ", & "), year, c.Title)
+	if c.Version != "" {
+		s += " (version " + c.Version + ")"
+	}
+	s += ". " + where + "\n\n"
+	for _, a := range c.Authors {
+		if a.ORCID != "" {
+			s += "ORCID of " + a.Given + " " + a.Family + ": " + link(strings.TrimPrefix(a.ORCID, "https://"), a.ORCID) + ". "
+		}
+	}
+	key := strings.ToLower(regexp.MustCompile(`[^A-Za-z]`).ReplaceAllString(c.Authors[0].Family, "")) + year
+	s += "Generated from " + link("CITATION.cff", repoLink("CITATION.cff")) + ".\n"
+	s += code("bibtex", fmt.Sprintf("@software{%s,\n  author = {%s},\n  title = {%s},\n  year = {%s},\n  url = {%s}\n}", key, strings.Join(bib, " and "), c.Title, year, where))
+	return s
+}
+
+func (g *generator) citeSection() (string, error) {
+	b, err := g.read("CITATION.cff")
+	if err != nil {
+		return "", err
+	}
+	c, err := parseCitation(b)
+	if err != nil {
+		return "", err
+	}
+	year := strings.SplitN(g.commitDate, "-", 2)[0]
+	if year == "" && g.history != nil {
+		year = strings.SplitN(g.history.AsOf, "-", 2)[0]
+	}
+	return "## Cite\n\n" + c.markdown(year), nil
+}
+
+// ---- docs/upstream.tsv (SPEC §6)
+
+type upstreamEntry struct {
+	Repo, Kind, State, Created, Closed, Merged, Fixes, Title string
+	Number                                                   int
+	CitedBy                                                  []string
+}
+
+var tsvColumns = []string{"repo", "number", "kind", "state", "created", "closed", "merged", "fixes", "cited_by", "title"}
+var tsvStates = map[string][]string{"issue": {"open", "closed", "not planned"}, "pr": {"open", "closed", "merged"}, "cl": {"new", "merged", "abandoned"}}
+var refRE = regexp.MustCompile(`^[\w.-]+/[\w.-]+#\d+$`)
+
+func parseUpstreamTSV(text string) ([]upstreamEntry, error) {
+	lines := strings.Split(strings.TrimRight(text, "\n"), "\n")
+	if lines[0] != strings.Join(tsvColumns, "\t") {
+		return nil, fmt.Errorf("upstream.tsv: unexpected header %q", lines[0])
+	}
+	seen := map[string]bool{}
+	var out []upstreamEntry
+	for i, line := range lines[1:] {
+		f := strings.Split(line, "\t")
+		if len(f) != len(tsvColumns) {
+			return nil, fmt.Errorf("upstream.tsv line %d: %d columns", i+2, len(f))
+		}
+		n, err := strconv.Atoi(f[1])
+		if err != nil || n <= 0 {
+			return nil, fmt.Errorf("upstream.tsv line %d: invalid number %q", i+2, f[1])
+		}
+		e := upstreamEntry{Repo: f[0], Number: n, Kind: f[2], State: f[3], Created: f[4], Closed: f[5], Merged: f[6], Fixes: f[7], Title: f[9]}
+		if f[8] != "" {
+			e.CitedBy = strings.Fields(f[8])
+		}
+		if !contains(tsvStates[e.Kind], e.State) {
+			return nil, fmt.Errorf("upstream.tsv line %d: state %q is not a %q state", i+2, e.State, e.Kind)
+		}
+		if !validDate(e.Created) || (e.Closed != "" && !validDate(e.Closed)) || (e.Merged != "" && !validDate(e.Merged)) {
+			return nil, fmt.Errorf("upstream.tsv line %d: invalid date", i+2)
+		}
+		if (e.Merged != "") != (e.State == "merged") {
+			return nil, fmt.Errorf("upstream.tsv line %d: merged date disagrees with state", i+2)
+		}
+		if e.Fixes != "" && !refRE.MatchString(e.Fixes) {
+			return nil, fmt.Errorf("upstream.tsv line %d: invalid fixes %q", i+2, e.Fixes)
+		}
+		key := fmt.Sprintf("%s %s %d", e.Repo, e.Kind, n)
+		if seen[key] {
+			return nil, fmt.Errorf("upstream.tsv line %d: duplicate %s", i+2, key)
+		}
+		seen[key] = true
+		out = append(out, e)
+	}
+	return out, nil
+}
+
+func (e upstreamEntry) url() string {
+	if e.Kind == "cl" {
+		return fmt.Sprintf("https://go-review.googlesource.com/c/go/+/%d", e.Number)
+	}
+	kind := map[string]string{"issue": "issues", "pr": "pull"}[e.Kind]
+	return fmt.Sprintf("https://github.com/%s/%s/%d", e.Repo, kind, e.Number)
+}
+
+func (g *generator) upstreamTable() string {
+	if len(g.upstreamTSV) == 0 {
+		return ""
+	}
+	s := "## By repository\n\nGenerated from " + link("docs/upstream.tsv", repoLink("docs/upstream.tsv")) + ", the snapshot that " + link("scripts/history.py", repoLink("scripts/history.py")) + " writes from GitHub and Gerrit. For a CL, opened is its mailing date and closed its abandoning date. The hand-written notes follow.\n\n"
+	var repos []string
+	for _, e := range g.upstreamTSV {
+		if !contains(repos, e.Repo) {
+			repos = append(repos, e.Repo)
+		}
+	}
+	for _, repo := range repos {
+		s += "### " + repo + "\n\n<div class=\"filterable\">\n\n| Item | State | Dates | Fixes | Cited by | Title |\n|---|---|---|---|---|---|\n"
+		for _, e := range g.upstreamTSV {
+			if e.Repo != repo {
+				continue
+			}
+			var cites []string
+			for _, id := range e.CitedBy {
+				cites = append(cites, ref(id, "/findings/"+slug(id)))
+			}
+			fixes := e.Fixes
+			if fixes != "" {
+				parts := strings.SplitN(fixes, "#", 2)
+				fixes = link(fixes, "https://github.com/"+parts[0]+"/issues/"+parts[1])
+			}
+			dates := "opened " + e.Created
+			if e.Closed != "" {
+				dates += ", closed " + e.Closed
+			}
+			if e.Merged != "" {
+				dates += ", merged " + e.Merged
+			}
+			s += fmt.Sprintf("| %s | %s | %s | %s | %s | %s |\n", link(fmt.Sprintf("%s %d", e.Kind, e.Number), e.url()), badge("state", e.State), dates, fixes, strings.Join(cites, ", "), cell(e.Title))
+		}
+		s += "\n</div>\n\n"
+	}
+	return s + "## Notes\n\n"
+}
+
+// ---- Statuses (SPEC §5)
+
+var statusMeaning = map[string]string{
+	"proved_in_model":           "A Lean theorem proves the property of the model. It is not a proof about a compiled Go binary.",
+	"counterexample_in_model":   "The model refutes the stated property. This may reveal a wrong model, a missing precondition or an unreachable state; it is not by itself a Go bug.",
+	"model_mismatch":            "The model disagrees with Go itself on recorded inputs; the model is fixed first.",
+	"specification_ambiguity":   "The documentation allows more than one reading, so neither the model nor Go is wrong yet.",
+	"go_discrepancy_reproduced": "A discrepancy reproduced on a real Go toolchain, with the versions, architecture and flags recorded.",
+	"known_issue":               "Behaviour already known upstream; the entry links the existing report.",
+	"inconclusive":              "Not settled: a timeout, an unsupported operation or missing evidence.",
+}
+
+func (g *generator) statusesPage() error {
+	s := "Every word a badge can carry on this site. The word is always shown, so no meaning rests on colour alone; the tones come from site-kit.\n\n## Registry and finding classifications\n\nThe classification of a property or a finding records the evidence, not an upstream decision. A failed proof or a model counterexample alone is never a Go bug.\n\n| Badge | Word | Meaning |\n|---|---|---|\n"
+	for _, w := range statuses {
+		s += "| " + badge("status", w) + " | `" + w + "` | " + statusMeaning[w] + " |\n"
+	}
+	s += "\n## Trust tiers\n\n" + trustExplanation + "\n\n| Badge | Word |\n|---|---|\n| " + badge("trust", "kernel") + " | `kernel` |\n| " + badge("trust", "bv_decide") + " | `bv_decide` |\n"
+	s += "\n## Upstream states\n\nStates of issues (GitHub) and changes (Gerrit) in the " + ref("upstream snapshot", "/upstream") + ". A closed issue or a merged master CL does not prove that a fix reached a release branch.\n\n| Badge | Kind | Meaning |\n|---|---|---|\n"
+	for _, row := range [][3]string{{"open", "issue", "Open on the tracker."}, {"closed", "issue", "Closed as completed; check the fixing CL and the release branches."}, {"not planned", "issue", "Closed without a fix planned."}, {"new", "CL", "In review on Gerrit."}, {"merged", "CL", "Submitted, on the branch the CL targets (usually master)."}, {"abandoned", "CL", "Will not be submitted; another CL may supersede it."}} {
+		s += "| " + badge("state", row[0]) + " | " + row[1] + " | " + row[2] + " |\n"
+	}
+	return g.page("statuses/_index.md", "Statuses", 45, nil, s)
+}
+
+// ---- Methodology (SPEC §8)
+
+func (g *generator) methodologyPage(pitch string) error {
+	s := pitch + "\n\n## Pipeline\n\n```mermaid\nflowchart LR\n    A[Go source and documentation] --> B[Lean model and property]\n    B --> C{Lean proof}\n    C -->|proved| D[Registry entry]\n    C -->|counterexample| E[Replay on real Go]\n    F[Fuzzing and SSA translation validation] --> E\n    E -->|reproduced| G[Finding with reproducer]\n    E -->|not reproduced| H[Model fixed or entry inconclusive]\n    G --> I[Human review]\n    I --> J[Upstream issue and CL]\n```\n\n"
+	s += "## From a contract to a finding\n\n1. Record the documented contract, preconditions and Go source revision.\n2. Model the implementation with fixed-width arithmetic and explicit outcomes.\n3. State a quantified Lean property and record its trust tier.\n4. Replay a model counterexample through real Go on the affected toolchain and architecture.\n5. Check model fidelity, reachability, existing issues and impact. A person reviews any upstream report.\n\nA failed proof is not evidence of a compiler defect. A counterexample may reveal a wrong model, a missing precondition, an ambiguity or an unreachable internal state. Even a reproduced discrepancy needs interpretation.\n\n"
+	s += "## What a result means\n\n" + trustExplanation + "\n\nProofs establish claims about the Lean model. Differential vectors, independent Go oracles, canaries and cross-architecture campaigns test how well that model follows Go. They do not turn a model theorem into a proof of the Go binary. A campaign without a report is incomplete validation, not a proof of correctness. The " + ref("Statuses", "/statuses") + " page defines every classification.\n\n"
+	s += "## Checks of the expected values\n\n- `scripts/check.sh`: banned proof shortcuts, generated files up to date with the pinned Go sources, `lake build`, the axiom audit, Go vet and tests, differential vectors between the Go implementation and the Lean model, the manifest and the mutation test.\n- Go oracles independent of the Lean model, and directed canaries for every known bug.\n- Reproduction on the affected Go toolchain, with versions, architecture, CPU settings and flags recorded, before a finding is classified as reproduced in Go.\n- The site generator rejects malformed manifests, unordered histories, missing evidence and unresolved theorem or test names; two renders are compared byte for byte.\n\n"
+	s += "## Two evidence registries\n\nThe property manifest records verification targets and their status transitions. Finding YAML records group research evidence, reproducers and upstream links, including discoveries made by fuzzing outside the manifest. Upstream state is read from the checked-in snapshot; a merged master fix does not prove a release branch is fixed.\n\n"
+	s += "## This site\n\nBuilt with the site-kit module " + link("s-celles/site-kit "+siteKitTag, "https://github.com/s-celles/site-kit/tree/"+siteKitTag) + " (SPEC 0.2), Hugo and Hextra; see " + ref("Building this site", "/docs/site") + ". Machine-readable: " + "[llms.txt](../llms.txt), [llms-full.txt](../llms-full.txt), [registry.json](../registry.json).\n\n"
+	s += "## Project and inspiration\n\nInspired by " + link("julia-in-lean", "https://github.com/MilesCranmer/julia-in-lean") + ", with its separation of proved properties, model refutations and runtime evidence. The goéland (seagull) identity and artwork come from the repository's " + link("brand assets", repository+"/tree/main/assets/brand") + ".\n\n" + ref("Prior art and limitations", "/docs/prior-art") + " · " + link("Source and contributors", repository) + "\n"
+	if err := g.page("methodology/_index.md", "Methodology", 40, nil, s); err != nil {
+		return err
+	}
+	meta := g.pages["methodology/_index.md"]
+	g.pages["methodology/_index.md"] = []byte(strings.Replace(string(meta), "type: docs\n", "type: docs\naliases:\n    - /about/\n", 1))
+	return nil
+}
+
+// ---- llms.txt, llms-full.txt, registry.json (SPEC §9, §4)
+
+func plain(s string) string {
+	s = regexp.MustCompile(`\{\{< badge "[a-z]+" "([^"]+)" >\}\}`).ReplaceAllString(s, "$1")
+	s = regexp.MustCompile(`\[([^\]]+)\]\(\{\{< relref "([^"]+)" >\}\}\)`).ReplaceAllString(s, "$1")
+	return strings.ReplaceAll(s, "**", "")
+}
+
+func (g *generator) machineReadable(pitch string) error {
+	site := "https://s-celles.github.io/go-in-lean/"
+	intro := "# go-in-lean\n\n> " + plain(strings.SplitN(strings.TrimSpace(pitch), "\n", 2)[0]) + "\n\n" + plain(disclaimerText) + "\n\n" + plain(provenanceText) + "\n\n"
+	if g.commit != "" {
+		intro += "Data at commit " + g.commit + " (" + g.commitDate + ").\n\n"
+	}
+	llms := intro + "## Pages\n\n"
+	for _, p := range [][2]string{{"Findings", "findings/"}, {"Property registry", "properties/"}, {"Upstream status", "upstream/"}, {"History", "history/"}, {"Methodology", "methodology/"}, {"Statuses", "statuses/"}, {"Documentation", "docs/"}} {
+		llms += "- [" + p[0] + "](" + site + p[1] + ")\n"
+	}
+	llms += "\n## Full text\n\n- [llms-full.txt](" + site + "llms-full.txt): every finding and property as text\n- [registry.json](" + site + "registry.json): the same registries as JSON\n"
+	full := intro + "## Findings\n\n"
+	for _, f := range g.findings {
+		full += "### " + f.ID + ": " + f.Title + "\n\n- Priority: " + f.Priority + "\n- Classification: " + f.Status + "\n- Package: " + f.Package + "; architectures: " + strings.Join(f.Architectures, ", ") + "\n- Affected: " + f.AffectedVersions + "\n- Upstream: " + strings.Join(f.Upstream, ", ") + "\n- Page: " + site + "findings/" + slug(f.ID) + "/\n\n" + f.Summary + "\n\n"
+	}
+	full += "## Properties\n\n"
+	for _, p := range g.properties {
+		full += "### " + p.ID + " (" + p.Package + "." + p.Function + ")\n\n- Status: " + p.Status + "; trust: " + p.Trust + "\n- Postcondition: " + p.Postcondition + "\n- Lean statement: " + p.LeanStatement + "\n- Page: " + site + "properties/" + slug(p.Package) + "/" + slug(p.ID) + "/\n\n"
+	}
+	g.pages["llms.txt"] = []byte(llms)
+	g.pages["llms-full.txt"] = []byte(full)
+	// the manifests' own field names: round-trip through YAML
+	var findings, properties []map[string]any
+	for _, pair := range []struct {
+		src any
+		dst *[]map[string]any
+	}{{g.findings, &findings}, {g.properties, &properties}} {
+		y, err := yaml.Marshal(pair.src)
+		if err != nil {
+			return err
+		}
+		if err := yaml.Unmarshal(y, pair.dst); err != nil {
+			return err
+		}
+	}
+	reg := map[string]any{"commit": g.commit, "date": g.commitDate, "findings": findings, "properties": properties}
+	b, err := json.MarshalIndent(reg, "", " ")
+	if err != nil {
+		return err
+	}
+	g.pages["registry.json"] = append(b, '\n')
+	return nil
+}

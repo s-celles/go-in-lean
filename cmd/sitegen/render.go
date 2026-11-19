@@ -58,7 +58,7 @@ func (g *generator) render() error {
 			return err
 		}
 	}
-	registry := "{{< registry-controls >}}\n\nEvery row comes from " + link("targets/properties.yaml", repoLink("targets/properties.yaml")) + ". Select an area or a property to inspect its contract, theorem, oracle and executable checks.\n\n" + trustExplanation + "\n\n| Package / area | Registered | Proved in model | Reproduced in Go |\n|---|---:|---:|---:|\n"
+	registry := "Every row comes from " + link("targets/properties.yaml", repoLink("targets/properties.yaml")) + ". Select an area or a property to inspect its contract, theorem, oracle and executable checks.\n\n" + trustExplanation + "\n\n| Package / area | Registered | Proved in model | Reproduced in Go |\n|---|---:|---:|---:|\n"
 	for _, pkg := range sortedKeys(groups) {
 		proved, reproduced := 0, 0
 		for _, p := range groups[pkg] {
@@ -71,7 +71,7 @@ func (g *generator) render() error {
 		}
 		registry += fmt.Sprintf("| %s | %d | %d | %d |\n", ref(cell(pkg), "/properties/"+slug(pkg)), len(groups[pkg]), proved, reproduced)
 	}
-	registry += "\n## All properties\n\n" + propertyTable(g.properties)
+	registry += "\n## All properties\n\n<div class=\"filterable\">\n\n" + propertyTable(g.properties) + "\n</div>\n"
 	if err := g.page("properties/_index.md", "Property registry", 20, nil, registry); err != nil {
 		return err
 	}
@@ -80,23 +80,12 @@ func (g *generator) render() error {
 			return err
 		}
 	}
-	findex := "{{< registry-controls >}}\n\nA registry of research findings, including negative controls and unreachable model counterexamples. A row is **not automatically a Go bug**. Classification and evidence are shown separately from upstream review state.\n\nPriorities are project triage labels, not upstream severity assessments: P0 critical impact; P1 wrong results on ordinary inputs; P2 edge cases or build failures; P3 controls, latent rules or negligible impact. No current entry claims demonstrated memory unsafety.\n\n"
-	for _, priority := range []string{"P0", "P1", "P2", "P3"} {
-		var fs []Finding
-		for _, f := range g.findings {
-			if f.Priority == priority {
-				fs = append(fs, f)
-			}
-		}
-		if len(fs) == 0 {
-			continue
-		}
-		findex += "## " + priority + "\n\n| Finding | Area / architecture | Classification | Upstream |\n|---|---|---|---|\n"
-		for _, f := range fs {
-			findex += "| " + ref(f.ID, "/findings/"+slug(f.ID)) + " — " + cell(f.Title) + " | " + cell(f.Package) + " · " + cell(strings.Join(f.Architectures, ", ")) + " | " + badge("status", f.Status) + " | " + g.findingState(f) + " |\n"
-		}
-		findex += "\n"
+	findex := "A registry of research findings, including negative controls and unreachable model counterexamples. A row is **not automatically a Go bug**. Classification and evidence are shown separately from upstream review state.\n\nPriorities are project triage labels, not upstream severity assessments: P0 critical impact; P1 wrong results on ordinary inputs; P2 edge cases or build failures; P3 controls, latent rules or negligible impact. No current entry claims demonstrated memory unsafety.\n\n"
+	findex += "<div class=\"filterable\">\n\n| Finding | Priority | Area / architecture | Classification | Upstream |\n|---|---|---|---|---|\n"
+	for _, f := range g.findings { // sorted by priority, then id
+		findex += "| " + ref(f.ID, "/findings/"+slug(f.ID)) + " — " + cell(f.Title) + " | " + f.Priority + " | " + cell(f.Package) + " · " + cell(strings.Join(f.Architectures, ", ")) + " | " + badge("status", f.Status) + " | " + g.findingState(f) + " |\n"
 	}
+	findex += "\n</div>\n"
 	if err := g.page("findings/_index.md", "Findings", 10, nil, findex); err != nil {
 		return err
 	}
@@ -108,10 +97,10 @@ func (g *generator) render() error {
 	if err != nil {
 		return err
 	}
-	home := "<div class=\"project-kicker\">Lean 4 · Go · executable evidence</div>\n\n" + pitch + "\n\n"
-	home += "The " + ref("complete project guide", "/docs/project") + " covers the project results, research map, symbolic and concolic approaches, setup, repository layout and contribution policy.\n\n"
-	home += fmt.Sprintf("{{< registry-summary registered=%q proved=%q reproduced=%q findings=%q >}}\n\n", fmt.Sprint(len(g.properties)), fmt.Sprint(counts["proved_in_model"]), fmt.Sprint(counts["go_discrepancy_reproduced"]), fmt.Sprint(len(g.findings)))
-	home += ref("Browse findings →", "/findings") + " · " + ref("Explore the registry →", "/properties") + " · " + ref("Read the methodology →", "/about") + "\n\n## Verification status\n\nCounts are recomputed from the YAML on every build. Registry entries, audited theorems and research findings are different units; one entry can cite several theorems, and several entries can share one root cause.\n\n| Registry status | Entries |\n|---|---:|\n"
+	home := "<div class=\"sk-kicker\">Lean 4 · Go · executable evidence</div>\n\n" + pitch + "\n\n" + g.dataStamp() + disclaimerBlock()
+	home += fmt.Sprintf("{{< stats >}}{{< stat value=%q label=\"Registered properties\" href=\"/properties\" >}}{{< stat value=%q label=\"Proved in model\" href=\"/properties\" >}}{{< stat value=%q label=\"Reproduced entries\" href=\"/findings\" >}}{{< stat value=%q label=\"Research findings\" href=\"/findings\" >}}{{< /stats >}}\n\n", fmt.Sprint(len(g.properties)), fmt.Sprint(counts["proved_in_model"]), fmt.Sprint(counts["go_discrepancy_reproduced"]), fmt.Sprint(len(g.findings)))
+	home += ref("Browse findings →", "/findings") + " · " + ref("Explore the registry →", "/properties") + " · " + ref("Read the methodology →", "/methodology") + " · " + ref("Statuses →", "/statuses") + "\n\n"
+	home += "The " + ref("complete project guide", "/docs/project") + " covers the project results, research map, symbolic and concolic approaches, setup, repository layout and contribution policy.\n\n## Verification status\n\nCounts are recomputed from the YAML on every build. Registry entries, audited theorems and research findings are different units; one entry can cite several theorems, and several entries can share one root cause.\n\n| Registry status | Entries |\n|---|---:|\n"
 	for _, s := range statuses {
 		home += fmt.Sprintf("| %s | %d |\n", badge("status", s), counts[s])
 	}
@@ -136,11 +125,21 @@ func (g *generator) render() error {
 		}
 		home += "- " + ref(f.Title, "/findings/"+slug(f.ID)) + " — " + badge("status", f.Status) + "\n"
 	}
+	cite, err := g.citeSection()
+	if err != nil {
+		return err
+	}
+	home += "\n" + cite
 	if err := g.page("_index.md", "go-in-lean", 0, map[string]any{"description": "Finding correctness bugs in Go with bit-precise Lean models and executable evidence."}, home); err != nil {
 		return err
 	}
-	about := pitch + "\n\n## From a contract to a finding\n\n1. Record the documented contract, preconditions and Go source revision.\n2. Model the implementation with fixed-width arithmetic and explicit outcomes.\n3. State a quantified Lean property and record its trust tier.\n4. Replay a model counterexample through real Go on the affected toolchain and architecture.\n5. Check model fidelity, reachability, existing issues and impact. A person reviews any upstream report.\n\nA failed proof is not evidence of a compiler defect. A counterexample may reveal a wrong model, a missing precondition, an ambiguity or an unreachable internal state. Even a reproduced discrepancy needs interpretation.\n\n## What the proofs establish\n\n" + trustExplanation + "\n\nProofs establish claims about the Lean model. Differential vectors, independent Go oracles, canaries and cross-architecture campaigns test how well that model follows Go. They do not turn a model theorem into a proof of the Go binary.\n\n## Two evidence registries\n\nThe property manifest records verification targets and their status transitions. Finding YAML records group research evidence, reproducers and upstream links, including discoveries made by fuzzing outside the manifest. Upstream state is read from the checked-in status document; a merged master fix does not prove a release branch is fixed.\n\n## Project and inspiration\n\nInspired by " + link("julia-in-lean", "https://github.com/MilesCranmer/julia-in-lean") + ", with its separation of proved properties, model refutations and runtime evidence. The goéland (seagull) identity and artwork come from the repository's " + link("brand assets", repository+"/tree/main/assets/brand") + ".\n\n" + ref("Prior art and limitations", "/docs/prior-art") + " · " + link("Source and contributors", repository) + "\n"
-	if err := g.page("about/_index.md", "Methodology", 50, nil, about); err != nil {
+	if err := g.methodologyPage(pitch); err != nil {
+		return err
+	}
+	if err := g.statusesPage(); err != nil {
+		return err
+	}
+	if err := g.machineReadable(pitch); err != nil {
 		return err
 	}
 	if g.history != nil {
@@ -158,17 +157,19 @@ func (g *generator) render() error {
 		body := removeTitle(string(b))
 		body = rewriteLinks(body, item.Path)
 		body = "Source: " + link(item.Path, repoLink(item.Path)) + ".\n\n" + body
+		weight := 50 + i
 		if strings.HasPrefix(item.Route, "upstream/") {
-			body = "A checked-in snapshot of upstream issue and change states. Counts and tables are regenerated on build; this page does not query Gerrit or GitHub in your browser. A closed issue and a merged CL are separate events.\n\n" + body
+			body = "A checked-in snapshot of upstream issue and change states. Counts and tables are regenerated on build; this page does not query Gerrit or GitHub in your browser. A closed issue and a merged CL are separate events: a closed issue does not prove that a fix reached a release.\n\n" + g.upstreamTable() + body
+			weight = 30
 		}
-		if err := g.page(item.Route, item.Title, 30+i, nil, body); err != nil {
+		if err := g.page(item.Route, item.Title, weight, nil, body); err != nil {
 			return err
 		}
 		if strings.HasPrefix(item.Route, "docs/") {
 			docs += "- " + ref(item.Title, "/"+strings.TrimSuffix(item.Route, ".md")) + "\n"
 		}
 	}
-	return g.page("docs/_index.md", "Documentation", 40, nil, docs)
+	return g.page("docs/_index.md", "Documentation", 50, nil, docs)
 }
 
 const trustExplanation = "**kernel** means the recorded theorem is checked by Lean's kernel without a per-theorem native-evaluation axiom. **bv_decide** additionally trusts the tactic's native-evaluation axiom for its generated certificate. These are distinct trust tiers, not interchangeable proof counts. See the manifest comments and the axiom audit for the precise boundary."

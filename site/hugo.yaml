@@ -5,6 +5,7 @@ enableRobotsTXT: true
 disableKinds: [taxonomy, term]
 module:
   imports:
+    - path: github.com/s-celles/site-kit   # first: its badge and hooks win over Hextra's (site-kit SPEC §11)
     - path: github.com/imfing/hextra
   mounts:
     - source: content
@@ -33,19 +34,51 @@ menu:
     - name: History
       pageRef: /history
       weight: 4
+    - name: Methodology
+      pageRef: /methodology
+      weight: 5
     - name: Docs
       pageRef: /docs
-      weight: 5
+      weight: 6
     - name: GitHub
       url: https://github.com/s-celles/go-in-lean
-      weight: 6
+      weight: 7
       params:
         icon: github
     - name: Search
-      weight: 7
+      weight: 8
       params:
         type: search
 params:
+  siteKit:
+    themeColor: "#173f66"
+    footer: "An individual, non-commercial project, not endorsed by the Go project or Google. Code [MIT](https://github.com/s-celles/go-in-lean/blob/main/LICENSE), files derived from Go [BSD-3-Clause](https://github.com/s-celles/go-in-lean/blob/main/NOTICE); data and prose [CC BY 4.0](https://github.com/s-celles/go-in-lean/blob/main/LICENSE-DATA). Written with AI assistance."
+    badgeTones:
+      proved_in_model: good
+      go_discrepancy_reproduced: bad
+      model_mismatch: warn
+      specification_ambiguity: warn-dashed
+      known_issue: info
+      counterexample_in_model: alt-dashed
+      inconclusive: neutral-dashed
+      kernel: neutral
+      bv_decide: warn
+      open: warn
+      closed: info
+      not planned: neutral-dashed
+      new: warn-dashed
+      merged: good
+      abandoned: neutral-dashed
+    badgeLabels:
+      proved_in_model: "✓ Proved in model"
+      go_discrepancy_reproduced: "! Reproduced in Go"
+      model_mismatch: "≠ Model mismatch"
+      specification_ambiguity: "? Specification ambiguity"
+      known_issue: "↗ Known issue"
+      counterexample_in_model: "◇ Model counterexample"
+      inconclusive: "… Inconclusive"
+      kernel: "K · kernel"
+      bv_decide: "BV · bv_decide"
   description: Bit-precise Lean models, executable counterexamples, and Go compiler findings.
   navbar:
     displayTitle: false

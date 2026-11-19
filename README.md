@@ -25,4 +25,11 @@ scripts/check.sh
 See the [quick start](https://s-celles.github.io/go-in-lean/docs/project/#quick-start)
 for prerequisites and commands outside Nix, and [AGENTS.md](AGENTS.md) for contributor conventions.
 
-MIT; Go-derived code retains its BSD 3-Clause notices. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+## Licence
+
+Code: MIT ([LICENSE](LICENSE)); files derived from Go keep the BSD 3-Clause
+licence of the Go Authors ([NOTICE](NOTICE)). Data and prose (documentation,
+findings, registry, snapshots, site content): CC BY 4.0
+([LICENSE-DATA](LICENSE-DATA)). The paths under each licence are listed in the
+[project guide](https://s-celles.github.io/go-in-lean/docs/project/#licence).
+To cite go-in-lean, see [CITATION.cff](CITATION.cff).

@@ -1,10 +1,18 @@
 # Documentation and findings website
 
-The site uses Hugo Extended 0.152.2 and Hextra v0.13.0. Go and Hugo are the
-only build tools; Hextra ships its browser assets. No Node.js, npm or JavaScript
-build is required. Hextra supplies the sidebar, system-aware dark mode and
-local full-text search. Finding and property registries also have a browser-local
-row filter and sortable columns; the complete tables remain available without JavaScript. The existing goéland brand supplies the header and icon.
+The site uses Hugo Extended 0.152.2, Hextra v0.13.0 and the shared
+[site-kit](https://github.com/s-celles/site-kit) module, pinned at v0.2.0 in
+`site/go.mod` and imported before Hextra. The site follows site-kit's SPEC 0.2,
+the structure the project sites share: menu order, a home page with the data
+stamp, disclaimer, provenance, stat tiles and citation, the Statuses,
+Methodology, Upstream and History pages, and `llms.txt`. `site-kit.json` at the
+repository root declares the SPEC version and the menu. Go and Hugo are the only
+build tools; no Node.js, npm or JavaScript build is required. Hextra supplies the
+sidebar, system-aware dark mode and local full-text search. site-kit supplies
+the badges (a word-to-tone map and display labels in `params.siteKit`), the stat
+tiles, the filterable and sortable tables (`tables.js`, complete without
+JavaScript), the chart tooltips (`viz.js`), the footer line and validated light
+and dark palettes. The goéland brand supplies the header and icon.
 
 ## Build and preview
 
@@ -28,9 +36,14 @@ by the website's separate root module (`gopkg.in/yaml.v3` is its only dependency
   affected toolchains, architecture, source records, reproducer, Lean evidence,
   upstream URLs and dated history. Detailed Markdown/JSON research records stay
   alongside the evidence and are linked from the generated pages.
-- `docs/upstream-status.md` supplies issue and CL states. These are a checked-in
-  snapshot, not a browser-time API query; update that record when reviews or
-  merges change. A closed issue does not imply every release branch is fixed.
+- `docs/upstream-status.md` holds the hand-written upstream notes: issue and CL
+  states with their scope, which the finding pages show. `docs/upstream.tsv` is
+  the site-kit upstream snapshot (SPEC §6: repo, number, kind, state, dates,
+  `fixes`, `cited_by`, title). `scripts/history.py` generates it from the issues
+  and CLs that `docs/upstream-status.md` links, plus the project's own CLs, and
+  the Upstream page shows it by repository before the notes. Both are checked-in
+  snapshots, not browser-time API queries; refresh them when reviews or merges
+  change. A closed issue does not imply every release branch is fixed.
 - `docs/history.json` feeds the History page: for each day with commits, the
   number of Lean `theorem`/`lemma` declarations and of registered and proved
   property entries at that day's last commit, plus the opening and closing dates
@@ -39,8 +52,12 @@ by the website's separate root module (`gopkg.in/yaml.v3` is its only dependency
   snapshot written by `python3 -I scripts/history.py`, which queries git, the
   GitHub API and Gerrit. `--offline` refreshes only the git part. Re-run it
   when the upstream status changes. Finding counts come from the first date in
-  each `findings/*.yaml` history. The charts are inline SVG, one y-axis per chart,
-  each with a data table. `history.js` only adds the crosshair and tooltip.
+  each `findings/*.yaml` history. The charts follow site-kit's markup: inline SVG
+  from 0 on one y-axis, one tab stop per chart (`data-viz="dense"`, arrow keys
+  step through the days), a legend for two or more series and a data table.
+- `CITATION.cff` supplies the home page's Cite section (text and BibTeX).
+- The generator also writes `llms.txt`, `llms-full.txt` (every finding and
+  property as text) and `registry.json` (the manifests as JSON) at the site root.
 - `docs/project.md` holds the full project guide, including the material moved
   from the former long README, and supplies the site's pitch. The README is a
   short entry point to the published site. The research docs, upstream bug notes and
@@ -75,17 +92,24 @@ or build failures, and P3 controls, latent rules or negligible impact.
 go test ./cmd/sitegen
 go run ./cmd/sitegen
 hugo --source site --minify
+kit=$(cd site && go mod download -json github.com/s-celles/site-kit | python3 -c 'import json,sys; print(json.load(sys.stdin)["Dir"])')
+python3 -I "$kit/tools/check_site.py" --site site/public --hugo site/hugo.yaml --config site-kit.json --repo .
+hugo --source site --minify --destination /tmp/second
+python3 -I "$kit/tools/compare_builds.py" site/public /tmp/second --config site-kit.json
 ```
 
-`.github/workflows/site.yml` builds and checks pull requests, and deploys pushes
+`check_site.py` checks the built HTML against the SPEC rules (SK-...);
+`compare_builds.py` checks that two builds of one commit are identical.
+`.github/workflows/site.yml` runs both. It builds and checks pull requests, and deploys pushes
 to `main` through GitHub Pages. Repository Pages must use the GitHub Actions
 source. The deployment base URL comes from `actions/configure-pages`, allowing
 repository subpaths. Generated content is uploaded only as a deployment artifact.
 
-The website's build and generator tests are independent of the formal build.
-During the 2026-11-14 validation, the site build, registry checks, browser checks,
-Nix package, and Go tests/vet passed. The full `scripts/check.sh` run reached
-the Lean build, then timed out in the unchanged `mul_sound_16` and
-`ctz_sound_64` proofs in `GoInLean/Compiler/ProveLimits.lean`; an isolated
-retry reproduced both timeouts. That run does not establish a successful
-end-to-end axiom audit or differential/mutation check.
+The website's build and generator tests are independent of the formal build
+(`.github/workflows/ci.yml`, `scripts/check.sh`).
+
+## Licences
+
+The footer names the licences: code MIT, files derived from Go BSD 3-Clause
+(`NOTICE`), data and prose CC BY 4.0 (`LICENSE-DATA`). The project guide's
+Licence section lists the paths under each.
