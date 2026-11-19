@@ -143,6 +143,11 @@ func (g *generator) render() error {
 	if err := g.page("about/_index.md", "Methodology", 50, nil, about); err != nil {
 		return err
 	}
+	if g.history != nil {
+		if err := g.historyPage(); err != nil {
+			return err
+		}
+	}
 	docs := "Project research and contributor documentation, imported from the repository at build time.\n\n"
 	imports := []struct{ Path, Title, Route string }{{"docs/project.md", "Project guide", "docs/project.md"}, {"docs/prior-art.md", "Prior art", "docs/prior-art.md"}, {"docs/fuzzing-vision.md", "Fuzzing vision", "docs/fuzzing-vision.md"}, {"docs/cedar-notes.md", "Research notes", "docs/cedar-notes.md"}, {"upstream-bugs.md", "Upstream bugs", "docs/upstream-bugs.md"}, {"CHANGELOG.md", "Changelog", "docs/changelog.md"}, {"docs/site.md", "Building this site", "docs/site.md"}, {"docs/upstream-status.md", "Upstream status", "upstream/_index.md"}}
 	for i, item := range imports {

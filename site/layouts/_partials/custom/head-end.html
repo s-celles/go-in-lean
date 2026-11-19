@@ -1,3 +1,5 @@
 <meta name="theme-color" content="#173f66">
 {{- $registry := resources.Get "js/registry.js" | minify | fingerprint -}}
 <script src="{{ $registry.RelPermalink }}" integrity="{{ $registry.Data.Integrity }}" defer></script>
+{{- $history := resources.Get "js/history.js" | minify | fingerprint }}
+<script src="{{ $history.RelPermalink }}" integrity="{{ $history.Data.Integrity }}" defer></script>

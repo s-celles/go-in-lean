@@ -31,6 +31,16 @@ by the website's separate root module (`gopkg.in/yaml.v3` is its only dependency
 - `docs/upstream-status.md` supplies issue and CL states. These are a checked-in
   snapshot, not a browser-time API query; update that record when reviews or
   merges change. A closed issue does not imply every release branch is fixed.
+- `docs/history.json` feeds the History page: for each day with commits, the
+  number of Lean `theorem`/`lemma` declarations and of registered and proved
+  property entries at that day's last commit, plus the opening and closing dates
+  of the GitHub issues linked from `docs/upstream-status.md`, and the mailing,
+  merge and abandon dates of the project's Go Gerrit CLs. It is a checked-in
+  snapshot written by `python3 -I scripts/history.py`, which queries git, the
+  GitHub API and Gerrit. `--offline` refreshes only the git part. Re-run it
+  when the upstream status changes. Finding counts come from the first date in
+  each `findings/*.yaml` history. The charts are inline SVG, one y-axis per chart,
+  each with a data table. `history.js` only adds the crosshair and tooltip.
 - `docs/project.md` holds the full project guide, including the material moved
   from the former long README, and supplies the site's pitch. The README is a
   short entry point to the published site. The research docs, upstream bug notes and

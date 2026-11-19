@@ -39,3 +39,35 @@
 .dark .status--bv_decide { color: #ffd89d; background: #48351d; }
 @media (max-width: 760px) { .registry-stats { grid-template-columns: repeat(2,minmax(0,1fr)); } .registry-stat strong { font-size: 1.8rem; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
+
+/* History charts: reference palette slots 1-3, validated for light (#ffffff) and dark (#111111) surfaces. */
+.hchart { --surface-1: #ffffff; --grid: #e4e4e0; --ink-1: #0b0b0b; --ink-2: #52514e;
+  --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a;
+  position: relative; margin: 1.25rem 0 2rem; color: var(--ink-1); }
+.dark .hchart { --surface-1: #111111; --grid: #2c2c2a; --ink-1: #f0efec; --ink-2: #c3c2b7;
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; }
+.hchart figcaption { margin-bottom: .35rem; text-align: left; }
+.hchart figcaption span { color: var(--ink-2); font-size: .85rem; margin-left: .35rem; }
+.hchart-plot { overflow-x: auto; }
+.hchart svg { display: block; width: 100%; min-width: 560px; height: auto; overflow: visible; touch-action: pan-y; }
+.hchart-grid { stroke: var(--grid); stroke-width: 1; }
+.hchart-tick { fill: var(--ink-2); font-size: 11px; font-variant-numeric: tabular-nums; }
+.hchart-end { fill: var(--ink-1); font-size: 12px; }
+.hchart-line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.hchart-dot { stroke: var(--surface-1); stroke-width: 2; }
+.hchart-cross { stroke: var(--ink-2); stroke-width: 1; }
+.hchart-line.hchart-s1 { stroke: var(--series-1); } .hchart-dot.hchart-s1, .hchart-key.hchart-s1 { fill: var(--series-1); background: var(--series-1); }
+.hchart-line.hchart-s2 { stroke: var(--series-2); } .hchart-dot.hchart-s2, .hchart-key.hchart-s2 { fill: var(--series-2); background: var(--series-2); }
+.hchart-line.hchart-s3 { stroke: var(--series-3); } .hchart-dot.hchart-s3, .hchart-key.hchart-s3 { fill: var(--series-3); background: var(--series-3); }
+.hchart-legend { display: flex; flex-wrap: wrap; gap: .25rem 1rem; list-style: none; padding: 0; margin: 0 0 .25rem; font-size: .85rem; color: var(--ink-2); }
+.hchart-legend li { margin: 0; display: flex; align-items: center; gap: .4rem; }
+.hchart-key { display: inline-block; width: 14px; height: 2px; border-radius: 1px; }
+.hchart-tip { position: absolute; pointer-events: none; z-index: 2; min-width: 9rem; padding: .4rem .6rem; border-radius: 6px;
+  background: var(--surface-1); color: var(--ink-1); border: 1px solid var(--grid); box-shadow: 0 2px 8px rgb(0 0 0 / .15); font-size: .8rem; }
+.hchart-tip .row { display: flex; align-items: center; gap: .4rem; }
+.hchart-tip strong { font-variant-numeric: tabular-nums; }
+.hchart-tip .name { color: var(--ink-2); }
+.hchart-tip .date { color: var(--ink-2); margin-bottom: .2rem; }
+.hchart-data summary { cursor: pointer; color: var(--ink-2); font-size: .85rem; }
+.hchart-data table { font-size: .85rem; font-variant-numeric: tabular-nums; }
+.hchart:focus-visible { outline: 2px solid var(--series-1); outline-offset: 4px; border-radius: 4px; }

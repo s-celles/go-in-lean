@@ -1,0 +1,371 @@
+{
+ "as_of": "2026-11-19",
+ "git": [
+  {
+   "date": "2026-11-01",
+   "commit": "a6c7f147dd",
+   "commits": 5,
+   "theorems": 408,
+   "properties": 55,
+   "proved": 47
+  },
+  {
+   "date": "2026-11-02",
+   "commit": "a6dd322cda",
+   "commits": 26,
+   "theorems": 2238,
+   "properties": 76,
+   "proved": 52
+  },
+  {
+   "date": "2026-11-03",
+   "commit": "a4a4133d4c",
+   "commits": 10,
+   "theorems": 2238,
+   "properties": 76,
+   "proved": 52
+  },
+  {
+   "date": "2026-11-04",
+   "commit": "6ba8e465ef",
+   "commits": 38,
+   "theorems": 2244,
+   "properties": 76,
+   "proved": 52
+  },
+  {
+   "date": "2026-11-05",
+   "commit": "ced2f855d5",
+   "commits": 12,
+   "theorems": 2244,
+   "properties": 76,
+   "proved": 52
+  },
+  {
+   "date": "2026-11-06",
+   "commit": "eeaf6b0e9f",
+   "commits": 14,
+   "theorems": 2244,
+   "properties": 76,
+   "proved": 52
+  },
+  {
+   "date": "2026-11-07",
+   "commit": "795943b5d1",
+   "commits": 4,
+   "theorems": 2244,
+   "properties": 76,
+   "proved": 52
+  },
+  {
+   "date": "2026-11-13",
+   "commit": "710e78bc4a",
+   "commits": 2,
+   "theorems": 2244,
+   "properties": 76,
+   "proved": 52
+  },
+  {
+   "date": "2026-11-14",
+   "commit": "cca3b6eeb9",
+   "commits": 5,
+   "theorems": 2244,
+   "properties": 76,
+   "proved": 52
+  },
+  {
+   "date": "2026-11-15",
+   "commit": "ff20b36267",
+   "commits": 2,
+   "theorems": 2244,
+   "properties": 76,
+   "proved": 52
+  },
+  {
+   "date": "2026-11-16",
+   "commit": "462fee4a45",
+   "commits": 9,
+   "theorems": 2244,
+   "properties": 76,
+   "proved": 52
+  },
+  {
+   "date": "2026-11-17",
+   "commit": "e16b12b895",
+   "commits": 1,
+   "theorems": 2244,
+   "properties": 76,
+   "proved": 52
+  }
+ ],
+ "issues": [
+  {
+   "ref": "golang/go#36897",
+   "url": "https://github.com/golang/go/issues/36897",
+   "reported": false,
+   "opened": "2020-01-30",
+   "closed": null
+  },
+  {
+   "ref": "golang/go#54255",
+   "url": "https://github.com/golang/go/issues/54255",
+   "reported": false,
+   "opened": "2022-08-04",
+   "closed": "2022-08-04"
+  },
+  {
+   "ref": "golang/go#80577",
+   "url": "https://github.com/golang/go/issues/80577",
+   "reported": false,
+   "opened": "2026-07-27",
+   "closed": null
+  },
+  {
+   "ref": "golang/go#82763",
+   "url": "https://github.com/golang/go/issues/82763",
+   "reported": true,
+   "opened": "2026-11-02",
+   "closed": null
+  },
+  {
+   "ref": "golang/go#82767",
+   "url": "https://github.com/golang/go/issues/82767",
+   "reported": true,
+   "opened": "2026-11-02",
+   "closed": null
+  },
+  {
+   "ref": "golang/go#82772",
+   "url": "https://github.com/golang/go/issues/82772",
+   "reported": true,
+   "opened": "2026-11-02",
+   "closed": "2026-11-05"
+  },
+  {
+   "ref": "golang/go#82773",
+   "url": "https://github.com/golang/go/issues/82773",
+   "reported": true,
+   "opened": "2026-11-02",
+   "closed": "2026-11-05"
+  },
+  {
+   "ref": "golang/go#82774",
+   "url": "https://github.com/golang/go/issues/82774",
+   "reported": true,
+   "opened": "2026-11-02",
+   "closed": "2026-11-05"
+  },
+  {
+   "ref": "golang/go#82775",
+   "url": "https://github.com/golang/go/issues/82775",
+   "reported": true,
+   "opened": "2026-11-02",
+   "closed": null
+  },
+  {
+   "ref": "golang/go#82776",
+   "url": "https://github.com/golang/go/issues/82776",
+   "reported": true,
+   "opened": "2026-11-02",
+   "closed": "2026-11-05"
+  },
+  {
+   "ref": "golang/go#82777",
+   "url": "https://github.com/golang/go/issues/82777",
+   "reported": true,
+   "opened": "2026-11-02",
+   "closed": "2026-11-05"
+  },
+  {
+   "ref": "golang/go#82782",
+   "url": "https://github.com/golang/go/issues/82782",
+   "reported": true,
+   "opened": "2026-11-02",
+   "closed": null
+  },
+  {
+   "ref": "golang/go#82786",
+   "url": "https://github.com/golang/go/issues/82786",
+   "reported": true,
+   "opened": "2026-11-02",
+   "closed": null
+  },
+  {
+   "ref": "golang/go#82825",
+   "url": "https://github.com/golang/go/issues/82825",
+   "reported": true,
+   "opened": "2026-11-03",
+   "closed": "2026-11-05"
+  },
+  {
+   "ref": "golang/go#82834",
+   "url": "https://github.com/golang/go/issues/82834",
+   "reported": true,
+   "opened": "2026-11-03",
+   "closed": null
+  },
+  {
+   "ref": "golang/go#82839",
+   "url": "https://github.com/golang/go/issues/82839",
+   "reported": true,
+   "opened": "2026-11-03",
+   "closed": null
+  },
+  {
+   "ref": "golang/go#82847",
+   "url": "https://github.com/golang/go/issues/82847",
+   "reported": true,
+   "opened": "2026-11-04",
+   "closed": "2026-11-16"
+  },
+  {
+   "ref": "golang/go#82873",
+   "url": "https://github.com/golang/go/issues/82873",
+   "reported": true,
+   "opened": "2026-11-05",
+   "closed": "2026-11-06"
+  },
+  {
+   "ref": "golang/go#82745",
+   "url": "https://github.com/golang/go/issues/82745",
+   "reported": false,
+   "opened": "2026-10-31",
+   "closed": "2026-11-18"
+  },
+  {
+   "ref": "golang/go#81842",
+   "url": "https://github.com/golang/go/issues/81842",
+   "reported": false,
+   "opened": "2026-09-29",
+   "closed": "2026-10-05"
+  },
+  {
+   "ref": "traefik/yaegi#1750",
+   "url": "https://github.com/traefik/yaegi/issues/1750",
+   "reported": true,
+   "opened": "2026-11-05",
+   "closed": null
+  },
+  {
+   "ref": "traefik/yaegi#1751",
+   "url": "https://github.com/traefik/yaegi/issues/1751",
+   "reported": true,
+   "opened": "2026-11-06",
+   "closed": null
+  }
+ ],
+ "changes": [
+  {
+   "number": 856905,
+   "url": "https://go-review.googlesource.com/c/go/+/856905",
+   "status": "MERGED",
+   "mailed": "2026-11-02",
+   "merged": "2026-11-05",
+   "abandoned": null
+  },
+  {
+   "number": 857143,
+   "url": "https://go-review.googlesource.com/c/go/+/857143",
+   "status": "MERGED",
+   "mailed": "2026-11-02",
+   "merged": "2026-11-05",
+   "abandoned": null
+  },
+  {
+   "number": 857342,
+   "url": "https://go-review.googlesource.com/c/go/+/857342",
+   "status": "NEW",
+   "mailed": "2026-11-02",
+   "merged": null,
+   "abandoned": null
+  },
+  {
+   "number": 857343,
+   "url": "https://go-review.googlesource.com/c/go/+/857343",
+   "status": "MERGED",
+   "mailed": "2026-11-02",
+   "merged": "2026-11-05",
+   "abandoned": null
+  },
+  {
+   "number": 857344,
+   "url": "https://go-review.googlesource.com/c/go/+/857344",
+   "status": "MERGED",
+   "mailed": "2026-11-02",
+   "merged": "2026-11-05",
+   "abandoned": null
+  },
+  {
+   "number": 857442,
+   "url": "https://go-review.googlesource.com/c/go/+/857442",
+   "status": "MERGED",
+   "mailed": "2026-11-02",
+   "merged": "2026-11-05",
+   "abandoned": null
+  },
+  {
+   "number": 857542,
+   "url": "https://go-review.googlesource.com/c/go/+/857542",
+   "status": "NEW",
+   "mailed": "2026-11-02",
+   "merged": null,
+   "abandoned": null
+  },
+  {
+   "number": 857741,
+   "url": "https://go-review.googlesource.com/c/go/+/857741",
+   "status": "NEW",
+   "mailed": "2026-11-02",
+   "merged": null,
+   "abandoned": null
+  },
+  {
+   "number": 857742,
+   "url": "https://go-review.googlesource.com/c/go/+/857742",
+   "status": "NEW",
+   "mailed": "2026-11-02",
+   "merged": null,
+   "abandoned": null
+  },
+  {
+   "number": 857821,
+   "url": "https://go-review.googlesource.com/c/go/+/857821",
+   "status": "NEW",
+   "mailed": "2026-11-02",
+   "merged": null,
+   "abandoned": null
+  },
+  {
+   "number": 858262,
+   "url": "https://go-review.googlesource.com/c/go/+/858262",
+   "status": "MERGED",
+   "mailed": "2026-11-03",
+   "merged": "2026-11-05",
+   "abandoned": null
+  },
+  {
+   "number": 858581,
+   "url": "https://go-review.googlesource.com/c/go/+/858581",
+   "status": "NEW",
+   "mailed": "2026-11-03",
+   "merged": null,
+   "abandoned": null
+  },
+  {
+   "number": 858901,
+   "url": "https://go-review.googlesource.com/c/go/+/858901",
+   "status": "ABANDONED",
+   "mailed": "2026-11-04",
+   "merged": null,
+   "abandoned": "2026-11-17"
+  },
+  {
+   "number": 858921,
+   "url": "https://go-review.googlesource.com/c/go/+/858921",
+   "status": "NEW",
+   "mailed": "2026-11-04",
+   "merged": null,
+   "abandoned": null
+  }
+ ]
+}

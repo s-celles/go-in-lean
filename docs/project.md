@@ -193,7 +193,7 @@ cmd/sitegen/            deterministic Go generator for website content
 site/                   Hugo/Hextra config, layouts and styles (content generated)
 findings/               YAML finding registry and supporting research records
 scripts/                check.sh, gen_bits_tables.py, validate_manifest.py, mutation_test.py,
-                        gen_brand.py (visual identity)
+                        gen_brand.py (visual identity), history.py (History page snapshot)
 docs/                   prior-art, semantic-boundary, architecture, compiler feasibility, report, brand
 assets/brand/           logo, lockups, favicon, social preview (generated, see docs/brand.md)
 ```

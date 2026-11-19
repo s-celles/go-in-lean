@@ -85,6 +85,7 @@ type generator struct {
 	theorems   map[string]source
 	tests      map[string]source
 	upstream   []upstreamRow
+	history    *historySnapshot
 	pages      map[string][]byte
 	routes     map[string]string
 }
@@ -280,6 +281,9 @@ func (g *generator) load() error {
 	}
 	g.upstream, err = parseUpstream(string(b))
 	if err != nil {
+		return err
+	}
+	if g.history, err = readSnapshot(filepath.Join(g.root, "docs/history.json")); err != nil {
 		return err
 	}
 	for _, f := range g.findings {

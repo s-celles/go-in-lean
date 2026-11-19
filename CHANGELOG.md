@@ -12,6 +12,16 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Added
 
+- A History page on the website with time-series charts. It plots Lean theorem and
+  lemma declarations, the property registry (registered and proved), findings by
+  priority, issues reported upstream and closed, and Gerrit CLs mailed, merged and
+  abandoned. Each chart is inline SVG with one y-axis, a legend for two or more
+  series, direct end labels, a data table, and a keyboard-accessible crosshair
+  tooltip (`site/assets/js/history.js`); light and dark palettes are validated for
+  colour-vision deficiency. The data come from `docs/history.json`, a checked-in
+  snapshot written by the new `scripts/history.py` (with its tests in
+  `scripts/test_history.py`) from git, GitHub and Gerrit. `cmd/sitegen` validates
+  the snapshot strictly.
 - `ssa_tv.py --lowered` on arm64 models byte reversal (`REV`, `REVW`, `REV16`, `REV16W`),
   `CLZ`/`CLZW`, the high and widening multiplications (`MULH`, `UMULH`, `MULL`, `UMULL`) and
   `EXTRconst`/`EXTRWconst`. The generic passes model `Mul64uhilo` (`bits.Mul64`). Calls to the
