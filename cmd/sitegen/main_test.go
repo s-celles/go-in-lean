@@ -485,10 +485,15 @@ func TestCitation(t *testing.T) {
 		t.Fatal(err)
 	}
 	text := c.markdown("2026")
-	for _, want := range []string{"Celles, S. (2026). *go-in-lean: a title*", "https://github.com/s-celles/go-in-lean", "author = {Celles, Sébastien}", "orcid.org/0000-0001-9987-4338"} {
+	for _, want := range []string{"Celles, S. (2026). *go-in-lean: a title*", "https://github.com/s-celles/go-in-lean", "author = {Celles, Sébastien}", "orcid.org/0000-0001-9987-4338", "@software{celles2026goinlean,"} {
 		if !strings.Contains(text, want) {
 			t.Errorf("citation lacks %q:\n%s", want, text)
 		}
+	}
+	// without a colon, the whole title names the work; non-letters are dropped
+	c.Title = "Some Tool 2"
+	if !strings.Contains(c.markdown("2026"), "@software{celles2026sometool2,") {
+		t.Error("citation key does not carry the work's name")
 	}
 	if _, err := parseCitation([]byte("cff-version: 1.2.0\n")); err == nil {
 		t.Error("accepted a citation without title or authors")

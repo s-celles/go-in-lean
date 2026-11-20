@@ -227,6 +227,9 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Changed
 
+- The BibTeX key of the home page's Cite section carries the work's name
+  (`celles2026goinlean` instead of `celles2026`), so that the author's works of one
+  year do not collide.
 - The project guide's research-map diagram no longer uses `<br/>`, `&` or `#` in its
   Mermaid labels (site-kit rule SK-MERMAID). Two statements in it that had become
   stale are corrected: not every finding still has a CL in review, and

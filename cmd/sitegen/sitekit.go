@@ -102,7 +102,11 @@ func (c *citation) markdown(year string) string {
 			s += "ORCID of " + a.Given + " " + a.Family + ": " + link(strings.TrimPrefix(a.ORCID, "https://"), a.ORCID) + ". "
 		}
 	}
-	key := strings.ToLower(regexp.MustCompile(`[^A-Za-z]`).ReplaceAllString(c.Authors[0].Family, "")) + year
+	// key: author, year and the work's name (the title before a colon), so that one
+	// author's works of one year do not collide, e.g. celles2026goinlean
+	name := strings.SplitN(c.Title, ":", 2)[0]
+	key := strings.ToLower(regexp.MustCompile(`[^A-Za-z]`).ReplaceAllString(c.Authors[0].Family, "")) + year +
+		strings.ToLower(regexp.MustCompile(`[^A-Za-z0-9]`).ReplaceAllString(name, ""))
 	s += "Generated from " + link("CITATION.cff", repoLink("CITATION.cff")) + ".\n"
 	s += code("bibtex", fmt.Sprintf("@software{%s,\n  author = {%s},\n  title = {%s},\n  year = {%s},\n  url = {%s}\n}", key, strings.Join(bib, " and "), c.Title, year, where))
 	return s
