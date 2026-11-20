@@ -409,7 +409,7 @@ func TestSiteKitContract(t *testing.T) {
 		}
 	}
 	method := string(g.pages["methodology/_index.md"])
-	if !strings.Contains(method, "site-kit v0.3.0") || !strings.Contains(method, "```mermaid") {
+	if !strings.Contains(method, "site-kit v0.3.1") || !strings.Contains(method, "```mermaid") {
 		t.Error("methodology page lacks the site-kit tag or the pipeline diagram")
 	}
 	for _, block := range regexp.MustCompile("(?s)```mermaid\n(.*?)```").FindAllStringSubmatch(method, -1) {
@@ -536,6 +536,14 @@ func TestDisclosures(t *testing.T) {
 		if _, err := parseDisclosures(bad); err == nil {
 			t.Errorf("%s: accepted invalid disclosures", name)
 		}
+	}
+	// site-kit 0.3.1: a contributor without an ORCID leaves the column empty
+	noORCID, err := parseDisclosures(head + "B\t\tSystem X\tcompared system\tauthor\t\n" + "B\t\tan AI assistant\tAI assistance\tx\ty\n")
+	if err != nil {
+		t.Fatalf("rejected a contributor without an ORCID: %v", err)
+	}
+	if p := disclosurePage(noORCID); strings.Contains(p, "ORCID") || !strings.Contains(p, "## B") {
+		t.Error("the page shows an ORCID line for a contributor without one")
 	}
 	root, err := filepath.Abs("../..")
 	if err != nil {

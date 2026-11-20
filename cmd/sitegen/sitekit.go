@@ -15,7 +15,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-const siteKitTag = "v0.3.0"
+const siteKitTag = "v0.3.1"
 
 // The owner-approved texts (2026-11-19).
 const disclaimerText = "**Disclaimer.** go-in-lean is an individual, non-commercial project. It is not produced, endorsed or certified by the Go project, Google, or the maintainers of the other projects it examines. Its aim is to find, and help fix, correctness bugs in Go's compiler and standard library, using bit-precise Lean models and executable evidence."

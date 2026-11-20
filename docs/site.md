@@ -1,7 +1,7 @@
 # Documentation and findings website
 
 The site uses Hugo Extended 0.152.2, Hextra v0.13.0 and the shared
-[site-kit](https://github.com/s-celles/site-kit) module, pinned at v0.3.0 in
+[site-kit](https://github.com/s-celles/site-kit) module, pinned at v0.3.1 in
 `site/go.mod` and imported before Hextra. The site follows site-kit's SPEC 0.3,
 the structure the project sites share: menu order, a home page with the data
 stamp, disclaimer, provenance, stat tiles and citation, the Statuses,

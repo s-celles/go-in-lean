@@ -227,6 +227,9 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Changed
 
+- The website pins site-kit v0.3.1. A disclosure row may leave the ORCID empty, for a
+  contributor without one; a filled ORCID is still validated, and the Conflict of
+  interest page shows it only when present.
 - The BibTeX key of the home page's Cite section carries the work's name
   (`celles2026goinlean` instead of `celles2026`), so that the author's works of one
   year do not collide.

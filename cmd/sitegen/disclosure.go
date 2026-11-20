@@ -51,7 +51,7 @@ func parseDisclosures(text string) ([]disclosure, error) {
 		if d.Contributor == "" || d.Project == "" || d.Role == "" {
 			return nil, fmt.Errorf("disclosures.tsv row %d: contributor, project and role are required", i+1)
 		}
-		if !orcidRE.MatchString(d.ORCID) {
+		if d.ORCID != "" && !orcidRE.MatchString(d.ORCID) { // empty: no ORCID (site-kit 0.3.1)
 			return nil, fmt.Errorf("disclosures.tsv row %d: invalid ORCID %q", i+1, d.ORCID)
 		}
 		if !validKind(d.Kind) {
@@ -87,7 +87,11 @@ func disclosurePage(rows []disclosure) string {
 	}
 	s := disclosureSummary + "\n\nEvery contributor declares, in " + link("docs/disclosures.tsv", repoLink("docs/disclosures.tsv")) + ", their relation to each system the project examines or compares, to the tools it relies on, and their use of AI assistants. A row whose role is none is also a declaration.\n\n"
 	for _, p := range people {
-		s += "## " + p + "\n\nORCID " + link(orcid[p], "https://orcid.org/"+orcid[p]) + "\n\n| Project | Kind | Role | Note |\n|---|---|---|---|\n"
+		s += "## " + p + "\n\n"
+		if orcid[p] != "" {
+			s += "ORCID " + link(orcid[p], "https://orcid.org/"+orcid[p]) + "\n\n"
+		}
+		s += "| Project | Kind | Role | Note |\n|---|---|---|---|\n"
 		for _, d := range rows {
 			if d.Contributor == p {
 				s += "| " + cell(d.Project) + " | " + d.Kind + " | " + cell(d.Role) + " | " + cell(d.Note) + " |\n"
