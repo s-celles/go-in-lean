@@ -216,6 +216,17 @@ assets/brand/           logo, lockups, favicon, social preview (generated, see d
 See `AGENTS.md` for commit conventions. Do not file upstream Go issues from
 pipeline output without human review of the finding directory.
 
+**Conflict of interest and AI assistance.** Every contributor declares, in
+`docs/disclosures.tsv`, their relation to each system the project examines or
+compares (Go, the alternative implementations), to the tools it relies on, and
+their use of AI assistants: what the assistant did and how its output was
+reviewed, without naming the tool. A change that touches a model, a property, a
+harness, a check, a finding or a campaign is not complete without the rows of the
+person it is made for. An agent adds or updates those rows on that person's
+behalf. The site generator refuses a file whose kinds are outside the vocabulary
+or that lacks an AI assistance row for a contributor; the rows are shown on the
+site's Conflict of interest page.
+
 **Scope of upstream contributions.** go-in-lean is a personal project, run on
 the author's own time and hardware out of interest in free software. Those
 means cover finding defects, reducing them, and reporting them upstream with a

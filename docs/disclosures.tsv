@@ -1,0 +1,16 @@
+# Conflict of interest and AI assistance declarations: one row per contributor and project, rendered on
+# the site's Conflict of interest page (menu: Disclosure). Every contributor adds their own rows: a change
+# that touches a model, a property, a harness, a check, a finding or a campaign is not complete without them.
+# A row whose role is "none" is also a declaration. kind is one of: examined system, compared system, tool,
+# source of <suite>, benchmark, AI assistance, other. Every contributor declares their use of AI assistants
+# (kind "AI assistance": what the assistant did, and how its output was reviewed), without naming the tool.
+contributor	orcid	project	kind	role	note
+Sébastien Celles	0000-0001-9987-4338	Go (gc compiler and standard library)	examined system	contributor	15 issues in golang/go (14 from the personal account, 1 from s-celles-bot) and 14 CLs (6 merged, 7 in review, 1 abandoned) as of 2026-11-20, all arising from this project
+Sébastien Celles	0000-0001-9987-4338	Yaegi	compared system	issue reporter	2 issues (traefik/yaegi 1750 and 1751) from s-celles-bot, arising from this project
+Sébastien Celles	0000-0001-9987-4338	gccgo	compared system	none	
+Sébastien Celles	0000-0001-9987-4338	TinyGo	compared system	none	
+Sébastien Celles	0000-0001-9987-4338	LLGo	compared system	none	
+Sébastien Celles	0000-0001-9987-4338	Lean 4 and Mathlib	tool	none	used to write the models and proofs; not evaluated
+Sébastien Celles	0000-0001-9987-4338	go-in-lean models, harnesses and campaigns	benchmark	author	
+Sébastien Celles	0000-0001-9987-4338	funding, employment or other interest in a system examined	other	none	individual, non-commercial project
+Sébastien Celles	0000-0001-9987-4338	an AI assistant	AI assistance	wrote most of the code (Lean models and proofs, Go and Python harnesses, the site generator), the tests, and drafts of the findings and upstream reports	every change was reviewed and decided by the contributor; every Go discrepancy is reproduced on a real Go toolchain before it is classified; every upstream issue, comment and CL is decided and published by the contributor

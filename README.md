@@ -25,6 +25,14 @@ scripts/check.sh
 See the [quick start](https://s-celles.github.io/go-in-lean/docs/project/#quick-start)
 for prerequisites and commands outside Nix, and [AGENTS.md](AGENTS.md) for contributor conventions.
 
+## Disclosure
+
+The author reports issues and contributes fixes to Go, and has reported issues to
+Yaegi, as part of this project; has no funding, employment or other interest tied to
+the systems examined; and works with an AI assistant. See the
+[conflict of interest page](https://s-celles.github.io/go-in-lean/conflict-of-interest/) and
+[docs/disclosures.tsv](docs/disclosures.tsv).
+
 ## Licence
 
 Code: MIT ([LICENSE](LICENSE)); files derived from Go keep the BSD 3-Clause

@@ -111,6 +111,7 @@ The complete licence notes.
 		"CHANGELOG.md":            "# Changelog\n",
 		"docs/site.md":            "# Building the site\n",
 		"docs/upstream-status.md": "# Upstream status\n",
+		"docs/disclosures.tsv":    disclosuresSample,
 		"CITATION.cff":            "cff-version: 1.2.0\nmessage: Cite it.\ntitle: go-in-lean\nauthors:\n  - family-names: Celles\n    given-names: Sébastien\n",
 	}
 	for path, body := range files {
@@ -370,7 +371,13 @@ func TestSiteKitContract(t *testing.T) {
 	if disclaimer == nil || !strings.Contains(disclaimer[1], "non-commercial") || !regexp.MustCompile(`\bAI\b`).MatchString(disclaimer[1]) {
 		t.Error("disclaimer block lacks non-commercial or AI")
 	}
-	order := []string{"data-stamp", `class="disclaimer"`, "{{< stats >}}", "## Cite"}
+	banner := regexp.MustCompile(`^<p class="site-banner"><img src="brand/([a-z-]+\.svg)" alt="[^"]+"`).FindStringSubmatch(strings.SplitN(home, "-->\n\n", 2)[1])
+	if banner == nil {
+		t.Error("the home page does not start with the site banner")
+	} else if _, err := os.Stat(filepath.Join(root, "assets/brand", banner[1])); err != nil {
+		t.Errorf("banner image: %v", err)
+	}
+	order := []string{"site-banner", "data-stamp", `class="disclaimer"`, "{{< stats >}}", "## Cite"}
 	last := -1
 	for _, s := range order {
 		i := strings.Index(home, s)
@@ -402,7 +409,7 @@ func TestSiteKitContract(t *testing.T) {
 		}
 	}
 	method := string(g.pages["methodology/_index.md"])
-	if !strings.Contains(method, "site-kit v0.2.0") || !strings.Contains(method, "```mermaid") {
+	if !strings.Contains(method, "site-kit v0.3.0") || !strings.Contains(method, "```mermaid") {
 		t.Error("methodology page lacks the site-kit tag or the pipeline diagram")
 	}
 	for _, block := range regexp.MustCompile("(?s)```mermaid\n(.*?)```").FindAllStringSubmatch(method, -1) {
@@ -485,5 +492,63 @@ func TestCitation(t *testing.T) {
 	}
 	if _, err := parseCitation([]byte("cff-version: 1.2.0\n")); err == nil {
 		t.Error("accepted a citation without title or authors")
+	}
+}
+
+const disclosuresSample = "# comment\ncontributor\torcid\tproject\tkind\trole\tnote\n" +
+	"Ann Example\t0000-0001-2345-6789\tGo (gc and the standard library)\texamined system\tcontributor\t3 issues\n" +
+	"Ann Example\t0000-0001-2345-6789\tYaegi\tcompared system\tnone\t\n" +
+	"Ann Example\t0000-0001-2345-6789\tnone\tother\tnone\tno funding\n" +
+	"Ann Example\t0000-0001-2345-6789\tan AI assistant\tAI assistance\twrote drafts\treviewed by the contributor\n"
+
+func TestDisclosures(t *testing.T) {
+	rows, err := parseDisclosures(disclosuresSample)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(rows) != 4 || rows[0].Contributor != "Ann Example" || rows[1].Kind != "compared system" {
+		t.Fatalf("bad parse: %+v", rows)
+	}
+	page := disclosurePage(rows)
+	for _, want := range []string{"| System or source | Ann Example |", "| Go (gc and the standard library) | contributor |", "| Yaegi | none |", "## Use of AI assistants", "wrote drafts", "0000-0001-2345-6789"} {
+		if !strings.Contains(page, want) {
+			t.Errorf("disclosure page lacks %q", want)
+		}
+	}
+	if strings.Contains(page, "—") {
+		t.Error("disclosure page contains an em dash")
+	}
+	head := "contributor\torcid\tproject\tkind\trole\tnote\n"
+	for name, bad := range map[string]string{
+		"kind":     head + "A\t0000-0001-2345-6789\tX\tfriend\tnone\t\n" + "A\t0000-0001-2345-6789\tan AI assistant\tAI assistance\tx\ty\n",
+		"no AI":    head + "A\t0000-0001-2345-6789\tX\tcompared system\tnone\t\n",
+		"orcid":    head + "A\t1234\tan AI assistant\tAI assistance\tx\ty\n",
+		"columns":  head + "A\t0000-0001-2345-6789\tX\n",
+		"header":   "who\twhat\n",
+		"empty":    head,
+		"nameless": head + "\t0000-0001-2345-6789\tan AI assistant\tAI assistance\tx\ty\n",
+	} {
+		if _, err := parseDisclosures(bad); err == nil {
+			t.Errorf("%s: accepted invalid disclosures", name)
+		}
+	}
+	root, err := filepath.Abs("../..")
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := &generator{root: root, pages: map[string][]byte{}, routes: map[string]string{}}
+	if err := g.load(); err != nil {
+		t.Fatal(err)
+	}
+	if err := g.render(); err != nil {
+		t.Fatal(err)
+	}
+	for _, path := range []string{"_index.md", "llms.txt"} {
+		if !strings.Contains(string(g.pages[path]), disclosureSummary) {
+			t.Errorf("%s lacks the disclosure summary", path)
+		}
+	}
+	if !strings.Contains(string(g.pages["_index.md"]), `relref "/conflict-of-interest"`) || len(g.pages["conflict-of-interest/_index.md"]) == 0 {
+		t.Error("no disclosure page or no link to it from the home page")
 	}
 }

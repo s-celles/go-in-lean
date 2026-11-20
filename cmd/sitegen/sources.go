@@ -198,10 +198,10 @@ func parseUpstream(text string) ([]upstreamRow, error) {
 			if strings.Contains(c[0], "](") {
 				r = upstreamRow{c[0], c[1], c[2], "See record", c[3]}
 			} else {
-				r = upstreamRow{c[1], c[2], "—", "—", c[3]}
+				r = upstreamRow{c[1], c[2], "none", "none", c[3]}
 			}
 		case 3:
-			r = upstreamRow{c[0], c[1], "—", "—", c[2]}
+			r = upstreamRow{c[0], c[1], "none", "none", c[2]}
 		default:
 			return nil, fmt.Errorf("malformed upstream table row (%d columns): %s", len(c), line)
 		}

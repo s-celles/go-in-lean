@@ -9,6 +9,12 @@ authors:
 repository-code: "https://github.com/s-celles/go-in-lean"
 url: "https://s-celles.github.io/go-in-lean/"
 license: MIT
+abstract: >-
+  Bit-precise Lean 4 models of Go, proofs of their documented properties, and
+  executable reproducers for the Go compiler and standard library bugs they reveal.
+  Disclosure: the author reports issues and contributes fixes to Go, and has
+  reported issues to Yaegi, as part of this project; has no funding, employment or
+  other interest tied to the systems examined; and works with an AI assistant.
 keywords:
   - Go
   - Lean 4

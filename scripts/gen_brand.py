@@ -207,6 +207,33 @@ def social():
     return svg(W_, H_, "\n".join(body), TITLE)
 
 
+BANNER_ALT = "go-in-lean: bit-precise Lean 4 models of Go, counterexamples replayed in real Go"
+
+
+def banner():
+    """The website's home banner, 1280 x 320: the social preview's night ground and
+    construction grid, the mark on the left, the wordmark and the two claims."""
+    W_, H_ = 1280, 320
+    body = [f'<rect width="{W_}" height="{H_}" fill="{NIGHT}"/>']
+    for x in range(0, W_ + 1, 40):
+        body.append(f'<line x1="{x}" y1="0" x2="{x}" y2="{H_}" stroke="#16222C" stroke-width="1"/>')
+    for y in range(0, H_ + 1, 40):
+        body.append(f'<line x1="0" y1="{y}" x2="{W_}" y2="{y}" stroke="#16222C" stroke-width="1"/>')
+    # the mark, 20 grid units tall (y 22..42) scaled to 160 px, centred on y = 160
+    s = 8.0
+    body.append(mark(CYAN_D, MIST, dx=80 - 2 * s, dy=160 - 32 * s, s=s))
+    # the wordmark, its x-height on the mark's wrists, then the claims
+    k = 2.0
+    x0 = 80 + 60 * s + 64
+    body.append(word(MIST, x0, 150, k))
+    font = 'font-family="ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif"'
+    body.append(f'<text x="{x0}" y="212" {font} font-size="26" fill="{SLATE_D}">'
+                f'Bit-precise Lean 4 models of Go</text>')
+    body.append(f'<text x="{x0}" y="250" {font} font-size="22" fill="{SLATE_D}">'
+                f'kernel-checked proofs · counterexamples replayed in real Go</text>')
+    return svg(W_, H_, "\n".join(body), BANNER_ALT)
+
+
 def avatar():
     s = 0.84
     return svg(64, 64, f'<rect width="64" height="64" fill="{PAPER}"/>' + mark(CYAN, INK, dx=32 * (1 - s), dy=32 * (1 - s), s=s), TITLE)
@@ -313,6 +340,7 @@ def files():
         "lockup-dark.svg": lockup(CYAN_D, MIST, MIST),
         "avatar.svg": avatar(),
         "social-preview.svg": social(),
+        "banner.svg": banner(),
         "construction.svg": construction(),
         "exploration/sheet.svg": exploration_sheet(),
     }

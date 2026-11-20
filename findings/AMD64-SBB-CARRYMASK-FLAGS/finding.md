@@ -5,7 +5,7 @@ amd64 and 386.** Plain safe Go code computes a wrong boolean.
 **Affected:** go1.24.13 .. go1.27.3 and master `2b74366d` on amd64 (all GOAMD64 v1-v3);
 the 386-only variant below affects go1.24.13 .. go1.27.3 (master's shift-lowering rework
 removes that shape, not the defect).
-**Human review status:** reviewed 2026-11-03 — classified as an ordinary miscompilation
+**Human review status:** reviewed 2026-11-03, classified as an ordinary miscompilation
 (no memory-safety impact; bounds checks unaffected, see the security assessment in
 go-in-lean-private `findings/AMD64-SBB-CARRYMASK-FLAGS/security-assessment.md`).
 **Reported as golang/go#82825** (filed 2026-11-03 after maintainer approval; the issue
@@ -37,7 +37,7 @@ of the shift-bounds mask:
 ```
 SHLQ  CX, AX
 CMPQ  CX, $64     // v25: flags
-SBBQ  DX, DX      // v12: mask of "y < 64" — SUBTRACTS, CLOBBERS the flags
+SBBQ  DX, DX      // v12: mask of "y < 64": SUBTRACTS, CLOBBERS the flags
 SETEQ BL          // v28: the y == 64 test, intended to read v25
 ANDQ  DX, AX
 ```
@@ -117,7 +117,7 @@ and adds a branch comparing it against a width-class constant with an all-consta
 (`b := 0; if uint64(x) == K { b = 1 }`), which phiopt materialises as the second flag
 consumer. On go1.27.3 amd64 it finds the family at ~3.5-3.7% of seeds (7/200 locally,
 22/300 on the GEEKR9 native run) across all four widths and the `==`, `!=`, `>`, `<=`
-operators — broader than the hand reproducer (`>` lowers to `CMPQconst [W] x`, sharing
+operators, broader than the hand reproducer (`>` lowers to `CMPQconst [W] x`, sharing
 the mask's flags directly). Every failing seed passes on master + fix.patch, i.e. the
 whole family is covered by the single annotation fix.
 
@@ -132,7 +132,7 @@ correctness impact.
 ## Class sweep after the fix (2026-11-03)
 
 `scripts/ops_clobber_lint.py` re-run against master 2b74366d + fix: after excluding
-flag *producers* (CMP definitions, `<carry,result>` tuples — `Value.ClobbersFlags()`
+flag *producers* (CMP definitions, `<carry,result>` tuples, `Value.ClobbersFlags()`
 already models those), pure flag *readers* (SETcc, CSEL/CSNEG, ARM ADC/SBC/RSC without
 S, s390x LOCGR) and the flags-unaffected BMI2 shifts (SHLX/SHRX/SARX), the lint
 reports **0 candidates on every backend**. All 114 pre-triage candidates were false
