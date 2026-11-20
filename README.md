@@ -30,7 +30,7 @@ for prerequisites and commands outside Nix, and [AGENTS.md](AGENTS.md) for contr
 The author reports issues and contributes fixes to Go, and has reported issues to
 Yaegi, as part of this project; has no funding, employment or other interest tied to
 the systems examined; and works with an AI assistant. See the
-[conflict of interest page](https://s-celles.github.io/go-in-lean/conflict-of-interest/) and
+[disclosures page](https://s-celles.github.io/go-in-lean/disclosures/) and
 [docs/disclosures.tsv](docs/disclosures.tsv).
 
 ## Licence

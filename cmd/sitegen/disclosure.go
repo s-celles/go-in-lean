@@ -142,5 +142,12 @@ func (g *generator) disclosureSection() error {
 	if err != nil {
 		return err
 	}
-	return g.page("conflict-of-interest/_index.md", "Conflict of interest", 42, nil, disclosurePage(rows)) // menu "Disclosure", after Methodology
+	// site-kit SPEC 0.4: the page, the menu entry and docs/disclosures.tsv share one name;
+	// the SPEC 0.3 address redirects here
+	if err := g.page("disclosures/_index.md", "Disclosures", 42, nil, disclosurePage(rows)); err != nil {
+		return err
+	}
+	meta := string(g.pages["disclosures/_index.md"])
+	g.pages["disclosures/_index.md"] = []byte(strings.Replace(meta, "type: docs\n", "type: docs\naliases:\n    - /conflict-of-interest/\n", 1))
+	return nil
 }

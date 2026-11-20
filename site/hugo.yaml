@@ -37,8 +37,8 @@ menu:
     - name: Methodology
       pageRef: /methodology
       weight: 5
-    - name: Disclosure
-      pageRef: /conflict-of-interest
+    - name: Disclosures
+      pageRef: /disclosures
       weight: 5.5
     - name: Docs
       pageRef: /docs
@@ -55,7 +55,7 @@ menu:
 params:
   siteKit:
     themeColor: "#173f66"
-    footer: "An individual, non-commercial project, not endorsed by the Go project or Google. Code [MIT](https://github.com/s-celles/go-in-lean/blob/main/LICENSE), files derived from Go [BSD-3-Clause](https://github.com/s-celles/go-in-lean/blob/main/NOTICE); data and prose [CC BY 4.0](https://github.com/s-celles/go-in-lean/blob/main/LICENSE-DATA). Written with AI assistance. [Disclosure](https://s-celles.github.io/go-in-lean/conflict-of-interest/): the author contributes to Go and has reported issues to Yaegi as part of this project, with no funding, employment or other interest tied to the systems examined."
+    footer: "An individual, non-commercial project, not endorsed by the Go project or Google. Code [MIT](https://github.com/s-celles/go-in-lean/blob/main/LICENSE), files derived from Go [BSD-3-Clause](https://github.com/s-celles/go-in-lean/blob/main/NOTICE); data and prose [CC BY 4.0](https://github.com/s-celles/go-in-lean/blob/main/LICENSE-DATA). Written with AI assistance. [Disclosures](https://s-celles.github.io/go-in-lean/disclosures/): the author contributes to Go and has reported issues to Yaegi as part of this project, with no funding, employment or other interest tied to the systems examined."
     badgeTones:
       proved_in_model: good
       go_discrepancy_reproduced: bad

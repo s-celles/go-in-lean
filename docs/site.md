@@ -1,11 +1,11 @@
 # Documentation and findings website
 
 The site uses Hugo Extended 0.152.2, Hextra v0.13.0 and the shared
-[site-kit](https://github.com/s-celles/site-kit) module, pinned at v0.3.1 in
-`site/go.mod` and imported before Hextra. The site follows site-kit's SPEC 0.3,
+[site-kit](https://github.com/s-celles/site-kit) module, pinned at v0.4.0 in
+`site/go.mod` and imported before Hextra. The site follows site-kit's SPEC 0.4,
 the structure the project sites share: menu order, a home page with the data
 stamp, disclaimer, provenance, stat tiles and citation, the Statuses,
-Methodology, Upstream, History and Conflict of interest pages, and `llms.txt`. `site-kit.json` at the
+Methodology, Upstream, History and Disclosures pages, and `llms.txt`. `site-kit.json` at the
 repository root declares the SPEC version and the menu. Go and Hugo are the only
 build tools; no Node.js, npm or JavaScript build is required. Hextra supplies the
 sidebar, system-aware dark mode and local full-text search. site-kit supplies
@@ -56,13 +56,15 @@ by the website's separate root module (`gopkg.in/yaml.v3` is its only dependency
   from 0 on one y-axis, one tab stop per chart (`data-viz="dense"`, arrow keys
   step through the days), a legend for two or more series and a data table.
 - `CITATION.cff` supplies the home page's Cite section (text and BibTeX).
-- `docs/disclosures.tsv` supplies the Conflict of interest page: one row per
+- `docs/disclosures.tsv` supplies the Disclosures page (conflict of interest and AI
+  assistance declarations): one row per
   contributor and project (contributor, ORCID, project, kind, role, note), a
   systems by contributors matrix, the use of AI assistants and what limits the
   bias. The one-line summary in `cmd/sitegen/disclosure.go` appears on the home
   page, in `llms.txt`, the footer, the README and `CITATION.cff`; keep it in step
-  with the file. The page is at `/conflict-of-interest/`, in the main menu as
-  Disclosure after Methodology, as on the other project sites.
+  with the file. The page is at `/disclosures/` (site-kit SPEC 0.4), in the main menu as
+  Disclosures after Methodology; the SPEC 0.3 address `/conflict-of-interest/`
+  redirects to it.
 - The generator also writes `llms.txt`, `llms-full.txt` (every finding and
   property as text) and `registry.json` (the manifests as JSON) at the site root.
 - `docs/project.md` holds the full project guide, including the material moved

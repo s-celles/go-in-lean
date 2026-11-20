@@ -225,7 +225,7 @@ harness, a check, a finding or a campaign is not complete without the rows of th
 person it is made for. An agent adds or updates those rows on that person's
 behalf. The site generator refuses a file whose kinds are outside the vocabulary
 or that lacks an AI assistance row for a contributor; the rows are shown on the
-site's Conflict of interest page.
+site's Disclosures page.
 
 **Scope of upstream contributions.** go-in-lean is a personal project, run on
 the author's own time and hardware out of interest in free software. Those

@@ -97,7 +97,7 @@ func (g *generator) render() error {
 	if err != nil {
 		return err
 	}
-	home := siteBanner + "<div class=\"sk-kicker\">Lean 4 · Go · executable evidence</div>\n\n" + pitch + "\n\n" + g.dataStamp() + disclaimerBlock() + disclosureSummary + " " + ref("Conflict of interest →", "/conflict-of-interest") + "\n\n"
+	home := siteBanner + "<div class=\"sk-kicker\">Lean 4 · Go · executable evidence</div>\n\n" + pitch + "\n\n" + g.dataStamp() + disclaimerBlock() + disclosureSummary + " " + ref("Disclosures →", "/disclosures") + "\n\n"
 	home += fmt.Sprintf("{{< stats >}}{{< stat value=%q label=\"Registered properties\" href=\"/properties\" >}}{{< stat value=%q label=\"Proved in model\" href=\"/properties\" >}}{{< stat value=%q label=\"Reproduced entries\" href=\"/findings\" >}}{{< stat value=%q label=\"Research findings\" href=\"/findings\" >}}{{< /stats >}}\n\n", fmt.Sprint(len(g.properties)), fmt.Sprint(counts["proved_in_model"]), fmt.Sprint(counts["go_discrepancy_reproduced"]), fmt.Sprint(len(g.findings)))
 	home += ref("Browse findings →", "/findings") + " · " + ref("Explore the registry →", "/properties") + " · " + ref("Read the methodology →", "/methodology") + " · " + ref("Statuses →", "/statuses") + "\n\n"
 	home += "The " + ref("complete project guide", "/docs/project") + " covers the project results, research map, symbolic and concolic approaches, setup, repository layout and contribution policy.\n\n## Verification status\n\nCounts are recomputed from the YAML on every build. Registry entries, audited theorems and research findings are different units; one entry can cite several theorems, and several entries can share one root cause.\n\n| Registry status | Entries |\n|---|---:|\n"

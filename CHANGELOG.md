@@ -227,6 +227,9 @@ first commit (2026-11-01). Upstream issue and CL states are tracked in
 
 ### Changed
 
+- The Disclosures page moves to `/disclosures/`, with the menu entry Disclosures
+  (site-kit SPEC 0.4, module v0.4.0): the page, the menu and `docs/disclosures.tsv`
+  share one name. The former address `/conflict-of-interest/` redirects to it.
 - The website pins site-kit v0.3.1. A disclosure row may leave the ORCID empty, for a
   contributor without one; a filled ORCID is still validated, and the Conflict of
   interest page shows it only when present.

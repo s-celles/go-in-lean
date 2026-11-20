@@ -409,7 +409,7 @@ func TestSiteKitContract(t *testing.T) {
 		}
 	}
 	method := string(g.pages["methodology/_index.md"])
-	if !strings.Contains(method, "site-kit v0.3.1") || !strings.Contains(method, "```mermaid") {
+	if !strings.Contains(method, "site-kit v0.4.0") || !strings.Contains(method, "```mermaid") {
 		t.Error("methodology page lacks the site-kit tag or the pipeline diagram")
 	}
 	for _, block := range regexp.MustCompile("(?s)```mermaid\n(.*?)```").FindAllStringSubmatch(method, -1) {
@@ -561,7 +561,11 @@ func TestDisclosures(t *testing.T) {
 			t.Errorf("%s lacks the disclosure summary", path)
 		}
 	}
-	if !strings.Contains(string(g.pages["_index.md"]), `relref "/conflict-of-interest"`) || len(g.pages["conflict-of-interest/_index.md"]) == 0 {
+	dpage := string(g.pages["disclosures/_index.md"])
+	if !strings.Contains(dpage, "    - /conflict-of-interest/\n") {
+		t.Error("the disclosures page keeps no redirect from the SPEC 0.3 address")
+	}
+	if !strings.Contains(string(g.pages["_index.md"]), `relref "/disclosures"`) || dpage == "" {
 		t.Error("no disclosure page or no link to it from the home page")
 	}
 }

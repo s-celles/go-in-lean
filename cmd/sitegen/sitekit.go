@@ -15,7 +15,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-const siteKitTag = "v0.3.1"
+const siteKitTag = "v0.4.0"
 
 // The owner-approved texts (2026-11-19).
 const disclaimerText = "**Disclaimer.** go-in-lean is an individual, non-commercial project. It is not produced, endorsed or certified by the Go project, Google, or the maintainers of the other projects it examines. Its aim is to find, and help fix, correctness bugs in Go's compiler and standard library, using bit-precise Lean models and executable evidence."
@@ -263,7 +263,7 @@ func (g *generator) methodologyPage(pitch string) error {
 	s += "## What a result means\n\n" + trustExplanation + "\n\nProofs establish claims about the Lean model. Differential vectors, independent Go oracles, canaries and cross-architecture campaigns test how well that model follows Go. They do not turn a model theorem into a proof of the Go binary. A campaign without a report is incomplete validation, not a proof of correctness. The " + ref("Statuses", "/statuses") + " page defines every classification.\n\n"
 	s += "## Checks of the expected values\n\n- `scripts/check.sh`: banned proof shortcuts, generated files up to date with the pinned Go sources, `lake build`, the axiom audit, Go vet and tests, differential vectors between the Go implementation and the Lean model, the manifest and the mutation test.\n- Go oracles independent of the Lean model, and directed canaries for every known bug.\n- Reproduction on the affected Go toolchain, with versions, architecture, CPU settings and flags recorded, before a finding is classified as reproduced in Go.\n- The site generator rejects malformed manifests, unordered histories, missing evidence and unresolved theorem or test names; two renders are compared byte for byte.\n\n"
 	s += "## Two evidence registries\n\nThe property manifest records verification targets and their status transitions. Finding YAML records group research evidence, reproducers and upstream links, including discoveries made by fuzzing outside the manifest. Upstream state is read from the checked-in snapshot; a merged master fix does not prove a release branch is fixed.\n\n"
-	s += "## This site\n\nBuilt with the site-kit module " + link("s-celles/site-kit "+siteKitTag, "https://github.com/s-celles/site-kit/tree/"+siteKitTag) + " (SPEC 0.3), Hugo and Hextra; see " + ref("Building this site", "/docs/site") + ". Machine-readable: " + "[llms.txt](../llms.txt), [llms-full.txt](../llms-full.txt), [registry.json](../registry.json).\n\n"
+	s += "## This site\n\nBuilt with the site-kit module " + link("s-celles/site-kit "+siteKitTag, "https://github.com/s-celles/site-kit/tree/"+siteKitTag) + " (SPEC 0.4), Hugo and Hextra; see " + ref("Building this site", "/docs/site") + ". Machine-readable: " + "[llms.txt](../llms.txt), [llms-full.txt](../llms-full.txt), [registry.json](../registry.json).\n\n"
 	s += "## Project and inspiration\n\nInspired by " + link("julia-in-lean", "https://github.com/MilesCranmer/julia-in-lean") + ", with its separation of proved properties, model refutations and runtime evidence. The goéland (seagull) identity and artwork come from the repository's " + link("brand assets", repository+"/tree/main/assets/brand") + ".\n\n" + ref("Prior art and limitations", "/docs/prior-art") + " · " + link("Source and contributors", repository) + "\n"
 	if err := g.page("methodology/_index.md", "Methodology", 40, nil, s); err != nil {
 		return err
@@ -283,12 +283,12 @@ func plain(s string) string {
 
 func (g *generator) machineReadable(pitch string) error {
 	site := "https://s-celles.github.io/go-in-lean/"
-	intro := "# go-in-lean\n\n> " + plain(strings.SplitN(strings.TrimSpace(pitch), "\n", 2)[0]) + "\n\n" + plain(disclaimerText) + "\n\n" + plain(provenanceText) + "\n\n" + disclosureSummary + " Details: " + "https://s-celles.github.io/go-in-lean/conflict-of-interest/\n\n"
+	intro := "# go-in-lean\n\n> " + plain(strings.SplitN(strings.TrimSpace(pitch), "\n", 2)[0]) + "\n\n" + plain(disclaimerText) + "\n\n" + plain(provenanceText) + "\n\n" + disclosureSummary + " Details: " + "https://s-celles.github.io/go-in-lean/disclosures/\n\n"
 	if g.commit != "" {
 		intro += "Data at commit " + g.commit + " (" + g.commitDate + ").\n\n"
 	}
 	llms := intro + "## Pages\n\n"
-	for _, p := range [][2]string{{"Findings", "findings/"}, {"Property registry", "properties/"}, {"Conflict of interest", "conflict-of-interest/"}, {"Upstream status", "upstream/"}, {"History", "history/"}, {"Methodology", "methodology/"}, {"Statuses", "statuses/"}, {"Documentation", "docs/"}} {
+	for _, p := range [][2]string{{"Findings", "findings/"}, {"Property registry", "properties/"}, {"Disclosures", "disclosures/"}, {"Upstream status", "upstream/"}, {"History", "history/"}, {"Methodology", "methodology/"}, {"Statuses", "statuses/"}, {"Documentation", "docs/"}} {
 		llms += "- [" + p[0] + "](" + site + p[1] + ")\n"
 	}
 	llms += "\n## Full text\n\n- [llms-full.txt](" + site + "llms-full.txt): every finding and property as text\n- [registry.json](" + site + "registry.json): the same registries as JSON\n"
